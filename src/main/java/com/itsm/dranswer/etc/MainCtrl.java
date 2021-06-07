@@ -1,7 +1,12 @@
 package com.itsm.dranswer.etc;
 
+import com.amazonaws.services.s3.model.Bucket;
+import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import com.itsm.dranswer.security.Jwt;
-import com.itsm.dranswer.users.*;
+import com.itsm.dranswer.users.JoinRequest;
+import com.itsm.dranswer.users.UserInfo;
+import com.itsm.dranswer.users.UserInfoDto;
+import com.itsm.dranswer.users.UserService;
 import com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.itsm.dranswer.utils.ApiUtils.success;
 
@@ -24,6 +30,9 @@ public class MainCtrl {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CustomObjectStorage customObjectStorage;
 
     @GetMapping(value = "/test")
     @ResponseBody
@@ -71,6 +80,20 @@ public class MainCtrl {
         UserInfoDto user = new UserInfoDto();
 
         return success(user);
+    }
+
+    @GetMapping(value = "/listBuckets")
+    @ResponseBody
+    public ApiResult<List<Bucket>> listBuckets(HttpServletRequest request){
+
+        final String endPoint = "https://kr.object.ncloudstorage.com";
+        final String regionName = "kr-standard";
+        String accessKey = "KCbWL7rOSXloPrSx7RLF";
+        String secretKey = "2HC4LpXz6CiPWBWG0FeDmYAulQzgVxHtWcjmiWgq";
+
+        List<Bucket> listBuckets = customObjectStorage.getBucketList(endPoint, regionName, accessKey, secretKey);
+
+        return success(listBuckets);
     }
 
 }

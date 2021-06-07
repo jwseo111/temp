@@ -25,8 +25,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -99,22 +99,25 @@ public class JwtAuthenticationTokenFilter extends GenericFilterBean {
     if (token != null) {
       if (log.isDebugEnabled())
         log.debug("Jwt authorization api detected: {}", token);
-      try {
-        token = URLDecoder.decode(token, "UTF-8");
-        String[] parts = token.split(" ");
-        if (parts.length == 2) {
-          String scheme = parts[0];
-          String credentials = parts[1];
-          return BEARER.matcher(scheme).matches() ? credentials : null;
-        }
-      } catch (UnsupportedEncodingException e) {
-        log.error(e.getMessage(), e);
+      token = URLDecoder.decode(token, StandardCharsets.UTF_8);
+      String[] parts = token.split(" ");
+      if (parts.length == 2) {
+        String scheme = parts[0];
+        String credentials = parts[1];
+        return BEARER.matcher(scheme).matches() ? credentials : null;
       }
     }else{
-      return Arrays.stream(request.getCookies())
+
+      Cookie[] cookies = request.getCookies();
+      if(cookies == null) return null;
+
+      Cookie cookie = Arrays.stream(cookies)
               .filter(c -> Jwt.COOKIE_NAME.equals(c.getName()))
-              .findFirst().map(Cookie::getValue)
-              .orElse(null);
+              .findFirst().orElse(null);
+
+      if(cookie == null) return null;
+
+      return cookie.getValue();
     }
 
     return null;

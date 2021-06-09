@@ -96,4 +96,14 @@ public class MainCtrl {
         return success(listBuckets);
     }
 
+    @GetMapping("memory-status")
+    @ResponseBody
+    public ApiResult<MemoryStats> getMemoryStatistics() {
+        MemoryStats stats = new MemoryStats();
+        stats.setHeapSize(Runtime.getRuntime().totalMemory());
+        stats.setHeapMaxSize(Runtime.getRuntime().maxMemory());
+        stats.setHeapFreeSize(Runtime.getRuntime().freeMemory());
+        return success(stats);
+    }
+
 }

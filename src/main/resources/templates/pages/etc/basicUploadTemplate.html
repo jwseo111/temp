@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout1">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/etc/basicUploadTemplate.js}"></script>
+</th:block>
+
+<div layout:fragment="contents">
+    <div id="maincontentswrap">
+        <maincontents ref="maincontents"></maincontents>
+    </div>
+
+    <script type="text/x-template" id="main-template">
+        <div class="wrap">
+            <div class="line">
+                <div><input type="file" ref="multipartFile"></div>
+            </div>
+            <div class="line">
+                <div><input type="text"></div>
+            </div>
+            <div class="line">{{messages}}</div>
+            <div class="line">
+                <div class="btn-wrap">
+                    <button class="btn" @click="onclickUpload">
+                    업로드
+                    </button>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script>
+    </script>
+</div>
+</html>

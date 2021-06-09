@@ -1,6 +1,6 @@
 var appMain;
 var TID = {
-    LOGIN : {value : 0, name : "login", code : "L"}
+    LOGIN : {value : 0, name : "login", code : "S"}
 };
 window.onload = function(){
     appMain = new Vue({

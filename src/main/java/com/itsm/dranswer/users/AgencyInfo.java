@@ -29,8 +29,8 @@ public class AgencyInfo extends BaseEntity implements Serializable {
     @Column(columnDefinition = "varchar(20) COMMENT '대표자명'")
     private String ceoName;
 
-    @Column(columnDefinition = "varchar(13) COMMENT '법인번호'")
-    private String corporationNumber;
+    @Column(columnDefinition = "varchar(10) COMMENT '사업자번호'", unique = true)
+    private String blNumber;
 
     @Column(columnDefinition = "varchar(10) COMMENT '기관유형코드'")
     @Enumerated(EnumType.STRING)

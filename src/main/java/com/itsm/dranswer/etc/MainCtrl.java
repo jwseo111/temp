@@ -37,11 +37,24 @@ public class MainCtrl {
     @GetMapping(value = "/test")
     @ResponseBody
     public ApiResult<UserInfo> test(){
-        String userEmail = "kkhkykkk2@naver.com";
-        String userName = "김영남";
+        String userEmail = "kkhkykkk3@naver.com";
         String inputPw = "dudghk113!";
+        String userRole = "ADMIN";
+        Integer agencySeq = null;
+        String diseaseCode = "ADMIN";
+        String userName = "김영남";
+        String userPhoneNumber = "01087094244";
+        String diseaseManagerYn = "N";
+        String nCloudId = null;
+        String nCloudAccessKey = null;
+        String nCloudSecretKey = null;
+        String joinStatCode = "REQUEST";
+        Long parentUserSeq = null;
 
-        JoinRequest request = new JoinRequest();
+        JoinRequest request = new JoinRequest(userEmail, inputPw, userRole,
+                agencySeq, diseaseCode, userName, userPhoneNumber,
+                diseaseManagerYn, nCloudId, nCloudAccessKey,
+                nCloudSecretKey, joinStatCode, parentUserSeq);
 
         UserInfo user = userService.join(request);
 

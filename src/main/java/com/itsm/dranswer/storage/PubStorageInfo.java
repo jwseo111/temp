@@ -38,7 +38,7 @@ public class PubStorageInfo extends BaseEntity implements Serializable {
     private Long diseaseManagerUserSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userSeq", referencedColumnName = "diseaseManagerUserSeq", insertable = false, updatable = false)
+    @JoinColumn(name = "diseaseManagerUserSeq", referencedColumnName = "userSeq", insertable = false, updatable = false)
     private UserInfo diseaseManagerUserInfo;
 
     @Column(columnDefinition = "varchar(10) COMMENT '공개신청상태코드'")

@@ -30,7 +30,7 @@ public class BucketInfo extends BaseEntity implements Serializable {
     private Long diseaseManagerUserSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userSeq", referencedColumnName = "diseaseManagerUserSeq", insertable = false, updatable = false)
+    @JoinColumn(name = "diseaseManagerUserSeq", referencedColumnName = "userSeq", insertable = false, updatable = false)
     private UserInfo diseaseManagerUserInfo;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bucketInfo")

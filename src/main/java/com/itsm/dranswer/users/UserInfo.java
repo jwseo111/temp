@@ -97,6 +97,13 @@ public class UserInfo extends BaseEntity implements Serializable {
         this.agencySeq = request.getAgencySeq();
         this.diseaseCode = Disease.of(request.getDiseaseCode());
         this.userName = request.getUserName();
+        this.userPhoneNumber = request.getUserPhoneNumber();
+        this.diseaseManagerYn = IsYn.of(request.getDiseaseManagerYn());
+        this.nCloudId = request.getNCloudId();
+        this.nCloudAccessKey = request.getNCloudAccessKey();
+        this.nCloudSecretKey = request.getNCloudSecretKey();
+        this.joinStatCode = JoinStat.REQUEST;
+        this.parentUserSeq = request.getParentUserSeq();
 
         this.loginCount = 0L;
     }

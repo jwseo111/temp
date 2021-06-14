@@ -8,6 +8,8 @@ package com.itsm.dranswer.commons;
  * @author : xeroman.k
  * @version : 1.0.0
  * @modifyed :
+ *  @CreatedBy, @LastModifiedBy는
+ *  AuditorAwareConfig 참고
  */
 
 import lombok.Getter;

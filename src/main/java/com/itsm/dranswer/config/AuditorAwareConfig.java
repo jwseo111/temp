@@ -9,6 +9,7 @@ package com.itsm.dranswer.config;
  * @modifyed :
  */
 
+import com.itsm.dranswer.security.JwtAuthentication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -25,15 +26,17 @@ import java.util.Optional;
 public class AuditorAwareConfig implements AuditorAware<Long> {
 
     public Optional<Long> getCurrentAuditor() {
+
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(authentication -> {
 
-                    Collection<? extends GrantedAuthority> auth = authentication.getAuthorities();
-                    boolean isUser = auth.contains(new SimpleGrantedAuthority("USER"));
+                    Collection<? extends GrantedAuthority> auths = authentication.getAuthorities();
+                    boolean isUser = auths.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
 
-                    if (isUser) {
-                        return Long.valueOf(authentication.getName());
+                    if (!isUser) {
+                        JwtAuthentication jwtAuthentication = (JwtAuthentication) authentication.getPrincipal();
+                        return jwtAuthentication.id;
                     }
 
                     return null;

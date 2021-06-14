@@ -38,6 +38,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("등록되지 않은 이메일 입니다. " + email));
         userInfo.login(passwordEncoder, email, password);
         userInfo.afterLoginSuccess();
+
         return userInfo;
     }
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Disease {
 
+    ADMIN       ("총괄",        "ADMIN"),
     LIVER_CA    ("간암",        "LIVER CANCER"),
     LIVER_DIS   ("간질환",      "LIVER DISEASE"),
     THYROID_CA  ("갑상선암",    "THYROID CANCER"),

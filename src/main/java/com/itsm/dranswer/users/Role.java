@@ -14,7 +14,11 @@ import lombok.Getter;
 @Getter
 public enum Role {
 
-  USER("ROLE_USER");
+  ANONYMOUS("ROLE_ANONYMOUS"),
+  USER("ROLE_USER"),
+  ADMIN("ROLE_ADMIN"),
+  MANAGER("ROLE_MANAGER"),
+  UPLOADER("ROLE_UPLOADER");
 
   private final String value;
 
@@ -22,14 +26,10 @@ public enum Role {
     this.value = value;
   }
 
-//  public String value() {
-//    return value;
-//  }
-
   public static Role of(String name) {
-    for (Role role : Role.values()) {
-      if (role.name().equalsIgnoreCase(name)) {
-        return role;
+    for (Role obj : Role.values()) {
+      if (obj.name().equalsIgnoreCase(name)) {
+        return obj;
       }
     }
     return null;

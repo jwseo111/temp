@@ -41,7 +41,7 @@ public class MainCtrl {
         String userName = "김영남";
         String inputPw = "dudghk113!";
 
-        JoinRequest request = new JoinRequest(userEmail, userName, inputPw);
+        JoinRequest request = new JoinRequest();
 
         UserInfo user = userService.join(request);
 

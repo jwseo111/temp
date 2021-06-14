@@ -1,0 +1,16 @@
+{
+  "agencyInfo": [
+    {
+      "agencyName" : "LAIF",
+      "ceoName" : "LAIF_CEO",
+      "blNumber" : "1111111111",
+      "agencyTypeCode" : "COMP"
+    },
+    {
+      "agencyName" : "분당서울대병원",
+      "ceoName" : "분당서울대병원_CEO",
+      "blNumber" : "2222222222",
+      "agencyTypeCode" : "HOSP"
+    }
+  ]
+}

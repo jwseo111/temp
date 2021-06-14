@@ -19,7 +19,7 @@ public class AgencyInfo extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 4221749900686609817L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(columnDefinition = "int COMMENT '기관번호'")
     private Integer agencySeq;
 

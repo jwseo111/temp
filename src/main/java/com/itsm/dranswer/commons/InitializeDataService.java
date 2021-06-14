@@ -1,5 +1,15 @@
 package com.itsm.dranswer.commons;
 
+/*
+ * @package : com.itsm.dranswer.commons
+ * @name : InitializeDataService.java
+ * @date : 2021-06-14 오후 6:13
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -32,7 +32,7 @@ public class UserInfo extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 3234070687816845610L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(columnDefinition = "bigint COMMENT '회원번호'")
     private Long userSeq;
 

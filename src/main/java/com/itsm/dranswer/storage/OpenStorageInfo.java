@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Entity
-public class PubStorageInfo extends BaseEntity implements Serializable {
+public class OpenStorageInfo extends BaseEntity implements Serializable {
     
     private static final long serialVersionUID = -269264650312946559L;
 
@@ -22,10 +22,10 @@ public class PubStorageInfo extends BaseEntity implements Serializable {
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     @Column(columnDefinition = "varchar(36) COMMENT '공개신청Id'")
-    private String reqPubId;
+    private String reqOpenId;
 
     @Column(columnDefinition = "varchar(100) COMMENT '공개데이터설명'")
-    private String publicDataDesc;
+    private String openDataDesc;
 
     @Column(columnDefinition = "varchar(100) COMMENT '저장소명'")
     private String bucketName;
@@ -43,7 +43,7 @@ public class PubStorageInfo extends BaseEntity implements Serializable {
 
     @Column(columnDefinition = "varchar(10) COMMENT '공개신청상태코드'")
     @Enumerated(EnumType.STRING)
-    private PubStorageStat pubStorageStatCode;
+    private OpenStorageStat openStorageStatCode;
 
     @Column(columnDefinition = "varchar(100) COMMENT '취소사유'")
     private String cancelReason;

@@ -37,5 +37,5 @@ public class BucketInfo extends BaseEntity implements Serializable {
     private List<ReqStorageInfo> reqStorageInfos = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bucketInfo")
-    private List<PubStorageInfo> pubStorageInfos = new ArrayList<>();
+    private List<OpenStorageInfo> openStorageInfos = new ArrayList<>();
 }

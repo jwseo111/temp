@@ -36,7 +36,13 @@ public class InitializeDataService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        initAgencyFromFile();
+
+        try {
+            initAgencyFromFile();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void initAgencyFromFile() throws IOException {

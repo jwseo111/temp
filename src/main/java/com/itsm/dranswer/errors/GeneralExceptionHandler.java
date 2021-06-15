@@ -118,8 +118,6 @@ public class GeneralExceptionHandler {
         LocalDateTime now = LocalDateTime.now();
         String errorMessage = "데이터 처리 중 오류가 발생 하였습니다.(관리자에게 문의하세요. 발생시각 : "+ now +")";
 
-        System.out.println("getRootCause==="+e.getRootCause().getClass().getName());
-
         if(e.getCause() instanceof org.hibernate.exception.ConstraintViolationException){
             org.hibernate.exception.ConstraintViolationException ex =
                     (org.hibernate.exception.ConstraintViolationException) e.getCause();

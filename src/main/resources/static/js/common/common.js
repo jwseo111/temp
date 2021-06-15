@@ -1,11 +1,11 @@
 var instance;
-window.onload = function(){
+window.addEventListener('load', function() {
     instance  = axios.create({
         baseURL: 'http://localhost:8080',
         headers: { 'X-Custom-Header': 'Custom' },
         timeout: 10000,
     });
-}
+});
 
 function post(tid, uri, param, callback){
     axios.post(uri, param)

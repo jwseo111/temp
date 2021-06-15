@@ -14,3 +14,34 @@
     border-radius: 5px;
     background-color: aqua;
 }
+
+.main-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.main-wrap{
+    width: 1280px;
+}
+
+.menus{
+    display: flex;
+}
+
+.menus .menu{
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.menus .menu .parent{
+
+}
+
+.menus .menu .children{
+    position: absolute;
+    left: 15px;
+    top: auto;
+    width: max-content;
+    cursor: pointer;
+}

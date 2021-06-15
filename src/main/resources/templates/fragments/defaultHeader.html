@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="headerFragment">
+    <script th:src="@{/js/fragments/defaultHeader.js}"></script>
+
+    <div id="headercontentswrap" >
+        <headercontents ref="headercontents"></headercontents>
+    </div>
+
+    <script type="text/x-template" id="header-template" >
+        <div class="menus">
+            <div v-for="(menu, key) in menus">
+                <div v-if="menu.use" class="menu" v-on:mouseover="hoverParent(menu, true)" v-on:mouseout="hoverParent(menu, false)">
+                    <div class="parent">{{menu.name}}</div>
+                    <div v-if="menu.children.length > 0" class="children" :style="menu.style">
+                        <div v-for="(child, key) in menu.children">
+                            <div v-if="child.use">
+                                <div v-on:click="onclickMenu(child)">{{child.name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+</div>
+</html>

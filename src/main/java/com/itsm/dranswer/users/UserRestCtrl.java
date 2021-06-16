@@ -9,6 +9,8 @@ package com.itsm.dranswer.users;
  * @modifyed :
  */
 
+import com.itsm.dranswer.config.LoginUser;
+import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.UnauthorizedException;
 import com.itsm.dranswer.security.Jwt;
 import com.itsm.dranswer.security.JwtAuthenticationToken;
@@ -79,6 +81,12 @@ public class UserRestCtrl {
         cookie.setMaxAge(Integer.MAX_VALUE);
 
         response.addCookie(cookie);
+    }
+
+    @GetMapping(value = "/user/check")
+    public ApiResult<LoginUserInfo> check(@LoginUser LoginUserInfo loginUserInfo){
+
+        return success(loginUserInfo);
     }
 
     @GetMapping(value = "/user/logout")

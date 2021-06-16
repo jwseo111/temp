@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="DOCTOR ANSWER">
+    <meta id="meta_title" property="og:title" content="DOCTOR ANSWER">
+    <meta id="meta_desc" property="og:description" content="">
+    <meta id="meta_image" property="og:image" content="/favicon.png">
+    <meta id="meta_url" property="og:url" content="//dranswer.io">
+
+    <script src="/external/vue/vue.min.js"></script>
+    <script src="/external/axios/axios-0.21.1.min.js"></script>
+
+    <th:block layout:fragment="css"></th:block>
+    <th:block layout:fragment="script"></th:block>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="main-wrap">
+            <th:block layout:fragment="contents"></th:block>
+        </div>
+    </div>
+
+</body>
+</html>

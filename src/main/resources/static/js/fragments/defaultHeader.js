@@ -1,4 +1,7 @@
-var appHeader;
+let appHeader;
+const HEADER_TID = {
+    CHECK: {value: 0, name: "check", code: "S"}
+};
 window.addEventListener('load', function() {
     appHeader = new Vue({
         el: '#headercontentswrap',
@@ -39,6 +42,14 @@ Vue.component('headercontents', {
                     ]
                 }
             ],
+            anonymousTopMenus:[
+                {name: "회원가입", uri:"/signup"},
+                {name: "로그인", uri:"/login"}
+            ],
+            authenticatedTopMenus:[
+                {name: "마이페이지", uri:"/my/management/storagepage"},
+                {name: "로그아웃", uri:"/logout"}
+            ],
             messages : "",
         };
     },
@@ -52,8 +63,8 @@ Vue.component('headercontents', {
                 menu.style.display = "none";
             }
         },
-        onclickMenu : function(child){
-            location.href = child.uri;
+        onclickMenu : function(menu){
+            location.href = menu.uri;
         }
     }
 });

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layouts/defaultLayout">
+      layout:decorator="layouts/emptyLayout">
 
     <th:block layout:fragment="css">
         <link rel="stylesheet" th:href="@{/css/common/common.css}" />
@@ -21,7 +21,7 @@
         </div>
 
         <script type="text/x-template" id="main-template" >
-        <div class="wrap" @keyup="onkeyupForm">
+        <div class="wrap login-wrap" @keyup="onkeyupForm">
             <div class="line">
                 <div><input type="email" v-model="login.email" placeholder="E-mail" autocomplete="off"></div>
             </div>
@@ -30,7 +30,7 @@
             </div>
             <div class="line">{{messages}}</div>
             <div class="line">
-                <div class="login-wrap">
+                <div class="login-btn-wrap">
                     <div class="btn login" @click="onclickLogin();">
                         LOGIN
                     </div>

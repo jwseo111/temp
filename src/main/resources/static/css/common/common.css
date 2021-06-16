@@ -1,18 +1,10 @@
+body{
+    margin: 0px;
+}
+
 .wrap .line{
     display: flex;
     justify-content: center;
-}
-
-.login-wrap{
-    padding: 10px 0;
-}
-.btn{
-    cursor: pointer;
-}
-.btn.login{
-    padding: 10px 20px;
-    border-radius: 5px;
-    background-color: aqua;
 }
 
 .main-wrapper{
@@ -21,27 +13,11 @@
 }
 
 .main-wrap{
-    width: 1280px;
+    width: 1200px;
 }
 
-.menus{
-    display: flex;
-}
-
-.menus .menu{
-    padding: 10px;
-    position: relative;
-    cursor: pointer;
-}
-
-.menus .menu .parent{
-
-}
-
-.menus .menu .children{
-    position: absolute;
-    left: 15px;
-    top: auto;
-    width: max-content;
-    cursor: pointer;
+.main-contents-wrap{
+    border: 1px solid #000000;
+    min-height: 500px;
+    padding: 10px 10px 240px 10px;
 }

@@ -1,0 +1,17 @@
+
+.login-wrap{
+    border: 1px solid #000000;
+    padding: 50px;
+}
+
+.login-btn-wrap{
+    padding: 10px 0;
+}
+.btn{
+    cursor: pointer;
+}
+.btn.login{
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: aqua;
+}

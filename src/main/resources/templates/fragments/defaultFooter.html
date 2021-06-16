@@ -4,5 +4,16 @@
 
 <div th:fragment="footerFragment">
     <script th:src="@{/js/fragments/defaultFooter.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/fragments/defaultFooter.css}" />
+
+    <div id="footercontentswrap">
+        <footercontents ref="footercontents"></footercontents>
+    </div>
+
+    <script type="text/x-template" id="footer-template" >
+        <div class="footer-wrapper">
+            여기는 푸터
+        </div>
+    </script>
 </div>
 </html>

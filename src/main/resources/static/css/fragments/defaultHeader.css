@@ -1,0 +1,59 @@
+
+.menus{
+    display: flex;
+    padding: 15px 10px;
+    border: 1px solid #000000;
+}
+
+.menus .menu{
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.menus .menu:hover{
+    font-weight: 600;
+}
+
+.menus .menu .parent{
+
+}
+
+.menus .menu .children{
+    position: absolute;
+    left: 5px;
+    top: auto;
+    width: max-content;
+    cursor: pointer;
+    background-color: #ffffff;
+    padding: 8px 10px;
+    border: 1px solid #000000;
+}
+
+.children .menu{
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.children .menu:hover{
+    font-weight: 600;
+}
+
+.top-menu-wrap{
+    border: 1px solid #000000;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.top-menu-wrap .top-menu{
+    display: flex;
+}
+
+.top-menu .menu{
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    padding: 6px 5px;
+}

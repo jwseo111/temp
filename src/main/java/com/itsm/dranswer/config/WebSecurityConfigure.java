@@ -129,6 +129,13 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/").permitAll()
                 .anyRequest().permitAll()
                 .and()
+            .logout()
+                .deleteCookies(Jwt.COOKIE_NAME)
+                .logoutSuccessUrl("/")
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//			    .logoutSuccessHandler(customLogoutSuccessHandler())
+                .permitAll()
+                .and()
             .formLogin()
                 .disable()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);

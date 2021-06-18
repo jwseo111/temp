@@ -3,6 +3,8 @@
 
     <logger name="org.apache.http" level="WARN"/>
     <logger name="com.amazonaws.auth.AWS4Signer" level="WARN"/>
+    <logger name="rg.hibernate.loader" level="WARN"/>
+    <logger name="o.h.engine.internal" level="WARN"/>
 
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>

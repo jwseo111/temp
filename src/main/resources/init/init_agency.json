@@ -11,6 +11,78 @@
       "ceoName" : "분당서울대병원_CEO",
       "blNumber" : "2222222222",
       "agencyTypeCode" : "HOSP"
+    },
+    {
+      "agencyName" : "업체3",
+      "ceoName" : "업체3_CEO",
+      "blNumber" : "3333333333",
+      "agencyTypeCode" : "COMP"
+    },
+    {
+      "agencyName" : "업체4",
+      "ceoName" : "업체4_CEO",
+      "blNumber" : "4444444444",
+      "agencyTypeCode" : "COMP"
+    },
+    {
+      "agencyName" : "업체5",
+      "ceoName" : "업체5_CEO",
+      "blNumber" : "5555555555",
+      "agencyTypeCode" : "COMP"
+    },
+    {
+      "agencyName" : "업체6",
+      "ceoName" : "업체6_CEO",
+      "blNumber" : "6666666666",
+      "agencyTypeCode" : "COMP"
+    },
+    {
+      "agencyName" : "업체7",
+      "ceoName" : "업체7_CEO",
+      "blNumber" : "7777777777",
+      "agencyTypeCode" : "COMP"
+    },
+    {
+      "agencyName" : "병원2",
+      "ceoName" : "병원2_CEO",
+      "blNumber" : "2222222220",
+      "agencyTypeCode" : "HOSP"
+    },
+    {
+      "agencyName" : "병원3",
+      "ceoName" : "병원3_CEO",
+      "blNumber" : "3333333330",
+      "agencyTypeCode" : "HOSP"
+    },
+    {
+      "agencyName" : "병원4",
+      "ceoName" : "병원4_CEO",
+      "blNumber" : "4444444440",
+      "agencyTypeCode" : "HOSP"
+    },
+    {
+      "agencyName" : "병원5",
+      "ceoName" : "병원5_CEO",
+      "blNumber" : "5555555550",
+      "agencyTypeCode" : "HOSP"
+    },
+    {
+      "agencyName" : "병원6",
+      "ceoName" : "병원6_CEO",
+      "blNumber" : "6666666660",
+      "agencyTypeCode" : "HOSP"
+    },
+    {
+      "agencyName" : "병원7",
+      "ceoName" : "병원7_CEO",
+      "blNumber" : "7777777770",
+      "agencyTypeCode" : "HOSP"
+    },
+    {
+      "agencyName" : "병원8",
+      "ceoName" : "병원8_CEO",
+      "blNumber" : "8888888880",
+      "agencyTypeCode" : "HOSP"
     }
   ]
 }

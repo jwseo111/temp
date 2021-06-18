@@ -42,6 +42,7 @@ Vue.component('maincontents', {
         },
         onclickLogin : function(){
             post(TID.LOGIN, "/login", this.login, this.callback);
+            // get(TID.LOGIN, "/agency/list", {page:0, size:100, agencyName:"", agencyTypeCode:"HOSP", sort:""}, this.callback);
         },
         onkeyupForm :function(e){
             if(e.keyCode == 13){

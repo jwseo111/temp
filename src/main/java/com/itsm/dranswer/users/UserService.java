@@ -25,11 +25,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Validated
 public class UserService {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    private final UserInfoRepo userInfoRepo;
 
     @Autowired
-    private UserInfoRepo userInfoRepo;
+    public UserService(PasswordEncoder passwordEncoder, UserInfoRepo userInfoRepo){
+        this.userInfoRepo = userInfoRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional
     public UserInfo login(String email, String password) {

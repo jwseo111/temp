@@ -39,14 +39,15 @@ public class UserRestCtrl {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private Jwt jwt;
+    private final Jwt jwt;
+
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserService userService;
+    public UserRestCtrl(Jwt jwt,  AuthenticationManager authenticationManager){
+        this.jwt = jwt;
+        this.authenticationManager = authenticationManager;
+    }
 
     @PostMapping(path = "/login")
     public ApiResult<LoginResult> login(

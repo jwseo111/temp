@@ -83,7 +83,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
      **/
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/webjars/**", "/static/**", "/templates/**", "/h2/**");
+        web.ignoring().antMatchers("/webjars/**", "/static/**", "/templates/**");
     }
 
     @Autowired

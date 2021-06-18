@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itsm.dranswer.users.AgencyInfo;
 import com.itsm.dranswer.users.AgencyInfoRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +28,11 @@ import java.util.stream.Collectors;
 @Service
 public class InitializeDataService implements CommandLineRunner {
 
-    @Autowired
-    private AgencyInfoRepo agencyInfoRepo;
+    private final AgencyInfoRepo agencyInfoRepo;
+
+    public InitializeDataService(AgencyInfoRepo agencyInfoRepo){
+        this.agencyInfoRepo = agencyInfoRepo;
+    }
 
     private final String FILE_INIT_AGENCY = "init/init_agency.json";
 
@@ -38,7 +40,7 @@ public class InitializeDataService implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         try {
-            initAgencyFromFile();
+//            initAgencyFromFile();
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -10,7 +10,6 @@ package com.itsm.dranswer.config;
  */
 
 import com.itsm.dranswer.config.web.SimplePageRequestHandlerMethodArgumentResolver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -21,18 +20,21 @@ import java.util.List;
 @Configuration
 public class WebMvcConfigure implements WebMvcConfigurer {
 
-  @Autowired
-  private LoginUserResolver loginUserResolver;
+    private final LoginUserResolver loginUserResolver;
 
-  @Bean
-  public SimplePageRequestHandlerMethodArgumentResolver simplePageRequestHandlerMethodArgumentResolver() {
-    return new SimplePageRequestHandlerMethodArgumentResolver();
-  }
+    public WebMvcConfigure(LoginUserResolver loginUserResolver) {
+        this.loginUserResolver = loginUserResolver;
+    }
 
-  @Override
-  public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-    argumentResolvers.add(simplePageRequestHandlerMethodArgumentResolver());
-    argumentResolvers.add(loginUserResolver);
-  }
+    @Bean
+    public SimplePageRequestHandlerMethodArgumentResolver simplePageRequestHandlerMethodArgumentResolver() {
+        return new SimplePageRequestHandlerMethodArgumentResolver();
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(simplePageRequestHandlerMethodArgumentResolver());
+        argumentResolvers.add(loginUserResolver);
+    }
 
 }

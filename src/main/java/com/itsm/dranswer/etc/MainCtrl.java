@@ -37,7 +37,7 @@ public class MainCtrl {
     @GetMapping(value = "/test")
     @ResponseBody
     public ApiResult<UserInfo> test(){
-        String userEmail = "kkhkykkk3@naver.com";
+        String userEmail = "kkhkykkk2@naver.com";
         String inputPw = "dudghk113!";
         String userRole = "ADMIN";
         Integer agencySeq = null;

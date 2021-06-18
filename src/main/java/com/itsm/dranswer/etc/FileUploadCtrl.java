@@ -19,8 +19,12 @@ import static com.itsm.dranswer.utils.ApiUtils.success;
 @RestController
 public class FileUploadCtrl {
 
-    @Autowired
     private CustomObjectStorage customObjectStorage;
+
+    @Autowired
+    public FileUploadCtrl(CustomObjectStorage customObjectStorage){
+        this.customObjectStorage = customObjectStorage;
+    }
 
     @PostMapping(path = "/etc/fileUpload")
     public ApiResult<FileUploadResponse> fileUpload(

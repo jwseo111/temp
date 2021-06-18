@@ -9,6 +9,7 @@ package com.itsm.dranswer.users;
  * @modifyed :
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itsm.dranswer.commons.BaseEntity;
 import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.security.Jwt;
@@ -49,6 +50,7 @@ public class UserInfo extends BaseEntity implements Serializable {
     @Column(columnDefinition = "int COMMENT '기관번호'")
     private Integer agencySeq;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agencySeq", referencedColumnName = "agencySeq", insertable = false, updatable = false)
     private AgencyInfo agencyInfo;

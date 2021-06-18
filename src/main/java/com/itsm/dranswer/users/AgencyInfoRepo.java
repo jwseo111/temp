@@ -10,10 +10,15 @@ package com.itsm.dranswer.users;
  * @modifyed :
  */
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AgencyInfoRepo extends JpaRepository<AgencyInfo, Integer> {
 
+    Page<AgencyInfo> findByAgencyTypeCodeAndAgencyNameContains(AgencyType agencyTypeCode, String agencyName, Pageable pageable);
+
+    Page<AgencyInfo> findByAgencyTypeCodeAndAgencyNameStartsWith(AgencyType agencyTypeCode, String agencyName, Pageable pageable);
 }

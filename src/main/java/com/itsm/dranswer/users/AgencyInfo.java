@@ -1,5 +1,6 @@
 package com.itsm.dranswer.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itsm.dranswer.commons.BaseEntity;
 import lombok.*;
 
@@ -36,6 +37,7 @@ public class AgencyInfo extends BaseEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private AgencyType agencyTypeCode;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "agencyInfo")
     private List<UserInfo> userInfos = new ArrayList<>();
 

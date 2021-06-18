@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.itsm.dranswer.utils.ApiUtils.success;
@@ -34,7 +35,9 @@ public class AgencyRestCtrl {
     }
 
     @GetMapping(value = "/agency/list")
-    public ApiResult<Page> getAgencyList(AgencyType agencyTypeCode, String agencyName, Pageable pageable){
+    public ApiResult<Page> getAgencyList(@RequestParam(required = false) AgencyType agencyTypeCode,
+                                         @RequestParam(required = false, defaultValue = "") String agencyName,
+                                         Pageable pageable){
 
         Page<AgencyInfoDto> pageAgency = agencyService.getAgencyList(agencyTypeCode, agencyName, pageable);
 

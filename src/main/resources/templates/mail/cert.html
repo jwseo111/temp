@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .dr-mail-content-wrapper{
+            display: flex;
+            justify-content: center;
+        }
+        .dr-mail-content-wrap{
+            padding: 40px 40px;
+            background-color: #669966;
+        }
+        .dr-mail-content{
+            padding: 40px 20px;
+            width: 500px;
+            background-color: #ffffff;
+        }
+        .dr-cert-wrap{
+            border: 2px solid #669966;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+        .dr-warning{
+            font-size: 13px;
+            color: #aa4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="dr-mail-content-wrapper">
+        <div class="dr-mail-content-wrap">
+            <div class="dr-mail-content">
+                <div style="font-size: 28px; font-weight: 600; margin-bottom: 5px;">안녕하세요, 회원님.</div>
+                <div style="font-size: 17px; margin-bottom: 25px;">닥터앤서 가입에 필요한 이메일의 검증을 위한 인증번호입니다.</div>
+                <div class="dr-cert-wrap">
+                    <div th:text="${certNumber}"></div>
+                </div>
+                <div class="dr-warning">
+                    ※ 인증번호를 요청하지 않았다면 다른 사람이 귀하의 계정을 사용하여 엑세스하려고 시도하는 것일 수 있습니다. 인증번호를 절대 타인과 공유하지 마시길 바랍니다.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

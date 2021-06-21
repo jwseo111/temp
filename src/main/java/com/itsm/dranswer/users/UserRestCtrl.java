@@ -22,15 +22,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import java.io.IOException;
 
 import static com.itsm.dranswer.utils.ApiUtils.success;
 
@@ -110,5 +110,13 @@ public class UserRestCtrl {
         UserInfoDto user = userService.join(request);
 
         return success(user);
+    }
+
+    @GetMapping(value = "/user/cert/mail")
+    public ApiResult<CertDto> certMail(@Valid CertDto certDto, String userEmail) throws MessagingException, IOException {
+
+        userService.sendCertMail(certDto);
+
+        return success(certDto);
     }
 }

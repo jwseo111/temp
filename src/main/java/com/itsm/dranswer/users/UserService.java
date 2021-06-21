@@ -9,13 +9,17 @@ package com.itsm.dranswer.users;
  * @modifyed :
  */
 
+import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -28,10 +32,13 @@ public class UserService {
 
     private final UserInfoRepo userInfoRepo;
 
+    private final CustomMailSender customMailSender;
+
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserInfoRepo userInfoRepo){
+    public UserService(PasswordEncoder passwordEncoder, UserInfoRepo userInfoRepo, CustomMailSender customMailSender){
         this.userInfoRepo = userInfoRepo;
         this.passwordEncoder = passwordEncoder;
+        this.customMailSender = customMailSender;
     }
 
     @Transactional
@@ -84,6 +91,18 @@ public class UserService {
     @Transactional
     public UserInfo saveUserInfo(UserInfo userInfo){
         return userInfoRepo.save(userInfo);
+    }
+
+    public void sendCertMail(CertDto certDto) throws MessagingException, IOException {
+
+        String template = "mail/cert";
+        String subject = "[닥터앤서]이메일 인증을 위한 인증번호가 발급되었습니다.";
+        String[] to = {certDto.getUserEmail()};
+        Context ctx = new Context();
+        ctx.setVariable("certNumber", certDto.getCertNumber());
+
+
+        customMailSender.sendMail(template, subject, to, ctx);
     }
 
 }

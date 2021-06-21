@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/popupLayout">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/user/popAgencySearch.js}"></script>
+    <script>
+        const agencyTypeCode = "[[${param.agencyTypeCode}]]";
+    </script>
+</th:block>
+
+<div layout:fragment="contents">
+    <div id="maincontentswrap" >
+        <maincontents ref="maincontents"></maincontents>
+    </div>
+    <script type="text/x-template" id="main-template" >
+        <div class="popup-contents-wrap" >
+            <div class="popup-title">기관 검색</div>
+            <div class="popup-search-wrap">
+                <div class="line">
+                    <div class="cond">
+                        <div class="title">병원/기관명</div>
+                        <div class="content">
+                            <input type="text" v-model="cond.agencyName" @keyup="onKeyup">
+                        </div>
+                    </div>
+                    <div class="btn-wrap">
+                        <button v-on:click="onclickSearch">검색</button>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-content">
+                <table class="result-table">
+                    <thead>
+                    <tr>
+                        <th>병원/기관명</th>
+                        <th>선택</th>
+                    </tr>
+                    </thead>
+                    <tbody v-if="agencyList.length == 0">
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            no data.
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-if="agencyList.length > 0">
+                    <tr v-for="(agency, idx) in agencyList">
+                        <td class="center">{{agency.agencyName}}</td>
+                        <td class="center">
+                            <button class="btn-sel" v-on:click="selectAgency(agency)">선택</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="page-navi-wrap">
+                <div v-on:click="onclickPage(prev)"><</div>
+                <div v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">{{page}}</div>
+                <div v-on:click="onclickPage(next)">></div>
+            </div>
+        </div>
+    </script>
+
+    <script>
+    </script>
+</div>
+</html>

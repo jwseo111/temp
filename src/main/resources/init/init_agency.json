@@ -1,88 +1,298 @@
 {
   "agencyInfo": [
     {
-      "agencyName" : "LAIF",
-      "ceoName" : "LAIF_CEO",
-      "blNumber" : "1111111111",
-      "agencyTypeCode" : "COMP"
+      "agencyName": "가천대길병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "이태훈",
+      "blNumber": 1398200376
     },
     {
-      "agencyName" : "분당서울대병원",
-      "ceoName" : "분당서울대병원_CEO",
-      "blNumber" : "2222222222",
-      "agencyTypeCode" : "HOSP"
+      "agencyName": "가톨릭대학교서울성모병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김용식",
+      "blNumber": 1148200213
     },
     {
-      "agencyName" : "업체3",
-      "ceoName" : "업체3_CEO",
-      "blNumber" : "3333333333",
-      "agencyTypeCode" : "COMP"
+      "agencyName": "건국대학교병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "황대용",
+      "blNumber": 2078202115
     },
     {
-      "agencyName" : "업체4",
-      "ceoName" : "업체4_CEO",
-      "blNumber" : "4444444444",
-      "agencyTypeCode" : "COMP"
+      "agencyName": "경북대학교병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김용림",
+      "blNumber": 5018206653
     },
     {
-      "agencyName" : "업체5",
-      "ceoName" : "업체5_CEO",
-      "blNumber" : "5555555555",
-      "agencyTypeCode" : "COMP"
+      "agencyName": "경희의료원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김기택",
+      "blNumber": 2058202424
     },
     {
-      "agencyName" : "업체6",
-      "ceoName" : "업체6_CEO",
-      "blNumber" : "6666666666",
-      "agencyTypeCode" : "COMP"
+      "agencyName": "계명대학교동산의료원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "이세엽",
+      "blNumber": 5018203466
     },
     {
-      "agencyName" : "업체7",
-      "ceoName" : "업체7_CEO",
-      "blNumber" : "7777777777",
-      "agencyTypeCode" : "COMP"
+      "agencyName": "고대안산병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김운영",
+      "blNumber": 1348200522
     },
     {
-      "agencyName" : "병원2",
-      "ceoName" : "병원2_CEO",
-      "blNumber" : "2222222220",
-      "agencyTypeCode" : "HOSP"
+      "agencyName": "고려대학교 안암병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "박종훈",
+      "blNumber": 2098204249
     },
     {
-      "agencyName" : "병원3",
-      "ceoName" : "병원3_CEO",
-      "blNumber" : "3333333330",
-      "agencyTypeCode" : "HOSP"
+      "agencyName": "고려대학교구로병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "한승규",
+      "blNumber": 1138201994
     },
     {
-      "agencyName" : "병원4",
-      "ceoName" : "병원4_CEO",
-      "blNumber" : "4444444440",
-      "agencyTypeCode" : "HOSP"
+      "agencyName": "국립암센터",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "서홍관",
+      "blNumber": 1288206609
     },
     {
-      "agencyName" : "병원5",
-      "ceoName" : "병원5_CEO",
-      "blNumber" : "5555555550",
-      "agencyTypeCode" : "HOSP"
+      "agencyName": "대전을지대학교병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "박준영",
+      "blNumber": 3058203359
     },
     {
-      "agencyName" : "병원6",
-      "ceoName" : "병원6_CEO",
-      "blNumber" : "6666666660",
-      "agencyTypeCode" : "HOSP"
+      "agencyName": "부산대병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "이정주",
+      "blNumber": 6038204892
     },
     {
-      "agencyName" : "병원7",
-      "ceoName" : "병원7_CEO",
-      "blNumber" : "7777777770",
-      "agencyTypeCode" : "HOSP"
+      "agencyName": "부천성모병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "권순석",
+      "blNumber": 1308202173
     },
     {
-      "agencyName" : "병원8",
-      "ceoName" : "병원8_CEO",
-      "blNumber" : "8888888880",
-      "agencyTypeCode" : "HOSP"
+      "agencyName": "분당서울대학교병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "백남종",
+      "blNumber": 1298206989
+    },
+    {
+      "agencyName": "삼성서울병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "권오정",
+      "blNumber": 2138205096
+    },
+    {
+      "agencyName": "서울대학교병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김연수",
+      "blNumber": 2088201633
+    },
+    {
+      "agencyName": "서울아산병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "박승일",
+      "blNumber": 2198200046
+    },
+    {
+      "agencyName": "서울특별시보라매병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김병관",
+      "blNumber": 1188300186
+    },
+    {
+      "agencyName": "신촌세브란스병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "윤동섭",
+      "blNumber": 1108200472
+    },
+    {
+      "agencyName": "아주대학교의료원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "박해심",
+      "blNumber": 1248206965
+    },
+    {
+      "agencyName": "양산부산대학교병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김대성",
+      "blNumber": 6218210067
+    },
+    {
+      "agencyName": "연세대학교 산학협력단",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "이충용",
+      "blNumber": 1108210500
+    },
+    {
+      "agencyName": "영남대학교의료원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김종연",
+      "blNumber": 5148202221
+    },
+    {
+      "agencyName": "이대목동병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "유경하",
+      "blNumber": 1178201074
+    },
+    {
+      "agencyName": "인하대학교병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "김영모",
+      "blNumber": 1218207529
+    },
+    {
+      "agencyName": "일산백병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "송한정",
+      "blNumber": 6158206286
+    },
+    {
+      "agencyName": "전남대학교병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "안영근",
+      "blNumber": 4088208124
+    },
+    {
+      "agencyName": "청주성모병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "반영억",
+      "blNumber": 3018209759
+    },
+    {
+      "agencyName": "충북대병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "최영석",
+      "blNumber": 3158203375
+    },
+    {
+      "agencyName": "한림대성심병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "송창근",
+      "blNumber": 2218210284
+    },
+    {
+      "agencyName": "화순전남대병원",
+      "agencyTypeCode": "HOSP",
+      "ceoName": "신명근",
+      "blNumber": 4088213350
+    },
+    {
+      "agencyName": "주식회사 뉴냅스",
+      "agencyTypeCode": "COMP",
+      "ceoName": "강동화",
+      "blNumber": 2228601020
+    },
+    {
+      "agencyName": "㈜ 딥노이드",
+      "agencyTypeCode": "COMP",
+      "ceoName": "최우식",
+      "blNumber": 1078705990
+    },
+    {
+      "agencyName": "주식회사 라이프시맨틱스",
+      "agencyTypeCode": "COMP",
+      "ceoName": "송승재",
+      "blNumber": 1208788602
+    },
+    {
+      "agencyName": "메디컬아이피",
+      "agencyTypeCode": "COMP",
+      "ceoName": "박상준",
+      "blNumber": 4068104085
+    },
+    {
+      "agencyName": "모니터코퍼레이션 주식회사",
+      "agencyTypeCode": "COMP",
+      "ceoName": "이경준",
+      "blNumber": 2458701001
+    },
+    {
+      "agencyName": "㈜ 비주얼터미놀로지",
+      "agencyTypeCode": "COMP",
+      "ceoName": "최병관",
+      "blNumber": 2478701287
+    },
+    {
+      "agencyName": "㈜ 비트컴퓨터",
+      "agencyTypeCode": "COMP",
+      "ceoName": "조현정 외 1명(전진옥)",
+      "blNumber": 2208129726
+    },
+    {
+      "agencyName": "주식회사 아크릴",
+      "agencyTypeCode": "COMP",
+      "ceoName": "박외진",
+      "blNumber": 2148874981
+    },
+    {
+      "agencyName": "주식회사 에프에스",
+      "agencyTypeCode": "COMP",
+      "ceoName": "김미화",
+      "blNumber": 3148602779
+    },
+    {
+      "agencyName": "주식회사 유니아이",
+      "agencyTypeCode": "COMP",
+      "ceoName": "백승환",
+      "blNumber": 2698701967
+    },
+    {
+      "agencyName": "이지케어텍㈜",
+      "agencyTypeCode": "COMP",
+      "ceoName": "위원량",
+      "blNumber": 1018167322
+    },
+    {
+      "agencyName": "주식회사 인피니트헬스케어",
+      "agencyTypeCode": "COMP",
+      "ceoName": "홍기태 외 1명(김동욱)",
+      "blNumber": 1208646702
+    },
+    {
+      "agencyName": "주식회사 케일헬스케어",
+      "agencyTypeCode": "COMP",
+      "ceoName": "강훈",
+      "blNumber": 7048801531
+    },
+    {
+      "agencyName": "㈜ 코아아이티",
+      "agencyTypeCode": "COMP",
+      "ceoName": "신동용",
+      "blNumber": 3018616490
+    },
+    {
+      "agencyName": "주식회사 플렌잇헬스케어",
+      "agencyTypeCode": "COMP",
+      "ceoName": "정성일",
+      "blNumber": 4888801696
+    },
+    {
+      "agencyName": "주식회사 피씨티",
+      "agencyTypeCode": "COMP",
+      "ceoName": "정정일",
+      "blNumber": 1448130161
+    },
+    {
+      "agencyName": "(학) 한양학원",
+      "agencyTypeCode": "COMP",
+      "ceoName": "김종량",
+      "blNumber": 2068200040
+    },
+    {
+      "agencyName": "주식회사 휴니버스글로벌",
+      "agencyTypeCode": "COMP",
+      "ceoName": "이상헌",
+      "blNumber": 7528601410
     }
   ]
 }

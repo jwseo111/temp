@@ -2,6 +2,18 @@ body{
     margin: 0px;
 }
 
+.left{
+    text-align: left;
+}
+
+.right{
+    text-align: right;
+}
+
+.center{
+    text-align: center;
+}
+
 .wrap .line{
     display: flex;
     justify-content: center;
@@ -20,4 +32,90 @@ body{
     border: 1px solid #000000;
     min-height: 500px;
     padding: 10px 10px 240px 10px;
+}
+
+.popup-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.popup-contents-wrap{
+    border: 1px solid #000000;
+    min-height: 200px;
+    padding: 20px 40px 20px 40px;
+}
+
+.popup-title{
+    font-size: 20px;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+.popup-search-wrap{
+    padding: 5px;
+}
+
+.popup-search-wrap .line{
+    display: flex;
+    justify-content: space-between;
+}
+
+.popup-search-wrap .line .cond{
+    display: flex;
+    justify-content: space-between;
+}
+
+.popup-search-wrap .line .cond .title{
+    font-size: 12px;
+    padding: 5px 5px 0 0;
+}
+
+.popup-search-wrap .line .cond .content{
+
+}
+
+.popup-search-wrap .line .cond .content input{
+    width: 100px;
+}
+
+.popup-search-wrap .btn-wrap{
+    padding: 1px 0 0 5px;
+}
+
+.popup-search-wrap .btn-wrap button{
+    font-size: 12px;
+}
+
+.popup-contents-wrap .popup-content{
+    padding: 15px 0;
+}
+
+.popup-content .result-table{
+    width: 100%;
+    font-size: 13px;
+    border-spacing: 0;
+}
+
+.popup-content .result-table th{
+    background-color: #dddddd;
+    padding: 3px 10px;
+    border: 1px solid #aaaaaa;
+}
+.popup-content .result-table td{
+    padding: 3px 10px;
+    border: 1px solid #aaaaaa;
+}
+
+.popup-content .result-table td .btn-sel{
+    font-size: 12px;
+}
+
+.page-navi-wrap{
+    display: flex;
+    justify-content: center;
+}
+
+.page-navi-wrap div{
+    cursor: pointer;
+    padding: 0 5px;
 }

@@ -1,24 +1,21 @@
 package com.itsm.dranswer.etc;
 
 import com.amazonaws.services.s3.model.Bucket;
+import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
-import com.itsm.dranswer.security.Jwt;
-import com.itsm.dranswer.users.JoinRequest;
-import com.itsm.dranswer.users.UserInfo;
-import com.itsm.dranswer.users.UserInfoDto;
 import com.itsm.dranswer.users.UserService;
 import com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.context.Context;
 
-import javax.servlet.http.Cookie;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 
 import static com.itsm.dranswer.utils.ApiUtils.success;
@@ -34,66 +31,8 @@ public class MainCtrl {
     @Autowired
     private CustomObjectStorage customObjectStorage;
 
-    @GetMapping(value = "/test")
-    @ResponseBody
-    public ApiResult<UserInfo> test(){
-        String userEmail = "kkhkykkk2@naver.com";
-        String inputPw = "dudghk113!";
-        String userRole = "ADMIN";
-        Integer agencySeq = null;
-        String diseaseCode = "ADMIN";
-        String userName = "김영남";
-        String userPhoneNumber = "01087094244";
-        String diseaseManagerYn = "N";
-        String nCloudId = null;
-        String nCloudAccessKey = null;
-        String nCloudSecretKey = null;
-        String joinStatCode = "REQUEST";
-        Long parentUserSeq = null;
-
-        JoinRequest request = new JoinRequest(userEmail, inputPw, userRole,
-                agencySeq, diseaseCode, userName, userPhoneNumber,
-                diseaseManagerYn, nCloudId, nCloudAccessKey,
-                nCloudSecretKey, joinStatCode, parentUserSeq);
-
-        UserInfo user = userService.join(request);
-
-        return success(user);
-    }
-
-    @Secured({"ROLE_ADMIN"})
-    @GetMapping(value = "/test2")
-    @ResponseBody
-    public ApiResult<UserInfoDto> test2(){
-
-        UserInfoDto user = new UserInfoDto();
-
-        return success(user);
-    }
-
-    @Secured({"ROLE_USER"})
-    @GetMapping(value = "/test3")
-    @ResponseBody
-    public ApiResult<UserInfoDto> test3(){
-
-        UserInfoDto user = new UserInfoDto();
-
-        return success(user);
-    }
-
-    @GetMapping(value = "/test4")
-    @ResponseBody
-    public ApiResult<UserInfoDto> test4(HttpServletRequest request){
-
-        String token = Arrays.stream(request.getCookies())
-                .filter(c -> Jwt.COOKIE_NAME.equals(c.getName()))
-                .findFirst().map(Cookie::getValue)
-                .orElse("dummy");
-
-        UserInfoDto user = new UserInfoDto();
-
-        return success(user);
-    }
+    @Autowired
+    private CustomMailSender customMailSender;
 
     @GetMapping(value = "/listBuckets")
     @ResponseBody
@@ -111,7 +50,16 @@ public class MainCtrl {
 
     @GetMapping("memory-status")
     @ResponseBody
-    public ApiResult<MemoryStats> getMemoryStatistics() {
+    public ApiResult<MemoryStats> getMemoryStatistics() throws MessagingException, IOException {
+
+        String template = "mail/mailtest";
+        String subject = "테스트 이메일 전송";
+        String[] to = {"bsmyeong@itsmart.co.kr", "com.yn.kim@gmail.com"};
+        Context ctx = new Context();
+        ctx.setVariable("test", "이메일 템플릿 테스트 입니다");
+
+        customMailSender.sendMail(template, subject, to, ctx);
+
         MemoryStats stats = new MemoryStats();
         stats.setHeapSize(Runtime.getRuntime().totalMemory());
         stats.setHeapMaxSize(Runtime.getRuntime().maxMemory());

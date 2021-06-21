@@ -43,10 +43,13 @@ public class UserRestCtrl {
 
     private final AuthenticationManager authenticationManager;
 
+    private final UserService userService;
+
     @Autowired
-    public UserRestCtrl(Jwt jwt,  AuthenticationManager authenticationManager){
+    public UserRestCtrl(Jwt jwt,  AuthenticationManager authenticationManager, UserService userService){
         this.jwt = jwt;
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @PostMapping(path = "/login")
@@ -99,5 +102,13 @@ public class UserRestCtrl {
         res.addCookie(cookie);
 
         return success("logout");
+    }
+
+    @GetMapping(value = "/user/join")
+    public ApiResult<UserInfoDto> join(@Valid JoinRequest request){
+
+        UserInfoDto user = userService.join(request);
+
+        return success(user);
     }
 }

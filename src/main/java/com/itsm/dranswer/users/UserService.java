@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -65,12 +64,10 @@ public class UserService {
     }
 
 
-    public UserInfo join(
-            @Valid
+    public UserInfoDto join(
             JoinRequest request) {
-
         UserInfo userInfo = new UserInfo(request, passwordEncoder);
-        return this.saveUserInfo(userInfo);
+        return new UserInfoDto(this.saveUserInfo(userInfo));
     }
 
     /**

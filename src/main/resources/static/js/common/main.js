@@ -1,6 +1,6 @@
-var appMain;
-var TID = {
-    MAIN : {value : 0, name : "main", code : "S"}
+let appMain;
+const TID = {
+    MAIN: {value: 0, name: "main", code: "S"}
 };
 window.onload = function(){
     appMain = new Vue({

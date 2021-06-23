@@ -12,9 +12,35 @@ package com.itsm.dranswer.users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserInfoRepo extends JpaRepository<UserInfo, Long> {
+
+    /**
+     * 
+     * @methodName : findByUserEmail
+     * @date : 2021-06-23 오후 3:21
+     * @author : xeroman.k 
+     * @param userEmail
+     * @return : java.util.Optional<com.itsm.dranswer.users.UserInfo>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     Optional<UserInfo> findByUserEmail(String userEmail);
+
+    /**
+     * 
+     * @methodName : findByUserPhoneNumber
+     * @date : 2021-06-23 오후 3:21
+     * @author : xeroman.k 
+     * @param userPhoneNumber
+     * @return : java.util.List<com.itsm.dranswer.users.UserInfo>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    List<UserInfo> findByUserPhoneNumber(String userPhoneNumber);
 }

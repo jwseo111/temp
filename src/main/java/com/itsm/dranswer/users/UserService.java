@@ -20,7 +20,9 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -70,7 +72,17 @@ public class UserService {
         return userInfoRepo.findByUserEmail(email);
     }
 
-
+    /**
+     * 
+     * @methodName : join
+     * @date : 2021-06-23 오후 3:21
+     * @author : xeroman.k 
+     * @param request
+     * @return : com.itsm.dranswer.users.UserInfoDto
+     * @throws 
+     * @modifyed :
+     *
+    **/
     public UserInfoDto join(
             JoinRequest request) {
         UserInfo userInfo = new UserInfo(request, passwordEncoder);
@@ -93,6 +105,17 @@ public class UserService {
         return userInfoRepo.save(userInfo);
     }
 
+    /**
+     * 
+     * @methodName : sendCertMail
+     * @date : 2021-06-23 오후 3:21
+     * @author : xeroman.k 
+     * @param certDto
+     * @return : void
+     * @throws 
+     * @modifyed :
+     *
+    **/
     public void sendCertMail(CertDto certDto) throws MessagingException, IOException {
 
         String template = "mail/cert";
@@ -105,5 +128,41 @@ public class UserService {
         customMailSender.sendMail(template, subject, to, ctx);
     }
 
+    /**
+     * 
+     * @methodName : findByPhoneNumber
+     * @date : 2021-06-23 오후 3:21
+     * @author : xeroman.k 
+     * @param userInfoDto
+     * @return : java.util.List<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public List<UserInfoDto> findByPhoneNumber(UserInfoDto userInfoDto) {
+
+        List<UserInfo> userInfos = userInfoRepo.findByUserPhoneNumber(userInfoDto.getUserPhoneNumber());
+        return userInfos.stream().map(UserInfoDto::new).collect(Collectors.toList());
+    }
+
+    /**
+     * 
+     * @methodName : changePassword
+     * @date : 2021-06-23 오후 3:20
+     * @author : xeroman.k 
+     * @param userInfoDto
+     * @return : com.itsm.dranswer.users.UserInfoDto
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public UserInfoDto changePassword(UserInfoDto userInfoDto) {
+        
+        UserInfo userInfo = userInfoRepo.findByUserEmail(userInfoDto.getUserEmail())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일 입니다."));
+
+        userInfo.setPw(passwordEncoder, userInfoDto.getInputPw(), userInfoDto.getUserEmail());
+        return new UserInfoDto(userInfo);
+    }
 }
 

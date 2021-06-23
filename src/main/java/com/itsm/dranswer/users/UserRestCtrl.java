@@ -22,15 +22,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 import java.io.IOException;
+import java.util.List;
 
 import static com.itsm.dranswer.utils.ApiUtils.success;
 
@@ -45,6 +48,19 @@ public class UserRestCtrl {
 
     private final UserService userService;
 
+    /**
+     * 
+     * @methodName : UserRestCtrl
+     * @date : 2021-06-23 오후 2:27
+     * @author : xeroman.k 
+ * @param jwt
+ * @param authenticationManager
+ * @param userService
+     * @return : 
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @Autowired
     public UserRestCtrl(Jwt jwt,  AuthenticationManager authenticationManager, UserService userService){
         this.jwt = jwt;
@@ -52,6 +68,19 @@ public class UserRestCtrl {
         this.userService = userService;
     }
 
+    /**
+     * 
+     * @methodName : login
+     * @date : 2021-06-23 오후 2:24
+     * @author : xeroman.k 
+     * @param request
+     * @param session
+     * @param response
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.LoginResult>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @PostMapping(path = "/login")
     public ApiResult<LoginResult> login(
             @Valid @RequestBody LoginRequest request, HttpSession session,
@@ -78,6 +107,18 @@ public class UserRestCtrl {
         }
     }
 
+    /**
+     * 
+     * @methodName : setTokenInCookie
+     * @date : 2021-06-23 오후 2:24
+     * @author : xeroman.k 
+     * @param response
+     * @param token
+     * @return : void
+     * @throws 
+     * @modifyed :
+     *
+    **/
     private void setTokenInCookie(HttpServletResponse response,
                                   String token){
         Cookie cookie = new Cookie(Jwt.COOKIE_NAME, token);
@@ -87,12 +128,34 @@ public class UserRestCtrl {
         response.addCookie(cookie);
     }
 
+    /**
+     * 
+     * @methodName : check
+     * @date : 2021-06-23 오후 2:24
+     * @author : xeroman.k 
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.config.LoginUserInfo>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/user/check")
     public ApiResult<LoginUserInfo> check(@LoginUser LoginUserInfo loginUserInfo){
 
         return success(loginUserInfo);
     }
 
+    /**
+     * 
+     * @methodName : logout
+     * @date : 2021-06-23 오후 2:24
+     * @author : xeroman.k 
+     * @param res
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<java.lang.String>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/user/logout")
     public ApiResult<String> logout(HttpServletResponse res) {
         Cookie cookie = new Cookie(Jwt.COOKIE_NAME, "");
@@ -104,7 +167,18 @@ public class UserRestCtrl {
         return success("logout");
     }
 
-    @GetMapping(value = "/user/join")
+    /**
+     * 회원가입처리
+     * @methodName : join
+     * @date : 2021-06-23 오후 2:05
+     * @author : xeroman.k 
+     * @param request
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/user/join")
     public ApiResult<UserInfoDto> join(@Valid JoinRequest request){
 
         UserInfoDto user = userService.join(request);
@@ -112,11 +186,55 @@ public class UserRestCtrl {
         return success(user);
     }
 
-    @GetMapping(value = "/user/cert/mail")
-    public ApiResult<CertDto> certMail(@Valid CertDto certDto, String userEmail) throws MessagingException, IOException {
+    /**
+     * 인증메일 발송
+     * @methodName : certMail
+     * @date : 2021-06-23 오후 2:23
+     * @author : xeroman.k 
+     * @param certDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.CertDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/user/cert/mail")
+    public ApiResult<CertDto> certMail(@Valid CertDto certDto) throws MessagingException, IOException {
 
         userService.sendCertMail(certDto);
 
         return success(certDto);
+    }
+
+    /**
+     * 사용자 연락처로 이메일 리스트를 조회
+     * @methodName : findMail
+     * @date : 2021-06-23 오후 2:23
+     * @author : xeroman.k 
+     * @param userInfoDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/user/find/mail")
+    public ApiResult<List<UserInfoDto>> findMail(@Valid UserInfoDto userInfoDto) throws MessagingException, IOException {
+        return success(userService.findByPhoneNumber(userInfoDto));
+    }
+
+    /**
+     * 비밀번호 변경처리
+     * @methodName : changePw
+     * @date : 2021-06-23 오후 2:24
+     * @author : xeroman.k 
+     * @param userInfoDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/user/change/pw")
+    public ApiResult<UserInfoDto> changePw(@Valid UserInfoDto userInfoDto) throws MessagingException, IOException {
+
+        return success(userService.changePassword(userInfoDto));
     }
 }

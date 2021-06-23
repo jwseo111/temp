@@ -1,5 +1,13 @@
 package com.itsm.dranswer.storage;
 
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Getter
 public enum ReqStorageStat {
 
     S_REQ("저장신청"),
@@ -25,6 +33,22 @@ public enum ReqStorageStat {
             }
         }
         return null;
+    }
+
+    public static List<Map<String, String>> codes(){
+
+        List<Map<String, String>> codes = new ArrayList<>();
+
+        for (ReqStorageStat obj : ReqStorageStat.values()) {
+            Map<String, String> map = new HashMap<>();
+
+            map.put("name", obj.name());
+            map.put("desc", obj.getDesc());
+
+            codes.add(map);
+        }
+
+        return codes;
     }
 
 }

@@ -1,8 +1,15 @@
 package com.itsm.dranswer.commons;
 
 import lombok.Getter;
+import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter
+@ToString
 public enum Disease {
 
     ADMIN       ("총괄",        "ADMIN"),
@@ -36,4 +43,22 @@ public enum Disease {
         }
         return null;
     }
+
+    public static List<Map<String, String>> codes(){
+
+        List<Map<String, String>> codes = new ArrayList<>();
+
+        for (Disease obj : Disease.values()) {
+            Map<String, String> map = new HashMap<>();
+
+            map.put("name", obj.name());
+            map.put("desc", obj.getDesc());
+            map.put("descEng", obj.getDescEng());
+
+            codes.add(map);
+        }
+
+        return codes;
+    }
+
 }

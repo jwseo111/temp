@@ -94,7 +94,7 @@ public class UserInfo extends BaseEntity implements Serializable {
     public UserInfo(JoinRequest request, PasswordEncoder passwordEncoder){
 
         this.userEmail = request.getUserEmail();
-        this.loginPw = passwordEncoder.encode(request.getInputPw() + this.userEmail);
+        setPw(passwordEncoder, request.getInputPw(), this.userEmail);
         this.userRole = Role.of(request.getUserRole());
         this.agencySeq = request.getAgencySeq();
         this.diseaseCode = Disease.of(request.getDiseaseCode());
@@ -108,6 +108,10 @@ public class UserInfo extends BaseEntity implements Serializable {
         this.parentUserSeq = request.getParentUserSeq();
 
         this.loginCount = 0L;
+    }
+
+    public void setPw(PasswordEncoder passwordEncoder, String pw, String email){
+        this.loginPw = passwordEncoder.encode(pw + email);
     }
 
     public String newJwt(Jwt jwt, String[] roles) {

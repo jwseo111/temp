@@ -35,7 +35,7 @@ public class AgencyRestCtrl {
     }
 
     @GetMapping(value = "/agency/list")
-    public ApiResult<Page> getAgencyList(@RequestParam(required = false) AgencyType agencyTypeCode,
+    public ApiResult<Page<AgencyInfoDto>> getAgencyList(@RequestParam(required = false) AgencyType agencyTypeCode,
                                          @RequestParam(required = false, defaultValue = "") String agencyName,
                                          Pageable pageable){
 

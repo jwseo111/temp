@@ -10,6 +10,7 @@ package com.itsm.dranswer.users;
  */
 
 import com.itsm.dranswer.config.CustomMailSender;
+import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -162,7 +163,34 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일 입니다."));
 
         userInfo.setPw(passwordEncoder, userInfoDto.getInputPw(), userInfoDto.getUserEmail());
-        return new UserInfoDto(userInfo);
+        return userInfo.convertDto();
+    }
+
+    /**
+     *
+     * @methodName : getOriginUser
+     * @date : 2021-06-23 오후 6:12
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.users.UserInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public UserInfoDto getOriginUser(LoginUserInfo loginUserInfo) {
+
+        UserInfo userInfo = userInfoRepo.findById(loginUserInfo.getUserSeq()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원정보 입니다."));
+
+        Long parentSeq = userInfo.getParentUserSeq();
+
+        if(parentSeq == null){
+            return userInfo.convertDto();
+        }else{
+            return userInfoRepo.findById(parentSeq).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원정보 입니다.")).convertDto();
+        }
+
+
+
     }
 }
 

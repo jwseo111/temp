@@ -237,4 +237,23 @@ public class UserRestCtrl {
 
         return success(userService.changePassword(userInfoDto));
     }
+
+    /**
+     * 상위 회원 객체를 리턴, 상위회원이 없을경우 자신을 리턴
+     * @methodName : originUserSeq
+     * @date : 2021-06-23 오후 6:14
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @GetMapping(value = "/user/origin/seq")
+    public ApiResult<UserInfoDto> originUserSeq(@LoginUser LoginUserInfo loginUserInfo) throws MessagingException, IOException {
+
+        UserInfoDto parent = userService.getOriginUser(loginUserInfo);
+
+        return success(parent);
+    }
 }

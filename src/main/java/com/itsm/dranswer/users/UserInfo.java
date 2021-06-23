@@ -129,4 +129,8 @@ public class UserInfo extends BaseEntity implements Serializable {
         loginCount++;
         lastLoginAt = now();
     }
+
+    public UserInfoDto convertDto() {
+        return new UserInfoDto(this);
+    }
 }

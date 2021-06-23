@@ -1,7 +1,17 @@
+
+/*
+ * @name : popAgencySearch.js
+ * @date : 2021-06-23 오후 1:05
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 let appMain;
 const TID = {
     SEARCH: {value: 0, name: "search", code: "S"}
 };
+
 window.onload = function () {
     appMain = new Vue({
         el: '#maincontentswrap',

@@ -1,4 +1,15 @@
-var instance;
+
+
+/*
+ * @name : common.js
+ * @date : 2021-06-23 오후 1:12
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
+
+let instance;
 window.addEventListener('load', function() {
     instance  = axios.create({
         baseURL: 'http://localhost:8080',
@@ -8,6 +19,7 @@ window.addEventListener('load', function() {
 });
 
 function get(tid, uri, params, callback){
+    
     axios.get(uri, {
         params:params
     })

@@ -31,6 +31,7 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
                 .from(reqStorageInfo)
                 .innerJoin(reqStorageInfo.diseaseManagerUserInfo, userInfo)
                 .where(reqStorageInfo.dataName.contains(dataName))
+                .orderBy(reqStorageInfo.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 

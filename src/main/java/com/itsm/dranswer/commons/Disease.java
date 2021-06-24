@@ -1,5 +1,6 @@
 package com.itsm.dranswer.commons;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @Getter
 @ToString
 public enum Disease {

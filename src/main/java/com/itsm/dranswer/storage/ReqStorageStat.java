@@ -1,5 +1,6 @@
 package com.itsm.dranswer.storage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @Getter
 public enum ReqStorageStat {
 

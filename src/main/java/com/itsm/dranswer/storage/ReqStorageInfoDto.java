@@ -2,6 +2,8 @@ package com.itsm.dranswer.storage;
 
 import com.itsm.dranswer.commons.BaseEntity;
 import com.itsm.dranswer.commons.Disease;
+import com.itsm.dranswer.users.AgencyInfo;
+import com.itsm.dranswer.users.AgencyInfoDto;
 import com.itsm.dranswer.users.UserInfo;
 import com.itsm.dranswer.users.UserInfoDto;
 import lombok.*;
@@ -25,6 +27,8 @@ public class ReqStorageInfoDto extends BaseEntity {
 
     private UserInfoDto diseaseManagerUserInfo;
 
+    private AgencyInfoDto agencyInfo;
+
     private ReqStorageStat reqStorageStatCode;
 
     private String bucketName;
@@ -35,8 +39,9 @@ public class ReqStorageInfoDto extends BaseEntity {
 
     private String rejectReason;
 
-    public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo){
+    public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo){
         copyProperties(reqStorageInfo, this);
         this.diseaseManagerUserInfo = new UserInfoDto(userInfo);
+        this.agencyInfo = new AgencyInfoDto(agencyInfo);
     }
 }

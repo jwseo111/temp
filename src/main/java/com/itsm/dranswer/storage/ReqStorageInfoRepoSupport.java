@@ -1,5 +1,6 @@
 package com.itsm.dranswer.storage;
 
+import com.itsm.dranswer.users.QAgencyInfo;
 import com.itsm.dranswer.users.QUserInfo;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
@@ -25,11 +26,13 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
 
         QReqStorageInfo reqStorageInfo = QReqStorageInfo.reqStorageInfo;
         QUserInfo userInfo = QUserInfo.userInfo;
+        QAgencyInfo agencyInfo = QAgencyInfo.agencyInfo;
 
         JPAQuery<ReqStorageInfoDto> query  =jpaQueryFactory
-                .select(Projections.constructor(ReqStorageInfoDto.class, reqStorageInfo, userInfo))
+                .select(Projections.constructor(ReqStorageInfoDto.class, reqStorageInfo, userInfo, agencyInfo))
                 .from(reqStorageInfo)
                 .innerJoin(reqStorageInfo.diseaseManagerUserInfo, userInfo)
+                .innerJoin(userInfo.agencyInfo(), agencyInfo)
                 .where(reqStorageInfo.dataName.contains(dataName))
                 .orderBy(reqStorageInfo.createdDate.desc())
                 .offset(pageable.getOffset())

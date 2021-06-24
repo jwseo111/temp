@@ -56,4 +56,14 @@ public class ReqStorageInfo extends BaseEntity implements Serializable {
     @Column(columnDefinition = "varchar(100) COMMENT '거절사유'")
     private String rejectReason;
 
+    public ReqStorageInfo(ReqStorageInfoDto reqStorageInfoDto) {
+        this.dataName = reqStorageInfoDto.getDataName();
+        this.diseaseCode = reqStorageInfoDto.getDiseaseCode();
+        this.diseaseManagerUserSeq = reqStorageInfoDto.getDiseaseManagerUserSeq();
+        this.reqStorageStatCode = ReqStorageStat.S_REQ;
+    }
+
+    public ReqStorageInfoDto convertDto() {
+        return new ReqStorageInfoDto(this);
+    }
 }

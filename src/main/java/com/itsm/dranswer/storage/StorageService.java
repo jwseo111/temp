@@ -18,10 +18,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class StorageService {
 
+    private final  ReqStorageInfoRepo reqStorageInfoRepo;
+
+    private final  OpenStorageInfoRepo openStorageInfoRepo;
+
     private final ReqStorageInfoRepoSupport reqStorageInfoRepoSupport;
 
     @Autowired
-    public StorageService(ReqStorageInfoRepoSupport reqStorageInfoRepoSupport) {
+    public StorageService(ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport) {
+        this.reqStorageInfoRepo = reqStorageInfoRepo;
+        this.openStorageInfoRepo = openStorageInfoRepo;
         this.reqStorageInfoRepoSupport = reqStorageInfoRepoSupport;
     }
 
@@ -56,7 +62,23 @@ public class StorageService {
     **/
     public ReqStorageInfoDto reqStorage(ReqStorageInfoDto reqStorageInfoDto) {
 
-        return null;
+        ReqStorageInfo reqStorageInfo = new ReqStorageInfo(reqStorageInfoDto);
+        return this.saveReqStorageInfo(reqStorageInfo).convertDto();
 
+    }
+
+    /**
+     * 
+     * @methodName : saveReqStorageInfo
+     * @date : 2021-06-24 오후 5:45
+     * @author : xeroman.k 
+     * @param reqStorageInfo
+     * @return : com.itsm.dranswer.storage.ReqStorageInfo
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public ReqStorageInfo saveReqStorageInfo(ReqStorageInfo reqStorageInfo) {
+        return reqStorageInfoRepo.save(reqStorageInfo);
     }
 }

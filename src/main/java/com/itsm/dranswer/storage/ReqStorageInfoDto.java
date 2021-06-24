@@ -55,4 +55,8 @@ public class ReqStorageInfoDto extends BaseEntity {
         this.diseaseManagerUserInfo = new UserInfoDto(userInfo);
         this.agencyInfo = new AgencyInfoDto(agencyInfo);
     }
+
+    public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo) {
+        copyProperties(reqStorageInfo, this);
+    }
 }

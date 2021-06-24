@@ -1,5 +1,16 @@
 package com.itsm.dranswer.storage;
 
+
+/*
+ * @package : com.itsm.dranswer.storage
+ * @name : ReqStorageInfoRepoSupport.java
+ * @date : 2021-06-24 오후 2:34
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
+
 import com.itsm.dranswer.users.QAgencyInfo;
 import com.itsm.dranswer.users.QUserInfo;
 import com.querydsl.core.QueryResults;
@@ -38,7 +49,7 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        if(reqStorageStat != ReqStorageStat.ALL){
+        if(reqStorageStat != null){
             query = query.where(reqStorageInfo.reqStorageStatCode.eq(reqStorageStat));
         }
 

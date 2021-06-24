@@ -1,5 +1,16 @@
 package com.itsm.dranswer.storage;
 
+
+/*
+ * @package : com.itsm.dranswer.storage
+ * @name : ReqStorageInfoDto.java
+ * @date : 2021-06-24 오후 2:44
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
+
 import com.itsm.dranswer.commons.BaseEntity;
 import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.users.AgencyInfo;

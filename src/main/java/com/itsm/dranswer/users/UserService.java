@@ -87,7 +87,7 @@ public class UserService {
     public UserInfoDto join(
             JoinRequest request) {
         UserInfo userInfo = new UserInfo(request, passwordEncoder);
-        return new UserInfoDto(this.saveUserInfo(userInfo));
+        return this.saveUserInfo(userInfo).convertDto();
     }
 
     /**

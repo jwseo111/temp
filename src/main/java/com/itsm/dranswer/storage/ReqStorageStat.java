@@ -12,7 +12,6 @@ import java.util.Map;
 @Getter
 public enum ReqStorageStat {
 
-    ALL("전체"),
     S_REQ("저장신청"),
     S_CCL("저장신청취소"),
     S_ACC("저장신청승인"),

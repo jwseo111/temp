@@ -83,3 +83,10 @@ Number.prototype.format = function(){
 
     return n;
 };
+
+function getCodeList(codeId, callback){
+    get(codeId,
+        "/get/code/"+codeId,
+        {},
+        this.callback);
+}

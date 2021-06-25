@@ -13,10 +13,7 @@ package com.itsm.dranswer.storage;
 
 import com.itsm.dranswer.commons.BaseEntity;
 import com.itsm.dranswer.commons.Disease;
-import com.itsm.dranswer.users.AgencyInfo;
-import com.itsm.dranswer.users.AgencyInfoDto;
-import com.itsm.dranswer.users.UserInfo;
-import com.itsm.dranswer.users.UserInfoDto;
+import com.itsm.dranswer.users.*;
 import lombok.*;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -50,6 +47,8 @@ public class ReqStorageInfoDto extends BaseEntity {
 
     private String rejectReason;
 
+    private ReqUserDto reqUserDto;
+
     public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo){
         copyProperties(reqStorageInfo, this);
         this.diseaseManagerUserInfo = new UserInfoDto(userInfo);
@@ -58,5 +57,10 @@ public class ReqStorageInfoDto extends BaseEntity {
 
     public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo) {
         copyProperties(reqStorageInfo, this);
+    }
+
+    public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, ReqUserDto reqUserDto) {
+        copyProperties(reqStorageInfo, this);
+        this.reqUserDto = reqUserDto;
     }
 }

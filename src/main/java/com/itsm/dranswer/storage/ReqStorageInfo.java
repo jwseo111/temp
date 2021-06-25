@@ -66,4 +66,12 @@ public class ReqStorageInfo extends BaseEntity implements Serializable {
     public ReqStorageInfoDto convertDto() {
         return new ReqStorageInfoDto(this);
     }
+
+    public boolean checkCreateUser(Long userSeq) {
+        return this.getCreatedBy() == userSeq;
+    }
+
+    public void reqCancel() {
+        this.reqStorageStatCode = ReqStorageStat.D_REQ;
+    }
 }

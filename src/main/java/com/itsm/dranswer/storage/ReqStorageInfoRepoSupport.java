@@ -33,7 +33,7 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public Page<ReqStorageInfoDto> searchAll(ReqStorageStat reqStorageStat, String dataName, Pageable pageable){
+    public Page<ReqStorageInfoDto> searchAll(ReqStorageStat reqStorageStat, String dataName, Long userSeq, Pageable pageable){
 
         QReqStorageInfo reqStorageInfo = QReqStorageInfo.reqStorageInfo;
         QUserInfo userInfo = QUserInfo.userInfo;
@@ -48,6 +48,10 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
                 .orderBy(reqStorageInfo.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
+
+        if(userSeq != null){
+            query = query.where(reqStorageInfo.createdBy.eq(userSeq));
+        }
 
         if(reqStorageStat != null){
             query = query.where(reqStorageInfo.reqStorageStatCode.eq(reqStorageStat));

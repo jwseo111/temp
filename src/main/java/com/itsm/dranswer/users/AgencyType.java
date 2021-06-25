@@ -13,8 +13,8 @@ import java.util.Map;
 public enum AgencyType {
 
 
-    MNHP("주관병원"),
-    SBHP("참여병원"),
+    MNHP("질병주관병원"),
+    SBHP("질병참여병원"),
     COMP("기업");
 
     private String desc;

@@ -179,8 +179,7 @@ public class UserService {
     **/
     public UserInfoDto getOriginUser(LoginUserInfo loginUserInfo) {
 
-        UserInfo userInfo = userInfoRepo.findById(loginUserInfo.getUserSeq()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원정보 입니다."));
-
+        UserInfo userInfo = findUserInfo(loginUserInfo.getUserSeq());
         Long parentSeq = userInfo.getParentUserSeq();
 
         if(parentSeq == null){
@@ -191,6 +190,34 @@ public class UserService {
 
 
 
+    }
+
+    public ReqUserDto getReqStorageUserInfo(LoginUserInfo loginUserInfo) {
+
+        UserInfo userInfo = findUserInfo(loginUserInfo.getUserSeq());
+
+        if(userInfo.isManager()){
+            return new ReqUserDto(userInfo);
+        }else{
+            Long managerSeq = userInfo.getParentUserSeq();
+
+            if(managerSeq == null){
+                throw new IllegalArgumentException("소속 질병책임자가 존재하지 않습니다.");
+            }
+
+            UserInfo manager = findUserInfo(managerSeq);
+
+            if(manager.isManager()){
+                return new ReqUserDto(userInfo, manager);
+            }else{
+                throw new IllegalArgumentException("소속이 존재하나, 질병책임자가 존재하지 않습니다.");
+            }
+        }
+    }
+
+    private UserInfo findUserInfo(Long userSeq){
+        return userInfoRepo.findById(userSeq)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원정보 입니다."));
     }
 }
 

@@ -133,4 +133,8 @@ public class UserInfo extends BaseEntity implements Serializable {
     public UserInfoDto convertDto() {
         return new UserInfoDto(this);
     }
+
+    public boolean isManager(){
+        return this.diseaseManagerYn == IsYn.Y;
+    }
 }

@@ -53,9 +53,9 @@ public class UserRestCtrl {
      * @methodName : UserRestCtrl
      * @date : 2021-06-23 오후 2:27
      * @author : xeroman.k 
- * @param jwt
- * @param authenticationManager
- * @param userService
+     * @param jwt
+     * @param authenticationManager
+     * @param userService
      * @return : 
      * @throws 
      * @modifyed :
@@ -249,11 +249,30 @@ public class UserRestCtrl {
      * @modifyed :
      *
     **/
-    @GetMapping(value = "/user/origin/seq")
+    @GetMapping(value = "/user/origin/info")
     public ApiResult<UserInfoDto> originUserSeq(@LoginUser LoginUserInfo loginUserInfo) throws MessagingException, IOException {
 
         UserInfoDto parent = userService.getOriginUser(loginUserInfo);
 
         return success(parent);
+    }
+
+    /**
+     *
+     * @methodName : getReqUser
+     * @date : 2021-06-25 오전 10:53
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.ReqUserDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @GetMapping(value = "/user/req/storage")
+    public ApiResult<ReqUserDto> getReqUser(@LoginUser LoginUserInfo loginUserInfo) throws MessagingException, IOException {
+
+        ReqUserDto reqUserDto = userService.getReqStorageUserInfo(loginUserInfo);
+
+        return success(reqUserDto);
     }
 }

@@ -217,7 +217,7 @@ public class UserRestCtrl {
      *
     **/
     @PostMapping(value = "/user/find/mail")
-    public ApiResult<List<UserInfoDto>> findMail(@Valid UserInfoDto userInfoDto) throws MessagingException, IOException {
+    public ApiResult<List<UserInfoDto>> findMail(@Valid UserInfoDto userInfoDto) {
         return success(userService.findByPhoneNumber(userInfoDto));
     }
 
@@ -233,7 +233,7 @@ public class UserRestCtrl {
      *
     **/
     @PostMapping(value = "/user/change/pw")
-    public ApiResult<UserInfoDto> changePw(@Valid UserInfoDto userInfoDto) throws MessagingException, IOException {
+    public ApiResult<UserInfoDto> changePw(@Valid UserInfoDto userInfoDto) {
 
         return success(userService.changePassword(userInfoDto));
     }
@@ -250,7 +250,7 @@ public class UserRestCtrl {
      *
     **/
     @GetMapping(value = "/user/origin/info")
-    public ApiResult<UserInfoDto> originUserSeq(@LoginUser LoginUserInfo loginUserInfo) throws MessagingException, IOException {
+    public ApiResult<UserInfoDto> originUserSeq(@LoginUser LoginUserInfo loginUserInfo){
 
         UserInfoDto parent = userService.getOriginUser(loginUserInfo);
 
@@ -269,9 +269,9 @@ public class UserRestCtrl {
      *
     **/
     @GetMapping(value = "/user/req/storage")
-    public ApiResult<ReqUserDto> getReqUser(@LoginUser LoginUserInfo loginUserInfo) throws MessagingException, IOException {
+    public ApiResult<ReqUserDto> getReqUser(@LoginUser LoginUserInfo loginUserInfo){
 
-        ReqUserDto reqUserDto = userService.getReqStorageUserInfo(loginUserInfo);
+        ReqUserDto reqUserDto = userService.getReqStorageUserInfo(loginUserInfo.getUserSeq());
 
         return success(reqUserDto);
     }

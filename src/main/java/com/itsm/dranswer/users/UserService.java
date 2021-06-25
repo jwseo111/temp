@@ -192,9 +192,9 @@ public class UserService {
 
     }
 
-    public ReqUserDto getReqStorageUserInfo(LoginUserInfo loginUserInfo) {
+    public ReqUserDto getReqStorageUserInfo(Long userSeq) {
 
-        UserInfo userInfo = findUserInfo(loginUserInfo.getUserSeq());
+        UserInfo userInfo = findUserInfo(userSeq);
 
         if(userInfo.isManager()){
             return new ReqUserDto(userInfo);

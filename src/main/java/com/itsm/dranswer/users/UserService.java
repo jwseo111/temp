@@ -199,19 +199,22 @@ public class UserService {
         if(userInfo.isManager()){
             return new ReqUserDto(userInfo);
         }else{
-            Long managerSeq = userInfo.getParentUserSeq();
 
-            if(managerSeq == null){
-                throw new IllegalArgumentException("소속 질병책임자가 존재하지 않습니다.");
-            }
+            throw new IllegalArgumentException("질병 책임자가 아닙니다.");
 
-            UserInfo manager = findUserInfo(managerSeq);
-
-            if(manager.isManager()){
-                return new ReqUserDto(userInfo, manager);
-            }else{
-                throw new IllegalArgumentException("소속이 존재하나, 질병책임자가 존재하지 않습니다.");
-            }
+//            Long managerSeq = userInfo.getParentUserSeq();
+//
+//            if(managerSeq == null){
+//                throw new IllegalArgumentException("소속 질병책임자가 존재하지 않습니다.");
+//            }
+//
+//            UserInfo manager = findUserInfo(managerSeq);
+//
+//            if(manager.isManager()){
+//                return new ReqUserDto(userInfo, manager);
+//            }else{
+//                throw new IllegalArgumentException("소속이 존재하나, 질병책임자가 존재하지 않습니다.");
+//            }
         }
     }
 

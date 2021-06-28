@@ -36,6 +36,51 @@ public class CustomObjectStorage {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private AmazonS3 getS3(String endPoint, String regionName,
+                           String accessKey, String secretKey){
+        final AmazonS3 s3 = AmazonS3ClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+                .build();
+        return s3;
+    }
+    
+    /**
+     * 
+     * @methodName : makeBucket
+     * @date : 2021-06-28 오후 1:44
+     * @author : xeroman.k 
+     * @param endPoint
+     * @param regionName
+     * @param accessKey
+     * @param secretKey
+     * @param bucketName
+     * @return : void
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public void makeBucket(String endPoint, String regionName,
+                           String accessKey, String secretKey, String bucketName){
+
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
+
+        try {
+            // create bucket if the bucket name does not exist
+            if (s3.doesBucketExistV2(bucketName)) {
+                throw new IllegalArgumentException("이미 사용중인 버킷명 입니다.");
+            } else {
+                s3.createBucket(bucketName);
+            }
+        } catch (AmazonS3Exception e) {
+            e.printStackTrace();
+            throw e;
+        } catch(SdkClientException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     /**
      * 
      * @methodName : getBucketList
@@ -52,10 +97,7 @@ public class CustomObjectStorage {
     **/
     public List<Bucket> getBucketList(String endPoint, String regionName,
                           String accessKey, String secretKey){
-        final AmazonS3 s3 = AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
-                .build();
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
 
         try {
             List<Bucket> buckets = s3.listBuckets();
@@ -67,11 +109,12 @@ public class CustomObjectStorage {
             return buckets;
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
+            throw e;
         } catch(SdkClientException e) {
             e.printStackTrace();
+            throw e;
         }
 
-        return null;
     }
 
     public void uploadObject(String endPoint, String regionName,
@@ -81,12 +124,7 @@ public class CustomObjectStorage {
 
         long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
 
-
-        final AmazonS3 s3 = AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
-                .build();
-
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
 
         if(checkFileSize(file)){
             this.multipartUpload(s3, bucketName, folderName, objectName, file);
@@ -114,8 +152,10 @@ public class CustomObjectStorage {
             System.out.format("Folder %s has been created.\n", folderName);
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
+            throw e;
         } catch(SdkClientException e) {
             e.printStackTrace();
+            throw e;
         }
     }
 
@@ -128,8 +168,10 @@ public class CustomObjectStorage {
             System.out.format("Object %s has been created.\n", objectName);
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
+            throw e;
         } catch(SdkClientException e) {
             e.printStackTrace();
+            throw e;
         }
     }
 

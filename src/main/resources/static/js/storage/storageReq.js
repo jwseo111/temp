@@ -26,7 +26,6 @@ Vue.component('maincontents', {
                 page: 0,
                 size: 5,
                 dataName: "",
-                reqStorageStatCode: reqStorageStatCode,
                 sort: ""
             },
             reqStorageList: [],
@@ -45,6 +44,7 @@ Vue.component('maincontents', {
             reqStoreStatCd : "",
             reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback),
             isYn : getCodeList('IsYn',this.callback),
+            diseaseCdList : getCodeList('Disease',this.callback),
             saveInfo: {
                 dataName : "",
                 diseaseCode : "",
@@ -59,22 +59,9 @@ Vue.component('maincontents', {
         };
     },
     mounted:function(){
-        /*
-        get(TID.SEARCH,
-            "/user/req/storage",
-            this.cond,
-            this.callback);
-         */
         this.getReqUser();
     },
     methods:{
-        onclickSearch: function () {
-            this.cond.page = 0;
-            this.cond.reqStorageStatCode = this.selected;
-            this.getReqStorageList();
-        },
-
-
         // 신청화면에 출력될 데이타 조회
         getReqUser:function (){
             get(TID.SEARCH_USER,
@@ -88,31 +75,28 @@ Vue.component('maincontents', {
         },
         // 신청 클릭(신청)
         onclickReqSave: function () {
-
-            console.log(("신청 클릭"));//tmp
+            console.log(("신청 클릭"));
             this.saveReqStorage();
         },
-        /*
-        getReqStorageList:function () {
-            get(TID.SEARCH,
-                "/storage/req/list",
-                this.cond,
-                this.callback);
-        },
-         */
+        // 신청 메소드 호출
         saveReqStorage:function () {
-            console.log(("신청 메소드 호출"));//tmp
-            //this.saveInfo.dataName = this.saveInfo.dataName;
-            this.saveInfo.diseaseCode = this.userInfo.diseaseCode.descEng;
+            console.log(("신청 메소드 호출"));
             this.saveInfo.diseaseManagerUserSeq = this.userInfo.managerUserSeq;
+            for(let i=0; i<Object.keys(this.diseaseCdList).length; i++){
+                if(this.diseaseCdList[i].desc == this.userInfo.diseaseCode.desc){
+                    this.saveInfo.diseaseCode = this.diseaseCdList[i].name;
+                }
+            }
+            /*
             console.log("저장데이터명 : " + this.saveInfo.dataName);
             console.log("질병코드  : "   + this.saveInfo.diseaseCode);
             console.log("질병책임자   : " + this.saveInfo.diseaseManagerUserSeq);
+             */
+
             post(TID.SAVE,
                 "/storage/req",
                 this.saveInfo,
                 this.callback);
-
         },
         callback: function (tid, results) {
             switch (tid) {
@@ -127,12 +111,27 @@ Vue.component('maincontents', {
                     console.log(results.response);
                     this.isYn = results.response;
                     break;
+                case "Disease":
+                    this.diseaseCdList = results.response;
+                    break;
+                case TID.SAVE:
+                    //console.log(results);
+                    this.saveCallback(results);
+                    break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
                 this.userInfo      = results.response;
                 this.diseaseInfo   = results.response.diseaseCode; // 관리하는 질병
+            } else {
+                console.log(results);
+            }
+        },
+        saveCallback: function (results) {
+            if (results.success) {
+                alert("정상적으로 신청되었습니다.");
+                location.href = "/lndata/store/main";
             } else {
                 console.log(results);
             }

@@ -1,6 +1,6 @@
 
 /*
- * @name : storage.js
+ * @name : storageList.js
  * @date : 2021-06-23 오후 1:05
  * @author : lsj
  * @version : 1.0.0
@@ -41,8 +41,8 @@ Vue.component('maincontents', {
                 pages: [1]
             },
             messages : "",
-            reqStoreStatCd : "",
-            reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback),
+            reqStoreStatCd : "", // 선택된 콤보박스
+            reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback), // 콤보박스 리스트
             isYn : getCodeList('IsYn',this.callback)
 
         };
@@ -53,7 +53,7 @@ Vue.component('maincontents', {
     methods:{
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.reqStorageStatCode = this.selected;
+            this.cond.reqStorageStatCode = this.reqStoreStatCd;
             this.getReqStorageList();
         },
         // 목록 > 신청 클릭(화면 이동)
@@ -84,6 +84,7 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
+                console.log(results);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.reqStorageList = results.response.content;
             } else {

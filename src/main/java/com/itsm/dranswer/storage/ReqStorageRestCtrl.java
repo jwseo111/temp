@@ -14,10 +14,8 @@ import com.itsm.dranswer.config.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 
 import static com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import static com.itsm.dranswer.utils.ApiUtils.success;
@@ -69,8 +67,9 @@ public class ReqStorageRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_MANAGER"})
     @PostMapping(value = "/storage/req")
-    public ApiResult<ReqStorageInfoDto> reqStorage(ReqStorageInfoDto reqStorageInfoDto){
+    public ApiResult<ReqStorageInfoDto> reqStorage(@RequestBody ReqStorageInfoDto reqStorageInfoDto){
 
         return success(storageService.reqStorage(reqStorageInfoDto));
     }
@@ -108,13 +107,14 @@ public class ReqStorageRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_MANAGER"})
     @GetMapping(value = "/my/management/storage/req/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> getMyReqStorageInfo(
             @LoginUser LoginUserInfo loginUserInfo,
             @PathVariable String reqStorageId){
 
         ReqStorageInfoDto reqStorageInfoDto =
-                storageService.getReqStorage(loginUserInfo.getUserSeq(), reqStorageId);
+                storageService.getReqStorage(loginUserInfo, reqStorageId);
 
         return success(reqStorageInfoDto);
     }
@@ -131,14 +131,37 @@ public class ReqStorageRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_MANAGER"})
     @PostMapping(value = "/my/management/storage/req/cancel/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> cancelReqStorage(
             @LoginUser LoginUserInfo loginUserInfo,
             @PathVariable String reqStorageId){
 
         ReqStorageInfoDto reqStorageInfoDto =
-                storageService.cancelReqStorageInfo(loginUserInfo.getUserSeq(), reqStorageId);
+                storageService.cancelReqStorageInfo(loginUserInfo, reqStorageId);
 
         return success(reqStorageInfoDto);
+    }
+
+    /**
+     * 
+     * @methodName : approveReqStorage
+     * @date : 2021-06-28 오전 11:28
+     * @author : xeroman.k 
+ * @param reqStorageId
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.ReqStorageInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping(value = "/management/storage/req/approve/{reqStorageId:.+(?<!\\.js)$}")
+    public ApiResult<ReqStorageInfoDto> approveReqStorage(
+            @PathVariable String reqStorageId){
+
+        ReqStorageInfoDto reqStorageInfoDto =
+                storageService.approveReqStorageInfo(reqStorageId);
+
+        return success(null);
     }
 }

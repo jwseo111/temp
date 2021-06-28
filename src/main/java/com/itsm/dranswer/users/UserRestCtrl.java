@@ -22,10 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
@@ -179,7 +176,7 @@ public class UserRestCtrl {
      *
     **/
     @PostMapping(value = "/user/join")
-    public ApiResult<UserInfoDto> join(@Valid JoinRequest request){
+    public ApiResult<UserInfoDto> join(@RequestBody @Valid JoinRequest request){
 
         UserInfoDto user = userService.join(request);
 
@@ -198,7 +195,7 @@ public class UserRestCtrl {
      *
     **/
     @PostMapping(value = "/user/cert/mail")
-    public ApiResult<CertDto> certMail(@Valid CertDto certDto) throws MessagingException, IOException {
+    public ApiResult<CertDto> certMail(@RequestBody @Valid CertDto certDto) throws MessagingException, IOException {
 
         userService.sendCertMail(certDto);
 
@@ -217,7 +214,7 @@ public class UserRestCtrl {
      *
     **/
     @PostMapping(value = "/user/find/mail")
-    public ApiResult<List<UserInfoDto>> findMail(@Valid UserInfoDto userInfoDto) {
+    public ApiResult<List<UserInfoDto>> findMail(@RequestBody @Valid UserInfoDto userInfoDto) {
         return success(userService.findByPhoneNumber(userInfoDto));
     }
 
@@ -233,7 +230,7 @@ public class UserRestCtrl {
      *
     **/
     @PostMapping(value = "/user/change/pw")
-    public ApiResult<UserInfoDto> changePw(@Valid UserInfoDto userInfoDto) {
+    public ApiResult<UserInfoDto> changePw(@RequestBody @Valid UserInfoDto userInfoDto) {
 
         return success(userService.changePassword(userInfoDto));
     }

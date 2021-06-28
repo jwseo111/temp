@@ -72,6 +72,16 @@ public class ReqStorageInfo extends BaseEntity implements Serializable {
     }
 
     public void reqCancel() {
-        this.reqStorageStatCode = ReqStorageStat.D_REQ;
+        if(this.reqStorageStatCode == ReqStorageStat.S_ACC){
+            this.reqStorageStatCode = ReqStorageStat.D_REQ;
+        }else{
+
+        }
+
+
+    }
+
+    public void approve() {
+        this.reqStorageStatCode = ReqStorageStat.S_ACC;
     }
 }

@@ -23,6 +23,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ReqStorageInfoDto extends BaseEntity {
 
     private String reqStorageId;

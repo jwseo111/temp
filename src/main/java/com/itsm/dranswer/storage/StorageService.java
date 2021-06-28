@@ -10,6 +10,7 @@ package com.itsm.dranswer.storage;
  */
 
 
+import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.ReqUserDto;
 import com.itsm.dranswer.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,17 +93,17 @@ public class StorageService {
      * @methodName : getReqStorageInfo
      * @date : 2021-06-25 오후 1:59
      * @author : xeroman.k
-     * @param userSeq
+     * @param loginUserInfo
      * @param reqStorageId
      * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
      * @throws
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto getReqStorage(Long userSeq, String reqStorageId) {
+    public ReqStorageInfoDto getReqStorage(LoginUserInfo loginUserInfo, String reqStorageId) {
 
-        ReqStorageInfo reqStorageInfo = getReqStorageInfo(userSeq, reqStorageId);
-        ReqUserDto reqUserDto = userService.getReqStorageUserInfo(userSeq);
+        ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
+        ReqUserDto reqUserDto = userService.getReqStorageUserInfo(loginUserInfo.getUserSeq());
 
         return new ReqStorageInfoDto(reqStorageInfo, reqUserDto);
     }
@@ -112,20 +113,15 @@ public class StorageService {
      * @methodName : getReqStorageInfo
      * @date : 2021-06-25 오후 3:42
      * @author : xeroman.k 
-     * @param userSeq
      * @param reqStorageId
      * @return : com.itsm.dranswer.storage.ReqStorageInfo
      * @throws 
      * @modifyed :
      *
     **/
-    public ReqStorageInfo getReqStorageInfo(Long userSeq, String reqStorageId){
+    public ReqStorageInfo getReqStorageInfo(String reqStorageId){
         ReqStorageInfo reqStorageInfo = reqStorageInfoRepo
                 .findById(reqStorageId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 저장정보 ID 입니다."));
-
-        if(!reqStorageInfo.checkCreateUser(userSeq)){
-            throw new IllegalArgumentException("타인의 정보를 열람 할 수 없습니다.");
-        }
 
         return reqStorageInfo;
     }
@@ -133,19 +129,36 @@ public class StorageService {
     /**
      * 
      * @methodName : cancelReqStorageInfo
-     * @date : 2021-06-25 오후 3:42
+     * @date : 2021-06-25 오후 3:53
      * @author : xeroman.k 
-     * @param userSeq
+     * @param loginUserInfo
      * @param reqStorageId
      * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
      * @throws 
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto cancelReqStorageInfo(Long userSeq, String reqStorageId) {
-        ReqStorageInfo reqStorageInfo = getReqStorageInfo(userSeq, reqStorageId);
+    public ReqStorageInfoDto cancelReqStorageInfo(LoginUserInfo loginUserInfo, String reqStorageId) {
+        ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
+        checkMaker(reqStorageInfo, loginUserInfo);
+
         reqStorageInfo.reqCancel();
         
         return new ReqStorageInfoDto(reqStorageInfo);
+    }
+
+    public void checkMaker(ReqStorageInfo reqStorageInfo, LoginUserInfo loginUserInfo){
+        if(!reqStorageInfo.checkCreateUser(loginUserInfo.getUserSeq())){
+            throw new IllegalArgumentException("타인의 정보 입니다.");
+        }
+    }
+
+
+    public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId) {
+
+        ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
+        reqStorageInfo.approve();
+
+        return null;
     }
 }

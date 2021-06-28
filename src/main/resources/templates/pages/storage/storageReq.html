@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/storage/storageReq.js}"></script>
+        <script>
+            const reqStorageStatCode = "[[${param.reqStorageStatCode}]]";
+        </script>
+    </th:block>
+
+    <div layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="storage-contents-wrap" >
+
+            <div class="storage-title">질환데이터 저장신청</div>
+            <div class="storage-title">신청자 정보</div>
+            <div class="storage-content">
+                <table class="result-table">
+                    <tr>
+                        <th>신청자명</th>
+                        <td>{{userInfo.userName}}</td>
+                        <th>병원명</th>
+                        <td>{{userInfo.agencyName}}</td>
+                    </tr>
+                    <tr>
+                        <th>질병주관병원여부</th>
+                        <td>
+                            <lo v-for="radio in isYn">
+                                <input type="radio" v-bind:id="radio.value" v-bind:value="radio.value" disabled v-model="userInfo.diseaseMainYn">
+                                <label v-if="radio.value=='Y'">예 {{radio.value}}</label>
+                                <label v-if="radio.value=='N'">아니오 {{radio.value}}</label>
+                            </lo>
+                        </td>
+
+                        <th>관리하는 질병</th>
+                        <td>{{diseaseInfo.desc}}</td>
+                    </tr>
+                    <tr>
+                        <th>연락처</th>
+                        <td>{{userInfo.userPhoneNumber}}</td>
+                        <th>이메일</th>
+                        <td>{{userInfo.userEmail}}</td>
+                    </tr>
+                    <tr>
+                        <th>질병책임자명</th>
+                        <td colspan="3">{{userInfo.managerUserName}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="storage-title">신청 정보</div>
+            <div class="storage-content">
+                <table class="result-table">
+                    <tr>
+                        <th>저장데이터명</th>
+                        <td colspan="3"><input type="text" v-model="saveInfo.dataName" placeholder="필수입력"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="btn_wrap" align="center">
+                <button v-on:click="onclickCancel">취소</button>
+                <button v-on:click="onclickReqSave">신청</button>
+            </div>
+
+        </div>
+        </script>
+
+        <script>
+        </script>
+    </div>
+</html>

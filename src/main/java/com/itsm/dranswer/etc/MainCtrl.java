@@ -3,6 +3,8 @@ package com.itsm.dranswer.etc;
 import com.amazonaws.services.s3.model.Bucket;
 import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
+import com.itsm.dranswer.users.JoinRequest;
+import com.itsm.dranswer.users.UserInfoDto;
 import com.itsm.dranswer.users.UserService;
 import com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import org.slf4j.Logger;
@@ -33,6 +35,33 @@ public class MainCtrl {
 
     @Autowired
     private CustomMailSender customMailSender;
+
+    @GetMapping(value = "/makeTestUser")
+    @ResponseBody
+    public ApiResult<UserInfoDto> makeTestUser(){
+        String userEmail = "kkhkykkk3@naver.com";
+        String inputPw = "qlalfdldi";
+        String userRole = "MANAGER";
+        Integer agencySeq = 28;
+        String diseaseCode = "THYROID_CA";
+        String userName = "김영남";
+        String userPhoneNumber = "01087094244";
+        String diseaseManagerYn = "Y";
+        String nCloudId = null;
+        String nCloudAccessKey = null;
+        String nCloudSecretKey = null;
+        String joinStatCode = "REQUEST";
+        Long parentUserSeq = null;
+
+        JoinRequest request = new JoinRequest(userEmail, inputPw, userRole,
+                agencySeq, diseaseCode, userName, userPhoneNumber,
+                diseaseManagerYn, nCloudId, nCloudAccessKey,
+                nCloudSecretKey, joinStatCode, parentUserSeq);
+
+        UserInfoDto user = userService.join(request);
+
+        return success(user);
+    }
 
     @GetMapping(value = "/listBuckets")
     @ResponseBody

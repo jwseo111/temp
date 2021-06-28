@@ -49,8 +49,13 @@ Vue.component('maincontents', {
             const frm = new FormData();
             const multipartFile = this.$refs.multipartFile;
 
-            frm.append("multipartFile", multipartFile.files[0]);
+            for (let i in multipartFile.files){
+                frm.append("multipartFile", multipartFile.files[i]);
+            }
+
             frm.append("test", "test");
+
+            console.log(frm);
 
             fileUpload(TID.UPLOAD, "/etc/fileUpload", frm, this.uploadProgressEvent, this.callback);
         },

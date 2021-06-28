@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import static com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import static com.itsm.dranswer.utils.ApiUtils.success;
@@ -38,27 +39,29 @@ public class FileUploadCtrl {
         String secretKey = "2HC4LpXz6CiPWBWG0FeDmYAulQzgVxHtWcjmiWgq";
 
         String bucketName = "bucket-xeroman-test-01";
-        String folderName = "test1334/asd/123123/";
+        String folderName = "";
 
         File tempDir = new File("/drAnswer/test");
         if(!tempDir.exists()){
             tempDir.mkdirs();
         }
 
-        MultipartFile multipartFile = request.getFile("multipartFile");
+        List<MultipartFile> multipartFiles = request.getFiles("multipartFile");
 
-        File targetFile = new File("/drAnswer/test/" + multipartFile.getOriginalFilename());
-        try {
-            InputStream fileStream = multipartFile.getInputStream();
-            FileUtils.copyInputStreamToFile(fileStream, targetFile);
-        } catch (IOException e) {
-            FileUtils.deleteQuietly(targetFile);
-            e.printStackTrace();
+        for(MultipartFile multipartFile : multipartFiles){
+            File targetFile = new File("/drAnswer/test/" + multipartFile.getOriginalFilename());
+            try {
+                InputStream fileStream = multipartFile.getInputStream();
+                FileUtils.copyInputStreamToFile(fileStream, targetFile);
+            } catch (IOException e) {
+                FileUtils.deleteQuietly(targetFile);
+                e.printStackTrace();
+            }
+
+            String objectName = multipartFile.getOriginalFilename();
+
+            customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
         }
-
-        String objectName = multipartFile.getOriginalFilename();
-
-        customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
 
         return success(new FileUploadResponse());
     }

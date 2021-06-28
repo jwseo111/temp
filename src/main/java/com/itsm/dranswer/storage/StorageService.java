@@ -11,9 +11,11 @@ package com.itsm.dranswer.storage;
 
 
 import com.itsm.dranswer.config.LoginUserInfo;
+import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import com.itsm.dranswer.users.ReqUserDto;
 import com.itsm.dranswer.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,12 +31,27 @@ public class StorageService {
 
     private final ReqStorageInfoRepoSupport reqStorageInfoRepoSupport;
 
+    private final CustomObjectStorage customObjectStorage;
+
+    private final BucketInfoRepo bucketInfoRepo;
+
+    @Value("${ncp.laif.end-point}")
+    private String endPoint;
+    @Value("${ncp.laif.region-name}")
+    private String regionName;
+    @Value("${ncp.laif.access-key}")
+    private String laifAccessKey;
+    @Value("${ncp.laif.secret-key}")
+    private String laifSecretKey;
+
     @Autowired
-    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport) {
+    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo) {
         this.userService = userService;
         this.reqStorageInfoRepo = reqStorageInfoRepo;
         this.openStorageInfoRepo = openStorageInfoRepo;
         this.reqStorageInfoRepoSupport = reqStorageInfoRepoSupport;
+        this.customObjectStorage = customObjectStorage;
+        this.bucketInfoRepo = bucketInfoRepo;
     }
 
     /**
@@ -147,18 +164,55 @@ public class StorageService {
         return new ReqStorageInfoDto(reqStorageInfo);
     }
 
+    /**
+     *
+     * @methodName : checkMaker
+     * @date : 2021-06-28 오후 3:40
+     * @author : xeroman.k
+     * @param reqStorageInfo
+     * @param loginUserInfo
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void checkMaker(ReqStorageInfo reqStorageInfo, LoginUserInfo loginUserInfo){
         if(!reqStorageInfo.checkCreateUser(loginUserInfo.getUserSeq())){
             throw new IllegalArgumentException("타인의 정보 입니다.");
         }
     }
 
-
+    /**
+     *
+     * @methodName : approveReqStorageInfo
+     * @date : 2021-06-28 오후 3:40
+     * @author : xeroman.k
+     * @param reqStorageId
+     * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId) {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         reqStorageInfo.approve();
 
-        return null;
+        BucketInfo bucketInfo = makeBucketInfo(reqStorageInfo);
+
+        makeBucket(bucketInfo);
+
+        return reqStorageInfo.convertDto();
     }
+
+    public BucketInfo makeBucketInfo(ReqStorageInfo reqStorageInfo){
+        return bucketInfoRepo.save(new BucketInfo(reqStorageInfo));
+    }
+
+    public void makeBucket(BucketInfo bucketInfo){
+
+        customObjectStorage.makeBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketInfo.getBucketName());
+
+    }
+
 }

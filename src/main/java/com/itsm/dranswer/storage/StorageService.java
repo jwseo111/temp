@@ -196,11 +196,11 @@ public class StorageService {
     public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId) {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
-        reqStorageInfo.approve();
 
         BucketInfo bucketInfo = makeBucketInfo(reqStorageInfo);
 
         makeBucket(bucketInfo);
+        reqStorageInfo.approve(bucketInfo);
 
         return reqStorageInfo.convertDto();
     }

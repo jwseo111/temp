@@ -81,7 +81,8 @@ public class ReqStorageInfo extends BaseEntity implements Serializable {
 
     }
 
-    public void approve() {
+    public void approve(BucketInfo bucketInfo) {
         this.reqStorageStatCode = ReqStorageStat.S_ACC;
+        this.bucketName = bucketInfo.getBucketName();
     }
 }

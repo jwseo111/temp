@@ -35,6 +35,7 @@ Vue.component('maincontents', {
         loginCallback: function(results){
             if(results.success){
                 console.log(results);
+                location.href="/";
             }else{
                 this.messages = results.error.message;
                 setTimeout(this.hideMessage, 3000);

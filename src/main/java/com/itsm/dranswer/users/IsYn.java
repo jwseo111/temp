@@ -11,7 +11,7 @@ import java.util.Map;
 public enum IsYn {
 
     Y("Y", true),
-        N("N", false);
+    N("N", false);
 
     private String strValue;
     private boolean bValue;

@@ -11,13 +11,15 @@ import java.util.Map;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @Getter
 public enum JoinStat {
-    REQUEST("신청"),
-    ACCEPT("승인");
+    REQUEST("REQUEST", "신청"),
+    ACCEPT("ACCEPT", "승인");
 
+    private String name;
     private String desc;
 
-    JoinStat(String desc) {
+    JoinStat(String name, String desc) {
 
+        this.name = name;
         this.desc = desc;
 
     }

@@ -11,16 +11,16 @@ import java.util.Map;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @Getter
 public enum AgencyType {
-
-
-    MNHP("질병주관병원"),
-    SBHP("질병참여병원"),
-    COMP("기업");
+    MNHP("MNHP", "질병주관병원"),
+    SBHP("SBHP", "질병참여병원"),
+    COMP("COMP", "기업");
 
     private String desc;
+    private String name;
 
-    AgencyType(String desc) {
+    AgencyType(String name, String desc) {
 
+        this.name = name;
         this.desc = desc;
 
     }

@@ -14,25 +14,27 @@ import java.util.Map;
 @ToString
 public enum Disease {
 
-    ADMIN       ("총괄",        "ADMIN"),
-    LIVER_CA    ("간암",        "LIVER CANCER"),
-    LIVER_DIS   ("간질환",      "LIVER DISEASE"),
-    THYROID_CA  ("갑상선암",    "THYROID CANCER"),
-    HBP         ("고혈압",      "HYPERTENSION, HIGH BLOOD PRESSURE "),
-    CEREBRAL_IFT("뇌경색",      "CEREBRAL INFARCTION"),
-    DM          ("당뇨병",      "DIABETES MELLITUS"),
-    MDD         ("우울증",      "MAJOR DEPRESSIVE DISORDER"),
-    STOMACH_CA  ("위암",       "STOMACH CANCER"),
-    BPH         ("전립선증식증", "BENIGN PROSTATIC HYPERTROPHY"),
-    PN          ("폐렴",       "PNEUMONIA"),
-    LUNG_CA     ("폐암",       "LUNG CANCER"),
-    SKIN_DIS    ("피부질환",    "SKIN DISEASE"),
+    ADMIN       ("ADMIN", "총괄",        "ADMIN"),
+    LIVER_CA    ("LIVER_CA", "간암",        "LIVER CANCER"),
+    LIVER_DIS   ("LIVER_DIS", "간질환",      "LIVER DISEASE"),
+    THYROID_CA  ("THYROID_CA", "갑상선암",    "THYROID CANCER"),
+    HBP         ("HBP", "고혈압",      "HYPERTENSION, HIGH BLOOD PRESSURE "),
+    CEREBRAL_IFT("CEREBRAL_IFT", "뇌경색",      "CEREBRAL INFARCTION"),
+    DM          ("DM", "당뇨병",      "DIABETES MELLITUS"),
+    MDD         ("MDD", "우울증",      "MAJOR DEPRESSIVE DISORDER"),
+    STOMACH_CA  ("STOMACH_CA", "위암",       "STOMACH CANCER"),
+    BPH         ("BPH", "전립선증식증", "BENIGN PROSTATIC HYPERTROPHY"),
+    PN          ("PN", "폐렴",       "PNEUMONIA"),
+    LUNG_CA     ("LUNG_CA", "폐암",       "LUNG CANCER"),
+    SKIN_DIS    ("SKIN_DIS", "피부질환",    "SKIN DISEASE"),
     ;
 
+    private String name;
     private String desc;
     private String descEng;
 
-    Disease(String desc, String descEng) {
+    Disease(String name, String desc, String descEng) {
+        this.name = name;
         this.desc = desc;
         this.descEng = descEng;
     }

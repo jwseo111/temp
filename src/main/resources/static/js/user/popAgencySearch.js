@@ -105,7 +105,8 @@ Vue.component('maincontents', {
             this.getAgencyList();
         },
         selectAgency : function (agency){
-            console.log(agency);
-        }
+            window.opener.callbackPopupAgency(agency);
+            self.close();
+        },
     }
 });

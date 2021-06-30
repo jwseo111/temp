@@ -218,7 +218,7 @@ public class UserService {
         }
     }
 
-    private UserInfo findUserInfo(Long userSeq){
+    public UserInfo findUserInfo(Long userSeq){
         return userInfoRepo.findById(userSeq)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원정보 입니다."));
     }

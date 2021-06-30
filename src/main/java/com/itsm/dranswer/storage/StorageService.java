@@ -12,7 +12,9 @@ package com.itsm.dranswer.storage;
 
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
+import com.itsm.dranswer.users.AgencyInfo;
 import com.itsm.dranswer.users.ReqUserDto;
+import com.itsm.dranswer.users.UserInfo;
 import com.itsm.dranswer.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,19 +112,22 @@ public class StorageService {
      * @methodName : getReqStorageInfo
      * @date : 2021-06-25 오후 1:59
      * @author : xeroman.k
-     * @param loginUserInfo
      * @param reqStorageId
      * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
      * @throws
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto getReqStorage(LoginUserInfo loginUserInfo, String reqStorageId) {
+    public ReqStorageInfoDto getReqStorage(String reqStorageId) {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
-        ReqUserDto reqUserDto = userService.getReqStorageUserInfo(loginUserInfo.getUserSeq());
+        UserInfo userInfo = reqStorageInfo.getDiseaseManagerUserInfo();//userService.findUserInfo(reqStorageInfo.getDiseaseManagerUserSeq());
+        AgencyInfo agencyInfo = userInfo.getAgencyInfo();
+        ReqUserDto reqUserDto = userService.getReqStorageUserInfo(reqStorageInfo.getCreatedBy());
 
-        return new ReqStorageInfoDto(reqStorageInfo, reqUserDto);
+        ReqStorageInfoDto reqStorageInfoDto = new ReqStorageInfoDto(reqStorageInfo, userInfo, agencyInfo, reqUserDto);
+
+        return reqStorageInfoDto;
     }
 
     /**
@@ -160,7 +165,29 @@ public class StorageService {
         checkMaker(reqStorageInfo, loginUserInfo);
 
         reqStorageInfo.reqCancel();
-        
+
+        return new ReqStorageInfoDto(reqStorageInfo);
+    }
+    
+    /**
+     * 
+     * @methodName : deleteReqStorageInfo
+     * @date : 2021-06-29 오후 4:33
+     * @author : xeroman.k 
+     * @param loginUserInfo
+     * @param reqStorageId
+     * @param reqStorageInfoDto
+     * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public ReqStorageInfoDto deleteReqStorageInfo(LoginUserInfo loginUserInfo, String reqStorageId, ReqStorageInfoDto reqStorageInfoDto) {
+        ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
+        checkMaker(reqStorageInfo, loginUserInfo);
+
+        reqStorageInfo.reqDelete(reqStorageInfoDto.getDeleteReason());
+
         return new ReqStorageInfoDto(reqStorageInfo);
     }
 

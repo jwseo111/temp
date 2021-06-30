@@ -100,7 +100,6 @@ public class ReqStorageRestCtrl {
      * @methodName : getMyReqStorageInfo
      * @date : 2021-06-25 오후 1:59
      * @author : xeroman.k
-     * @param loginUserInfo
      * @param reqStorageId
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.ReqStorageInfoDto>
      * @throws
@@ -110,11 +109,10 @@ public class ReqStorageRestCtrl {
     @Secured(value = {"ROLE_MANAGER"})
     @GetMapping(value = "/my/management/storage/req/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> getMyReqStorageInfo(
-            @LoginUser LoginUserInfo loginUserInfo,
             @PathVariable String reqStorageId){
 
         ReqStorageInfoDto reqStorageInfoDto =
-                storageService.getReqStorage(loginUserInfo, reqStorageId);
+                storageService.getReqStorage(reqStorageId);
 
         return success(reqStorageInfoDto);
     }
@@ -135,12 +133,32 @@ public class ReqStorageRestCtrl {
     @PostMapping(value = "/my/management/storage/req/cancel/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> cancelReqStorage(
             @LoginUser LoginUserInfo loginUserInfo,
-            @PathVariable String reqStorageId){
+            @PathVariable String reqStorageId
+            ){
+        return success(storageService.cancelReqStorageInfo(loginUserInfo, reqStorageId));
+    }
 
-        ReqStorageInfoDto reqStorageInfoDto =
-                storageService.cancelReqStorageInfo(loginUserInfo, reqStorageId);
-
-        return success(reqStorageInfoDto);
+    /**
+     *
+     * @methodName : deleteReqStorage
+     * @date : 2021-06-29 오후 4:32
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param reqStorageId
+     * @param reqStorageInfoDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.ReqStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @Secured(value = {"ROLE_MANAGER"})
+    @PostMapping(value = "/my/management/storage/req/delete/{reqStorageId:.+(?<!\\.js)$}")
+    public ApiResult<ReqStorageInfoDto> deleteReqStorage(
+            @LoginUser LoginUserInfo loginUserInfo,
+            @PathVariable String reqStorageId,
+            @RequestBody ReqStorageInfoDto reqStorageInfoDto
+    ){
+        return success(storageService.deleteReqStorageInfo(loginUserInfo, reqStorageId, reqStorageInfoDto));
     }
 
     /**

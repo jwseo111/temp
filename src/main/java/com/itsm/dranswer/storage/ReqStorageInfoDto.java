@@ -42,18 +42,17 @@ public class ReqStorageInfoDto extends BaseEntity {
 
     private String bucketName;
 
-    private BucketInfo bucketInfo;
-
     private String deleteReason;
 
     private String rejectReason;
 
     private ReqUserDto reqUserDto;
 
-    public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo){
+    public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo, ReqUserDto reqUserDto){
         copyProperties(reqStorageInfo, this);
         this.diseaseManagerUserInfo = new UserInfoDto(userInfo);
         this.agencyInfo = new AgencyInfoDto(agencyInfo);
+        this.reqUserDto = reqUserDto;
     }
 
     public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo) {

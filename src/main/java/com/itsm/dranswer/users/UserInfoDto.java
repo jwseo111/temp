@@ -36,6 +36,12 @@ public class UserInfoDto {
 
     private String userPhoneNumber;
 
+    private String nCloudId;
+
+    private String nCloudAccessKey;
+
+    private String nCloudSecretKey;
+
     public UserInfoDto(String userEmail, String userName) {
         this.userSeq = null;
         this.userEmail = userEmail;

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/emptyLayout">
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+        <link rel="stylesheet" th:href="@{/css/user/login.css}" />
+        <style>
+            .wrap input:focus{
+                box-shadow: 0 0 5px #a1a1a1;
+                border: 1px solid #7F7F7F;
+            }
+        </style>
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/user/join.js}"></script>
+        <script>
+            agree1 = "[[${join.agree1}]]";
+            agree2 = "[[${join.agree2}]]";
+            next = "[[${join.next}]]";
+        </script>
+    </th:block>
+
+    <div layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="wrap join-wrap">
+            <div class="join-tab">
+                <ul>
+                    <li> STEP01 약관 동의</li>
+                    <li class="active"> STEP02 회원 정보 입력</li>
+                    <li> STEP03 가입 완료</li>
+                </ul>
+            </div>
+
+            <div>
+                <div>
+                    <h3>회원구분</h3>
+                    <ul class="join-rdo" style="padding-left : 5px;" >
+                        <li v-for="(item, idx) in info.agencyTypeList" >
+                            <input type="radio" v-bind:id="['rdo' + idx]" v-model="info.agencyTypeCode" v-bind:value="item.name" v-on:change="onclickAgency();"><label v-bind:for="['rdo' + idx]">{{item.desc}}</label>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>회원정보입력</h3>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>이메일</td>
+                            <td>
+                                <input type="text" ref="userEmail" v-model="info.userEmail" @input="onkeyupEmail">
+                                <input type="button" v-on:click="onclickCertSend();" value="인증요청">
+                                <span v-text="message1"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>이메일인증코드</td>
+                            <td>
+                                <input type="text" ref="certCode" v-model="info.certCode">
+                                <input type="button" v-on:click="onclickCertChk();" value="인증확인">
+                                <span v-text="message2"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호</td>
+                            <td>
+                                <input type="password" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();">
+                                <span v-text="message3"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호확인</td>
+                            <td>
+                                <input type="password" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();">
+                                <span v-text="message4"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                   </table>
+                </div>
+                <div>
+                    <h3>추가정보입력</h3>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>기관명</td>
+                            <td>
+                                <input type="text"  v-model="info.agencyName" readonly>
+                                <input type="button" ref="popupAgency" @click="popupAgency();" value="팝업">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>대표자명</td>
+                            <td>
+                                <input type="text" v-model="info.ceoName" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>사업자번호</td>
+                            <td>
+                                <input type="text" v-model="info.blNumber" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>질병명</td>
+                            <td>
+                                <select  ref="diseaseCode" v-model="info.diseaseCode">
+                                    <option value="">선택</option>
+                                    <option v-for="(item, idx) in info.diseaseList"  v-bind:value="item.name">{{item.desc}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>담당자이름</td>
+                            <td>
+                                <input type="text" ref="userName" v-model="info.userName">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>담당자휴대전화</td>
+                            <td>
+                                <input type="text" ref="userPhoneNumber" v-model="info.userPhoneNumber" @input="onkeyupPhoneNumber" maxlength="11">
+                            </td>
+                        </tr>
+                        <tr v-show="info.agencyTypeCode !== 'COMP'">
+                            <td>질병책임자여부</td>
+                            <td>
+                                <input type="radio" ref="diseaseManagerY" id="diseaseManagerY" v-model="info.diseaseManagerYn" value="Y"><label for="diseaseManagerY">질병책임자</label>
+                                <input type="radio" id="diseaseManagerN" v-model="info.diseaseManagerYn" value="N"><label for="diseaseManagerN">데이터업로더</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NBP 아이디</td>
+                            <td>
+                                <input type="text" ref="nCloudId" v-model="info.nCloudId">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NBP 액세스키</td>
+                            <td>
+                                <input type="text" ref="nCloudAccessKey" v-model="info.nCloudAccessKey">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NBP 시크릿키</td>
+                            <td>
+                                <input type="text" ref="nCloudSecretKey" v-model="info.nCloudSecretKey">
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="padding-bottom: 30px;">
+                <input type="button" @click="onclickBack();" value="취소">
+                <input type="button" @click="btnSave();" value="저장">
+            </div>
+
+        </div>
+        </script>
+
+    </div>
+</html>

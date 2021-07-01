@@ -48,6 +48,25 @@ public class ReqStorageInfoDto extends BaseEntity {
 
     private ReqUserDto reqUserDto;
 
+    /**
+     * use querydsl
+     * @methodName : ReqStorageInfoDto
+     * @date : 2021-07-01 오전 10:36
+     * @author : xeroman.k
+     * @param reqStorageInfo
+     * @param userInfo
+     * @param agencyInfo
+     * @return :
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo){
+        copyProperties(reqStorageInfo, this);
+        this.diseaseManagerUserInfo = new UserInfoDto(userInfo);
+        this.agencyInfo = new AgencyInfoDto(agencyInfo);
+    }
+
     public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo, ReqUserDto reqUserDto){
         copyProperties(reqStorageInfo, this);
         this.diseaseManagerUserInfo = new UserInfoDto(userInfo);

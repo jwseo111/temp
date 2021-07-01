@@ -143,7 +143,17 @@ public class UserService {
     public List<UserInfoDto> findByPhoneNumber(UserInfoDto userInfoDto) {
 
         List<UserInfo> userInfos = userInfoRepo.findByUserPhoneNumber(userInfoDto.getUserPhoneNumber());
+
+        checkUserList(userInfos);
+
         return userInfos.stream().map(UserInfoDto::new).collect(Collectors.toList());
+
+    }
+
+    private void checkUserList(List<UserInfo> userInfos){
+        if(userInfos.size() == 0){
+            throw new IllegalArgumentException("회원정보가 존재하지 않습니다.");
+        }
     }
 
     /**

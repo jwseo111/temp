@@ -142,7 +142,7 @@ public class UserService {
     **/
     public List<UserInfoDto> findByPhoneNumber(UserInfoDto userInfoDto) {
 
-        List<UserInfo> userInfos = userInfoRepo.findByUserPhoneNumber(userInfoDto.getUserPhoneNumber());
+        List<UserInfo> userInfos = userInfoRepo.findByUserNameAndUserPhoneNumber(userInfoDto.getUserName(), userInfoDto.getUserPhoneNumber());
 
         checkUserList(userInfos);
 

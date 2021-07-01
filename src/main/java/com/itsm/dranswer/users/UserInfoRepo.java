@@ -43,4 +43,18 @@ public interface UserInfoRepo extends JpaRepository<UserInfo, Long> {
      *
     **/
     List<UserInfo> findByUserPhoneNumber(String userPhoneNumber);
+
+    /**
+     * 
+     * @methodName : findByUserNameAndUserPhoneNumber
+     * @date : 2021-07-01 오후 3:12
+     * @author : xeroman.k 
+     * @param userName
+     * @param userPhoneNumber
+     * @return : java.util.List<com.itsm.dranswer.users.UserInfo>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    List<UserInfo> findByUserNameAndUserPhoneNumber(String userName, String userPhoneNumber);
 }

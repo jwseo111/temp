@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/user/myStorageReq.js}"></script>
+        <script>
+            const reqStorageId = "[[${param.reqStorageId}]]";
+        </script>
+    </th:block>
+
+    <div layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="storage-contents-wrap" >
+
+            <div class="storage-title">마이페이지 > 질환데이터 저장신청 상세정보</div>
+            <div class="storage-title">신청자 정보</div>
+            <div class="storage-content">
+                <table class="result-table-detail">
+                    <tr>
+                        <th>신청자명</th>
+                        <td>{{reqUserInfo.userName}}</td>
+                        <th>병원명</th>
+                        <td>{{reqUserInfo.agencyName}}</td>
+                    </tr>
+                    <tr>
+                        <th>질병주관병원여부</th>
+                        <td>
+                            <lo v-for="radio in isYn">
+                                <input type="radio" v-bind:id="radio.value" v-bind:value="radio.value" disabled v-model="reqUserInfo.diseaseMainYn">
+                                <label v-if="radio.value=='Y'">예</label>
+                                <label v-if="radio.value=='N'">아니오</label>
+                            </lo>
+                        </td>
+
+                        <th>관리하는 질병</th>
+                        <td>{{reqUserInfo.diseaseCode.desc}}</td>
+                    </tr>
+                    <tr>
+                        <th>연락처</th>
+                        <td>{{reqUserInfo.userPhoneNumber}}</td>
+                        <th>이메일</th>
+                        <td>{{reqUserInfo.userEmail}}</td>
+                    </tr>
+                    <tr>
+                        <th>질병책임자명</th>
+                        <td colspan="3">{{reqUserInfo.managerUserName}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="storage-title">신청 정보</div>
+            <div class="storage-content">
+                <table class="result-table-detail">
+                    <tr>
+                        <th>저장데이터명</th>
+                        <td>{{reqStorageInfo.dataName}}</td>
+                    </tr>
+                    <tr>
+                        <th>신청일자</th>
+                        <td>{{reqStorageInfo.createdDate}}</td>
+                    </tr>
+                    <tr>
+                        <th>처리상태</th>
+                        <td>{{reqStorageInfo.reqStorageStatCode.desc}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="storage-title">생성 정보</div>
+            <div class="storage-content">
+                <table class="result-table-detail">
+                    <tr>
+                        <th>저장요청ID</th>
+                        <td>{{reqStorageInfo.reqStorageId}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="storage-title">취소 정보</div>
+            <div class="storage-content">
+                <table class="result-table-detail">
+                    <tr>
+                        <th>취소사유</th>
+                        <td><input type="text" v-model="saveInfo.cancelReason" placeholder="승인상태이면 필수입력"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="btn_wrap" align="center">
+                <button v-on:click="onclickList">목록</button>
+                <button v-on:click="onclickCancel">취소신청</button>
+            </div>
+
+        </div>
+        </script>
+
+        <script>
+        </script>
+    </div>
+</html>

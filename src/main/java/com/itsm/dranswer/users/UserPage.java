@@ -25,4 +25,23 @@ public class UserPage {
         return "pages/user/login";
     }
 
+    @GetMapping(value = "/my/management/storagepage")
+    public String mypage() {
+        //return "pages/user/mypage";
+        return "pages/user/myStorageList";
+    }
+
+    // 마이페이지 > 질환데이터저장신청 목록
+    @GetMapping(value = "/my/store/list")
+    public String myStorageList() {
+
+        return "pages/user/myStorageList";
+    }
+
+    // 마이페이지 > 질환데이터저장신청 상세
+    @GetMapping(value = "/my/store/req")
+    public String myStorageReq() {
+
+        return "pages/user/myStorageReq";
+    }
 }

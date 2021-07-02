@@ -81,17 +81,18 @@ Vue.component('maincontents', {
         // 신청 메소드 호출
         saveReqStorage:function () {
             console.log(("신청 메소드 호출"));
-            this.saveInfo.diseaseManagerUserSeq = this.userInfo.managerUserSeq;
-            for(let i=0; i<Object.keys(this.diseaseCdList).length; i++){
-                if(this.diseaseCdList[i].desc == this.userInfo.diseaseCode.desc){
-                    this.saveInfo.diseaseCode = this.diseaseCdList[i].name;
-                }
+            if(!this.saveInfo.dataName){
+                alert("저장데이터명은 필수입니다.");
+                return false;
             }
-            /*
+            this.saveInfo.diseaseManagerUserSeq = this.userInfo.managerUserSeq;
+            let userDiseaseCode = this.userInfo.diseaseCode.desc;
+            let idx = this.diseaseCdList.findIndex(function(key) {return key.desc === userDiseaseCode});
+            this.saveInfo.diseaseCode = this.diseaseCdList[idx].name;
+
             console.log("저장데이터명 : " + this.saveInfo.dataName);
             console.log("질병코드  : "   + this.saveInfo.diseaseCode);
             console.log("질병책임자   : " + this.saveInfo.diseaseManagerUserSeq);
-             */
 
             post(TID.SAVE,
                 "/storage/req",

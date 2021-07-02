@@ -9,9 +9,7 @@
 
 let appMain;
 const TID = {
-    SEARCH      : {value: 0, name: "search", code: "S"},
-    SEARCH_USER : {value: 0, name: "searchUser", code: "S"},
-    SAVE        : {value: 0, name: "save", code: "I"}
+    SEARCH      : {value: 0, name: "search", code: "S"}
 };
 window.onload = function(){
     appMain = new Vue({
@@ -84,7 +82,7 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results);
+                //console.log(results);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.reqStorageList = results.response.content;
             } else {

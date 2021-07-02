@@ -39,8 +39,8 @@
                         <td>
                             <lo v-for="radio in isYn">
                                 <input type="radio" v-bind:id="radio.value" v-bind:value="radio.value" disabled v-model="userInfo.diseaseMainYn">
-                                <label v-if="radio.value=='Y'">예 {{radio.value}}</label>
-                                <label v-if="radio.value=='N'">아니오 {{radio.value}}</label>
+                                <label v-if="radio.value=='Y'">예</label>
+                                <label v-if="radio.value=='N'">아니오</label>
                             </lo>
                         </td>
 

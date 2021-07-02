@@ -48,7 +48,6 @@
                 <table class="result-table">
                     <thead>
                     <tr>
-                        <th>신청번호</th>
                         <th>질환</th>
                         <th>데이터명</th>
                         <th>제공병원</th>
@@ -59,7 +58,7 @@
                     </thead>
                     <tbody v-if="reqStorageList.length == 0">
                     <tr>
-                        <td colspan="7" align="center">
+                        <td colspan="6" align="center">
                             no data.
                         </td>
                     </tr>
@@ -67,7 +66,6 @@
 
                     <tbody v-if="reqStorageList.length > 0">
                     <tr v-for="(storage, idx) in reqStorageList">
-                        <td>{{storage.reqStorageId}}</td>
                         <td>{{storage.diseaseCode.desc}}</td>
                         <td>{{storage.dataName}}</td>
                         <td>{{storage.agencyInfo.agencyName}}</td>

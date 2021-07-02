@@ -59,3 +59,18 @@
     padding: 3px 10px;
     border: 1px solid #aaaaaa;
 }
+.storage-content .result-table-detail{
+    width: 100%;
+    font-size: 13px;
+    border-spacing: 0;
+}
+.storage-content .result-table-detail th{
+    background-color: #dddddd;
+    padding: 3px 10px;
+    border: 1px solid #aaaaaa;
+    width: 25%;
+}
+.storage-content .result-table-detail td{
+    padding: 3px 10px;
+    border: 1px solid #aaaaaa;
+}

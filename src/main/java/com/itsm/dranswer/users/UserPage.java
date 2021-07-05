@@ -25,6 +25,13 @@ public class UserPage {
         return "pages/user/login";
     }
 
+    // ID or 비밀번호찾기
+    @GetMapping(value = "/login/findIdPw")
+    public String findIdPw() {
+
+        return "pages/user/findIdPw";
+    }
+
     @GetMapping(value = "/my/management/storagepage")
     public String mypage() {
         //return "pages/user/mypage";

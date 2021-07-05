@@ -28,6 +28,9 @@
             <div class="line">
                 <div><input type="password" v-model="login.password" placeholder="Password" autocomplete="off"></div>
             </div>
+            <div class="line">
+                <div><input type="checkbox" id="saveid" v-model="login.saveId"><label for="saveid">아이디저장</label></div>
+            </div>
             <div class="line">{{messages}}</div>
             <div class="line">
                 <div class="login-btn-wrap">
@@ -35,6 +38,15 @@
                         LOGIN
                     </div>
                 </div>
+            </div>
+            <div>
+                <span class="btn" @click="onclickPageMove('ID');">아이디 찾기</span> |
+                <span class="btn" @click="onclickPageMove('PASS');">비밀번호 찾기</span> |
+                <span class="btn" @click="onclickPageMove('JOIN');">회원가입</span>
+            </div>
+            <div>
+                <span>이용약관</span>
+                <span>개인정보 처리방침</span>
             </div>
         </div>
         </script>

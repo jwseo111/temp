@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/emptyLayout">
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+        <link rel="stylesheet" th:href="@{/css/user/login.css}" />
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/user/login.js}"></script>
+        <script>
+            type = "[[${param.type}]]";
+        </script>
+
+    <div layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <di v calss="wrap" style="text-align: center;">
+        <div v-if="type === 'ID'" >
+            <div class="line">
+                <p>회원가입시 등록한 이름 및 전화번호를 입력해주세요.</p>
+            </div>
+            <div class="line">
+                이름 <input type="text" ref="userName" v-model="info.userName" placeholder="이름을 입력하세요.">
+            </div>
+            <div class="line">
+                휴대폰번호 <input type="text" ref="userPhoneNumber" v-model="info.userPhoneNumber" @input="onkeyupPhoneNumber" maxlength="11" placeholder="휴대폰번호를 (-)없이 입력하세요." >
+            </div>
+           <div class="line">{{messages}}</div>
+            <div class="line">
+                <div class="login-btn-wrap">
+                    <span class="btn login" @click="onclickPageMove('BACK');">취소</span>
+                    <span class="btn login" @click="onclickFindId();">확인</span>
+                </div>
+            </div>
+            <div class="line" style="padding-top: 10px;">
+                <p v-for="item in resultId" >{{item}}</p>
+            </div>
+        </div>
+
+        <div v-else-if="type === 'PASS'" v-show="certOk">
+            <div class="line">
+                <ul style="list-style: none;">
+                <li>회원가입시 등록한 이메일을 입력해주세요.</li>
+                <li>이메일로 인증코드가 전송됩니다.</li>
+                <li>인증이 완료되면 비밀번호를 재설정 할 수 있습니다.</li>
+                </ul>
+            </div>
+            <div class="line">
+                아이디 <input type="text" ref="email" v-model="info.userEmail" placeholder="회원가입시 등록한 이메일">
+                <input type="button" @click="onclickCertSend();" value="인증요청">
+            </div>
+            <div class="line">
+                인증코드 <input type="text" v-model="info.certCode" placeholder="발송된 인증코드 입력">
+            </div>
+            <div class="line">{{messages}}</div>
+            <div class="line">
+                <div class="login-btn-wrap">
+                    <span class="btn login" @click="onclickPageMove('BACK');">취소</span>
+                    <span class="btn login" @click="onclickCertChk();">인증확인</span>
+                </div>
+            </div>
+        </div>
+        <div v-show="passChg" style="padding-top : 30px;">
+            <div class="line">
+                <p>변경할 비밀번호를 입력해주세요.</p>
+            </div>
+            <div class="line">
+                새로운 비밀번호<input type="password" ref="password1" v-model="info.password1" autocomplete="off"  v-on:blur="onblurPassChk1();"
+                               placeholder="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다.">
+            </div>
+            <div class="line">
+                새로운 비밀번호확인 <input type="password" ref="password2" v-model="info.password2" autocomplete="off" placeholder="">
+            </div>
+            <div class="line">{{messages}}</div>
+            <div class="line">
+                <div class="login-btn-wrap">
+                    <span class="btn login" @click="onclickPageMove('BACK');">취소</span>
+                    <span class="btn login" @click="onclickPassChg()">확인</span>
+                </div>
+            </div>
+        </div>
+        </div>
+        </script>
+
+        <script>
+        </script>
+    </div>
+</html>

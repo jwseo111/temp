@@ -116,7 +116,7 @@ function regExp(id, str){
     }else if(id === "PASS2"){
 
         if(!pass2Exp.test(str) && str !== ""){
-            rtnMsg ="10~15자 영문, 숫자, 특문 각 1회 이상 입력 가능합니다.";
+            rtnMsg ="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다.";
         }
     }
 

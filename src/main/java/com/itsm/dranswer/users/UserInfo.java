@@ -120,6 +120,9 @@ public class UserInfo extends BaseEntity implements Serializable {
     }
 
     public void login(PasswordEncoder passwordEncoder, String email, String credentials) {
+        if (this.joinStatCode != JoinStat.ACCEPT){
+            throw new IllegalArgumentException("승인되지 않은 회원 입니다.");
+        }
         if (!passwordEncoder.matches(credentials+email, loginPw)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }

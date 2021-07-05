@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 
 <div th:fragment="headerFragment">
     <script th:src="@{/js/fragments/defaultHeader.js}"></script>
@@ -13,10 +14,11 @@
     <script type="text/x-template" id="header-template" >
         <div class="header-wrapper">
             <div class="top-menu-wrap">
-                <div class="top-menu" sec:authorize="isAnonymous()">
+                <div class="top-menu" sec:authorize="isAnonymous()" >
                     <div class="menu" v-for="(menu, key) in anonymousTopMenus" v-on:click="onclickMenu(menu)">{{menu.name}}</div>
                 </div>
                 <div class="top-menu" sec:authorize="isAuthenticated()">
+                    <span class="menu" style="font-weight: 700;">[[${#authentication.principal.name}]]님</span>
                     <div class="menu" v-for="(menu, key) in authenticatedTopMenus" v-on:click="onclickMenu(menu)">{{menu.name}}</div>
                 </div>
             </div>

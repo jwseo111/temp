@@ -34,7 +34,7 @@
         <script type="text/x-template" id="main-template" >
         <div class="wrap join-wrap">
             <div class="join-tab">
-                <ul>
+                <ul class="join_step">
                     <li> STEP01 약관 동의</li>
                     <li class="active"> STEP02 회원 정보 입력</li>
                     <li> STEP03 가입 완료</li>
@@ -42,7 +42,7 @@
             </div>
 
             <div>
-                <div>
+                <div class="join_sub_tit">
                     <h3>회원구분</h3>
                     <ul class="join-rdo" style="padding-left : 5px;" >
                         <li v-for="(item, idx) in info.agencyTypeList" >
@@ -50,70 +50,70 @@
                         </li>
                     </ul>
                 </div>
-                <div>
+                <div class="join_sub_tit">
                     <h3>회원정보입력</h3>
-                    <table>
+                    <table class="infoT">
                         <tbody>
                         <tr>
                             <td>이메일</td>
-                            <td>
-                                <input type="text" ref="userEmail" v-model="info.userEmail" @input="onkeyupEmail">
+                            <td class="td_left">
+                                <input type="text" class="ipt_a3" ref="userEmail" v-model="info.userEmail" @input="onkeyupEmail">
                                 <input type="button" v-on:click="onclickCertSend();" value="인증요청">
                                 <span v-text="message1"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>이메일인증코드</td>
-                            <td>
-                                <input type="text" ref="certCode" v-model="info.certCode">
+                            <td class="td_left">
+                                <input type="text" class="ipt_a3" ref="certCode" v-model="info.certCode">
                                 <input type="button" v-on:click="onclickCertChk();" value="인증확인">
                                 <span v-text="message2"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>비밀번호</td>
-                            <td>
-                                <input type="password" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();">
+                            <td class="td_left">
+                                <input type="password" class="ipt_a3" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();">
                                 <span v-text="message3"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>비밀번호확인</td>
-                            <td>
-                                <input type="password" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();">
+                            <td class="td_left">
+                                <input type="password" class="ipt_a3" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();">
                                 <span v-text="message4"></span>
                             </td>
                         </tr>
                         </tbody>
                    </table>
                 </div>
-                <div>
+                <div class="join_sub_tit">
                     <h3>추가정보입력</h3>
-                    <table>
+                    <table class="infoT">
                         <tbody>
                         <tr>
                             <td>기관명</td>
                             <td>
-                                <input type="text"  v-model="info.agencyName" readonly>
+                                <input type="text" class="ipt_a3" v-model="info.agencyName" readonly>
                                 <input type="button" ref="popupAgency" @click="popupAgency();" value="팝업">
                             </td>
                         </tr>
                         <tr>
                             <td>대표자명</td>
                             <td>
-                                <input type="text" v-model="info.ceoName" readonly>
+                                <input type="text" class="ipt_a3" v-model="info.ceoName" readonly>
                             </td>
                         </tr>
                         <tr>
                             <td>사업자번호</td>
                             <td>
-                                <input type="text" v-model="info.blNumber" readonly>
+                                <input type="text" class="ipt_a3" v-model="info.blNumber" readonly>
                             </td>
                         </tr>
                         <tr>
                             <td>질병명</td>
-                            <td>
-                                <select  ref="diseaseCode" v-model="info.diseaseCode">
+                            <td >
+                                <select class="change-info" ref="diseaseCode" v-model="info.diseaseCode">
                                     <option value="">선택</option>
                                     <option v-for="(item, idx) in info.diseaseList"  v-bind:value="item.name">{{item.desc}}</option>
                                 </select>

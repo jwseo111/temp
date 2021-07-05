@@ -58,10 +58,14 @@ Vue.component('maincontents', {
         };
     },
     mounted:function(){
-        if(this.join.next === "Y" && this.join.agree1 !== "Y" && this.join.agree2 !== "Y"){
-            alert("잘 못된 접근방식 입니다.");
-            location.href="/";
-            return;
+        if(this.join.next === "Y"){
+
+          if(this.join.agree1 !== "Y" && this.join.agree2 !== "Y") {
+
+              alert("잘 못된 접근방식 입니다.");
+              location.href = "/";
+              return;
+          }
         }
 
         codeId = "AgencyType";
@@ -82,14 +86,14 @@ Vue.component('maincontents', {
 
         },
         onclickNext : function(){
-            if(this.join.agree1 === "" || this.join.agree2 === ""){
+            if(isNull(this.join.agree1) || isNull(this.join.agree2 )){
                 alert("모든 약관에 동의 해주세요.");
                 return;
             }
             document.frm.submit();
         },
         callBack : function(tid, result){   // 공통코드 조회
-            console.log(tid +" / " + result);
+
             switch (tid){
                 case "AgencyType":
                     this.info.agencyTypeList = result.response;

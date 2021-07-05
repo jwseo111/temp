@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+
+<div th:fragment="mypageFragment">
+
+    <script th:src="@{/js/common/mypage.js}"></script>
+    <script>
+        const role = "[[${#authentication.authorities[0]}]]";
+    </script>
+    <link rel="stylesheet" th:href="@{/css/common/mypage.css}" />
+
+<!-- 마이페이지 메뉴 -->
+    <div id="mypagemenuswrap" >
+        <mypagemenus ref="mypagemenus"></mypagemenus>
+    </div>
+    <script type="text/x-template" id="mypage-template" >
+        <div class="mypage-contents-wrap" >
+            마이페이지 메뉴====================================
+            <div class="mypage" v-if="role=='ROLE_MANAGER'">
+                <div v-for="(menu, key) in menus_manager">
+                    <div v-if="menu.use" class="menu">
+                        <div v-on:click="onclickMenu(menu)" class="parent">
+                            {{menu.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mypage" v-else-if="role=='ROLE_ADMIN'">
+
+                <div v-for="(menu, key) in menus_admin">
+                    <div v-if="menu.use" class="menu">
+                        <div v-on:click="onclickMenu(menu)" class="parent">
+                            {{menu.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+<!-- 마이페이지 메뉴 끝 -->
+
+</div>
+</html>

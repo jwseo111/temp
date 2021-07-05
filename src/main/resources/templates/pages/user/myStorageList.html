@@ -3,11 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layouts/defaultLayout">
+      layout:decorator="layouts/mypageLayout">
 
     <th:block layout:fragment="css">
         <link rel="stylesheet" th:href="@{/css/common/common.css}" />
         <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+
     </th:block>
 
     <th:block layout:fragment="script">
@@ -19,13 +20,14 @@
     </th:block>
 
     <div layout:fragment="contents">
+
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
         <div class="storage-contents-wrap" >
-            <div class="storage-title">마이페이지 > 질환데이터 저장신청 목록</div>
+
             <div class="storage-search-wrap">
                 <div class="line">
                     <div class="cond">
@@ -88,7 +90,5 @@
         </div>
         </script>
 
-        <script>
-        </script>
     </div>
 </html>

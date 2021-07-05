@@ -34,8 +34,7 @@ public class UserPage {
 
     @GetMapping(value = "/my/management/storagepage")
     public String mypage() {
-        //return "pages/user/mypage";
-        return "pages/user/myStorageList";
+        return "pages/user/mypage";
     }
 
     // 마이페이지 > 질환데이터저장신청 목록

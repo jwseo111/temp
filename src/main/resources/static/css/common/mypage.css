@@ -9,7 +9,8 @@
     cursor: pointer;
 }
 .mypage .menu .parent{
-
+    font-size: 12px;
+    border: 0px solid #000000;
 }
 
 .mypage-title-wrap{

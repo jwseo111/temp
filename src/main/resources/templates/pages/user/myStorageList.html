@@ -68,9 +68,9 @@
 
                     <tbody v-if="reqStorageList.length > 0">
                     <tr v-for="(storage, idx) in reqStorageList">
-                        <td v-on:click="onclickReq(storage.reqStorageId)">{{storage.diseaseCode.desc}}</td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)">{{storage.dataName}}</td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)">{{storage.agencyInfo.agencyName}}</td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.diseaseCode.desc}}</span></td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.dataName}}</span></td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.agencyInfo.agencyName}}</span></td>
                         <td>{{storage.diseaseManagerUserInfo.userName}}</td>
                         <td v-if="storage.reqStorageStatCode === null">-</td>
                         <td v-else>{{storage.reqStorageStatCode.desc}}</td>

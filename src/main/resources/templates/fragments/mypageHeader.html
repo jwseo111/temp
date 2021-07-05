@@ -17,7 +17,7 @@
     </div>
     <script type="text/x-template" id="mypage-template" >
         <div class="mypage-contents-wrap" >
-            마이페이지 메뉴====================================
+             >>>>> 마이페이지
             <div class="mypage" v-if="role=='ROLE_MANAGER'">
                 <div v-for="(menu, key) in menus_manager">
                     <div v-if="menu.use" class="menu">
@@ -28,9 +28,28 @@
                 </div>
             </div>
 
-            <div class="mypage" v-else-if="role=='ROLE_ADMIN'">
+            <div class="mypage" v-if="role=='ROLE_UPLOADER'">
+                <div v-for="(menu, key) in menus_manager">
+                    <div v-if="menu.use" class="menu">
+                        <div v-on:click="onclickMenu(menu)" class="parent">
+                            {{menu.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="mypage" v-else-if="role=='ROLE_ADMIN'">
                 <div v-for="(menu, key) in menus_admin">
+                    <div v-if="menu.use" class="menu">
+                        <div v-on:click="onclickMenu(menu)" class="parent">
+                            {{menu.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mypage" v-else-if="role=='ROLE_USER'">
+                <div v-for="(menu, key) in menus_user">
                     <div v-if="menu.use" class="menu">
                         <div v-on:click="onclickMenu(menu)" class="parent">
                             {{menu.name}}

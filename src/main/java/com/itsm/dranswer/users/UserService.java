@@ -29,6 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @Service
 @Validated
+@Transactional
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;

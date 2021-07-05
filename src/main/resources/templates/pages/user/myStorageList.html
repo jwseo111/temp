@@ -3,11 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layouts/defaultLayout">
+      layout:decorator="layouts/mypageLayout">
 
     <th:block layout:fragment="css">
         <link rel="stylesheet" th:href="@{/css/common/common.css}" />
         <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+
     </th:block>
 
     <th:block layout:fragment="script">
@@ -19,13 +20,14 @@
     </th:block>
 
     <div layout:fragment="contents">
+
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
         <div class="storage-contents-wrap" >
-            <div class="storage-title">마이페이지 > 질환데이터 저장신청 목록</div>
+
             <div class="storage-search-wrap">
                 <div class="line">
                     <div class="cond">
@@ -66,9 +68,9 @@
 
                     <tbody v-if="reqStorageList.length > 0">
                     <tr v-for="(storage, idx) in reqStorageList">
-                        <td v-on:click="onclickReq(storage.reqStorageId)">{{storage.diseaseCode.desc}}</td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)">{{storage.dataName}}</td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)">{{storage.agencyInfo.agencyName}}</td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.diseaseCode.desc}}</span></td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.dataName}}</span></td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.agencyInfo.agencyName}}</span></td>
                         <td>{{storage.diseaseManagerUserInfo.userName}}</td>
                         <td v-if="storage.reqStorageStatCode === null">-</td>
                         <td v-else>{{storage.reqStorageStatCode.desc}}</td>
@@ -88,7 +90,5 @@
         </div>
         </script>
 
-        <script>
-        </script>
     </div>
 </html>

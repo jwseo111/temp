@@ -1,0 +1,29 @@
+.mypage{
+    display: flex;
+    padding: 15px 10px;
+    border: 0px solid #100000;
+}
+.mypage .menu{
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+}
+.mypage .menu .parent{
+    font-size: 12px;
+    border: 0px solid #000000;
+}
+
+.mypage-title-wrap{
+    border: 0px solid #000000;
+}
+.mypage-title{
+    font-size: 20px;
+    padding: 10px 15px;
+    text-align: left;
+}
+
+.mypage-menu-wrap{
+    border: 0px solid #000000;
+    padding: 10px 10px 240px 10px;
+}
+

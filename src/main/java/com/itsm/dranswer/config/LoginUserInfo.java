@@ -17,4 +17,8 @@ public class LoginUserInfo {
     private String userName;
 
     String[] roles;
+
+    public boolean checkCreateUser(Long makerId) {
+        return this.userSeq.equals(makerId);
+    }
 }

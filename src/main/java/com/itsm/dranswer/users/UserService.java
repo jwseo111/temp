@@ -234,11 +234,34 @@ public class UserService {
         }
     }
 
+    /**
+     * 
+     * @methodName : findUserInfo
+     * @date : 2021-07-06 오전 11:00
+     * @author : xeroman.k 
+ * @param userSeq
+     * @return : com.itsm.dranswer.users.UserInfo
+     * @throws 
+     * @modifyed :
+     *
+    **/
     public UserInfo findUserInfo(Long userSeq){
         return userInfoRepo.findById(userSeq)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원정보 입니다."));
     }
 
+    /**
+     * 
+     * @methodName : getUserList
+     * @date : 2021-07-06 오전 11:00
+     * @author : xeroman.k 
+     * @param userName
+     * @param pageable
+     * @return : org.springframework.data.domain.Page<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     public Page<UserInfoDto> getUserList(String userName, Pageable pageable) {
 
         return userInfoRepoSupport.searchAll(userName, pageable);

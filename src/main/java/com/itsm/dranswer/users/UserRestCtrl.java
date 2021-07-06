@@ -275,7 +275,18 @@ public class UserRestCtrl {
         return success(reqUserDto);
     }
 
-
+    /**
+     * 
+     * @methodName : getUserList
+     * @date : 2021-07-06 오전 11:00
+     * @author : xeroman.k 
+     * @param userName
+     * @param pageable
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.users.UserInfoDto>>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/user/list")
     public ApiResult<Page<UserInfoDto>> getUserList(@RequestParam(required = true) String userName,
             Pageable pageable){

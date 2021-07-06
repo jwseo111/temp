@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
@@ -56,6 +58,9 @@ public class ReqStorageInfo extends BaseEntity implements Serializable {
     @Column(columnDefinition = "varchar(100) COMMENT '거절사유'")
     private String rejectReason;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reqStorageInfo")
+    private List<OpenStorageInfo> openStorageInfos = new ArrayList<>();
+
     public ReqStorageInfo(ReqStorageInfoDto reqStorageInfoDto) {
         this.dataName = reqStorageInfoDto.getDataName();
         this.diseaseCode = reqStorageInfoDto.getDiseaseCode();
@@ -65,10 +70,6 @@ public class ReqStorageInfo extends BaseEntity implements Serializable {
 
     public ReqStorageInfoDto convertDto() {
         return new ReqStorageInfoDto(this);
-    }
-
-    public boolean checkCreateUser(Long userSeq) {
-        return this.getCreatedBy() == userSeq;
     }
 
     public void reqCancel() {

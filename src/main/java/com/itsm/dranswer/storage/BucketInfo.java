@@ -36,9 +36,6 @@ public class BucketInfo extends BaseEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bucketInfo")
     private List<ReqStorageInfo> reqStorageInfos = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bucketInfo")
-    private List<OpenStorageInfo> openStorageInfos = new ArrayList<>();
-
     public BucketInfo(ReqStorageInfo reqStorageInfo){
         this.bucketName = makeBucketName(reqStorageInfo);
         this.bucketDesc = reqStorageInfo.getDataName();
@@ -49,10 +46,9 @@ public class BucketInfo extends BaseEntity implements Serializable {
 
         // 버킷 명명규칙 : dranswer2 + 병원코드 + 질병코드 + 회원ID + UUID
         Integer agencySeq = reqStorageInfo.getDiseaseManagerUserInfo().getAgencySeq();
-        String bucketName = "dranswer2-"+agencySeq+"-"+
+
+        return "dranswer2-"+agencySeq+"-"+
                 reqStorageInfo.getDiseaseCode().name()+"-"+
                 reqStorageInfo.getDiseaseManagerUserSeq()+"-"+reqStorageInfo.getReqStorageId();
-
-        return bucketName;
     }
 }

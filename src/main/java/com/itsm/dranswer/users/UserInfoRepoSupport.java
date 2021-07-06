@@ -30,7 +30,7 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
                 .from(userInfo)
                 .innerJoin(userInfo.agencyInfo, agencyInfo)
                 .where(userInfo.userName.contains(userName))
-                .orderBy(userInfo.userName.asc())
+                .orderBy(userInfo.userSeq.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 

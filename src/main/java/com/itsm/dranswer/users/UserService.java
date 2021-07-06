@@ -201,7 +201,7 @@ public class UserService {
         if(parentSeq == null){
             return userInfo.convertDto();
         }else{
-            return userInfoRepo.findById(parentSeq).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원정보 입니다.")).convertDto();
+            return findUserInfo(parentSeq).convertDto();
         }
 
 
@@ -266,6 +266,25 @@ public class UserService {
     public Page<UserInfoDto> getUserList(JoinStat joinStat, String userName, Pageable pageable) {
 
         return userInfoRepoSupport.searchAll(joinStat, userName, pageable);
+    }
+
+    /**
+     * 
+     * @methodName : acceptUser
+     * @date : 2021-07-06 오후 1:07
+     * @author : xeroman.k 
+ * @param userInfoDto
+     * @return : com.itsm.dranswer.users.UserInfoDto
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public UserInfoDto acceptUser(UserInfoDto userInfoDto) {
+
+        UserInfo userInfo = findUserInfo(userInfoDto.getUserSeq());
+        userInfo.accept();
+
+        return new UserInfoDto(userInfo, userInfo.getAgencyInfo());
     }
 }
 

@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -287,6 +288,7 @@ public class UserRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_ADMIN"})
     @GetMapping(value = "/user/list")
     public ApiResult<Page<UserInfoDto>> getUserList(
             JoinStat joinStat,
@@ -296,5 +298,23 @@ public class UserRestCtrl {
         Page<UserInfoDto> listUserInfoDto = userService.getUserList(joinStat, userName, pageable);
 
         return success(listUserInfoDto);
+    }
+
+    /**
+     * 회원가입승인
+     * @methodName : acceptUser
+     * @date : 2021-07-06 오후 1:08
+     * @author : xeroman.k
+     * @param userInfoDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping(value = "/user/accept")
+    public ApiResult<UserInfoDto> acceptUser(@RequestBody UserInfoDto userInfoDto){
+
+        return success(userService.acceptUser(userInfoDto));
     }
 }

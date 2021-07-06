@@ -140,4 +140,8 @@ public class UserInfo extends BaseEntity implements Serializable {
     public boolean isManager(){
         return this.diseaseManagerYn == IsYn.Y;
     }
+
+    public void accept() {
+        this.joinStatCode = JoinStat.ACCEPT;
+    }
 }

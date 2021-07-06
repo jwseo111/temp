@@ -284,7 +284,26 @@ public class UserService {
         UserInfo userInfo = findUserInfo(userInfoDto.getUserSeq());
         userInfo.accept();
 
+        sendAcceptMail(userInfo);
+
         return new UserInfoDto(userInfo, userInfo.getAgencyInfo());
+    }
+
+    public void sendAcceptMail(UserInfo userInfo) {
+
+        String template = "mail/accept";
+        String subject = "[닥터앤서]가입이 승인 되었습니다.";
+        String[] to = {userInfo.getUserEmail()};
+        Context ctx = new Context();
+        ctx.setVariable("userName", userInfo.getUserName());
+
+        try {
+            customMailSender.sendMail(template, subject, to, ctx);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

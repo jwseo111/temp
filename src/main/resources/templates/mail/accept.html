@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .dr-mail-content-wrapper{
+            display: flex;
+            justify-content: center;
+        }
+        .dr-mail-content-wrap{
+            padding: 40px 40px;
+            background-color: #669966;
+        }
+        .dr-mail-content{
+            padding: 40px 20px;
+            width: 500px;
+            background-color: #ffffff;
+        }
+        .dr-cert-wrap{
+            border: 2px solid #669966;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+        .dr-warning{
+            font-size: 13px;
+            color: #aa4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="dr-mail-content-wrapper">
+        <div class="dr-mail-content-wrap">
+            <div class="dr-mail-content">
+                <div style="font-size: 28px; font-weight: 600; margin-bottom: 5px;">안녕하세요, <span th:text="${userName}"></span> 회원님.</div>
+                <div style="font-size: 17px; margin-bottom: 25px;">가입 승인이 완료 되었습니다.</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

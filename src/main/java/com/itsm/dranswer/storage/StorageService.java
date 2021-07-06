@@ -33,6 +33,8 @@ public class StorageService {
 
     private final ReqStorageInfoRepoSupport reqStorageInfoRepoSupport;
 
+    private final OpenStorageInfoRepoSupport openStorageInfoRepoSupport;
+
     private final CustomObjectStorage customObjectStorage;
 
     private final BucketInfoRepo bucketInfoRepo;
@@ -47,11 +49,12 @@ public class StorageService {
     private String laifSecretKey;
 
     @Autowired
-    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo) {
+    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, OpenStorageInfoRepoSupport openStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo) {
         this.userService = userService;
         this.reqStorageInfoRepo = reqStorageInfoRepo;
         this.openStorageInfoRepo = openStorageInfoRepo;
         this.reqStorageInfoRepoSupport = reqStorageInfoRepoSupport;
+        this.openStorageInfoRepoSupport = openStorageInfoRepoSupport;
         this.customObjectStorage = customObjectStorage;
         this.bucketInfoRepo = bucketInfoRepo;
     }
@@ -142,10 +145,8 @@ public class StorageService {
      *
     **/
     public ReqStorageInfo getReqStorageInfo(String reqStorageId){
-        ReqStorageInfo reqStorageInfo = reqStorageInfoRepo
+        return reqStorageInfoRepo
                 .findById(reqStorageId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 저장정보 ID 입니다."));
-
-        return reqStorageInfo;
     }
 
     /**
@@ -162,7 +163,7 @@ public class StorageService {
     **/
     public ReqStorageInfoDto cancelReqStorageInfo(LoginUserInfo loginUserInfo, String reqStorageId) {
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
-        checkMaker(reqStorageInfo, loginUserInfo);
+        checkMaker(loginUserInfo, reqStorageInfo.getCreatedBy());
 
         reqStorageInfo.reqCancel();
 
@@ -184,7 +185,7 @@ public class StorageService {
     **/
     public ReqStorageInfoDto deleteReqStorageInfo(LoginUserInfo loginUserInfo, String reqStorageId, ReqStorageInfoDto reqStorageInfoDto) {
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
-        checkMaker(reqStorageInfo, loginUserInfo);
+        checkMaker(loginUserInfo, reqStorageInfo.getCreatedBy());
 
         reqStorageInfo.reqDelete(reqStorageInfoDto.getDeleteReason());
 
@@ -194,17 +195,17 @@ public class StorageService {
     /**
      *
      * @methodName : checkMaker
-     * @date : 2021-06-28 오후 3:40
+     * @date : 2021-07-06 오후 4:16
      * @author : xeroman.k
-     * @param reqStorageInfo
      * @param loginUserInfo
+     * @param makerId
      * @return : void
      * @throws
      * @modifyed :
      *
     **/
-    public void checkMaker(ReqStorageInfo reqStorageInfo, LoginUserInfo loginUserInfo){
-        if(!reqStorageInfo.checkCreateUser(loginUserInfo.getUserSeq())){
+    public void checkMaker(LoginUserInfo loginUserInfo, Long makerId){
+        if(!loginUserInfo.checkCreateUser(makerId)){
             throw new IllegalArgumentException("타인의 정보 입니다.");
         }
     }
@@ -240,6 +241,51 @@ public class StorageService {
 
         customObjectStorage.makeBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketInfo.getBucketName());
 
+    }
+
+    public Page<OpenStorageInfoDto> getOpenStorageList(OpenStorageStat openStorageStatCode, String dataName, Long userSeq, Pageable pageable) {
+        return openStorageInfoRepoSupport.searchAll(openStorageStatCode, dataName, userSeq, pageable);
+    }
+
+    public OpenStorageInfoDto openStorage(OpenStorageInfoDto openStorageInfoDto) {
+        OpenStorageInfo openStorageInfo = new OpenStorageInfo(openStorageInfoDto);
+        return saveOpenStorageInfo(openStorageInfo).convertDto();
+    }
+
+    public OpenStorageInfo saveOpenStorageInfo(OpenStorageInfo openStorageInfo){
+        return openStorageInfoRepo.save(openStorageInfo);
+    }
+
+    public OpenStorageInfoDto getOpenStorage(String openStorageId) {
+        OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
+        UserInfo userInfo = openStorageInfo.getDiseaseManagerUserInfo();
+        AgencyInfo agencyInfo = userInfo.getAgencyInfo();
+        ReqUserDto reqUserDto = userService.getReqStorageUserInfo(openStorageInfo.getCreatedBy());
+
+        OpenStorageInfoDto openStorageInfoDto = new OpenStorageInfoDto(openStorageInfo, userInfo, agencyInfo, reqUserDto);
+
+        return openStorageInfoDto;
+    }
+
+    private OpenStorageInfo getOpenStorageInfo(String openStorageId) {
+        return openStorageInfoRepo.findById(openStorageId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공개정보 ID 입니다."));
+    }
+
+    public OpenStorageInfoDto cancelOpenStorageInfo(LoginUserInfo loginUserInfo, String openStorageId, OpenStorageInfoDto openStorageInfoDto) {
+        OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
+        checkMaker(loginUserInfo, openStorageInfo.getCreatedBy());
+
+        openStorageInfo.reqCancel(openStorageInfoDto.getCancelReason());
+
+        return openStorageInfo.convertDto();
+    }
+
+    public OpenStorageInfoDto approveOpenStorageInfo(String openStorageId) {
+        OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
+        openStorageInfo.approve();
+
+        return openStorageInfo.convertDto();
     }
 
 }

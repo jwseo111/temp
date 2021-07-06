@@ -13,11 +13,11 @@ import java.util.Map;
 public enum OpenStorageStat {
 
     O_REQ("O_REQ", "공개신청"),
-    O_ACC("O_ACC", "개신청승인"),
+    O_ACC("O_ACC", "신청승인"),
     O_REJ("O_REJ", "신청거절"),
-    C_REQ("C_REQ", "신청"),
-    C_ACC("C_ACC", "승인"),
-    C_REJ("C_REJ", "거절");
+    C_REQ("C_REQ", "취소신청"),
+    C_ACC("C_ACC", "취소승인"),
+    C_REJ("C_REJ", "취소거절");
 
     private String name;
     private String desc;

@@ -25,14 +25,14 @@ public class OpenStorageInfo extends BaseEntity implements Serializable {
     private String reqOpenId;
 
     @Column(columnDefinition = "varchar(100) COMMENT '공개데이터설명'")
-    private String openDataDesc;
+    private String openDataName;
 
-    @Column(columnDefinition = "varchar(100) COMMENT '저장소명'")
-    private String bucketName;
+    @Column(columnDefinition = "varchar(36) COMMENT '저장신청Id'")
+    private String reqStorageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bucketName", referencedColumnName = "bucketName", insertable = false, updatable = false)
-    private BucketInfo bucketInfo;
+    @JoinColumn(name = "reqStorageId", referencedColumnName = "reqStorageId", insertable = false, updatable = false)
+    private ReqStorageInfo reqStorageInfo;
 
     @Column(columnDefinition = "bigint COMMENT '질병책임자회원번호'")
     private Long diseaseManagerUserSeq;
@@ -51,4 +51,42 @@ public class OpenStorageInfo extends BaseEntity implements Serializable {
     @Column(columnDefinition = "varchar(100) COMMENT '거절사유'")
     private String rejectReason;
 
+    public OpenStorageInfo(OpenStorageInfoDto openStorageInfoDto) {
+        this.openDataName = openStorageInfoDto.getOpenDataName();
+        this.reqStorageId = openStorageInfoDto.getReqStorageId();
+        this.diseaseManagerUserSeq = openStorageInfoDto.getDiseaseManagerUserSeq();
+        this.openStorageStatCode = OpenStorageStat.O_REQ;
+
+    }
+
+    public OpenStorageInfoDto convertDto() {
+        return new OpenStorageInfoDto(this);
+    }
+
+    public void reqCancel(String cancelReason) {
+        this.openStorageStatCode = OpenStorageStat.C_REQ;
+        this.cancelReason = cancelReason;
+    }
+
+    public void approve() {
+
+        if(this.openStorageStatCode == OpenStorageStat.O_REQ){
+            this.openStorageStatCode = OpenStorageStat.O_ACC;
+        }else if(this.openStorageStatCode == OpenStorageStat.C_REQ){
+            this.openStorageStatCode = OpenStorageStat.C_ACC;
+        }
+
+    }
+
+    public void reject(String rejectReason) {
+
+        if(this.openStorageStatCode == OpenStorageStat.O_REQ){
+            this.openStorageStatCode = OpenStorageStat.O_REJ;
+        }else if(this.openStorageStatCode == OpenStorageStat.C_REQ){
+            this.openStorageStatCode = OpenStorageStat.C_REJ;
+        }
+
+        this.rejectReason = rejectReason;
+
+    }
 }

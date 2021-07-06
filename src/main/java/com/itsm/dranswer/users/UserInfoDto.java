@@ -10,6 +10,7 @@ package com.itsm.dranswer.users;
  */
 
 import com.itsm.dranswer.commons.BaseEntity;
+import com.itsm.dranswer.commons.Disease;
 import lombok.*;
 
 import javax.persistence.EnumType;
@@ -47,6 +48,9 @@ public class UserInfoDto extends BaseEntity {
     private JoinStat joinStatCode;
 
     private AgencyInfoDto agencyInfo;
+
+    @Enumerated(EnumType.STRING)
+    private Disease diseaseCode;
 
     public UserInfoDto(String userEmail, String userName) {
         this.userSeq = null;

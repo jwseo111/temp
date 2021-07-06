@@ -144,4 +144,21 @@ public class UserInfo extends BaseEntity implements Serializable {
     public void accept() {
         this.joinStatCode = JoinStat.ACCEPT;
     }
+
+    public void changeMyInfo(UserInfoDto userInfoDto) {
+        this.userName = userInfoDto.getUserName();
+        this.userPhoneNumber = userInfoDto.getUserPhoneNumber();
+        this.nCloudId = userInfoDto.getNCloudId();
+        this.nCloudAccessKey = userInfoDto.getNCloudAccessKey();
+        this.nCloudSecretKey = userInfoDto.getNCloudSecretKey();
+    }
+
+    public void changeMyPw(UserInfoDto userInfoDto, PasswordEncoder passwordEncoder) {
+
+        if (!passwordEncoder.matches(userInfoDto.getInputOldPw()+userEmail, loginPw)) {
+            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+        }
+
+        setPw(passwordEncoder, userInfoDto.getInputNewPw(), userEmail);
+    }
 }

@@ -33,6 +33,10 @@ public class UserInfoDto extends BaseEntity {
 
     private String inputPw;
 
+    private String inputOldPw;
+
+    private String inputNewPw;
+
     @Enumerated(EnumType.STRING)
     private Role userRole;
 

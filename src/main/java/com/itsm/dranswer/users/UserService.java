@@ -305,5 +305,19 @@ public class UserService {
             e.printStackTrace();
         }
     }
+
+    public UserInfoDto changeMyInfo(UserInfoDto userInfoDto) {
+        UserInfo userInfo = this.findUserInfo(userInfoDto.getUserSeq());
+        userInfo.changeMyInfo(userInfoDto);
+
+        return userInfo.convertDto();
+    }
+
+    public UserInfoDto changeMyPw(UserInfoDto userInfoDto) {
+        UserInfo userInfo = this.findUserInfo(userInfoDto.getUserSeq());
+        userInfo.changeMyPw(userInfoDto, passwordEncoder);
+
+        return userInfo.convertDto();
+    }
 }
 

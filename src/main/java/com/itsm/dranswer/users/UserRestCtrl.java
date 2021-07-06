@@ -317,4 +317,68 @@ public class UserRestCtrl {
 
         return success(userService.acceptUser(userInfoDto));
     }
+
+    /**
+     * 로그인 사용자 정보
+     * @methodName : myInfo
+     * @date : 2021-07-06 오후 5:44
+     * @author : xeroman.k 
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @GetMapping(value = "/user/my/info")
+    public ApiResult<UserInfoDto> myInfo(@LoginUser LoginUserInfo loginUserInfo){
+        return success(userService.findUserInfo(loginUserInfo.getUserSeq()).convertDto());
+    }
+
+    /**
+     * 상세정보
+     * @methodName : myInfo
+     * @date : 2021-07-06 오후 5:44
+     * @author : xeroman.k 
+     * @param userSeq
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @GetMapping(value = "/user/info/{userSeq:.+(?<!\\.js)$}")
+    public ApiResult<UserInfoDto> myInfo(Long userSeq){
+        return success(userService.findUserInfo(userSeq).convertDto());
+    }
+
+    /**
+     * 상세정보 수정
+     * @methodName : changeMyInfo
+     * @date : 2021-07-06 오후 5:44
+     * @author : xeroman.k 
+     * @param userInfoDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/user/my/info")
+    public ApiResult<UserInfoDto> changeMyInfo(@RequestBody UserInfoDto userInfoDto){
+        return success(userService.changeMyInfo(userInfoDto));
+    }
+
+    /**
+     * 비밀번호 수정
+     * @methodName : changeMyPw
+     * @date : 2021-07-06 오후 5:44
+     * @author : xeroman.k 
+     * @param userInfoDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/user/my/pw")
+    public ApiResult<UserInfoDto> changeMyPw(@RequestBody UserInfoDto userInfoDto){
+        return success(userService.changeMyPw(userInfoDto));
+    }
 }

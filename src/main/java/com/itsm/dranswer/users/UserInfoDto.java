@@ -64,7 +64,6 @@ public class UserInfoDto extends BaseEntity {
 
     public UserInfoDto(UserInfo userInfo, AgencyInfo agencyInfo) {
         copyProperties(userInfo, this);
-        this.agencyInfo = new AgencyInfoDto();
-        copyProperties(agencyInfo, this.agencyInfo);
+        this.agencyInfo = new AgencyInfoDto(agencyInfo);
     }
 }

@@ -255,6 +255,7 @@ public class UserService {
      * @methodName : getUserList
      * @date : 2021-07-06 오전 11:00
      * @author : xeroman.k 
+     * @param joinStat
      * @param userName
      * @param pageable
      * @return : org.springframework.data.domain.Page<com.itsm.dranswer.users.UserInfoDto>
@@ -262,9 +263,9 @@ public class UserService {
      * @modifyed :
      *
     **/
-    public Page<UserInfoDto> getUserList(String userName, Pageable pageable) {
+    public Page<UserInfoDto> getUserList(JoinStat joinStat, String userName, Pageable pageable) {
 
-        return userInfoRepoSupport.searchAll(userName, pageable);
+        return userInfoRepoSupport.searchAll(joinStat, userName, pageable);
     }
 }
 

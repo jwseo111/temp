@@ -288,10 +288,12 @@ public class UserRestCtrl {
      *
     **/
     @GetMapping(value = "/user/list")
-    public ApiResult<Page<UserInfoDto>> getUserList(@RequestParam(required = true) String userName,
+    public ApiResult<Page<UserInfoDto>> getUserList(
+            JoinStat joinStat,
+            @RequestParam(required = true) String userName,
             Pageable pageable){
 
-        Page<UserInfoDto> listUserInfoDto = userService.getUserList(userName, pageable);
+        Page<UserInfoDto> listUserInfoDto = userService.getUserList(joinStat, userName, pageable);
 
         return success(listUserInfoDto);
     }

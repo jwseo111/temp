@@ -20,7 +20,7 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public Page<UserInfoDto> searchAll(String userName, Pageable pageable){
+    public Page<UserInfoDto> searchAll(JoinStat joinStat, String userName, Pageable pageable){
 
         QUserInfo userInfo = QUserInfo.userInfo;
         QAgencyInfo agencyInfo = QAgencyInfo.agencyInfo;
@@ -33,6 +33,10 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
                 .orderBy(userInfo.userName.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
+
+        if(joinStat != null){
+            query.where(userInfo.joinStatCode.eq(joinStat));
+        }
 
         QueryResults<UserInfoDto> results = query.fetchResults();
 

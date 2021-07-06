@@ -18,6 +18,8 @@ import com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -271,5 +273,15 @@ public class UserRestCtrl {
         ReqUserDto reqUserDto = userService.getReqStorageUserInfo(loginUserInfo.getUserSeq());
 
         return success(reqUserDto);
+    }
+
+
+    @GetMapping(value = "/user/list")
+    public ApiResult<Page<UserInfoDto>> getUserList(@RequestParam(required = true) String userName,
+            Pageable pageable){
+
+        Page<UserInfoDto> listUserInfoDto = userService.getUserList(userName, pageable);
+
+        return success(listUserInfoDto);
     }
 }

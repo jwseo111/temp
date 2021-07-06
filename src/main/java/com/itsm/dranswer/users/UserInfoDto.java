@@ -9,6 +9,7 @@ package com.itsm.dranswer.users;
  * @modifyed :
  */
 
+import com.itsm.dranswer.commons.BaseEntity;
 import lombok.*;
 
 import javax.persistence.EnumType;
@@ -21,7 +22,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoDto {
+public class UserInfoDto extends BaseEntity {
 
     private Long userSeq;
 
@@ -42,6 +43,11 @@ public class UserInfoDto {
 
     private String nCloudSecretKey;
 
+    @Enumerated(EnumType.STRING)
+    private JoinStat joinStatCode;
+
+    private AgencyInfoDto agencyInfo;
+
     public UserInfoDto(String userEmail, String userName) {
         this.userSeq = null;
         this.userEmail = userEmail;
@@ -50,5 +56,11 @@ public class UserInfoDto {
 
     public UserInfoDto(UserInfo source) {
         copyProperties(source, this);
+    }
+
+    public UserInfoDto(UserInfo userInfo, AgencyInfo agencyInfo) {
+        copyProperties(userInfo, this);
+        this.agencyInfo = new AgencyInfoDto();
+        copyProperties(agencyInfo, this.agencyInfo);
     }
 }

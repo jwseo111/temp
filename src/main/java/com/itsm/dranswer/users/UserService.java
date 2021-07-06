@@ -13,6 +13,8 @@ import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,12 +38,15 @@ public class UserService {
 
     private final UserInfoRepo userInfoRepo;
 
+    private final UserInfoRepoSupport userInfoRepoSupport;
+
     private final CustomMailSender customMailSender;
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserInfoRepo userInfoRepo, CustomMailSender customMailSender){
+    public UserService(PasswordEncoder passwordEncoder, UserInfoRepo userInfoRepo, UserInfoRepoSupport userInfoRepoSupport, CustomMailSender customMailSender){
         this.userInfoRepo = userInfoRepo;
         this.passwordEncoder = passwordEncoder;
+        this.userInfoRepoSupport = userInfoRepoSupport;
         this.customMailSender = customMailSender;
     }
 
@@ -232,6 +237,11 @@ public class UserService {
     public UserInfo findUserInfo(Long userSeq){
         return userInfoRepo.findById(userSeq)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원정보 입니다."));
+    }
+
+    public Page<UserInfoDto> getUserList(String userName, Pageable pageable) {
+
+        return userInfoRepoSupport.searchAll(userName, pageable);
     }
 }
 

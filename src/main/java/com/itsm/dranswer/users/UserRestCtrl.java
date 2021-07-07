@@ -331,7 +331,7 @@ public class UserRestCtrl {
     **/
     @GetMapping(value = "/user/my/info")
     public ApiResult<UserInfoDto> myInfo(@LoginUser LoginUserInfo loginUserInfo){
-        return success(userService.findUserInfo(loginUserInfo.getUserSeq()).convertDto());
+        return success(userService.getUserDetailInfo(loginUserInfo.getUserSeq()));
     }
 
     /**
@@ -346,8 +346,8 @@ public class UserRestCtrl {
      *
     **/
     @GetMapping(value = "/user/info/{userSeq:.+(?<!\\.js)$}")
-    public ApiResult<UserInfoDto> myInfo(Long userSeq){
-        return success(userService.findUserInfo(userSeq).convertDto());
+    public ApiResult<UserInfoDto> myInfo(@PathVariable Long userSeq){
+        return success(userService.getUserDetailInfo(userSeq));
     }
 
     /**

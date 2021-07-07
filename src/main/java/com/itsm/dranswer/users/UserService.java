@@ -319,5 +319,10 @@ public class UserService {
 
         return userInfo.convertDto();
     }
+
+    public UserInfoDto getUserDetailInfo(Long userSeq){
+        UserInfo userInfo = this.findUserInfo(userSeq);
+        return new UserInfoDto(userInfo, userInfo.getAgencyInfo());
+    }
 }
 

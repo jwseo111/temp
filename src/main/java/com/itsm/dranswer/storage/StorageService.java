@@ -258,11 +258,12 @@ public class StorageService {
 
     public OpenStorageInfoDto getOpenStorage(String openStorageId) {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
+        ReqStorageInfo reqStorageInfo = openStorageInfo.getReqStorageInfo();
         UserInfo userInfo = openStorageInfo.getDiseaseManagerUserInfo();
         AgencyInfo agencyInfo = userInfo.getAgencyInfo();
         ReqUserDto reqUserDto = userService.getReqStorageUserInfo(openStorageInfo.getCreatedBy());
 
-        OpenStorageInfoDto openStorageInfoDto = new OpenStorageInfoDto(openStorageInfo, userInfo, agencyInfo, reqUserDto);
+        OpenStorageInfoDto openStorageInfoDto = new OpenStorageInfoDto(openStorageInfo, reqStorageInfo, userInfo, agencyInfo, reqUserDto);
 
         return openStorageInfoDto;
     }

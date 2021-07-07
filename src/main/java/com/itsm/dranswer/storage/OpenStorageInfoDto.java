@@ -19,7 +19,7 @@ public class OpenStorageInfoDto {
 
     private String reqStorageId;
 
-    private ReqStorageInfoDto reqStorageInfoDto;
+    private ReqStorageInfoDto reqStorageInfo;
 
     private AgencyInfoDto agencyInfo;
 
@@ -58,8 +58,9 @@ public class OpenStorageInfoDto {
         copyProperties(openStorageInfo, this);
     }
 
-    public OpenStorageInfoDto(OpenStorageInfo openStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo, ReqUserDto reqUserDto){
+    public OpenStorageInfoDto(OpenStorageInfo openStorageInfo, ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo, ReqUserDto reqUserDto){
         copyProperties(openStorageInfo, this);
+        this.reqStorageInfo = new ReqStorageInfoDto(reqStorageInfo);
         this.diseaseManagerUserInfo = new UserInfoDto(userInfo);
         this.agencyInfo = new AgencyInfoDto(agencyInfo);
         this.reqUserDto = reqUserDto;

@@ -42,6 +42,9 @@ public class UserInfoDto extends BaseEntity {
 
     private String userPhoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    private IsYn diseaseManagerYn;
+
     private String nCloudId;
 
     private String nCloudAccessKey;

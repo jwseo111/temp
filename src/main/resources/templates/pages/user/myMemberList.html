@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/mypageLayout">
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+        <link rel="stylesheet" th:href="@{/css/common/reset.css}" />
+        <link rel="stylesheet" th:href="@{/css/common/board.css}" />
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/user/myMember.js}"></script>
+
+    </th:block>
+
+    <div layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+            <div class="contents_wrap sub">
+
+                <div class="sub_tit">
+                    <h3>회원목록</h3>
+                    <ul class="location">
+                        <li><a>회원목록</a></li>
+                        <li><a>마이페이지 > </a></li>
+                    </ul>
+                </div>
+            <div class="srch_wrap">
+                <div class="srch_div">
+                    <select v-model="search.joinStat">
+                        <option value="">전체</option>
+                        <option v-for="option in joinStatCode" v-bind:value="option.name">
+                            {{option.desc}}
+                        </option>
+                    </select>
+                    <input type="text" class="ipt_srch" v-model="search.userName" placeholder="사용자명">
+                    <input type="button" class="btn_ipt_srch btn_gray" v-on:click="onclickSearch" value="검색">
+                </div>
+            </div>
+            <div class="">
+                <table class="boardT">
+                    <colgroup>
+                        <col width="5%;">
+                        <col width="8%;">
+                        <col width="15%;">
+                        <col width="10%;">
+                        <col width="15%;">
+                        <col width="5%;">
+                        <col width="15%;">
+                    </colgroup>
+
+                    <thead>
+                    <tr>
+                        <th>신청번호</th>
+                        <th>이름</th>
+                        <th>회원구분/기관명</th>
+                        <th>질병명</th>
+                        <th>전화번호/이메일</th>
+                        <th>가입처리상태</th>
+                        <th>신청일자/처리일자</th>
+                    </tr>
+                    </thead>
+                    <tbody v-if="list.length == 0">
+                    <tr>
+                        <td colspan="7" align="center">
+                            no data.
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-else>
+                    <tr v-for="(item, idx) in list">
+                        <td>{{item.userSeq}}</td>
+                        <td><a href="javascript:void(0);" v-on:click="onclickDetail(item.userSeq);">{{item.userName}}</a></td>
+                        <td>{{item.userRole}} <br/>/ {{item.agencyInfo.agencyName}}</td>
+                        <td>{{item.diseaseCode.desc}}</td>
+                        <td> {{item.userPhoneNumber}}<br/>/ {{item.userEmail}}</td>
+                        <td>{{item.joinStatCode.desc}}</td>
+                        <td> {{item.createdDate}}<br/>/ {{item.modifiedDate}}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <!-- 페이징 -->
+            <div class="page-navi-wrap">
+                <div v-on:click="onclickPage(prev)"><</div>
+                <div v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">{{page}}</div>
+                <div v-on:click="onclickPage(next)">></div>
+            </div>
+
+        </div>
+        </script>
+
+        <script>
+        </script>
+    </div>
+</html>

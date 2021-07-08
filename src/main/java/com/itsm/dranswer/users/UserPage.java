@@ -50,4 +50,17 @@ public class UserPage {
 
         return "pages/user/myStorageReq";
     }
+
+    // 마이페이지(관리자)  > 회원목록
+    @GetMapping(value = "/my/admin/memberList")
+    public String myAdminMemberList() {
+
+        return "pages/user/myMemberList";
+    }
+    // 마이페이지(관리자)  > 회원상세
+    @GetMapping(value = "/my/admin/memberView")
+    public String myAdminMemberView() {
+        return "pages/user/myMemberView";
+    }
+
 }

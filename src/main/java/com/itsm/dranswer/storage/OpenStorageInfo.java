@@ -78,6 +78,10 @@ public class OpenStorageInfo extends BaseEntity implements Serializable {
 
     }
 
+    public boolean isCanceled(){
+        return this.openStorageStatCode == OpenStorageStat.C_ACC;
+    }
+
     public void reject(String rejectReason) {
 
         if(this.openStorageStatCode == OpenStorageStat.O_REQ){

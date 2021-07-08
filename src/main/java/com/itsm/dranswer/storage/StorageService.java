@@ -235,14 +235,45 @@ public class StorageService {
         return reqStorageInfo.convertDto();
     }
 
+    /**
+     * 
+     * @methodName : deleteReqStorageInfo
+     * @date : 2021-07-08 오전 10:46
+     * @author : xeroman.k 
+ * @param reqStorageId
+     * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public ReqStorageInfoDto deleteReqStorageInfo(String reqStorageId) {
+
+        ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
+        reqStorageInfo.delete();
+
+        BucketInfo bucketInfo = reqStorageInfo.getBucketInfo();
+        deleteBucket(bucketInfo);
+
+        return reqStorageInfo.convertDto();
+    }
+
+    public ReqStorageInfoDto rejectReqStorageInfo(String reqStorageId, ReqStorageInfoDto reqStorageInfoDto) {
+        ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
+        reqStorageInfo.reject(reqStorageInfoDto.getRejectReason());
+
+        return reqStorageInfo.convertDto();
+    }
+
     public BucketInfo makeBucketInfo(ReqStorageInfo reqStorageInfo){
         return bucketInfoRepo.save(new BucketInfo(reqStorageInfo));
     }
 
     public void makeBucket(BucketInfo bucketInfo){
-
         customObjectStorage.makeBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketInfo.getBucketName());
+    }
 
+    public void deleteBucket(BucketInfo bucketInfo){
+        customObjectStorage.deleteBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketInfo.getBucketName());
     }
 
     public Page<OpenStorageInfoDto> getOpenStorageList(OpenStorageStat openStorageStatCode, String dataName, Long userSeq, Pageable pageable) {
@@ -288,7 +319,17 @@ public class StorageService {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         openStorageInfo.approve();
 
+        if(openStorageInfo.isCanceled()){
+            // bucket 권한 차단
+        }
+
         return openStorageInfo.convertDto();
     }
 
+    public OpenStorageInfoDto rejectOpenStorageInfo(String openStorageId, OpenStorageInfoDto openStorageInfoDto) {
+        OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
+        openStorageInfo.reject(openStorageInfoDto.getRejectReason());
+
+        return openStorageInfo.convertDto();
+    }
 }

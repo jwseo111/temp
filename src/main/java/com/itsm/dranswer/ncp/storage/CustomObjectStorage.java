@@ -83,6 +83,35 @@ public class CustomObjectStorage {
 
     /**
      * 
+     * @methodName : deleteBucket
+     * @date : 2021-07-08 오전 11:21
+     * @author : xeroman.k 
+     * @param endPoint
+     * @param regionName
+     * @param accessKey
+     * @param secretKey
+     * @param bucketName
+     * @return : void
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public void deleteBucket(String endPoint, String regionName, String accessKey, String secretKey, String bucketName) {
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
+
+        try {
+            s3.deleteBucket(bucketName);
+        } catch (AmazonS3Exception e) {
+            e.printStackTrace();
+            throw e;
+        } catch(SdkClientException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     * 
      * @methodName : getBucketList
      * @date : 2021-06-07 오후 4:14
      * @author : xeroman.k
@@ -187,5 +216,4 @@ public class CustomObjectStorage {
         Upload upload = tm.upload(bucketName, keyName, file);
         upload.waitForCompletion();
     }
-
 }

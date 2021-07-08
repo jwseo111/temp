@@ -155,6 +155,30 @@ public class OpenStorageRestCtrl {
         OpenStorageInfoDto OpenStorageInfoDto =
                 storageService.approveOpenStorageInfo(openStorageId);
 
-        return success(null);
+        return success(OpenStorageInfoDto);
+    }
+
+    /**
+     * 
+     * @methodName : rejectOpenStorage
+     * @date : 2021-07-08 오전 10:32
+     * @author : xeroman.k 
+ * @param openStorageId
+ * @param openStorageInfoDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.OpenStorageInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping(value = "/management/storage/open/reject/{openStorageId:.+(?<!\\.js)$}")
+    public ApiResult<OpenStorageInfoDto> rejectOpenStorage(
+            @PathVariable String openStorageId,
+            @RequestBody OpenStorageInfoDto openStorageInfoDto){
+
+        OpenStorageInfoDto OpenStorageInfoDto =
+                storageService.rejectOpenStorageInfo(openStorageId, openStorageInfoDto);
+
+        return success(OpenStorageInfoDto);
     }
 }

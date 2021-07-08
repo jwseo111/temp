@@ -87,4 +87,20 @@ public class ReqStorageInfo extends BaseEntity implements Serializable {
         this.reqStorageStatCode = ReqStorageStat.S_ACC;
         this.bucketName = bucketInfo.getBucketName();
     }
+
+    public void delete() {
+        this.reqStorageStatCode = ReqStorageStat.D_ACC;
+    }
+
+    public void reject(String rejectReason) {
+
+        if(this.reqStorageStatCode == ReqStorageStat.S_REQ){
+            this.reqStorageStatCode = ReqStorageStat.S_REJ;
+        }else if(this.reqStorageStatCode == ReqStorageStat.D_REQ){
+            this.reqStorageStatCode = ReqStorageStat.D_REJ;
+        }
+
+        this.rejectReason = rejectReason;
+
+    }
 }

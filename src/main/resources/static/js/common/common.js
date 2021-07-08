@@ -173,3 +173,8 @@ function openPopupAgency(code){
 function callbackPopupAgency(item){
     appMain.$refs.maincontents.callbackPopupAgency(item);
 }
+
+// 저장소불러오기 팝업 callback
+function callbackPopupStorage(item){
+    appMain.$refs.maincontents.callbackPopupStorage(item);
+}

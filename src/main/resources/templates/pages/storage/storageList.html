@@ -36,7 +36,7 @@
                                     {{option.desc}}
                                 </option>
                             </select>
-                            <input type="text" v-model="cond.dataName" placeholder="데이터명">
+                            <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="데이터명">
                         </div>
                     </div>
                     <div class="btn_wrap">
@@ -53,12 +53,13 @@
                         <th>제공병원</th>
                         <th>연구책임자</th>
                         <th>상태</th>
-                        <th>신청일자/처리일자</th>
+                        <th>신청일자</th>
+                        <th>처리일자</th>
                     </tr>
                     </thead>
                     <tbody v-if="reqStorageList.length == 0">
                     <tr>
-                        <td colspan="6" align="center">
+                        <td colspan="7" align="center">
                             no data.
                         </td>
                     </tr>
@@ -69,10 +70,13 @@
                         <td>{{storage.diseaseCode.desc}}</td>
                         <td>{{storage.dataName}}</td>
                         <td>{{storage.agencyInfo.agencyName}}</td>
-                        <td>{{storage.diseaseManagerUserInfo.userName}}</td>
-                        <td v-if="storage.reqStorageStatCode === null">-</td>
-                        <td v-else>{{storage.reqStorageStatCode.desc}}</td>
-                        <td>{{storage.createdDate}}/{{storage.modifiedDate}}</td>
+                        <td align="center">{{storage.diseaseManagerUserInfo.userName}}</td>
+                        <td v-if="storage.reqStorageStatCode === null" align="center">-</td>
+                        <td v-else align="center">{{storage.reqStorageStatCode.desc}}</td>
+                        <td v-if="storage.createdDate === null" align="center">-</td>
+                        <td v-else align="center">{{storage.createdDate.substr(0,10)}}</td>
+                        <td v-if="storage.modifiedDate === null" align="center">-</td>
+                        <td v-else align="center">{{storage.modifiedDate.substr(0,10)}}</td>
                     </tr>
                     </tbody>
 

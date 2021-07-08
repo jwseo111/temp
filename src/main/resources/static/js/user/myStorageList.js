@@ -8,9 +8,7 @@
 
 let appMain;
 const TID = {
-    SEARCH      : {value: 0, name: "search", code: "S"},
-    SEARCH_USER : {value: 0, name: "searchUser", code: "S"},
-    SAVE        : {value: 0, name: "save", code: "I"}
+    SEARCH      : {value: 0, name: "search", code: "S"}
 };
 window.onload = function(){
     appMain = new Vue({
@@ -51,6 +49,11 @@ Vue.component('maincontents', {
         this.getMyReqStorageList();
     },
     methods:{
+        onKeyup:function (e){
+            if (e.keyCode == 13){
+                this.onclickSearch();
+            }
+        },
         onclickSearch: function () {
             this.cond.page = 0;
             this.cond.reqStorageStatCode = this.reqStoreStatCd;

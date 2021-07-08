@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/mypageLayout">
+
+    <th:block layout:fragment="css">
+
+        <!--<link rel="stylesheet" th:href="@{/css/common/common.css}" />-->
+        <link rel="stylesheet" th:href="@{/css/common/reset.css}" />
+        <link rel="stylesheet" th:href="@{/css/common/board.css}" />
+        <style>
+             input:focus{
+                box-shadow: 0 0 5px #a1a1a1;
+                border: 1px solid #7F7F7F;
+            }
+        </style>
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/user/myUserModify.js}"></script>
+
+    </th:block>
+
+    <div layout:fragment="contents" id="container">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="contents_wrap sub">
+
+            <div class="sub_tit">
+                <h3>회원정보변경</h3>
+                <ul class="location">
+                    <li><a>회원정보변경</a></li>
+                    <li><a>마이페이지 > </a></li>
+                </ul>
+            </div>
+
+            <div class="app_info">
+                <table class="infoT">
+                    <colgroup>
+                    <col width="15%">
+                    <col width="*">
+                    <col width="15%">
+                    <col width="*">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>회원구분</th>
+                            <td>{{info.agencyTypeName}}({{info.userRole}})</td>
+                            <th>가입처리상태</th>
+                            <td>{{info.joinStatName}}</td>
+                        </tr>
+                        <tr>
+                            <th>기관명</th>
+                            <td>{{info.agencyName}}</td>
+                            <th>이메일</th>
+                            <td>{{info.userEmail}}</td>
+                        </tr>
+                        <tr>
+                            <th>담당자이름</th>
+                            <td><input type="text" v-model="info.userName"/></td>
+                            <th>담당자휴대전화</th>
+                            <td><input type="text" v-model="info.userPhoneNumber"/></td>
+                        </tr>
+                        <tr>
+                            <th>대표자명</th>
+                            <td>{{info.ceoName}}</td>
+                            <th>사업자번호</th>
+                            <td>{{info.blNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th>질병명</th>
+                            <td>{{info.diseaseName}}</td>
+                            <th>질병책임자여부</th>
+                            <td>{{info.diseaseManagerName}}</td>
+                        </tr>
+                        <tr>
+                            <th>NBP 아이디</th>
+                            <td><input type="text" v-model="info.nCloudId"/></td>
+                            <th>NBP 액세스키</th>
+                            <td><input type="text" v-model="info.nCloudAccessKey"/></td>
+                        </tr>
+                        <tr>
+                            <th>NBP 시크릿키</th>
+                            <td colspan="3"><input type="text" v-model="info.nCloudSecretKey"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <div class="btn_btm_div">
+                <span class="btn btn_gray" v-on:click="onclickMovePage()">비밀번호변경</span>
+                <span class="btn btn_mint" v-on:click="onclickSave();">수정</span>
+            </span>
+
+        </div>
+        </script>
+
+        <script>
+        </script>
+    </div>
+</html>

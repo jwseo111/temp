@@ -35,13 +35,13 @@ header#header{width:100%;min-width:1200px;height:159px;border-bottom: 1px solid 
 .gnb_sub_wrap .gnb_sub li a{display:block;height:50px;line-height:50px;color:#fff;font-size:16px;font-weight:400}
 .gnb_sub_wrap .gnb_sub li a:hover,.gnb_sub_wrap .gnb_sub li a:focus{font-weight:700}
 
-#container{width:100%;min-width:1200px;background:#fff;}
-.contents_wrap.sub{width:1200px;margin:0 auto;padding-top:10px;}
+#container{width:100%;/*min-width:1200px;*/background:#fff;}
+.contents_wrap.sub{/*width:1200px;*/margin:0 auto;padding-top:10px;}
 .sub_tit{overflow:hidden;height:50px;margin-bottom:20px}
 .sub_tit h2{font-size:40px;color:#000;font-weight:500;float:left;}
 .sub_tit h3{font-size:30px;color:#000;font-weight:500;float:left;}
 .sub_tit .location{float:right;margin-top:34px;overflow:hidden;}
-.location li{float:right;background:url(../images/bg_ipt.png) no-repeat -50px -28px;padding-left:20px;margin-right:12px;}
+.location li{float:right;/*background:url(../images/bg_ipt.png) no-repeat -50px -28px;*/padding-left:20px;margin-right:12px;}
 .location li a{display:block;font-size:14px;font-weight:400;color:#999;}
 .location li b{font-size:14px;font-weight:700;color:#00a9a9;display:block;}
 .location li a.ico_home{text-indent:-9999px;overflow:hidden;display:block;width:18px;height:14px;background:url(../images/bg_ipt.png) no-repeat -32px -45px;}

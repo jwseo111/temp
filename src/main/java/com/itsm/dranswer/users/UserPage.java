@@ -49,4 +49,16 @@ public class UserPage {
         return "pages/user/myMemberView";
     }
 
+
+    // 마이페이지  > 회원정보변경
+    @GetMapping(value = "/my/userModify")
+    public String myUserModify() {
+        return "pages/user/myUserModify";
+    }
+
+    // 마이페이지  > 회원정보변경 > 비밀번호변경
+    @GetMapping(value = "/my/userPasswd")
+    public String myUserPasswd() {
+        return "pages/user/myUserPasswd";
+    }
 }

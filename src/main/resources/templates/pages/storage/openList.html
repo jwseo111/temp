@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/storage/openList.js}"></script>
+        <script>
+            const openStorageStatCode = "[[${param.openStorageStatCode}]]";
+        </script>
+    </th:block>
+
+    <div layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="storage-contents-wrap" >
+            <div class="storage-title">질환데이터 공개신청 목록</div>
+            <div class="storage-search-wrap">
+                <div class="line">
+                    <div class="cond">
+                        <div class="content">
+                            <select v-model="openStorageStatCd">
+                                <option value="">전체</option>
+                                <option v-for="option in openStorageStatCdList" v-bind:value="option.name">
+                                    {{option.desc}}
+                                </option>
+                            </select>
+                            <input type="text" v-model="cond.openDataName" @keyup="onKeyup" placeholder="데이터명">
+                        </div>
+                    </div>
+                    <div class="btn_wrap">
+                        <button v-on:click="onclickSearch">검색</button>
+                    </div>
+                </div>
+            </div>
+            <div class="storage-content">
+                <table class="result-table">
+                    <thead>
+                    <tr>
+                        <th>질환</th>
+                        <th>데이터명</th>
+                        <th>제공병원</th>
+                        <th>신청자</th>
+                        <th>상태</th>
+                        <th>신청일자</th>
+                        <th>처리일자</th>
+                    </tr>
+                    </thead>
+                    <tbody v-if="openStorageList.length == 0">
+                    <tr>
+                        <td colspan="7" align="center">
+                            no data.
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-if="openStorageList.length > 0">
+                    <tr v-for="(open, idx) in openStorageList">
+                        <td>{{open.diseaseManagerUserInfo.diseaseCode.desc}}</td>
+                        <td>{{open.openDataName}}</td>
+                        <td>{{open.agencyInfo.agencyName}}</td>
+                        <td align="center">{{open.diseaseManagerUserInfo.userName}}</td>
+                        <td v-if="open.reqStorageStatCode === null" align="center">-</td>
+                        <td v-else align="center">{{open.openStorageStatCode.desc}}</td>
+                        <td v-if="open.createdDate === null" align="center">-</td>
+                        <td v-else align="center">{{open.createdDate}}</td>
+                        <td v-if="open.modifiedDate === null" align="center">-</td>
+                        <td v-else align="center">{{open.modifiedDate}}</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <!-- 페이징 -->
+            <div class="page-navi-wrap">
+                <div v-on:click="onclickPage(prev)"><</div>
+                <div v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">{{page}}</div>
+                <div v-on:click="onclickPage(next)">></div>
+                <div class="btn_wrap">
+                    <button v-on:click="onclickReq">신청</button>
+                </div>
+            </div>
+
+        </div>
+        </script>
+
+        <script>
+        </script>
+    </div>
+</html>

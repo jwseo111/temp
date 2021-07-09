@@ -64,7 +64,7 @@ Vue.component('maincontents', {
             }
         },
         onclickBack : function(){
-            location.href="/my/userModify";
+            location.href="/my/userModify?menuId="+myMenuId;
         },
         isFormValid : function() {
             this.messages ="";

@@ -104,7 +104,7 @@ Vue.component('maincontents', {
 
         },
         onclickMovePage : function(){
-          location.href="/my/userPasswd";
+          location.href="/my/userPasswd?menuId="+myMenuId;
         },
         onclickSave : function(){ // 승인
             if(confirm("수정 하시겠습니까?")){

@@ -1,5 +1,5 @@
 let appMypage;
-
+let myMenuId;
 //window.onload = function(){
 window.addEventListener('load', function() {
         appMypage = new Vue({
@@ -36,15 +36,16 @@ Vue.component('mypagemenus', {
                 {name: "학습환경 사용신청 보기", use: true},
                 {name: "회원정보변경", uri:"/my/userModify", use : true}
             ],
-            messages : ""
+            messages : "",
+            menuId:myMenuId,
         };
 
     },
     mounted:function(){
     },
     methods:{
-        onclickMenu : function(menu){
-            location.href = menu.uri;
+        onclickMenu : function(menu,key){
+            location.href = menu.uri+"?menuId="+key;
         },
     }
 });

@@ -23,26 +23,9 @@ Vue.component('maincontents', {
     data: function() {
         return {
             cond: {
-                //page: 0,
-                //size: 5,
-                //dataName: "",
-                //reqStorageId : reqStorageId // 신청번호
                 reqStorageId : reqStorageId
-                //sort: ""
             },
             reqStorageId : reqStorageId,
-            //reqStorageList: [],
-            //diseaseInfo : [],
-            /*pageInfo: {
-                curr : 1,
-                max : 1,
-                first : 1,
-                last : 1,
-                prev : 1,
-                next : 1,
-                pages: [1]
-            },
-             */
             messages : "",
             reqStoreStatCd : "",
 
@@ -101,19 +84,23 @@ Vue.component('maincontents', {
         // 취소신청버튼 클릭
         onclickCancel: function () {
             let statCd = this.reqStorageInfo.reqStorageStatCode.name;
-            if(statCd == "S_ACC") // 처리상태가 저장신청승인(S_ACC)이면 취소사유 필수
-            {
-                if(!this.saveInfo.cancelReason){
+            let uri = "/my/management/storage/req/cancel/"; // 호출할 uri
+
+            if(statCd == "S_ACC") { // 처리상태가 저장신청승인(S_ACC)이면 취소사유 필수
+                if(!this.saveInfo.cancelReason) {
                     alert("저장신청승인 상태인 경우, 취소사유는 필수입니다.");
                     return;
                 }
+                if(!confirm("저장소 데이터가 삭제되고, 공개 대상에서 제외됩니다.\n취소하시겠습니까?")) {
+                    return;
+                }
+                uri = "/my/management/storage/req/delete/";
             }
 
             post(TID.CANCEL,
-                "/my/management/storage/req/cancel/"+this.reqStorageId,
-                {},
+                uri + this.reqStorageId,
+                this.saveInfo,
                 this.callback);
-
         },
 
         callback: function (tid, results) {
@@ -142,10 +129,9 @@ Vue.component('maincontents', {
                     }
                     break;
                 case TID.CANCEL: // 취소신청
-                    console.log(results);
                     if (results.success) {
                         alert("정상적으로 취소신청되었습니다.");
-                        location.href = "/my/store/main"; // 목록으로 이동
+                        location.href = "/my/store/list"; // 목록으로 이동
                     } else {
                         console.log(results);
                     }

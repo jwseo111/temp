@@ -49,6 +49,11 @@ Vue.component('maincontents', {
         this.getReqStorageList();
     },
     methods:{
+        onKeyup:function (e){
+            if (e.keyCode == 13){
+                this.onclickSearch();
+            }
+        },
         onclickSearch: function () {
             this.cond.page = 0;
             this.cond.reqStorageStatCode = this.reqStoreStatCd;

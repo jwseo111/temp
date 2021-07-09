@@ -35,13 +35,13 @@ header#header{width:100%;min-width:1200px;height:159px;border-bottom: 1px solid 
 .gnb_sub_wrap .gnb_sub li a{display:block;height:50px;line-height:50px;color:#fff;font-size:16px;font-weight:400}
 .gnb_sub_wrap .gnb_sub li a:hover,.gnb_sub_wrap .gnb_sub li a:focus{font-weight:700}
 
-#container{width:100%;min-width:1200px;background:#fff;}
-.contents_wrap.sub{width:1200px;margin:0 auto;padding-top:10px;}
+#container{width:100%;/*min-width:1200px;*/background:#fff;}
+.contents_wrap.sub{/*width:1200px;*/margin:0 auto;padding-top:10px;}
 .sub_tit{overflow:hidden;height:50px;margin-bottom:20px}
 .sub_tit h2{font-size:40px;color:#000;font-weight:500;float:left;}
 .sub_tit h3{font-size:30px;color:#000;font-weight:500;float:left;}
 .sub_tit .location{float:right;margin-top:34px;overflow:hidden;}
-.location li{float:right;background:url(../images/bg_ipt.png) no-repeat -50px -28px;padding-left:20px;margin-right:12px;}
+.location li{float:right;/*background:url(../images/bg_ipt.png) no-repeat -50px -28px;*/padding-left:20px;margin-right:12px;}
 .location li a{display:block;font-size:14px;font-weight:400;color:#999;}
 .location li b{font-size:14px;font-weight:700;color:#00a9a9;display:block;}
 .location li a.ico_home{text-indent:-9999px;overflow:hidden;display:block;width:18px;height:14px;background:url(../images/bg_ipt.png) no-repeat -32px -45px;}
@@ -530,13 +530,14 @@ table.popT2{border-top:2px solid #000;}
 .textbox *{font-size:14px;}
 .textbox h3{font-size:15px;font-weight:500}
 
-.tab_menu{width:100%;overflow:hidden;margin-bottom:65px}
-.tab_menu a{float:left;padding:23px 0 24px;border-top:1px solid #ccc;border-right:1px solid #ccc;border-bottom:1px solid #ccc;background:#f6f6f6;color:#999;font-weight:500;text-align:center;box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-moz-box-sizing:border-box;}
+.tab_menu{width:100%;overflow:hidden;margin-bottom:20px}
+.tab_menu a{float:left;padding:23px 15px;border-top:1px solid #ccc;border-right:1px solid #ccc;border-bottom:1px solid #ccc;background:#f6f6f6;color:#999;font-weight:500;text-align:center;box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-moz-box-sizing:border-box;}
 .tab_menu a:first-child{border-left:1px solid #ccc;}
 .tab_menu a.on{background:#00a9a9;color:#fff;border-top:1px solid #00a9a9;border-right:1px solid #00a9a9;border-bottom:1px solid #00a9a9;}
 .tab_menu a.on{border-left:1px solid #00a9a9;}
 .tab_menu.tab5 a{width:240px;}
 .tab_menu.tab3 a{width:400px;}
+.tab_menu.tab_admin a{width:16%;}
 
 #myInfoPopup .popup_wrap{width:480px;height:780px;overflow-y:scroll;padding:45px 24px 42px 24px;}
 .popup_wrap .my_info_box{text-align:left;border:1px solid #ddd;padding:12px 15px 5px;margin-top:20px;}

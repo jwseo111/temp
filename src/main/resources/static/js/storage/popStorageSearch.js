@@ -1,6 +1,7 @@
+
 /*
- * @name : myStorageList.js
- * @date : 2021-06-28 오후 1:05
+ * @name : popStorageSearch.js
+ * @date : 2021-07-06 오후 1:05
  * @author : lsj
  * @version : 1.0.0
  * @modifyed :
@@ -8,26 +9,27 @@
 
 let appMain;
 const TID = {
-    SEARCH      : {value: 0, name: "search", code: "S"}
+    SEARCH: {value: 0, name: "search", code: "S"}
 };
-window.onload = function(){
+
+window.onload = function () {
     appMain = new Vue({
         el: '#maincontentswrap',
     });
 }
-
 Vue.component('maincontents', {
-    template : "#main-template",
-    data: function() {
+    template: "#main-template",
+    data: function () {
         return {
             cond: {
                 page: 0,
                 size: 5,
+                //reqStorageStatCode: "S_ACC", // S_ACC(저장신청승인)
+                reqStorageStatCode: "", // S_ACC(저장신청승인)
                 dataName: "",
-                reqStorageStatCode: reqStorageStatCode,
-                sort: ""
+                //sort: "agencyName"
             },
-            reqStorageList: [],
+            storageList: [],
             pageInfo: {
                 curr : 1,
                 max : 1,
@@ -37,18 +39,13 @@ Vue.component('maincontents', {
                 next : 1,
                 pages: [1]
             },
-            messages : "",
-            reqStoreStatCd : "",
-            reqStorageId : "",
-            reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback),
-            isYn : getCodeList('IsYn',this.callback)
-
+            messages: "",
         };
     },
-    mounted:function(){
-        this.getMyReqStorageList();
+    mounted: function () {
+
     },
-    methods:{
+    methods: {
         onKeyup:function (e){
             if (e.keyCode == 13){
                 this.onclickSearch();
@@ -56,15 +53,9 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.reqStorageStatCode = this.reqStoreStatCd;
-            this.getMyReqStorageList();
+            this.getStorageList();
         },
-        // 목록 > 신청번호 클릭(화면 이동)
-        onclickReq: function (reqStorageId) {
-           location.href = "/my/store/req?reqStorageId="+reqStorageId;
-        },
-
-        getMyReqStorageList:function () {
+        getStorageList:function(){
             get(TID.SEARCH,
                 "/my/management/storage/req/list",
                 this.cond,
@@ -75,21 +66,12 @@ Vue.component('maincontents', {
                 case TID.SEARCH:
                     this.searchCallback(results);
                     break;
-                case "ReqStorageStat":
-                    console.log(results.response);
-                    this.reqStoreStatCdList = results.response;
-                    break;
-                case "IsYn":
-                    console.log(results.response);
-                    this.isYn = results.response;
-                    break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                //console.log(results.response);
                 this.makePageNavi(results.response.pageable, results.response.total);
-                this.reqStorageList = results.response.content;
+                this.storageList = results.response.content;
             } else {
                 console.log(results);
             }
@@ -121,8 +103,11 @@ Vue.component('maincontents', {
         },
         onclickPage : function (page){
             this.cond.page = page - 1;
-            this.getReqStorageList();
+            this.getStorageList();
+        },
+        selectStorage : function (storage){
+            window.opener.callbackPopupStorage(storage);
+            self.close();
         },
     }
 });
-

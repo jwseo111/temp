@@ -37,20 +37,6 @@ public class UserPage {
         return "pages/user/mypage";
     }
 
-    // 마이페이지 > 질환데이터저장신청 목록
-    @GetMapping(value = "/my/store/list")
-    public String myStorageList() {
-
-        return "pages/user/myStorageList";
-    }
-
-    // 마이페이지 > 질환데이터저장신청 상세
-    @GetMapping(value = "/my/store/req")
-    public String myStorageReq() {
-
-        return "pages/user/myStorageReq";
-    }
-
     // 마이페이지(관리자)  > 회원목록
     @GetMapping(value = "/my/admin/memberList")
     public String myAdminMemberList() {
@@ -63,4 +49,16 @@ public class UserPage {
         return "pages/user/myMemberView";
     }
 
+
+    // 마이페이지  > 회원정보변경
+    @GetMapping(value = "/my/userModify")
+    public String myUserModify() {
+        return "pages/user/myUserModify";
+    }
+
+    // 마이페이지  > 회원정보변경 > 비밀번호변경
+    @GetMapping(value = "/my/userPasswd")
+    public String myUserPasswd() {
+        return "pages/user/myUserPasswd";
+    }
 }

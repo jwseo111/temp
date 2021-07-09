@@ -8,8 +8,11 @@
     <script th:src="@{/js/common/mypage.js}"></script>
     <script>
         const role = "[[${#authentication.authorities[0]}]]";
+        myMenuId = "[[${param.menuId}]]";
     </script>
     <link rel="stylesheet" th:href="@{/css/common/mypage.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/reset.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/board.css}" />
 
 <!-- 마이페이지 메뉴 -->
     <div id="mypagemenuswrap" >
@@ -18,41 +21,51 @@
     <script type="text/x-template" id="mypage-template" >
         <div class="mypage-contents-wrap" >
              >>>>> 마이페이지
-            <div class="mypage" v-if="role=='ROLE_MANAGER'">
+            <div class="tab_menu" v-if="role=='ROLE_MANAGER'">
                 <div v-for="(menu, key) in menus_manager">
                     <div v-if="menu.use" class="menu">
-                        <div v-on:click="onclickMenu(menu)" class="parent">
-                            {{menu.name}}
+                        <div v-if="menu.use && menuId==key" class="menu">
+                            <a href="javascript:void(0);" class="on"> <div v-on:click="onclickMenu(menu, key)" class="parent">{{menu.name}}</div></a>
+                        </div>
+                        <div class="menu" v-else>
+                            <a href="javascript:void(0);"> <div v-on:click="onclickMenu(menu, key)" class="parent">{{menu.name}}</div></a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mypage" v-if="role=='ROLE_UPLOADER'">
+            <div class="tab_menu" v-if="role=='ROLE_UPLOADER'">
                 <div v-for="(menu, key) in menus_manager">
                     <div v-if="menu.use" class="menu">
-                        <div v-on:click="onclickMenu(menu)" class="parent">
-                            {{menu.name}}
+                        <div v-if="menu.use && menuId==key" class="menu">
+                            <a href="javascript:void(0);" class="on"> <div v-on:click="onclickMenu(menu, key)" class="parent">{{menu.name}}</div></a>
+                        </div>
+                        <div class="menu" v-else>
+                            <a href="javascript:void(0);"> <div v-on:click="onclickMenu(menu, key)" class="parent">{{menu.name}}</div></a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mypage" v-else-if="role=='ROLE_ADMIN'">
+            <div class="tab_menu tab_admin" v-else-if="role=='ROLE_ADMIN'">
                 <div v-for="(menu, key) in menus_admin">
-                    <div v-if="menu.use" class="menu">
-                        <div v-on:click="onclickMenu(menu)" class="parent">
-                            {{menu.name}}
-                        </div>
+                    <div v-if="menu.use && menuId==key" class="menu">
+                        <a href="javascript:void(0);" class="on"> <div v-on:click="onclickMenu(menu, key)" class="parent">{{menu.name}}</div></a>
+                    </div>
+                    <div class="menu" v-else>
+                        <a href="javascript:void(0);"> <div v-on:click="onclickMenu(menu, key)" class="parent">{{menu.name}}</div></a>
                     </div>
                 </div>
             </div>
 
-            <div class="mypage" v-else-if="role=='ROLE_USER'">
+            <div class="tab_menu" v-else-if="role=='ROLE_USER'">
                 <div v-for="(menu, key) in menus_user">
                     <div v-if="menu.use" class="menu">
-                        <div v-on:click="onclickMenu(menu)" class="parent">
-                            {{menu.name}}
+                        <div v-if="menu.use && menuId==key" class="menu">
+                            <a href="javascript:void(0);" class="on"> <div v-on:click="onclickMenu(menu, key)" class="parent">{{menu.name}}</div></a>
+                        </div>
+                        <div class="menu" v-else>
+                            <a href="javascript:void(0);"> <div v-on:click="onclickMenu(menu, key)" class="parent">{{menu.name}}</div></a>
                         </div>
                     </div>
                 </div>

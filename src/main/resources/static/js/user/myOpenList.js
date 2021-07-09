@@ -1,6 +1,7 @@
+
 /*
- * @name : myStorageList.js
- * @date : 2021-06-28 오후 1:05
+ * @name : myOpenList.js
+ * @date : 2021-07-07 오전 11:05
  * @author : lsj
  * @version : 1.0.0
  * @modifyed :
@@ -23,11 +24,11 @@ Vue.component('maincontents', {
             cond: {
                 page: 0,
                 size: 5,
-                dataName: "",
-                reqStorageStatCode: reqStorageStatCode,
+                openDataName: "",
+                openStorageStatCode: openStorageStatCode,
                 sort: ""
             },
-            reqStorageList: [],
+            openStorageList: [],
             pageInfo: {
                 curr : 1,
                 max : 1,
@@ -38,15 +39,14 @@ Vue.component('maincontents', {
                 pages: [1]
             },
             messages : "",
-            reqStoreStatCd : "",
-            reqStorageId : "",
-            reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback),
-            isYn : getCodeList('IsYn',this.callback)
+            openStorageStatCd : "", // 선택된 콤보박스
+            openStorageStatCdList : getCodeList('OpenStorageStat',this.callback), // 상태콤보박스 리스트
+//            isYn : getCodeList('IsYn',this.callback)
 
         };
     },
     mounted:function(){
-        this.getMyReqStorageList();
+        this.getMyOpenStorageList();
     },
     methods:{
         onKeyup:function (e){
@@ -56,17 +56,17 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.reqStorageStatCode = this.reqStoreStatCd;
-            this.getMyReqStorageList();
+            this.cond.openStorageStatCode = this.openStorageStatCd;
+            this.getMyOpenStorageList();
         },
         // 목록 > 신청번호 클릭(화면 이동)
-        onclickReq: function (reqStorageId) {
-           location.href = "/my/store/req?reqStorageId="+reqStorageId;
+        onclickReq: function (openStorageId) {
+            location.href = "/my/open/req?openStorageId="+openStorageId;
         },
 
-        getMyReqStorageList:function () {
+        getMyOpenStorageList:function () {
             get(TID.SEARCH,
-                "/my/management/storage/req/list",
+                "/my/management/storage/open/list",
                 this.cond,
                 this.callback);
         },
@@ -75,21 +75,17 @@ Vue.component('maincontents', {
                 case TID.SEARCH:
                     this.searchCallback(results);
                     break;
-                case "ReqStorageStat":
+                case "OpenStorageStat":
                     console.log(results.response);
-                    this.reqStoreStatCdList = results.response;
-                    break;
-                case "IsYn":
-                    console.log(results.response);
-                    this.isYn = results.response;
+                    this.openStorageStatCdList = results.response;
                     break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                //console.log(results.response);
+                console.log(results.response.content);
                 this.makePageNavi(results.response.pageable, results.response.total);
-                this.reqStorageList = results.response.content;
+                this.openStorageList = results.response.content;
             } else {
                 console.log(results);
             }
@@ -121,7 +117,7 @@ Vue.component('maincontents', {
         },
         onclickPage : function (page){
             this.cond.page = page - 1;
-            this.getReqStorageList();
+            this.getMyOpenStorageList();
         },
     }
 });

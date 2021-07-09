@@ -15,19 +15,18 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
+import com.itsm.dranswer.storage.S3ObjectDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -84,13 +83,13 @@ public class CustomObjectStorage {
     /**
      * 
      * @methodName : deleteBucket
-     * @date : 2021-07-08 오전 11:21
+     * @date : 2021-07-08 오후 1:26
      * @author : xeroman.k 
-     * @param endPoint
-     * @param regionName
-     * @param accessKey
-     * @param secretKey
-     * @param bucketName
+ * @param endPoint
+ * @param regionName
+ * @param accessKey
+ * @param secretKey
+ * @param bucketName
      * @return : void
      * @throws 
      * @modifyed :
@@ -144,6 +143,72 @@ public class CustomObjectStorage {
             throw e;
         }
 
+    }
+
+    public List<S3ObjectDto> getObjectList(String endPoint, String regionName,
+                                           String accessKey, String secretKey,
+                                           String bucketName, String folderName){
+
+        List<S3ObjectDto> list = new ArrayList<>();
+
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
+
+        ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
+                .withBucketName(bucketName)
+                .withDelimiter("/")
+                .withPrefix(folderName)
+                .withMaxKeys(300);
+
+        ObjectListing objectListing = s3.listObjects(listObjectsRequest);
+
+        for(String folder:objectListing.getCommonPrefixes()){
+            list.add(new S3ObjectDto(folder, folderName));
+        }
+
+        while (true) {
+            for (S3ObjectSummary os : objectListing.getObjectSummaries()) {
+                if(!folderName.equals(os.getKey())){
+                    list.add(new S3ObjectDto(os, folderName));
+                }
+            }
+
+            if (objectListing.isTruncated()) {
+                objectListing = s3.listNextBatchOfObjects(objectListing);
+            } else {
+                break;
+            }
+        }
+
+//        ListObjectsV2Request req = new ListObjectsV2Request().withBucketName(bucketName).withMaxKeys(300)
+//                .withStartAfter("/")
+//                ;
+//
+//        ListObjectsV2Result result;
+//
+//        do {
+//            result = s3.listObjectsV2(req);
+//
+//            for (S3ObjectSummary os : result.getObjectSummaries()) {
+//                list.add(new S3ObjectDto(os));
+//            }
+//            // If there are more than maxKeys keys in the bucket, get a continuation token
+//            // and list the next objects.
+//            String token = result.getNextContinuationToken();
+//            req.setContinuationToken(token);
+//        } while (result.isTruncated());
+
+        return list;
+    }
+
+    public void setBucketACL(String endPoint, String regionName,
+                             String accessKey, String secretKey,
+                             String bucketName, String ncpId){
+
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
+
+        AccessControlList accessControlList = s3.getBucketAcl(bucketName);
+        accessControlList.grantPermission(new CanonicalGrantee(ncpId), Permission.Read);
+        s3.setBucketAcl(bucketName, accessControlList);
     }
 
     public void uploadObject(String endPoint, String regionName,

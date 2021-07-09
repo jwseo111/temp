@@ -10,18 +10,18 @@ package com.itsm.dranswer.storage;
  */
 
 
+import com.amazonaws.services.s3.model.Bucket;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
-import com.itsm.dranswer.users.AgencyInfo;
-import com.itsm.dranswer.users.ReqUserDto;
-import com.itsm.dranswer.users.UserInfo;
-import com.itsm.dranswer.users.UserService;
+import com.itsm.dranswer.users.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 @Service
@@ -226,10 +226,11 @@ public class StorageService {
     public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId) {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
-
+        UserInfo managerInfo = reqStorageInfo.getDiseaseManagerUserInfo();
         BucketInfo bucketInfo = makeBucketInfo(reqStorageInfo);
+        makeBucket(bucketInfo.getBucketName());
+        setBucketACL(bucketInfo.getBucketName(), managerInfo.getNCloudId());
 
-        makeBucket(bucketInfo);
         reqStorageInfo.approve(bucketInfo);
 
         return reqStorageInfo.convertDto();
@@ -252,7 +253,7 @@ public class StorageService {
         reqStorageInfo.delete();
 
         BucketInfo bucketInfo = reqStorageInfo.getBucketInfo();
-        deleteBucket(bucketInfo);
+        deleteBucket(bucketInfo.getBucketName());
 
         return reqStorageInfo.convertDto();
     }
@@ -268,12 +269,16 @@ public class StorageService {
         return bucketInfoRepo.save(new BucketInfo(reqStorageInfo));
     }
 
-    public void makeBucket(BucketInfo bucketInfo){
-        customObjectStorage.makeBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketInfo.getBucketName());
+    public void makeBucket(String bucketName){
+        customObjectStorage.makeBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName);
     }
 
-    public void deleteBucket(BucketInfo bucketInfo){
-        customObjectStorage.deleteBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketInfo.getBucketName());
+    public void setBucketACL(String bucketName, String ncpId){
+        customObjectStorage.setBucketACL(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName, ncpId);
+    }
+
+    public void deleteBucket(String bucketName){
+        customObjectStorage.deleteBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName);
     }
 
     public Page<OpenStorageInfoDto> getOpenStorageList(OpenStorageStat openStorageStatCode, String dataName, Long userSeq, Pageable pageable) {
@@ -331,5 +336,33 @@ public class StorageService {
         openStorageInfo.reject(openStorageInfoDto.getRejectReason());
 
         return openStorageInfo.convertDto();
+    }
+
+    public List<Bucket> getMyStorageBucketList(LoginUserInfo loginUserInfo) {
+
+        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
+
+        String accessKey = laifAccessKey;
+        String secretKey = laifSecretKey;
+//        String accessKey = userInfoDto.getNCloudAccessKey();
+//        String secretKey = userInfoDto.getNCloudSecretKey();
+
+        List<Bucket> buckets = customObjectStorage.getBucketList(endPoint, regionName, accessKey, secretKey);
+
+        this.setBucketACL("dranswer", "kkhkykkk2@naver.com");
+
+        return buckets;
+    }
+
+    public List<S3ObjectDto> getObjectList(LoginUserInfo loginUserInfo, String bucketName, String folderName) {
+
+        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
+
+        String accessKey = laifAccessKey;
+        String secretKey = laifSecretKey;
+//        String accessKey = userInfoDto.getNCloudAccessKey();
+//        String secretKey = userInfoDto.getNCloudSecretKey();
+
+        return customObjectStorage.getObjectList(endPoint, regionName, accessKey, secretKey, bucketName, folderName);
     }
 }

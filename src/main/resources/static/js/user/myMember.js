@@ -18,6 +18,8 @@ Vue.component('maincontents', {
     data: function() {
         return {
             search : {
+                page: 0,
+                size: 10,
                 joinStat :"",
                 userName :"",
             },
@@ -34,6 +36,7 @@ Vue.component('maincontents', {
             },
             userSeq :userSeq,
             info : {
+
                 agencyName:"",
                 agencyTypeCode:"",
                 agencyTypeName:"",
@@ -131,7 +134,7 @@ Vue.component('maincontents', {
 
         },
         onclickPage : function (page){
-            this.cond.page = page - 1;
+            this.search.page = page - 1;
             this.onclickSearch();
         },
         onclickDetail : function(seq){

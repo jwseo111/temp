@@ -161,4 +161,8 @@ public class UserInfo extends BaseEntity implements Serializable {
 
         setPw(passwordEncoder, userInfoDto.getInputNewPw(), userEmail);
     }
+
+    public void matchParent(Long userSeq) {
+        this.parentUserSeq = userSeq;
+    }
 }

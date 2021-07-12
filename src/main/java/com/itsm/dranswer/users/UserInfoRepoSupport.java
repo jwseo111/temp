@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserInfoRepoSupport extends QuerydslRepositorySupport {
 
@@ -41,5 +43,24 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
         QueryResults<UserInfoDto> results = query.fetchResults();
 
         return new PageImpl<UserInfoDto>(results.getResults(), pageable, results.getTotal());
+    }
+
+    public List<UserInfoDto> getUploaderList(Long userSeq){
+        QUserInfo userInfo = QUserInfo.userInfo;
+        QUserInfo parentUserInfo = new QUserInfo("parentUserInfo");
+
+        JPAQuery<UserInfoDto> query  = jpaQueryFactory
+                .select(Projections.constructor(UserInfoDto.class, userInfo))
+                .from(userInfo)
+                .innerJoin(parentUserInfo)
+                .on(parentUserInfo.userSeq.eq(userSeq))
+                .on(userInfo.agencySeq.eq(parentUserInfo.agencySeq))
+                .on(userInfo.userRole.eq(Role.UPLOADER))
+                .where(userInfo.parentUserSeq.isNull().or(userInfo.parentUserSeq.eq(userSeq)))
+                .orderBy(userInfo.userName.asc());
+
+        QueryResults<UserInfoDto> results = query.fetchResults();
+
+        return results.getResults();
     }
 }

@@ -381,4 +381,17 @@ public class UserRestCtrl {
     public ApiResult<UserInfoDto> changeMyPw(@RequestBody UserInfoDto userInfoDto){
         return success(userService.changeMyPw(userInfoDto));
     }
+
+    @Secured(value = {"ROLE_MANAGER"})
+    @GetMapping(value = "/user/my/uploader")
+    public ApiResult<List<UserInfoDto>> getMyUploader(@LoginUser LoginUserInfo loginUserInfo){
+        return success(userService.getMyUploader(loginUserInfo.getUserSeq()));
+    }
+
+    @Secured(value = {"ROLE_MANAGER"})
+    @PostMapping(value = "/user/my/uploader")
+    public ApiResult<List<UserInfoDto>> saveMyUploader(@LoginUser LoginUserInfo loginUserInfo,
+                                                       @RequestBody List<UserInfoDto> userInfoDtos){
+        return success(userService.saveMyUploader(loginUserInfo.getUserSeq(), userInfoDtos));
+    }
 }

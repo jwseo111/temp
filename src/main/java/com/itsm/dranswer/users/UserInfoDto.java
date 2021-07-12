@@ -59,6 +59,8 @@ public class UserInfoDto extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Disease diseaseCode;
 
+    private Long parentUserSeq;
+
     public UserInfoDto(String userEmail, String userName) {
         this.userSeq = null;
         this.userEmail = userEmail;

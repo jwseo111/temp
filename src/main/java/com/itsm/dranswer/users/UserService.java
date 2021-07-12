@@ -324,5 +324,21 @@ public class UserService {
         UserInfo userInfo = this.findUserInfo(userSeq);
         return new UserInfoDto(userInfo, userInfo.getAgencyInfo());
     }
+
+    public List<UserInfoDto> getMyUploader(Long userSeq) {
+
+        return userInfoRepoSupport.getUploaderList(userSeq);
+
+    }
+
+    public List<UserInfoDto> saveMyUploader(Long userSeq, List<UserInfoDto> uploaders){
+
+        for(UserInfoDto userInfoDto : uploaders){
+            UserInfo userInfo = this.findUserInfo(userInfoDto.getUserSeq());
+            userInfo.matchParent(userSeq);
+        }
+
+        return getMyUploader(userSeq);
+    }
 }
 

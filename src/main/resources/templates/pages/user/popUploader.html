@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/popupLayout">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+    <style>
+        .pop_text{
+            width:120px;padding-right:10px;
+        }
+
+    </style>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/user/popUploader.js}"></script>
+    <script>
+
+    </script>
+</th:block>
+
+<div layout:fragment="contents">
+    <div id="maincontentswrap" >
+        <maincontents ref="maincontents"></maincontents>
+    </div>
+    <script type="text/x-template" id="main-template" >
+        <div class="popup-contents-wrap" >
+            <div class="popup-title">데이터 업로더 설정</div>
+            <div class="popup-search-wrap">
+                <div class="line">
+                    <span class="pop_text">기관명 </span> <span><input type="text" disabled v-model="agencyName"/></span>
+                </div>
+                <div class="line">
+                    <span class="pop_text">질병명 </span> <span><input type="text" disabled v-model="diseaseName"/></span>
+                </div>
+                <div class="line">
+                    <span class="pop_text">질병책임자 </span> <span><input type="text"  disabled v-model="diseaseManageName"/></span>
+                </div>
+            </div>
+            <div class="popup-content">
+                <table class="result-table">
+                    <thead>
+                    <tr>
+                        <th>데이터업로더명</th>
+                        <th>데이터업로더 설정여부</th>
+                    </tr>
+                    </thead>
+                    <tbody v-if="uploaderList.length == 0">
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            no data.
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-else>
+                    <tr v-for="(item, idx) in uploaderList">
+                        <td class="center">{{item.userName}}</td>
+                        <td class="center">
+                            <input type="checkbox" v-model="checked" v-bind:value="item.userSeq">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="btn_btm_div">
+                <span class="btn btn_gray" v-on:click="onclickClose();">닫기</span>
+                <span class="btn btn_mint" v-on:click="onclickSave();">수정</span>
+            </div>
+
+        </div>
+    </script>
+
+</div>
+</html>

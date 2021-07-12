@@ -61,4 +61,11 @@ public class UserPage {
     public String myUserPasswd() {
         return "pages/user/myUserPasswd";
     }
+
+    // 마이페이지  > 회원정보변경 > 데이터업로더 팝업
+    @GetMapping(value = "/popup/uploader")
+    public String popupUploader() {
+        return "pages/user/popUploader";
+    }
+
 }

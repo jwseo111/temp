@@ -178,3 +178,8 @@ function callbackPopupAgency(item){
 function callbackPopupStorage(item){
     appMain.$refs.maincontents.callbackPopupStorage(item);
 }
+
+// 데이터 업로더 설정 Popup open
+function openPopupUploader(seq){
+    window.open("/popup/uploader?userSeq="+seq, "pop", "width=500px,height=500px");
+}

@@ -77,7 +77,28 @@
                             <th>질병명</th>
                             <td>{{info.diseaseName}}</td>
                             <th>질병책임자여부</th>
-                            <td>{{info.diseaseManagerName}}</td>
+                            <td>
+
+                                <div class="btn_div btn">
+                                    <span style="padding-right:10px;">{{info.diseaseManagerName}}</span>
+                                    <span class="btn btn_primary w50" v-show="managerYn" style="cursor: pointer;" @click="popupUploader();" >데이터업로더설정</span>
+
+                                </div>
+                            </td>
+                        </tr>
+                        <tr v-show="info.parentUserYn">
+                            <th>질병책임자명</th>
+                            <td>
+
+                                <div class="btn_div btn">
+                                    <span style="padding-right:10px;">{{info.parentUserName}}</span>
+                                    <span class="btn btn_primary w50" v-show="info.parentYn" style="cursor: pointer;" @click="onclickChgManage();" >질병책임자변경</span>
+
+                                </div>
+                            </td>
+                            <td colspan="2"></td>
+
+
                         </tr>
                         <tr>
                             <th>NBP 아이디</th>
@@ -96,9 +117,9 @@
             </div>
 
             <div class="btn_btm_div">
-                <span class="btn btn_gray" v-on:click="onclickMovePage()">비밀번호변경</span>
-                <span class="btn btn_mint" v-on:click="onclickSave();">수정</span>
-            </span>
+                <span class="btn btn_gray" @click="onclickMovePage()">비밀번호변경</span>
+                <span class="btn btn_mint" @click="onclickSave();">수정</span>
+            </div>
 
         </div>
         </script>

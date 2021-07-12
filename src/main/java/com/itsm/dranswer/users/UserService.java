@@ -335,7 +335,7 @@ public class UserService {
 
         for(UserInfoDto userInfoDto : uploaders){
             UserInfo userInfo = this.findUserInfo(userInfoDto.getUserSeq());
-            userInfo.matchParent(userSeq);
+            userInfo.matchParent(userInfoDto.getParentUserSeq());
         }
 
         return getMyUploader(userSeq);

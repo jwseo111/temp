@@ -1,5 +1,7 @@
 package com.itsm.dranswer.users;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -44,5 +46,10 @@ public enum IsYn {
         }
 
         return codes;
+    }
+
+    @JsonCreator
+    public static IsYn fromJson(JsonNode node) {
+        return of(node.asText())==null?of(node.get("name").asText()):of(node.asText());
     }
 }

@@ -1,6 +1,8 @@
 package com.itsm.dranswer.commons;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -63,6 +65,11 @@ public enum Disease {
         }
 
         return codes;
+    }
+
+    @JsonCreator
+    public static Disease fromJson(JsonNode node) {
+        return of(node.asText())==null?of(node.get("name").asText()):of(node.asText());
     }
 
 }

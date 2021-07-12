@@ -382,12 +382,35 @@ public class UserRestCtrl {
         return success(userService.changeMyPw(userInfoDto));
     }
 
+    /**
+     * 
+     * @methodName : getMyUploader
+     * @date : 2021-07-12 오후 3:26
+     * @author : xeroman.k 
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<java.util.List<com.itsm.dranswer.users.UserInfoDto>>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_MANAGER"})
     @GetMapping(value = "/user/my/uploader")
     public ApiResult<List<UserInfoDto>> getMyUploader(@LoginUser LoginUserInfo loginUserInfo){
         return success(userService.getMyUploader(loginUserInfo.getUserSeq()));
     }
 
+    /**
+     * 
+     * @methodName : saveMyUploader
+     * @date : 2021-07-12 오후 3:26
+     * @author : xeroman.k 
+     * @param loginUserInfo
+     * @param userInfoDtos
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<java.util.List<com.itsm.dranswer.users.UserInfoDto>>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_MANAGER"})
     @PostMapping(value = "/user/my/uploader")
     public ApiResult<List<UserInfoDto>> saveMyUploader(@LoginUser LoginUserInfo loginUserInfo,
@@ -395,6 +418,17 @@ public class UserRestCtrl {
         return success(userService.saveMyUploader(loginUserInfo.getUserSeq(), userInfoDtos));
     }
 
+    /**
+     * 
+     * @methodName : initMyManager
+     * @date : 2021-07-12 오후 5:07
+     * @author : xeroman.k 
+ * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_UPLOADER"})
     @PostMapping(value = "/user/my/manager")
     public ApiResult<UserInfoDto> initMyManager(@LoginUser LoginUserInfo loginUserInfo){

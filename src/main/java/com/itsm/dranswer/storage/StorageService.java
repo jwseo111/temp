@@ -349,7 +349,7 @@ public class StorageService {
 
         List<Bucket> buckets = customObjectStorage.getBucketList(endPoint, regionName, accessKey, secretKey);
 
-        this.setBucketACL("dranswer", "kkhkykkk2@naver.com");
+//        this.setBucketACL("dranswer", "kkhkykkk2@naver.com");
 
         return buckets;
     }

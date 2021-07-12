@@ -394,4 +394,10 @@ public class UserRestCtrl {
                                                        @RequestBody List<UserInfoDto> userInfoDtos){
         return success(userService.saveMyUploader(loginUserInfo.getUserSeq(), userInfoDtos));
     }
+
+    @Secured(value = {"ROLE_UPLOADER"})
+    @PostMapping(value = "/user/my/manager")
+    public ApiResult<UserInfoDto> initMyManager(@LoginUser LoginUserInfo loginUserInfo){
+        return success(userService.initMyManager(loginUserInfo.getUserSeq()));
+    }
 }

@@ -61,6 +61,8 @@ public class UserInfoDto extends BaseEntity {
 
     private Long parentUserSeq;
 
+    private UserInfoDto parentUserInfo;
+
     public UserInfoDto(String userEmail, String userName) {
         this.userSeq = null;
         this.userEmail = userEmail;
@@ -74,5 +76,11 @@ public class UserInfoDto extends BaseEntity {
     public UserInfoDto(UserInfo userInfo, AgencyInfo agencyInfo) {
         copyProperties(userInfo, this);
         this.agencyInfo = new AgencyInfoDto(agencyInfo);
+    }
+
+    public UserInfoDto(UserInfo userInfo, AgencyInfo agencyInfo, UserInfo parentUserInfo) {
+        copyProperties(userInfo, this);
+        this.agencyInfo = new AgencyInfoDto(agencyInfo);
+        this.parentUserInfo = new UserInfoDto(parentUserInfo);
     }
 }

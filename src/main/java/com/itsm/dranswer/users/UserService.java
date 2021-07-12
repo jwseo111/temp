@@ -322,7 +322,14 @@ public class UserService {
 
     public UserInfoDto getUserDetailInfo(Long userSeq){
         UserInfo userInfo = this.findUserInfo(userSeq);
-        return new UserInfoDto(userInfo, userInfo.getAgencyInfo());
+
+        if(userInfo.getParentUserSeq() == null){
+            return new UserInfoDto(userInfo, userInfo.getAgencyInfo());
+        }else{
+            UserInfo parentUserInfo = this.findUserInfo(userInfo.getParentUserSeq());
+            return new UserInfoDto(userInfo, userInfo.getAgencyInfo(), parentUserInfo);
+        }
+
     }
 
     public List<UserInfoDto> getMyUploader(Long userSeq) {
@@ -339,6 +346,13 @@ public class UserService {
         }
 
         return getMyUploader(userSeq);
+    }
+
+    public UserInfoDto initMyManager(Long userSeq) {
+        UserInfo userInfo = this.findUserInfo(userSeq);
+        userInfo.matchParent(null);
+
+        return userInfo.convertDto();
     }
 }
 

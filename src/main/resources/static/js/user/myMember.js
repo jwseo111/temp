@@ -48,8 +48,9 @@ Vue.component('maincontents', {
                 diseaseManagerName:"",
                 joinStatCode:"",
                 joinStatName:"",
-                nCloudAccessKey:"",
                 nCloudId:"",
+                nCloudObjStorageId:"",
+                nCloudAccessKey:"",
                 nCloudSecretKey:"",
                 userEmail:"",
                 userName:"",
@@ -153,8 +154,9 @@ Vue.component('maincontents', {
             this.info.diseaseManagerYn = item.diseaseManagerYn;
             this.info.joinStatCode = item.joinStatCode.name;
             this.info.joinStatName = item.joinStatCode.desc;
-            this.info.nCloudAccessKey = item.nCloudAccessKey;
             this.info.nCloudId = item.nCloudId;
+            this.info.nCloudObjStorageId = item.nCloudObjStorageId;
+            this.info.nCloudAccessKey = item.nCloudAccessKey;
             this.info.nCloudSecretKey = item.nCloudSecretKey;
             this.info.userEmail = item.userEmail;
             this.info.userName = item.userName;

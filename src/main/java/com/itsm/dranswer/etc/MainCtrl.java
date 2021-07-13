@@ -3,6 +3,7 @@ package com.itsm.dranswer.etc;
 import com.amazonaws.services.s3.model.Bucket;
 import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
+import com.itsm.dranswer.storage.StorageService;
 import com.itsm.dranswer.users.JoinRequest;
 import com.itsm.dranswer.users.UserInfoDto;
 import com.itsm.dranswer.users.UserService;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +34,9 @@ public class MainCtrl {
     private CustomObjectStorage customObjectStorage;
 
     @Autowired
+    private StorageService storageService;
+
+    @Autowired
     private CustomMailSender customMailSender;
 
     @GetMapping(value = "/makeTestUser")
@@ -48,6 +51,7 @@ public class MainCtrl {
         String userPhoneNumber = "01087094244";
         String diseaseManagerYn = "Y";
         String nCloudId = null;
+        String nCloudObjStorageId = null;
         String nCloudAccessKey = null;
         String nCloudSecretKey = null;
         String joinStatCode = "REQUEST";
@@ -55,7 +59,7 @@ public class MainCtrl {
 
         JoinRequest request = new JoinRequest(userEmail, inputPw, userRole,
                 agencySeq, diseaseCode, userName, userPhoneNumber,
-                diseaseManagerYn, nCloudId, nCloudAccessKey,
+                diseaseManagerYn, nCloudId, nCloudObjStorageId, nCloudAccessKey,
                 nCloudSecretKey, joinStatCode, parentUserSeq);
 
         UserInfoDto user = userService.join(request);
@@ -81,13 +85,15 @@ public class MainCtrl {
     @ResponseBody
     public ApiResult<MemoryStats> getMemoryStatistics() throws MessagingException, IOException {
 
-        String template = "mail/mailtest";
-        String subject = "테스트 이메일 전송";
-        String[] to = {"bsmyeong@itsmart.co.kr", "com.yn.kim@gmail.com"};
-        Context ctx = new Context();
-        ctx.setVariable("test", "이메일 템플릿 테스트 입니다");
+//        String template = "mail/mailtest";
+//        String subject = "테스트 이메일 전송";
+//        String[] to = {"bsmyeong@itsmart.co.kr", "com.yn.kim@gmail.com"};
+//        Context ctx = new Context();
+//        ctx.setVariable("test", "이메일 템플릿 테스트 입니다");
+//
+//        customMailSender.sendMail(template, subject, to, ctx);
 
-        customMailSender.sendMail(template, subject, to, ctx);
+        storageService.makeBucket(null);
 
         MemoryStats stats = new MemoryStats();
         stats.setHeapSize(Runtime.getRuntime().totalMemory());

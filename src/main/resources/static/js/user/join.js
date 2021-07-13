@@ -42,6 +42,7 @@ Vue.component('maincontents', {
                 userPhoneNumber: "",
                 diseaseManagerYn: "",
                 nCloudId: "",
+                nCloudObjStorageId:"",
                 nCloudAccessKey: "",
                 nCloudSecretKey: "",
 
@@ -241,6 +242,7 @@ Vue.component('maincontents', {
 
             param =[
                 {value:this.info.nCloudId, title:"NBP 아이디", ref:this.$refs.nCloudId},
+                {value:this.info.nCloudObjStorageId, title:"NBP 스토리지아이디", ref:this.$refs.nCloudObjStorageId},
                 {value:this.info.nCloudAccessKey, title:"NBP 액세스키", ref:this.$refs.nCloudAccessKey},
                 {value:this.info.nCloudSecretKey, title:"NBP 시크릿키", ref:this.$refs.nCloudSecretKey},
             ];

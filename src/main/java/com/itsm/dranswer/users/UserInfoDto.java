@@ -47,6 +47,8 @@ public class UserInfoDto extends BaseEntity {
 
     private String nCloudId;
 
+    private String nCloudObjStorageId;
+
     private String nCloudAccessKey;
 
     private String nCloudSecretKey;

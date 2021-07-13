@@ -72,6 +72,9 @@ public class UserInfo extends BaseEntity implements Serializable {
     @Column(columnDefinition = "varchar(50) COMMENT '네이버클라우드아이디'")
     private String nCloudId;
 
+    @Column(columnDefinition = "varchar(50) COMMENT '네이버클라우드오브젝트스토리지아이디'")
+    private String nCloudObjStorageId;
+
     @Column(columnDefinition = "varchar(50) COMMENT '네이버클라우드액세스키'")
     private String nCloudAccessKey;
 
@@ -102,6 +105,7 @@ public class UserInfo extends BaseEntity implements Serializable {
         this.userPhoneNumber = request.getUserPhoneNumber();
         this.diseaseManagerYn = IsYn.of(request.getDiseaseManagerYn());
         this.nCloudId = request.getNCloudId();
+        this.nCloudObjStorageId = request.getNCloudObjStorageId();
         this.nCloudAccessKey = request.getNCloudAccessKey();
         this.nCloudSecretKey = request.getNCloudSecretKey();
         this.joinStatCode = JoinStat.REQUEST;

@@ -423,7 +423,7 @@ public class UserRestCtrl {
      * @methodName : initMyManager
      * @date : 2021-07-12 오후 5:07
      * @author : xeroman.k 
- * @param loginUserInfo
+     * @param loginUserInfo
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
      * @throws 
      * @modifyed :

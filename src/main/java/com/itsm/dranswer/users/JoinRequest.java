@@ -51,6 +51,9 @@ public class JoinRequest {
     // 네이버클라우드 ID
     private String nCloudId;
 
+    // 네이버클라우드 오브젝트 스토리지 ID
+    private String nCloudObjStorageId;
+
     // 네이버클라우드AccessKey
     private String nCloudAccessKey;
 

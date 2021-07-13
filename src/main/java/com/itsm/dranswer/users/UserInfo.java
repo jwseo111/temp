@@ -153,6 +153,7 @@ public class UserInfo extends BaseEntity implements Serializable {
         this.userName = userInfoDto.getUserName();
         this.userPhoneNumber = userInfoDto.getUserPhoneNumber();
         this.nCloudId = userInfoDto.getNCloudId();
+        this.nCloudObjStorageId = userInfoDto.getNCloudObjStorageId();
         this.nCloudAccessKey = userInfoDto.getNCloudAccessKey();
         this.nCloudSecretKey = userInfoDto.getNCloudSecretKey();
     }

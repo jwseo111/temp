@@ -123,7 +123,34 @@ Vue.component('maincontents', {
         onclickMovePage : function(){
           location.href="/my/userPasswd?menuId="+myMenuId;
         },
+        isFormValid : function(){
+            let param =[
+
+                    {value:this.info.userName, title:"담당자이름", ref:this.$refs.userName},
+                    {value:this.info.userPhoneNumber, title:"담당자휴대전화", ref:this.$refs.userPhoneNumber},
+                    {value:this.info.nCloudId, title:"NBP 아이디", ref:this.$refs.nCloudId},
+                    {value:this.info.nCloudAccessKey, title:"NBP 액세스키", ref:this.$refs.nCloudAccessKey},
+                    {value:this.info.nCloudSecretKey, title:"NBP 시크릿키", ref:this.$refs.nCloudSecretKey},
+                ];
+
+            if(!isValid(param)) return false;
+
+            if(this.info.agencyTypeCode === 'COMP' || this.info.diseaseManagerYn === 'Y'){
+                if(isNull(this.info.nCloudObjStorageId)){
+                    alert("오브젝트 스토리지 아이디는 필수입니다.");
+                    this.$refs.nCloudObjStorageId.focus();
+                    return false;
+                }
+            }
+
+            return true;
+        },
+
         onclickSave : function(){ // 승인
+            if(!this.isFormValid()){
+                return false;
+            }
+
             if(confirm("수정 하시겠습니까?")){
                 post(TID.SAVE,"/user/my/info", this.info, this.callback);
             }

@@ -229,7 +229,7 @@ public class StorageService {
         UserInfo managerInfo = reqStorageInfo.getDiseaseManagerUserInfo();
         BucketInfo bucketInfo = makeBucketInfo(reqStorageInfo);
         makeBucket(bucketInfo.getBucketName());
-        setBucketACL(bucketInfo.getBucketName(), managerInfo.getNCloudId());
+        setBucketACL(bucketInfo.getBucketName(), managerInfo.getNCloudObjStorageId());
 
         reqStorageInfo.approve(bucketInfo);
 
@@ -273,8 +273,8 @@ public class StorageService {
         customObjectStorage.makeBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName);
     }
 
-    public void setBucketACL(String bucketName, String ncpId){
-        customObjectStorage.setBucketACL(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName, ncpId);
+    public void setBucketACL(String bucketName, String ncpObjStorageId){
+        customObjectStorage.setBucketACL(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName, ncpObjStorageId);
     }
 
     public void deleteBucket(String bucketName){

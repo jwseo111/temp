@@ -10,7 +10,6 @@ package com.itsm.dranswer.storage;
  */
 
 
-import com.amazonaws.services.s3.model.Bucket;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import com.itsm.dranswer.users.*;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -338,30 +338,34 @@ public class StorageService {
         return openStorageInfo.convertDto();
     }
 
-    public List<Bucket> getMyStorageBucketList(LoginUserInfo loginUserInfo) {
+    public List<ReqStorageInfoDto> getMyStorageBucketList(LoginUserInfo loginUserInfo) {
 
         UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
 
-        String accessKey = laifAccessKey;
-        String secretKey = laifSecretKey;
-//        String accessKey = userInfoDto.getNCloudAccessKey();
-//        String secretKey = userInfoDto.getNCloudSecretKey();
+//        String accessKey = laifAccessKey;
+//        String secretKey = laifSecretKey;
+        String accessKey = userInfoDto.getNCloudAccessKey();
+        String secretKey = userInfoDto.getNCloudSecretKey();
 
-        List<Bucket> buckets = customObjectStorage.getBucketList(endPoint, regionName, accessKey, secretKey);
+        List<ReqStorageInfo> reqStorageInfos = reqStorageInfoRepo.
+                findByDiseaseManagerUserSeqAndReqStorageStatCode(loginUserInfo.getUserSeq(), ReqStorageStat.S_ACC);
 
-//        this.setBucketACL("dranswer", "kkhkykkk2@naver.com");
+//        List<Bucket> buckets = customObjectStorage.getBucketList(endPoint, regionName, accessKey, secretKey);
 
-        return buckets;
+//        this.setBucketACL("dranswer", "ncp-2670944-0");
+
+//        return buckets;
+        return reqStorageInfos.stream().map(ReqStorageInfoDto::new).collect(Collectors.toList());
     }
 
     public List<S3ObjectDto> getObjectList(LoginUserInfo loginUserInfo, String bucketName, String folderName) {
 
         UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
 
-        String accessKey = laifAccessKey;
-        String secretKey = laifSecretKey;
-//        String accessKey = userInfoDto.getNCloudAccessKey();
-//        String secretKey = userInfoDto.getNCloudSecretKey();
+//        String accessKey = laifAccessKey;
+//        String secretKey = laifSecretKey;
+        String accessKey = userInfoDto.getNCloudAccessKey();
+        String secretKey = userInfoDto.getNCloudSecretKey();
 
         return customObjectStorage.getObjectList(endPoint, regionName, accessKey, secretKey, bucketName, folderName);
     }

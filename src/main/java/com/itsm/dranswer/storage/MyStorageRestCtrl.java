@@ -1,6 +1,5 @@
 package com.itsm.dranswer.storage;
 
-import com.amazonaws.services.s3.model.Bucket;
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +22,13 @@ public class MyStorageRestCtrl {
     }
 
     @GetMapping(value = "/my/management/storage/bucket/list")
-    public ApiResult<List<Bucket>> getMyStorageBucketList(
+    public ApiResult<List<ReqStorageInfoDto>> getMyStorageBucketList(
             @LoginUser LoginUserInfo loginUserInfo){
 
-        List<Bucket> listBucketInfos =
+        List<ReqStorageInfoDto> reqStorageInfoDtos =
                 storageService.getMyStorageBucketList(loginUserInfo);
 
-        return success(listBucketInfos);
+        return success(reqStorageInfoDtos);
     }
 
     @GetMapping(value = "/my/management/storage/object/list/{bucketName:.+(?<!\\.js)$}")

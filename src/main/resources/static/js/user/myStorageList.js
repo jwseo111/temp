@@ -25,6 +25,7 @@ Vue.component('maincontents', {
                 size: 5,
                 dataName: "",
                 reqStorageStatCode: reqStorageStatCode,
+                userRole: userRole,
                 sort: ""
             },
             reqStorageList: [],
@@ -61,12 +62,20 @@ Vue.component('maincontents', {
         },
         // 목록 > 신청번호 클릭(화면 이동)
         onclickReq: function (reqStorageId) {
-           location.href = "/my/store/req?reqStorageId="+reqStorageId;
+            let uri = "/my/store/req?reqStorageId=";
+            if(userRole == "ROLE_ADMIN"){
+                uri = "/my/store/req/admin?reqStorageId=";
+            }
+           location.href = uri + reqStorageId;
         },
 
         getMyReqStorageList:function () {
+            let uri = "/my/management/storage/req/list";
+            if(userRole == "ROLE_ADMIN"){
+                uri = "/storage/req/list";
+            }
             get(TID.SEARCH,
-                "/my/management/storage/req/list",
+                uri,
                 this.cond,
                 this.callback);
         },

@@ -16,6 +16,7 @@
         <script th:src="@{/js/user/myStorageList.js}"></script>
         <script>
             const reqStorageStatCode = "[[${param.reqStorageStatCode}]]";
+            const userRole = "[[${#authentication.authorities[0]}]]";
         </script>
     </th:block>
 

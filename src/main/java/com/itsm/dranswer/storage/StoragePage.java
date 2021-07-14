@@ -81,4 +81,17 @@ public class StoragePage {
         return "pages/user/myOpenReq";
     }
 
+    // 마이페이지 > 질환데이터저장신청 상세(ADMIN)
+    @GetMapping(value = "/my/store/req/admin")
+    public String myStorageReqAdmin() {
+
+        return "pages/user/myStorageReqAdmin";
+    }
+
+    // 마이페이지 > 질환데이터 업로드
+    @GetMapping(value = "/my/diseaseUpload")
+    public String myDiseaseUpload() {
+
+        return "pages/user/myDiseaseUpload";
+    }
 }

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/mypageLayout">
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/user/myDiseaseUpload.js}"></script>
+        <script>
+           // const reqStorageStatCode = "[[${param.reqStorageStatCode}]]";
+        </script>
+    </th:block>
+
+    <div layout:fragment="contents">
+
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="storage-contents-wrap" >
+            <div style="float:left;width:27%;min-height:380px;border:1px solid;">
+                <div style="min-height:50px;">저장소</div>
+                <table>
+                    <tbody v-if="myStorageBucketList.length == 0">
+                    <tr>
+                        <td style="text-align: center;">
+                            no data.
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-if="myStorageBucketList.length > 0">
+                    <tr v-for="(bucket, idx) in myStorageBucketList">
+                        <td v-on:click="onclickBucket(bucket.bucketName)" style="padding:10px;">
+                            <span class="cusor">
+                            <!--<button class="btn-sel" v-on:click="selectStorage(storage)">선택</button>-->
+                            <input type="checkbox"> {{bucket.dataName}}
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div style="float:right;width:70%;min-height:350px;border:1px solid;padding:10px;" class="storage-content">
+                <div style="height:20px;width:95%;align:left;padding:3px;border:0px solid">
+                    - 저장소 : {{cond.bucketName}}
+                </div>
+                <div>
+                    - Path : <lo v-for="(pathName, idx) in path">
+                            <span v-on:click="onclickPath(idx)" class="cusor">{{pathName}}</span>
+                            </lo>
+                </div>
+                <div style="overflow:auto;height:250px;width:95%;align:center;padding:10px;border:1px solid;">
+                    <table class="result-table">
+                        <thead>
+                        <tr>
+                            <th style="width: 40%;">파일명</th>
+                            <th>크기</th>
+                            <th>유형</th>
+                            <th>최종수정일시</th>
+                        </tr>
+                        </thead>
+                        <tbody v-if="myStorageObjectList.length == 0">
+                        <tr v-if="path.length > 1">
+                            <td v-on:click="onclickPath(path.length-2)"><span class="cusor">...</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr v-else>
+                            <td colspan="4" style="text-align: center;">
+                                no data.
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody v-if="myStorageObjectList.length > 0">
+                        <tr v-if="path.length > 1">
+                            <td v-on:click="onclickPath(path.length-2)"><span class="cusor">...</span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr v-for="(object, idx) in myStorageObjectList">
+                            <td v-on:click="onclickObject(object.name, object.eTag)">
+                                <span class="cusor">
+                                {{object.name}}
+                                </span>
+                            </td>
+                            <td v-if="!object.eTag">
+                            </td>
+                            <td v-else align="right">
+                                {{object.size}} B
+                            </td>
+                            <td align="center">
+                                -
+                            </td>
+                            <td align="center">
+                                -
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <ul style="border: 0px;">
+                    <li style="display:inline-block;padding: 10px;">
+                        <label for="uploadFile"><span class="cusor">파일업로드</span></label>
+                        <input type="file" id="uploadFile" @change="onclickUpload" ref="multipartFile" multiple style="display: none;">
+                    </li>
+
+                    <li style="display:inline-block;padding: 10px;">
+                        <label for="uploadFoler"><span class="cusor">폴더업로드</span></label>
+                        <input type="file" id="uploadFoler" @change="onclickUpload" ref="multipartFoler" webkitdirectory multiple style="display: none;">
+                    </li>
+
+                    <li style="display:inline-block;padding: 10px;">
+                        <button class="btn" @click="onclickUpload">다운로드</button>
+                    </li>
+                    <li style="display:inline-block;padding: 10px;">
+                        <button class="btn" @click="onclickUpload">삭제</button>
+                    </li>
+                    <li style="display:inline-block;padding: 10px;">
+                        <button class="btn" @click="onclickReload">새로고침</button>
+                    </li>
+                </ul>
+
+                <div>{{messages}}</div>
+
+            </div>
+
+        </div>
+        </script>
+
+    </div>
+</html>

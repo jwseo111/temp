@@ -9,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class FileUploadResponse {
 
-    private String fileName;
+    private Integer totFileCnt;
 
-    private Long fileSize;
+    private Long totFileSize;
 
 }

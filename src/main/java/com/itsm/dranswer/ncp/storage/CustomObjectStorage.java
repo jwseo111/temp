@@ -216,8 +216,6 @@ public class CustomObjectStorage {
                              String bucketName, String folderName,
                              String objectName, File file) throws InterruptedException {
 
-        long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
-
         final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
 
         if(checkFileSize(file)){
@@ -226,9 +224,16 @@ public class CustomObjectStorage {
             this.upload(s3, bucketName, folderName, objectName, file);
         }
 
-        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-        long secDiffTime = (afterTime - beforeTime)/1000; //두 시간에 차 계산
-        System.out.println("시간차이(m) : "+secDiffTime);
+    }
+
+    public void deleteObject(String endPoint, String regionName,
+                             String accessKey, String secretKey,
+                             String bucketName, String objectName){
+
+
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
+
+        s3.deleteObject(bucketName, objectName);
     }
 
     private boolean checkFileSize(File file){

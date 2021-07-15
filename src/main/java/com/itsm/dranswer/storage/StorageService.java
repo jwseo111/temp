@@ -11,15 +11,21 @@ package com.itsm.dranswer.storage;
 
 
 import com.itsm.dranswer.config.LoginUserInfo;
+import com.itsm.dranswer.etc.FileUploadResponse;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import com.itsm.dranswer.users.*;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -368,5 +374,58 @@ public class StorageService {
         String secretKey = userInfoDto.getNCloudSecretKey();
 
         return customObjectStorage.getObjectList(endPoint, regionName, accessKey, secretKey, bucketName, folderName);
+    }
+
+    public FileUploadResponse uploadFile(String bucketName, String folderName, List<MultipartFile> multipartFiles, LoginUserInfo loginUserInfo) throws InterruptedException {
+        int fileCnt = 0;
+        long fileSize = 0L;
+
+        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
+
+        for(MultipartFile multipartFile : multipartFiles){
+            fileCnt++;
+            fileSize += multipartFile.getSize();
+            File targetFile = new File("/drAnswer/temp/" + multipartFile.getOriginalFilename());
+            try {
+                InputStream fileStream = multipartFile.getInputStream();
+                FileUtils.copyInputStreamToFile(fileStream, targetFile);
+            } catch (IOException e) {
+                FileUtils.deleteQuietly(targetFile);
+                e.printStackTrace();
+            }
+
+            String objectName = multipartFile.getOriginalFilename();
+
+//        String accessKey = laifAccessKey;
+//        String secretKey = laifSecretKey;
+            String accessKey = userInfoDto.getNCloudAccessKey();
+            String secretKey = userInfoDto.getNCloudSecretKey();
+
+            customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
+
+            targetFile.delete();
+        }
+
+        return new FileUploadResponse(fileCnt, fileSize);
+    }
+
+    public void deleteObject(String bucketName, String objectName, LoginUserInfo loginUserInfo){
+
+        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
+
+//        String accessKey = laifAccessKey;
+//        String secretKey = laifSecretKey;
+        String accessKey = userInfoDto.getNCloudAccessKey();
+        String secretKey = userInfoDto.getNCloudSecretKey();
+
+        customObjectStorage.deleteObject(endPoint, regionName, accessKey, secretKey, bucketName, objectName);
+
+    }
+
+    public void deleteObjects(List<RequestObjectDto> requestObjectDtos, LoginUserInfo loginUserInfo) {
+
+        for(RequestObjectDto requestObjectDto : requestObjectDtos){
+            deleteObject(requestObjectDto.getBucketName(), requestObjectDto.getObjectName(), loginUserInfo);
+        }
     }
 }

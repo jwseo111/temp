@@ -49,7 +49,7 @@ public class FileUploadCtrl {
         List<MultipartFile> multipartFiles = request.getFiles("multipartFile");
 
         for(MultipartFile multipartFile : multipartFiles){
-            File targetFile = new File("/drAnswer/test/" + multipartFile.getOriginalFilename());
+            File targetFile = new File("/drAnswer/temp/" + multipartFile.getOriginalFilename());
             try {
                 InputStream fileStream = multipartFile.getInputStream();
                 FileUtils.copyInputStreamToFile(fileStream, targetFile);
@@ -61,6 +61,8 @@ public class FileUploadCtrl {
             String objectName = multipartFile.getOriginalFilename();
 
             customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
+
+            targetFile.delete();
         }
 
         return success(new FileUploadResponse());

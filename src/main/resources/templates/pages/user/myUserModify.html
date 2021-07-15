@@ -63,9 +63,9 @@
                         </tr>
                         <tr>
                             <th>담당자이름</th>
-                            <td><input type="text" v-model="info.userName"/></td>
+                            <td><input type="text" ref="userName" v-model="info.userName"/></td>
                             <th>담당자휴대전화</th>
-                            <td><input type="text" v-model="info.userPhoneNumber"/></td>
+                            <td><input type="text" ref="userPhoneNumber"  v-model="info.userPhoneNumber"/></td>
                         </tr>
                         <tr>
                             <th>대표자명</th>
@@ -78,11 +78,9 @@
                             <td>{{info.diseaseName}}</td>
                             <th>질병책임자여부</th>
                             <td>
-
                                 <div class="btn_div btn">
                                     <span style="padding-right:10px;">{{info.diseaseManagerName}}</span>
                                     <span class="btn btn_primary w50" v-show="managerYn" style="cursor: pointer;" @click="popupUploader();" >데이터업로더설정</span>
-
                                 </div>
                             </td>
                         </tr>
@@ -97,21 +95,18 @@
                                 </div>
                             </td>
                             <td colspan="2"></td>
-
-
                         </tr>
                         <tr>
                             <th>NBP 아이디</th>
-                            <td><input type="text" v-model="info.nCloudId"/></td>
-                            <th>NBP 스토리지아이디</th>
-                            <td><input type="text" v-model="info.nCloudObjStorageId"/></td>
-
+                            <td><input type="text" ref="nCloudId" v-model="info.nCloudId"/></td>
+                            <th>NBP 액세스키</th>
+                            <td><input type="text" ref="nCloudAccessKey" v-model="info.nCloudAccessKey"/></td>
                         </tr>
                         <tr>
-                            <th>NBP 액세스키</th>
-                            <td><input type="text" v-model="info.nCloudAccessKey"/></td>
                             <th>NBP 시크릿키</th>
-                            <td><input type="text" v-model="info.nCloudSecretKey"/></td>
+                            <td><input type="text" ref="nCloudSecretKey" v-model="info.nCloudSecretKey"/></td>
+                            <th>오브젝트 스토리지 아이디</th>
+                            <td><input type="text" ref="" v-model="info.nCloudObjStorageId"/></td>
                         </tr>
                     </tbody>
                 </table>

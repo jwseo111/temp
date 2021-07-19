@@ -189,10 +189,6 @@ Vue.component('maincontents', {
             console.log("클릭");//tmp
 
         },
-        // 다운로드 버튼 클릭
-        onclickDownload : function(){
-            console.log("파일 다운로드");//tmp
-        },
         // 삭제 버튼 클릭
         onclickDelete : function(){
             this.deleteList = new Array();

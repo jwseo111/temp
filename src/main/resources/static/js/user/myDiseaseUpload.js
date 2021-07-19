@@ -10,7 +10,9 @@ let appMain;
 const TID = {
     SEARCH      : {value: 0, name: "search", code: "S"},
     SEARCH_OBJECT: {value: 0, name: "searchObject", code: "S"},
-    UPLOAD : {value: 0, name: "upload", code: "I"}
+    UPLOAD : {value: 0, name: "upload", code: "I"},
+    DOWNLOAD : {value:0, name: "download"},
+    DELETE : {value:0, name: "delete"}
 };
 window.onload = function(){
     appMain = new Vue({
@@ -31,6 +33,11 @@ Vue.component('maincontents', {
             },
             myStorageBucketList: [],
             myStorageObjectList: [],
+            myObjectResultList : [],  // 처리결과
+            myObjectResult : [],
+            deleteList: [
+            ]
+            ,
             uploadType : {
                 style : {display : "none"},
                 type :[
@@ -39,7 +46,10 @@ Vue.component('maincontents', {
                 ]
             },
             path : ["/"],
-            messages : ""
+            messages : "",
+            delChecked:[], // 삭제 체크박스
+            bucketChecked:[], // 버킷(저장소) 체크박
+            checked:"checked",
         };
     },
     mounted:function(){
@@ -54,10 +64,18 @@ Vue.component('maincontents', {
                 this.callback);
         },
         // 저장소(버킷) 목록 클릭
-        onclickBucket : function (bucketName){
+        onclickBucket : function (bucketName, idx){
             this.cond.bucketName = bucketName;
             this.path = ["/"];
+            this.bucketSelect(idx);
             this.getMyStorageObjectList(bucketName,"");
+
+        },
+        // 저장소(버킷) 체크박스 클릭
+        //bucketSelect : function(idx){
+        bucketSelect : function(idx, checked){
+            this.bucketChecked = [];
+            this.bucketChecked.push(idx);
 
         },
         // object 목록 클릭
@@ -67,6 +85,10 @@ Vue.component('maincontents', {
 
             if(!eTag) { // 폴더 클릭시 조회
                 this.getMyStorageObjectList(bucketName, folderName);
+            } else { //  파일 클릭
+                console.log("파일 클릭");//tmp
+                console.log("파일명 : " +objectName);//tmp
+                console.log("현재 위치: " +this.cond.folderName);//tmp
             }
 
         },
@@ -79,6 +101,7 @@ Vue.component('maincontents', {
                 this.cond,
                 this.callback);
         },
+
         // Path 클릭(해당 폴더로 이동)
         onclickPath : function(idx){
             let pathName = this.path[idx]=="/"?"":this.path[idx];
@@ -114,33 +137,82 @@ Vue.component('maincontents', {
                 + " ("+ (Math.round(progressEvent.loaded/progressEvent.total*10000)/100) +"%) ";
 
             if (progressEvent.loaded == progressEvent.total){
-                this.messages = "업로드 완료";
+                //this.messages = "업로드 완료";
             }
+            this.myObjectResult = [];
+            let result = "";
+            if (progressEvent.loaded == progressEvent.total){
+                result= "완료";
+            }
+            this.myObjectResult.push({
+                task : "업로드",
+                size : progressEvent.total.format(),
+                progress : (Math.round(progressEvent.loaded/progressEvent.total*10000)/100),
+                result: result
+            });
         },
         // 업로드 버튼 클릭
         onclickUpload : function(){
-            console.log("파일 업로드");//tmp
             const frm = new FormData();
             const multipartFile = this.$refs.multipartFile;
-
             for(let i in multipartFile.files){
                 frm.append("multipartFile", multipartFile.files[i]);
-            }
+                frm.append("bucketName",this.cond.bucketName);
+                frm.append("folderName",this.cond.folderName);
+/*
+                this.myObjectResultList.push({
+                    fileName : this.cond.folderName+multipartFile.files[i]
+                });
 
-            console.log(frm);
-            fileUpload(TID.UPLOAD, "/etc/fileUpload", frm, this.uploadProgressEvent, this.callback);
+ */
+            }
+            this.messages = "";
+
+            fileUpload(TID.UPLOAD, "/my/management/storage/object/fileUpload", frm, this.uploadProgressEvent, this.callback);
 
         },
         // 업로드(폴더) 버튼 클릭
         onclickUploadFolder : function(){
             console.log("폴더 업로드");//tmp
+            const frmFolder = new FormData();
+            const multipartFolder = this.$refs.multipartFolder;
+            for(let i in multipartFolder.files){
+                frmFolder.append("multipartFile", multipartFolder.files[i]);
+                frmFolder.append("bucketName",this.cond.bucketName);
+                frmFolder.append("folderName",this.cond.folderName);
+            }
+            this.messages = "";
+            fileUpload(TID.UPLOAD, "/my/management/storage/object/fileUpload", frmFolder, this.uploadProgressEvent, this.callback);
         },
         //
         onclick : function(type){
             console.log("클릭");//tmp
 
         },
+        // 다운로드 버튼 클릭
+        onclickDownload : function(){
+            console.log("파일 다운로드");//tmp
+        },
+        // 삭제 버튼 클릭
+        onclickDelete : function(){
+            this.deleteList = new Array();
+            for(let i=0;i<this.myStorageObjectList.length;i++){
+                //console.log(i+" : " + this.cond.folderName + " : " + this.myStorageObjectList[i].name + " : " + this.delChecked[i]);
+                if(this.delChecked[i]){ // 삭제 체크박스 true
+                    this.deleteList
+                        .push({
+                            bucketName:this.cond.bucketName,
+                            objectName:this.cond.folderName+this.myStorageObjectList[i].name
+                        })
+                }
+            }
 
+            post(TID.DELETE,
+                "/my/management/storage/object/delete",
+                this.deleteList,
+                this.callback);
+
+        },
         callback: function (tid, results) {
             switch (tid) {
                 case TID.SEARCH:
@@ -152,12 +224,17 @@ Vue.component('maincontents', {
                 case TID.UPLOAD:
                     this.uploadCallback(results);
                     break;
+                case TID.DELETE:
+                    if (results.success) {
+                        alert("정상적으로 삭제되었습니다.");
+                        this.onclickReload(); // 오브젝트 리스트 새로고침
+                    }
+
+                    break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log("버킷리스트");//tmp
-                console.log(results);
                 this.myStorageBucketList = results.response;
             } else {
                 console.log(results);
@@ -165,27 +242,40 @@ Vue.component('maincontents', {
         },
         searchObjectCallback: function (results) {
             if (results.success) {
-                //console.log("오브젝트 조회");//tmp
-                //console.log(results.response);//tmp
                 this.myStorageObjectList = results.response;
                 let folderName = this.cond.folderName.split("/");
                 this.pathTemp = ["/"];
                 for(let i=0 ; i < folderName.length-1 ; i++){
                     this.pathTemp = this.pathTemp.concat(folderName[i]+"/");
-                    //this.path = this.pathTemp;
                 }
                 this.path = this.pathTemp;
+
+                // 파일 input 값 reset
+                this.inputClear();
+                this.delChecked = [];
+
             } else {
                 console.log(results);
             }
         },
-
         uploadCallback: function (results) {
             if(results.success){
-                console.log("업로드 성공: "  + results);
+                alert("정상적으로 업로드되었습니다.");//tmp
+                this.onclickReload(); // 오브젝트 리스트 새로고침
+                this.myObjectResult = [];
             } else {
                 console.log(results);
-                this.messages = results.error.message;            }
+                this.messages = results.error.message;
+            }
+        },
+        inputClear: function () {
+            const inputFile = this.$refs.multipartFile;
+            const inputFolder = this.$refs.multipartFolder;
+            inputFile.type = 'text';
+            inputFile.type = 'file';
+
+            inputFolder.type = 'text';
+            inputFolder.type = 'file';
         }
 
     }
@@ -223,5 +313,20 @@ function fileUpload(tid, uri, formData, progEvent, callback){
                  console.log('Error', error.message);
             }
         })
-}
+};
+
+function fileDownload(tid){
+/*
+    axios.post(uri)
+        .then((response) => {
+            // 응답처리
+            callback(tid,response.data);
+        })
+        .catch((error) => {
+
+        })
+
+ */
+
+};
 

@@ -39,10 +39,10 @@
                     </tbody>
                     <tbody v-if="myStorageBucketList.length > 0">
                     <tr v-for="(bucket, idx) in myStorageBucketList">
-                        <td v-on:click="onclickBucket(bucket.bucketName)" style="padding:10px;">
+                        <td v-on:click="onclickBucket(bucket.bucketName,idx)" style="padding:10px;">
                             <span class="cusor">
                             <!--<button class="btn-sel" v-on:click="selectStorage(storage)">선택</button>-->
-                            <input type="checkbox"> {{bucket.dataName}}
+                            <input type="checkbox" v-model="bucketChecked" v-bind:value="idx" @change="bucketSelect(idx,event.target.checked)"> {{bucket.dataName}}
                             </span>
                         </td>
                     </tr>
@@ -63,6 +63,7 @@
                     <table class="result-table">
                         <thead>
                         <tr>
+                            <th>삭제</th>
                             <th style="width: 40%;">파일명</th>
                             <th>크기</th>
                             <th>유형</th>
@@ -71,29 +72,32 @@
                         </thead>
                         <tbody v-if="myStorageObjectList.length == 0">
                         <tr v-if="path.length > 1">
+                            <td></td>
                             <td v-on:click="onclickPath(path.length-2)"><span class="cusor">...</span></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr v-else>
-                            <td colspan="4" style="text-align: center;">
+                            <td colspan="5" style="text-align: center;">
                                 no data.
                             </td>
                         </tr>
                         </tbody>
                         <tbody v-if="myStorageObjectList.length > 0">
                         <tr v-if="path.length > 1">
-                            <td v-on:click="onclickPath(path.length-2)"><span class="cusor">...</span></td>
+                            <td></td>
+                            <td v-on:click="onclickPath(path.length-2)" class="cusor">...</td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr v-for="(object, idx) in myStorageObjectList">
-                            <td v-on:click="onclickObject(object.name, object.eTag)">
-                                <span class="cusor">
+                            <td align="center">
+                                <input type="checkbox" v-model="delChecked[idx]">
+                            </td>
+                            <td v-on:click="onclickObject(object.name, object.eTag)" class="cusor">
                                 {{object.name}}
-                                </span>
                             </td>
                             <td v-if="!object.eTag">
                             </td>
@@ -111,7 +115,6 @@
                     </table>
                 </div>
 
-
                 <ul style="border: 0px;">
                     <li style="display:inline-block;padding: 10px;">
                         <label for="uploadFile"><span class="cusor">파일업로드</span></label>
@@ -120,24 +123,43 @@
 
                     <li style="display:inline-block;padding: 10px;">
                         <label for="uploadFoler"><span class="cusor">폴더업로드</span></label>
-                        <input type="file" id="uploadFoler" @change="onclickUpload" ref="multipartFoler" webkitdirectory multiple style="display: none;">
+                        <input type="file" id="uploadFoler" @change="onclickUploadFolder" ref="multipartFolder" webkitdirectory multiple style="display: none;">
                     </li>
 
                     <li style="display:inline-block;padding: 10px;">
-                        <button class="btn" @click="onclickUpload">다운로드</button>
+                        <button class="btn" @click="onclickDownload">다운로드</button>
                     </li>
                     <li style="display:inline-block;padding: 10px;">
-                        <button class="btn" @click="onclickUpload">삭제</button>
+                        <button class="btn" @click="onclickDelete">삭제</button>
                     </li>
                     <li style="display:inline-block;padding: 10px;">
                         <button class="btn" @click="onclickReload">새로고침</button>
                     </li>
                 </ul>
-
-                <div>{{messages}}</div>
-
+                <!--<div>{{messages}}</div>-->
             </div>
 
+            <div style="padding:10px;" class="storage-content">
+                <div style="overflow:auto;height:250px;width:95%;align:center;padding:10px;border:1px solid;">
+                    <table class="result-table">
+                        <thead>
+                        <tr>
+                            <th>작업</th>
+                            <th style="width: 40%;">크기</th>
+                            <th>처리(%)</th>
+                            <th>처리결과</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(result, idx) in myObjectResult">
+                            <td>{{result.task}}</td>
+                            <td align="right">{{result.size}}</td>
+                            <td align="center">{{result.progress}}</td>
+                            <td align="center">{{result.result}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
         </div>
         </script>
 

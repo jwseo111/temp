@@ -16,7 +16,6 @@ import java.util.Map;
 @ToString
 public enum Disease {
 
-    ADMIN       ("ADMIN", "총괄",        "ADMIN"),
     LIVER_CA    ("LIVER_CA", "간암",        "LIVER CANCER"),
     LIVER_DIS   ("LIVER_DIS", "간질환",      "LIVER DISEASE"),
     THYROID_CA  ("THYROID_CA", "갑상선암",    "THYROID CANCER"),

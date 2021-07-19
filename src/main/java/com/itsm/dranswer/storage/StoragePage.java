@@ -94,4 +94,21 @@ public class StoragePage {
 
         return "pages/user/myDiseaseUpload";
     }
+
+
+    // 마이페이지 > 질환데이터 공개신청 목록(ADMIN)
+    @GetMapping(value = "/my/admin/open/list")
+    public String myAdminOpenList() {
+
+        return "pages/storage/myAdminOpenList";
+    }
+
+
+    // 마이페이지 > 질환데이터 공개신청 상세(ADMIN)
+    @GetMapping(value = "/my/admin/open/view")
+    public String myAdminOpenView() {
+
+        return "pages/storage/myAdminOpenView";
+    }
+
 }

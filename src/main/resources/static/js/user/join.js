@@ -61,7 +61,7 @@ Vue.component('maincontents', {
     mounted:function(){
         if(this.join.next === "Y"){
 
-          if(this.join.agree1 !== "Y" && this.join.agree2 !== "Y") {
+          if(isNull(this.join.agree1) && isNull(this.join.agree2)) {
 
               alert("잘 못된 접근방식 입니다.");
               location.href = "/";
@@ -87,7 +87,7 @@ Vue.component('maincontents', {
 
         },
         onclickNext : function(){
-            if(isNull(this.join.agree1) || isNull(this.join.agree2 )){
+            if(!this.join.agree1 || !this.join.agree2 ){
                 alert("모든 약관에 동의 해주세요.");
                 return;
             }
@@ -124,9 +124,15 @@ Vue.component('maincontents', {
             }
         },
         onclickAgency : function(){
-          if(this.info.agencyTypeCode === "COMP") {
-              this.info.diseaseManagerYn = "";
-          }
+            // 변경시 기관정보 초기화
+            this.info.agencySeq="";
+            this.info.agencyName ="";
+            this.info.ceoName="";
+            this.info.blNumber="";
+
+            if(this.info.agencyTypeCode === "COMP") {
+                this.info.diseaseManagerYn = "";
+            }
         },
         onclickCertSend : function(){ // 인증 email 전송
 
@@ -186,7 +192,8 @@ Vue.component('maincontents', {
         },
         onkeyupEmail : function(e){
             this.info.passOk1="N";
-            const email = /[^0-9a-zA-Z@\._]/gi; // 이메일
+            //const email = /[^0-9a-zA-Z@\._-]/gi; // 이메일
+            const email = /[ㄱ-힣]/gi; // 이메일
             this.info.userEmail = e.target.value.replace(email, "");
         },
         callbackPopupAgency : function(item){   // 기관 팝업 Callback

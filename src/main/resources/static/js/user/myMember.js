@@ -139,7 +139,7 @@ Vue.component('maincontents', {
             this.onclickSearch();
         },
         onclickDetail : function(seq){
-            location.href="/my/admin/memberView?userSeq="+seq;
+            location.href="/my/admin/memberView?menuId="+myMenuId+"&userSeq="+seq;
         },
         getUserInfoCallback : function(results){
 

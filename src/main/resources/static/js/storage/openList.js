@@ -61,7 +61,7 @@ Vue.component('maincontents', {
         },
         // 목록 > 신청 클릭(화면 이동)
         onclickReq: function () {
-            location.href = "/lndata/open/req";
+            getUserInfo("usrInfo", this.callback);
         },
 
         getOpenStorageList:function () {
@@ -78,6 +78,16 @@ Vue.component('maincontents', {
                 case "OpenStorageStat":
                     console.log(results.response);
                     this.openStorageStatCdList = results.response;
+                    break;
+                case "usrInfo":
+                    if (results.success) {
+                    } else {
+                        console.log(results);
+                        if(confirm("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?")){
+                            location.href = "/login";
+                        } else {
+                        }
+                    }
                     break;
             }
         },

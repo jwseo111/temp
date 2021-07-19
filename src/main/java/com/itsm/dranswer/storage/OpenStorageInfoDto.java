@@ -1,5 +1,6 @@
 package com.itsm.dranswer.storage;
 
+import com.itsm.dranswer.commons.BaseEntity;
 import com.itsm.dranswer.users.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class OpenStorageInfoDto {
+public class OpenStorageInfoDto extends BaseEntity {
 
     private String reqOpenId;
 

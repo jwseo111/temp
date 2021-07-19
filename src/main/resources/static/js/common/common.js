@@ -183,3 +183,11 @@ function callbackPopupStorage(item){
 function openPopupUploader(seq){
     window.open("/popup/uploader?userSeq="+seq, "pop", "width=500px,height=500px");
 }
+
+// 로그인정보 get
+function getUserInfo(tid,callback){
+    get(tid,
+        "/user/req/storage",
+        {},
+        callback);
+};

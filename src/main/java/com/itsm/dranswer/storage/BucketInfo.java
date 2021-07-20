@@ -37,7 +37,7 @@ public class BucketInfo extends BaseEntity implements Serializable {
     private List<ReqStorageInfo> reqStorageInfos = new ArrayList<>();
 
     public BucketInfo(ReqStorageInfo reqStorageInfo){
-        this.bucketName = makeBucketName(reqStorageInfo);
+        this.bucketName = makeBucketName(reqStorageInfo).toLowerCase();
         this.bucketDesc = reqStorageInfo.getDataName();
         this.diseaseManagerUserSeq = reqStorageInfo.getDiseaseManagerUserSeq();
     }

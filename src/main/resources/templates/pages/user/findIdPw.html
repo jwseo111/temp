@@ -41,9 +41,9 @@
                     <span class="btn login" @click="onclickFindId();">확인</span>
                 </div>
             </div>
-            <div class="line" style="padding-top: 10px;">
-                <p v-for="item in resultId" >{{item}}</p>
-            </div>
+
+            <div class="line" v-for="item in resultId"><span>{{item}}</span></div>
+
         </div>
 
         <div v-else-if="type === 'PASS'" v-show="certOk">

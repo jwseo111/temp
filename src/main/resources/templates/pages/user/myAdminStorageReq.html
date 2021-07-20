@@ -94,18 +94,26 @@
                         <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'">
                             <input type="text" v-model="saveInfo.bucketDesc" placeholder="저장신청 승인시 필수입력">
                         </td>
-                        <td v-else>
+                        <td v-else-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'">
                             {{reqStorageInfo.bucketInfo.bucketDesc}}
                         </td>
+                        <td v-else>-</td>
                     </tr>
-                    <tr>
+                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
+                              reqStorageInfo.reqStorageStatCode.name === 'S_REJ'">
                         <th>거절사유</th>
                         <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'">
                             <input type="text" v-model="saveInfo.rejectReason" placeholder="거절시 필수입력">
                         </td>
-                        <td v-else>
+                        <td v-else-if="reqStorageInfo.reqStorageStatCode.name ==='S_REJ'">
                             {{reqStorageInfo.rejectReason}}
                         </td>
+                        <td v-else>-</td>
+                    </tr>
+                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'D_REQ'">
+                        <th>취소사유</th>
+                        <td>{{reqStorageInfo.deleteReason}}</td>
+
                     </tr>
                 </table>
             </div>

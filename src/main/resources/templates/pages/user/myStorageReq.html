@@ -17,7 +17,7 @@
             const reqStorageId = "[[${param.reqStorageId}]]";
         </script>
     </th:block>
-dddd
+
     <div layout:fragment="contents">
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
@@ -90,16 +90,22 @@ dddd
                 </table>
             </div>
 
-            <div class="storage-title">취소 정보</div>
-            <div class="storage-content">
+            <div v-if="reqStorageInfo.reqStorageStatCode.name != 'S_REQ'" class="storage-title" >취소 정보</div>
+            <div  v-if="reqStorageInfo.reqStorageStatCode.name != 'S_REQ'"  class="storage-content">
                 <table class="result-table-detail">
                     <tr>
                         <th>취소사유</th>
-                        <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'">
-                            <input type="text" v-model="saveInfo.cancelReason" placeholder="승인상태이면 필수입력">
+                        <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'">
+                            <input type="text" v-model="saveInfo.deleteReason" placeholder="승인상태이면 필수입력">
                         </td>
                         <td v-else>
-                            {{reqStorageInfo.cancelReason}}
+                            {{reqStorageInfo.deleteReason}}
+                        </td>
+                    </tr>
+                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REJ'">
+                        <th>거절사유</th>
+                        <td>
+                            {{reqStorageInfo.rejectReason}}
                         </td>
                     </tr>
                 </table>
@@ -107,7 +113,8 @@ dddd
 
             <div class="btn_wrap" align="center">
                 <button v-on:click="onclickList">목록</button>
-                <button v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" v-on:click="onclickCancel">취소신청</button>
+                <button v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
+                              reqStorageInfo.reqStorageStatCode.name === 'S_ACC'" v-on:click="onclickCancel">취소신청</button>
             </div>
 
         </div>

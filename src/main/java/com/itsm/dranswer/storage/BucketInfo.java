@@ -48,7 +48,7 @@ public class BucketInfo extends BaseEntity implements Serializable {
         Integer agencySeq = reqStorageInfo.getDiseaseManagerUserInfo().getAgencySeq();
 
         return "dranswer2-"+agencySeq+"-"+
-                reqStorageInfo.getDiseaseCode().name()+"-"+
+                reqStorageInfo.getDiseaseCode().name().replaceAll("_", "-")+"-"+
                 reqStorageInfo.getDiseaseManagerUserSeq()+"-"+reqStorageInfo.getReqStorageId();
     }
 }

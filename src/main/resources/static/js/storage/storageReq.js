@@ -92,10 +92,12 @@ Vue.component('maincontents', {
             console.log("질병코드  : "   + this.saveInfo.diseaseCode);
             console.log("질병책임자   : " + this.saveInfo.diseaseManagerUserSeq);
 
-            post(TID.SAVE,
-                "/storage/req",
-                this.saveInfo,
-                this.callback);
+            if(confirm("신청하시겠습니까?")) {
+                post(TID.SAVE,
+                    "/storage/req",
+                    this.saveInfo,
+                    this.callback);
+            }
         },
         callback: function (tid, results) {
             switch (tid) {

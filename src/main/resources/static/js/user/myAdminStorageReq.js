@@ -1,7 +1,7 @@
 
 /*
- * @name : storageReq.js
- * @date : 2021-06-23 오후 1:05
+ * @name : storageReqAdmin.js
+ * @date : 2021-07-14 오후 1:23
  * @author : lsj
  * @version : 1.0.0
  * @modifyed :
@@ -10,7 +10,8 @@
 let appMain;
 const TID = {
     SEARCH : {value: 0, name: "search", code: "S"}, // 상세조회
-    CANCEL : {value: 0, name: "cancel",code: "D"}  // 취소
+    APPROVE :  {value: 0, name: "approve", code: "A"},  // 승인
+    REJECT :  {value: 0, name: "reject"}  // 거절
 };
 window.onload = function(){
     appMain = new Vue({
@@ -36,7 +37,8 @@ Vue.component('maincontents', {
             saveInfo: {
             },
             reqStorageInfo : {
-                reqStorageStatCode:{}
+                reqStorageStatCode:{},
+                bucketInfo:{}
             },
             reqUserInfo:{
                 diseaseCode:{}
@@ -57,29 +59,37 @@ Vue.component('maincontents', {
         },
         // 목록버튼 클릭
         onclickList: function () {
-            location.href = "/my/store/list";
+            location.href = "/my/admin/store/list?menuId=1";
         },
+        // 승인버튼 클릭
+        onclickApprove: function () {
 
-        // 취소신청버튼 클릭
-        onclickCancel: function () {
-            let statCd = this.reqStorageInfo.reqStorageStatCode.name;
-            let uri = "/my/management/storage/req/cancel/"; // 호출할 uri
-
-            if(statCd == "S_ACC") { // 처리상태가 저장신청승인(S_ACC)이면 취소사유 필수
-                if(!this.saveInfo.cancelReason) {
-                    alert("저장신청승인 상태인 경우, 취소사유는 필수입니다.");
-                    return;
-                }
-                if(!confirm("저장소 데이터가 삭제되고, 공개 대상에서 제외됩니다.\n취소하시겠습니까?")) {
-                    return;
-                }
-                uri = "/my/management/storage/req/delete/";
+            if(!this.saveInfo.bucketDesc){
+                alert("저장소설명은 필수입니다.");
+                return false;
+            }
+            if(confirm("승인하시겠습니까?")) {
+                post(TID.APPROVE,
+                    "/management/storage/req/approve/" + this.reqStorageId,
+                    this.saveInfo,
+                    this.callback);
             }
 
-            post(TID.CANCEL,
-                uri + this.reqStorageId,
-                this.saveInfo,
-                this.callback);
+        },
+        // 거절버튼 클릭
+        onclickReject: function () {
+            let uri = "/management/storage/req/reject/"; // 호출할 uri
+
+            if(!this.saveInfo.rejectReason) {
+                alert("거절사유는 필수입니다.");
+                return;
+            }
+            if(confirm("거절하시겠습니까?")) {
+                post(TID.REJECT,
+                    uri + this.reqStorageId,
+                    this.saveInfo,
+                    this.callback);
+            }
         },
 
         callback: function (tid, results) {
@@ -99,18 +109,18 @@ Vue.component('maincontents', {
                     this.diseaseCdList = results.response;
                     break;
                 case TID.APPROVE: // 승인처리
-                    //console.log(results);
+                    console.log(results);
                     if (results.success) {
                         alert("정상적으로 승인처리되었습니다.");
-                        location.href = "/my/store/main"; // 목록으로 이동
+                        this.onclickList();// 목록으로 이동
                     } else {
                         console.log(results);
                     }
                     break;
-                case TID.CANCEL: // 취소신청
+                case TID.REJECT: // 거절처리
                     if (results.success) {
-                        alert("정상적으로 취소신청되었습니다.");
-                        location.href = "/my/store/list"; // 목록으로 이동
+                        alert("정상적으로 거절처리되었습니다.");
+                        this.onclickList();// 목록으로 이동
                     } else {
                         console.log(results);
                     }

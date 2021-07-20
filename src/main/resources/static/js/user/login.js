@@ -125,10 +125,11 @@ Vue.component('maincontents', {
            ];
 
            if(!isValid(param)) return false;
-
+           this.resultId=[];
             post(TID.FID, "/user/find/mail", this.info, this.callback);
         },
         callbackFindId : function(results){
+
             if(results.success){
                 for(let i=0; i< results.response.length;i++){
                     this.resultId.push(results.response[i].userEmail);

@@ -12,12 +12,12 @@
 
     <th:block layout:fragment="script">
         <script th:src="@{/js/common/common.js}"></script>
-        <script th:src="@{/js/user/myStorageReq.js}"></script>
+        <script th:src="@{/js/user/myAdminStorageReq.js}"></script>
         <script>
             const reqStorageId = "[[${param.reqStorageId}]]";
         </script>
     </th:block>
-dddd
+
     <div layout:fragment="contents">
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
@@ -26,7 +26,7 @@ dddd
         <script type="text/x-template" id="main-template" >
         <div class="storage-contents-wrap" >
 
-            <div class="storage-title">마이페이지 > 질환데이터 저장신청 상세정보</div>
+            <div class="storage-title">마이페이지 > 질환데이터 저장신청 상세정보(ADMIN)</div>
             <div class="storage-title">신청자 정보</div>
             <div class="storage-content">
                 <table class="result-table-detail">
@@ -67,7 +67,7 @@ dddd
                 <table class="result-table-detail">
                     <tr>
                         <th>저장데이터명</th>
-                        <td>{{reqStorageInfo.dataName}}</td>
+                        <td >{{reqStorageInfo.dataName}}</td>
                     </tr>
                     <tr>
                         <th>신청일자</th>
@@ -80,26 +80,31 @@ dddd
                 </table>
             </div>
 
-            <div class="storage-title">생성 정보</div>
+            <div class="storage-title">저장소 정보</div>
             <div class="storage-content">
                 <table class="result-table-detail">
-                    <tr>
-                        <th>저장요청ID</th>
-                        <td>{{reqStorageInfo.reqStorageId}}</td>
+                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'">
+                        <th>저장소명</th>
+                        <td>
+                            {{reqStorageInfo.bucketName}}
+                        </td>
                     </tr>
-                </table>
-            </div>
-
-            <div class="storage-title">취소 정보</div>
-            <div class="storage-content">
-                <table class="result-table-detail">
                     <tr>
-                        <th>취소사유</th>
+                        <th>저장소설명</th>
                         <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'">
-                            <input type="text" v-model="saveInfo.cancelReason" placeholder="승인상태이면 필수입력">
+                            <input type="text" v-model="saveInfo.bucketDesc" placeholder="저장신청 승인시 필수입력">
                         </td>
                         <td v-else>
-                            {{reqStorageInfo.cancelReason}}
+                            {{reqStorageInfo.bucketInfo.bucketDesc}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>거절사유</th>
+                        <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'">
+                            <input type="text" v-model="saveInfo.rejectReason" placeholder="거절시 필수입력">
+                        </td>
+                        <td v-else>
+                            {{reqStorageInfo.rejectReason}}
                         </td>
                     </tr>
                 </table>
@@ -107,7 +112,8 @@ dddd
 
             <div class="btn_wrap" align="center">
                 <button v-on:click="onclickList">목록</button>
-                <button v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" v-on:click="onclickCancel">취소신청</button>
+                <button v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" v-on:click="onclickApprove">승인</button>
+                <button v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" v-on:click="onclickReject">거절</button>
             </div>
 
         </div>

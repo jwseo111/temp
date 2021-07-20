@@ -8,26 +8,24 @@
     <th:block layout:fragment="css">
         <link rel="stylesheet" th:href="@{/css/common/common.css}" />
         <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
-
     </th:block>
 
     <th:block layout:fragment="script">
         <script th:src="@{/js/common/common.js}"></script>
-        <script th:src="@{/js/user/myStorageList.js}"></script>
+        <script th:src="@{/js/user/myAdminStorageList.js}"></script>
         <script>
             const reqStorageStatCode = "[[${param.reqStorageStatCode}]]";
         </script>
     </th:block>
 
     <div layout:fragment="contents">
-
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
         <div class="storage-contents-wrap" >
-
+            <div class="storage-title">질환데이터 저장신청 목록(ADMIN)</div>
             <div class="storage-search-wrap">
                 <div class="line">
                     <div class="cond">
@@ -69,9 +67,9 @@
 
                     <tbody v-if="reqStorageList.length > 0">
                     <tr v-for="(storage, idx) in reqStorageList">
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.diseaseCode.desc}}</span></td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.dataName}}</span></td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.agencyInfo.agencyName}}</span></td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.diseaseCode.desc}}</td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.dataName}}</td>
+                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.agencyInfo.agencyName}}</td>
                         <td align="center">{{storage.diseaseManagerUserInfo.userName}}</td>
                         <td v-if="storage.reqStorageStatCode === null" align="center">-</td>
                         <td v-else align="center">{{storage.reqStorageStatCode.desc}}</td>
@@ -94,5 +92,7 @@
         </div>
         </script>
 
+        <script>
+        </script>
     </div>
 </html>

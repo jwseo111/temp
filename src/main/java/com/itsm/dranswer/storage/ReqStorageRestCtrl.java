@@ -106,7 +106,7 @@ public class ReqStorageRestCtrl {
      * @modifyed :
      *
     **/
-    @Secured(value = {"ROLE_MANAGER"})
+    @Secured(value = {"ROLE_MANAGER", "ROLE_ADMIN"})
     @GetMapping(value = "/my/management/storage/req/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> getMyReqStorageInfo(
             @PathVariable String reqStorageId){

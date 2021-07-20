@@ -61,7 +61,7 @@ Vue.component('maincontents', {
         },
         // 목록 > 신청번호 클릭(화면 이동)
         onclickReq: function (openStorageId) {
-            location.href = "/my/open/req?openStorageId="+openStorageId;
+            location.href = "/my/open/req?menuId="+myMenuId+"&openStorageId="+openStorageId;
         },
 
         getMyOpenStorageList:function () {

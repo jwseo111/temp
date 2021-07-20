@@ -1,6 +1,7 @@
+
 /*
- * @name : myStorageList.js
- * @date : 2021-06-28 오후 1:05
+ * @name : myAdminStorageList.js
+ * @date : 2021-07-20 오후 1:05
  * @author : lsj
  * @version : 1.0.0
  * @modifyed :
@@ -38,15 +39,14 @@ Vue.component('maincontents', {
                 pages: [1]
             },
             messages : "",
-            reqStoreStatCd : "",
-            reqStorageId : "",
-            reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback),
+            reqStoreStatCd : "", // 선택된 콤보박스
+            reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback), // 콤보박스 리스트
             isYn : getCodeList('IsYn',this.callback)
 
         };
     },
     mounted:function(){
-        this.getMyReqStorageList();
+        this.getReqStorageList();
     },
     methods:{
         onKeyup:function (e){
@@ -57,19 +57,17 @@ Vue.component('maincontents', {
         onclickSearch: function () {
             this.cond.page = 0;
             this.cond.reqStorageStatCode = this.reqStoreStatCd;
-            this.getMyReqStorageList();
+            this.getReqStorageList();
+        },
+        getReqStorageList:function () {
+            get(TID.SEARCH,
+                "/storage/req/list",
+                this.cond,
+                this.callback);
         },
         // 목록 > 신청번호 클릭(화면 이동)
         onclickReq: function (reqStorageId) {
-            let uri = "/my/store/req?menuId="+myMenuId+"&reqStorageId=";
-           location.href = uri + reqStorageId;
-        },
-
-        getMyReqStorageList:function () {
-            get(TID.SEARCH,
-                "/my/management/storage/req/list",
-                this.cond,
-                this.callback);
+            location.href = "/my/admin/store/req?menuId="+myMenuId+"&reqStorageId=" + reqStorageId;
         },
         callback: function (tid, results) {
             switch (tid) {
@@ -84,11 +82,12 @@ Vue.component('maincontents', {
                     console.log(results.response);
                     this.isYn = results.response;
                     break;
+
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                //console.log(results.response);
+                //console.log(results);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.reqStorageList = results.response.content;
             } else {
@@ -122,7 +121,7 @@ Vue.component('maincontents', {
         },
         onclickPage : function (page){
             this.cond.page = page - 1;
-            this.getMyReqStorageList();
+            this.getReqStorageList();
         },
     }
 });

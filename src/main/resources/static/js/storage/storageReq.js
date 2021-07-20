@@ -75,12 +75,10 @@ Vue.component('maincontents', {
         },
         // 신청 클릭(신청)
         onclickReqSave: function () {
-            console.log(("신청 클릭"));
             this.saveReqStorage();
         },
         // 신청 메소드 호출
         saveReqStorage:function () {
-            console.log(("신청 메소드 호출"));
             if(!this.saveInfo.dataName){
                 alert("저장데이터명은 필수입니다.");
                 return false;
@@ -94,10 +92,12 @@ Vue.component('maincontents', {
             console.log("질병코드  : "   + this.saveInfo.diseaseCode);
             console.log("질병책임자   : " + this.saveInfo.diseaseManagerUserSeq);
 
-            post(TID.SAVE,
-                "/storage/req",
-                this.saveInfo,
-                this.callback);
+            if(confirm("신청하시겠습니까?")) {
+                post(TID.SAVE,
+                    "/storage/req",
+                    this.saveInfo,
+                    this.callback);
+            }
         },
         callback: function (tid, results) {
             switch (tid) {

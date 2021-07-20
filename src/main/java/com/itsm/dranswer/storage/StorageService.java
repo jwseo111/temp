@@ -224,16 +224,17 @@ public class StorageService {
      * @date : 2021-06-28 오후 3:40
      * @author : xeroman.k
      * @param reqStorageId
+     * @param bucketInfoDto
      * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
      * @throws
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId) {
+    public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId, BucketInfoDto bucketInfoDto) {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         UserInfo managerInfo = reqStorageInfo.getDiseaseManagerUserInfo();
-        BucketInfo bucketInfo = makeBucketInfo(reqStorageInfo);
+        BucketInfo bucketInfo = makeBucketInfo(reqStorageInfo, bucketInfoDto);
         makeBucket(bucketInfo.getBucketName());
         setBucketACL(bucketInfo.getBucketName(), managerInfo.getNCloudObjStorageId());
 
@@ -271,8 +272,8 @@ public class StorageService {
         return reqStorageInfo.convertDto();
     }
 
-    public BucketInfo makeBucketInfo(ReqStorageInfo reqStorageInfo){
-        return bucketInfoRepo.save(new BucketInfo(reqStorageInfo));
+    public BucketInfo makeBucketInfo(ReqStorageInfo reqStorageInfo, BucketInfoDto bucketInfoDto){
+        return bucketInfoRepo.save(new BucketInfo(reqStorageInfo, bucketInfoDto));
     }
 
     public void makeBucket(String bucketName){

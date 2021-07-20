@@ -175,9 +175,9 @@ public class ReqStorageRestCtrl {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/storage/req/approve/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> approveReqStorage(
-            @PathVariable String reqStorageId){
+            @PathVariable String reqStorageId, @RequestBody BucketInfoDto bucketInfoDto){
 
-        return success(storageService.approveReqStorageInfo(reqStorageId));
+        return success(storageService.approveReqStorageInfo(reqStorageId, bucketInfoDto));
     }
     
     /**

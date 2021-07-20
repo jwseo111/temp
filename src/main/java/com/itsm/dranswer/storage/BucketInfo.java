@@ -42,6 +42,12 @@ public class BucketInfo extends BaseEntity implements Serializable {
         this.diseaseManagerUserSeq = reqStorageInfo.getDiseaseManagerUserSeq();
     }
 
+    public BucketInfo(ReqStorageInfo reqStorageInfo, BucketInfoDto bucketInfoDto) {
+        this.bucketName = makeBucketName(reqStorageInfo).toLowerCase();
+        this.bucketDesc = bucketInfoDto.getBucketDesc();
+        this.diseaseManagerUserSeq = reqStorageInfo.getDiseaseManagerUserSeq();
+    }
+
     private String makeBucketName(ReqStorageInfo reqStorageInfo){
 
         // 버킷 명명규칙 : dranswer2 + 병원코드 + 질병코드 + 회원ID + UUID

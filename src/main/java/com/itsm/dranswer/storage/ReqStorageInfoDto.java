@@ -88,7 +88,7 @@ public class ReqStorageInfoDto extends BaseEntity {
     public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo, BucketInfo bucketInfo, ReqUserDto reqUserDto) {
 
         copyProperties(reqStorageInfo, this);
-        this.bucketInfo = new BucketInfoDto(bucketInfo);
+        this.bucketInfo = bucketInfo == null ? null : new BucketInfoDto(bucketInfo);
         this.diseaseManagerUserInfo = new UserInfoDto(userInfo);
         this.agencyInfo = new AgencyInfoDto(agencyInfo);
         this.reqUserDto = reqUserDto;

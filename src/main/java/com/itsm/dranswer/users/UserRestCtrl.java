@@ -205,6 +205,14 @@ public class UserRestCtrl {
         return success(certDto);
     }
 
+    @PostMapping(value = "/user/find/pw/cert/mail")
+    public ApiResult<CertDto> fndPwCertMail(@RequestBody @Valid CertDto certDto) throws MessagingException, IOException {
+
+        userService.checkMailAndSendCertMailForFindPw(certDto);
+
+        return success(certDto);
+    }
+
     /**
      * 사용자 연락처로 이메일 리스트를 조회
      * @methodName : findMail

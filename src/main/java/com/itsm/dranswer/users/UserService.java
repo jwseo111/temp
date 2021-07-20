@@ -53,10 +53,17 @@ public class UserService {
     @Transactional
     public UserInfo login(String email, String password) {
 
-        UserInfo userInfo = findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("등록되지 않은 이메일 입니다. " + email));
+        UserInfo userInfo = findByEmailAndCheck(email);
         userInfo.login(passwordEncoder, email, password);
         userInfo.afterLoginSuccess();
+
+        return userInfo;
+    }
+
+    @Transactional
+    public UserInfo findByEmailAndCheck(String email){
+        UserInfo userInfo = findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("등록되지 않은 이메일 입니다. " + email));
 
         return userInfo;
     }
@@ -353,6 +360,13 @@ public class UserService {
         userInfo.matchParent(null);
 
         return userInfo.convertDto();
+    }
+
+    public void checkMailAndSendCertMailForFindPw(CertDto certDto) throws MessagingException, IOException {
+
+        findByEmailAndCheck(certDto.getUserEmail());
+        sendCertMail(certDto);
+
     }
 }
 

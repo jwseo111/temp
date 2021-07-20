@@ -2,6 +2,8 @@ package com.itsm.dranswer.storage;
 
 import lombok.*;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 @Setter
 @Getter
 @EqualsAndHashCode
@@ -16,4 +18,7 @@ public class BucketInfoDto {
 
     private Long diseaseManagerUserSeq;
 
+    public BucketInfoDto(BucketInfo bucketInfo) {
+        copyProperties(bucketInfo, this);
+    }
 }

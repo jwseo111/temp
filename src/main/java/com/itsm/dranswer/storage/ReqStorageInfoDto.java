@@ -38,6 +38,8 @@ public class ReqStorageInfoDto extends BaseEntity {
 
     private AgencyInfoDto agencyInfo;
 
+    private BucketInfoDto bucketInfo;
+
     private ReqStorageStat reqStorageStatCode;
 
     private String bucketName;
@@ -80,6 +82,15 @@ public class ReqStorageInfoDto extends BaseEntity {
 
     public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, ReqUserDto reqUserDto) {
         copyProperties(reqStorageInfo, this);
+        this.reqUserDto = reqUserDto;
+    }
+
+    public ReqStorageInfoDto(ReqStorageInfo reqStorageInfo, UserInfo userInfo, AgencyInfo agencyInfo, BucketInfo bucketInfo, ReqUserDto reqUserDto) {
+
+        copyProperties(reqStorageInfo, this);
+        this.bucketInfo = new BucketInfoDto(bucketInfo);
+        this.diseaseManagerUserInfo = new UserInfoDto(userInfo);
+        this.agencyInfo = new AgencyInfoDto(agencyInfo);
         this.reqUserDto = reqUserDto;
     }
 }

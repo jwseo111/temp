@@ -134,9 +134,10 @@ public class StorageService {
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         UserInfo userInfo = reqStorageInfo.getDiseaseManagerUserInfo();//userService.findUserInfo(reqStorageInfo.getDiseaseManagerUserSeq());
         AgencyInfo agencyInfo = userInfo.getAgencyInfo();
+        BucketInfo bucketInfo = reqStorageInfo.getBucketInfo();
         ReqUserDto reqUserDto = userService.getReqStorageUserInfo(reqStorageInfo.getCreatedBy());
 
-        ReqStorageInfoDto reqStorageInfoDto = new ReqStorageInfoDto(reqStorageInfo, userInfo, agencyInfo, reqUserDto);
+        ReqStorageInfoDto reqStorageInfoDto = new ReqStorageInfoDto(reqStorageInfo, userInfo, agencyInfo, bucketInfo, reqUserDto);
 
         return reqStorageInfoDto;
     }

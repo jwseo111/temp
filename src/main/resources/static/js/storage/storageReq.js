@@ -75,12 +75,10 @@ Vue.component('maincontents', {
         },
         // 신청 클릭(신청)
         onclickReqSave: function () {
-            console.log(("신청 클릭"));
             this.saveReqStorage();
         },
         // 신청 메소드 호출
         saveReqStorage:function () {
-            console.log(("신청 메소드 호출"));
             if(!this.saveInfo.dataName){
                 alert("저장데이터명은 필수입니다.");
                 return false;

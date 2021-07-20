@@ -59,28 +59,7 @@ Vue.component('maincontents', {
         onclickList: function () {
             location.href = "/my/store/list";
         },
-        // 승인버튼 클릭
-        onclickApprove: function () {
-            //console.log("승인버튼 클릭 reqStorageId: " + this.reqStorageId);//tmp
-            //console.log("저장소명 : " + this.saveInfo.bucketName);//tmp
 
-            if(!this.saveInfo.bucketName){
-                alert("저장소명은 필수입니다.");
-                return false;
-            }
-            if(!this.saveInfo.bucketDesc){
-                alert("저장소설명은 필수입니다.");
-                return false;
-            }
-
-           /*
-            post(TID.APPROVE,
-                "/my/management/storage/req/approve/"+this.reqStorageId,
-               {},
-                this.callback);
-
-            */
-        },
         // 취소신청버튼 클릭
         onclickCancel: function () {
             let statCd = this.reqStorageInfo.reqStorageStatCode.name;

@@ -99,6 +99,44 @@ public class CustomObjectStorage {
         final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
 
         try {
+
+            /* Get list of objects in a given bucket */
+            ObjectListing objects = s3.listObjects(bucketName);
+
+            /* Recursively delete all the objects inside given bucket */
+            if(objects != null && objects.getObjectSummaries() != null) {
+                while (true) {
+                    for(S3ObjectSummary summary : objects.getObjectSummaries()) {
+                        s3.deleteObject(bucketName, summary.getKey());
+                    }
+
+                    if (objects.isTruncated()) {
+                        objects = s3.listNextBatchOfObjects(objects);
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            /* Get list of versions in a given bucket */
+            VersionListing versions = s3.listVersions(new ListVersionsRequest().withBucketName(bucketName));
+
+            /* Recursively delete all the versions inside given bucket */
+            if(versions != null && versions.getVersionSummaries() != null) {
+                while (true) {
+                    for(S3VersionSummary summary : versions.getVersionSummaries()) {
+                        s3.deleteObject(bucketName, summary.getKey());
+                    }
+
+                    if (versions.isTruncated()) {
+                        versions = s3.listNextBatchOfVersions(versions);
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            /* Send Delete Bucket Request */
             s3.deleteBucket(bucketName);
         } catch (AmazonS3Exception e) {
             e.printStackTrace();

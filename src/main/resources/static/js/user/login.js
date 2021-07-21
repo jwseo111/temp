@@ -142,8 +142,8 @@ Vue.component('maincontents', {
         onclickCertSend : function(){ // 인증 email 전송
             let result = regExp("EMAIL", this.info.userEmail);
             if(result === "N" || isNull(this.info.userEmail)){
-                this.messages2 = "E-Mail 형식으로 입력해주세요.";
-                setTimeout(this.hideMessage2, 3000);
+                this.messages = "E-Mail 형식으로 입력해주세요.";
+                setTimeout(this.hideMessage, 3000);
                 this.$refs.email.focus();
             }else{
                 post(TID.CERT, "/user/find/pw/cert/mail", this.info, this.callback);

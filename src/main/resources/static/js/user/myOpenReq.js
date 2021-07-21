@@ -56,7 +56,7 @@ Vue.component('maincontents', {
         },
         // 목록버튼 클릭
         onclickList: function () {
-            location.href = "/my/open/list";
+            location.href = "/my/open/list?menuId="+myMenuId;
         },
         // 취소신청버튼 클릭
         onclickCancel: function () {
@@ -65,10 +65,12 @@ Vue.component('maincontents', {
                 alert("취소사유는 필수입니다.");
                 return;
             }
-            post(TID.CANCEL,
-                "/my/management/storage/open/cancel/"+this.openStorageId,
-                this.saveInfo,
-                this.callback);
+            if(confirm("취소하시겠습니까?")) {
+                post(TID.CANCEL,
+                    "/my/management/storage/open/cancel/"+this.openStorageId,
+                    this.saveInfo,
+                    this.callback);
+            }
         },
 
         callback: function (tid, results) {
@@ -79,7 +81,7 @@ Vue.component('maincontents', {
                 case TID.CANCEL: // 취소신청 callback
                     if (results.success) {
                         alert("정상적으로 취소신청되었습니다.");
-                        location.href = "/my/open/list"; // 목록으로 이동
+                        this.onclickList(); // 목록으로 이동
                     } else {
                         console.log(results);
                     }

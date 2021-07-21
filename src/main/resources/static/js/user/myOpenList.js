@@ -41,7 +41,6 @@ Vue.component('maincontents', {
             messages : "",
             openStorageStatCd : "", // 선택된 콤보박스
             openStorageStatCdList : getCodeList('OpenStorageStat',this.callback), // 상태콤보박스 리스트
-//            isYn : getCodeList('IsYn',this.callback)
 
         };
     },

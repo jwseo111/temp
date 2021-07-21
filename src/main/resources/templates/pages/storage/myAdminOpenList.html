@@ -56,8 +56,8 @@
                         <col style="width:15%;"/>
                         <col style="width:8%;"/>
                         <col style="width:8%;"/>
-                        <col style="width:13%;"/>
-
+                        <col style="width:12%;"/>
+                        <col style="width:12%;"/>
                     </colgroup>
                     <thead>
                     <tr>
@@ -67,12 +67,13 @@
                         <th>제공병원</th>
                         <th>신청자</th>
                         <th>상태</th>
-                        <th>신청일자/처리일자</th>
+                        <th>신청일자</th>
+                        <th>처리일자</th>
                     </tr>
                     </thead>
                     <tbody v-if="openStorageList.length == 0">
                     <tr>
-                        <td colspan="7" align="center">
+                        <td colspan="8" align="center">
                             no data.
                         </td>
                     </tr>
@@ -86,10 +87,10 @@
                         <td align="center">{{open.diseaseManagerUserInfo.userName}}</td>
                         <td v-if="open.reqStorageStatCode === null" align="center">-</td>
                         <td v-else align="center">{{open.openStorageStatCode.desc}}</td>
-                        <td>{{open.createdDate}} / {{open.modifiedDate}}</td>
+                        <td>{{open.createdDate}}</td>
+                        <td>{{open.modifiedDate}}</td>
                     </tr>
                     </tbody>
-
                 </table>
             </div>
             <!-- 페이징 -->

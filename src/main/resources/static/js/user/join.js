@@ -76,10 +76,6 @@ Vue.component('maincontents', {
         getCodeList(codeId, this.callBack);
 
     },
-    computed: function(){
-
-
-    },
     methods:{
 
         onclickBack : function(){
@@ -141,6 +137,7 @@ Vue.component('maincontents', {
                 this.message1 = "E-Mail 형식으로 입력해주세요.";
                 this.$refs.userEmail.focus();
             }else{
+                this.message1 ="";
                 post("Cert", "/user/cert/mail", this.info, this.callBack);
             }
         },
@@ -203,6 +200,13 @@ Vue.component('maincontents', {
             this.info.ceoName = item.ceoName;
             this.info.blNumber = item.blNumber;
         },
+        onclickManager : function(){    // 데이터업로더시 초기화
+              this.info.nCloudId = "";
+              this.info.nCloudAccessKey = "";
+              this.info.nCloudSecretKey = "";
+              this.info.nCloudObjStorageId = "";
+
+        },
         isFormValid : function(){
 
             let param =[
@@ -247,20 +251,15 @@ Vue.component('maincontents', {
                 return false;
             }
 
-            param =[
-                {value:this.info.nCloudId, title:"NBP 아이디", ref:this.$refs.nCloudId},
-                {value:this.info.nCloudAccessKey, title:"NBP 액세스키", ref:this.$refs.nCloudAccessKey},
-                {value:this.info.nCloudSecretKey, title:"NBP 시크릿키", ref:this.$refs.nCloudSecretKey},
-            ];
-
-            if(!isValid(param)) return false;
-
             if(this.info.agencyTypeCode === 'COMP' || this.info.diseaseManagerYn === 'Y'){
-                if(isNull(this.info.nCloudObjStorageId)){
-                    alert("오브젝트 스토리지 아이디는 필수입니다.");
-                    this.$refs.nCloudObjStorageId.focus();
-                    return false;
-                }
+                param =[
+                    {value:this.info.nCloudId, title:"NBP 아이디", ref:this.$refs.nCloudId},
+                    {value:this.info.nCloudAccessKey, title:"NBP 액세스키", ref:this.$refs.nCloudAccessKey},
+                    {value:this.info.nCloudSecretKey, title:"NBP 시크릿키", ref:this.$refs.nCloudSecretKey},
+                    {value:this.info.nCloudObjStorageId, title:"NBP 시크릿키", ref:this.$refs.nCloudObjStorageId},
+                ];
+
+                if(!isValid(param)) return false;
             }
 
             return true;

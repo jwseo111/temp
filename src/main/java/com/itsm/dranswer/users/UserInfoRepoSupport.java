@@ -55,6 +55,7 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
                 .innerJoin(parentUserInfo)
                 .on(parentUserInfo.userSeq.eq(userSeq))
                 .on(userInfo.agencySeq.eq(parentUserInfo.agencySeq))
+                .on(userInfo.diseaseCode.eq(parentUserInfo.diseaseCode))
                 .on(userInfo.userRole.eq(Role.UPLOADER))
                 .where(userInfo.parentUserSeq.isNull().or(userInfo.parentUserSeq.eq(userSeq)))
                 .orderBy(userInfo.userName.asc());

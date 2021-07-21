@@ -49,27 +49,32 @@
                     <colgroup>
                         <col width="5%;">
                         <col width="8%;">
-                        <col width="15%;">
+                        <col width="8%;">
                         <col width="10%;">
-                        <col width="15%;">
-                        <col width="5%;">
-                        <col width="15%;">
+                        <col width="10%;">
+                        <col width="10%;">
+                        <col width="10%;">
+                        <col width="10%;">
+                        <col width="12%;">
+                        <col width="12%;">
                     </colgroup>
-
                     <thead>
                     <tr>
                         <th>신청번호</th>
                         <th>이름</th>
-                        <th>회원구분/기관명</th>
+                        <th>회원구분</th>
+                        <th>기관명</th>
                         <th>질병명</th>
-                        <th>전화번호/이메일</th>
+                        <th>전화번호</th>
+                        <th>이메일</th>
                         <th>가입처리상태</th>
-                        <th>신청일자/처리일자</th>
+                        <th>신청일자</th>
+                        <th>처리일자</th>
                     </tr>
                     </thead>
                     <tbody v-if="list.length == 0">
                     <tr>
-                        <td colspan="7" align="center">
+                        <td colspan="10" align="center">
                             no data.
                         </td>
                     </tr>
@@ -78,14 +83,17 @@
                     <tr v-for="(item, idx) in list">
                         <td>{{item.userSeq}}</td>
                         <td><a href="javascript:void(0);" v-on:click="onclickDetail(item.userSeq);">{{item.userName}}</a></td>
-                        <td>{{item.userRole}} <br/>/ {{item.agencyInfo.agencyName}}</td>
+                        <td>{{item.userRole}}</td>
+                        <td>{{item.agencyInfo.agencyName}}</td>
                         <td>
                             <span v-if="item.diseaseCode === null">-</span>
                             <span v-else>{{item.diseaseCode.desc}}</span>
                         </td>
-                        <td> {{item.userPhoneNumber}}<br/>/ {{item.userEmail}}</td>
+                        <td>{{item.userPhoneNumber}}</td>
+                        <td>{{item.userEmail}}</td>
                         <td>{{item.joinStatCode.desc}}</td>
-                        <td> {{item.createdDate}}<br/>/ {{item.modifiedDate}}</td>
+                        <td>{{item.createdDate}}</td>
+                        <td>{{item.modifiedDate}}</td>
                     </tr>
                     </tbody>
 

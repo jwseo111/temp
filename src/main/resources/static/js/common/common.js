@@ -187,7 +187,7 @@ function openPopupUploader(seq){
 // 로그인정보 get
 function getUserInfo(tid,callback){
     get(tid,
-        "/user/req/storage",
+        "/user/my/info",
         {},
         callback);
 };

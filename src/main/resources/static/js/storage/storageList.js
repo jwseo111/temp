@@ -85,13 +85,18 @@ Vue.component('maincontents', {
                     break;
                 case "usrInfo":
                     if (results.success) {
-                        location.href = "/lndata/store/req";
+                        let userRole = results.response.userRole;
+                        if (userRole === "MANAGER") { // 병원-질병책임자
+                            location.href = "/lndata/store/req";
+                        } else { // USER(기업), UPLOADER(병원-업로더), ADMIN(관리자)
+                            alert("병원 소속 질병책임자만 신청이 가능합니다.");
+                            return;
+                        }
                     } else {
                         console.log(results);
                         if(confirm("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?")){
                             location.href = "/login";
                         } else {
-
                         }
                     }
                     break;

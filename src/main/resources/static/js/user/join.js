@@ -137,6 +137,7 @@ Vue.component('maincontents', {
                 this.message1 = "E-Mail 형식으로 입력해주세요.";
                 this.$refs.userEmail.focus();
             }else{
+                this.message1 ="";
                 post("Cert", "/user/cert/mail", this.info, this.callBack);
             }
         },

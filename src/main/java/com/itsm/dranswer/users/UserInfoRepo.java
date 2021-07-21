@@ -58,7 +58,7 @@ public interface UserInfoRepo extends JpaRepository<UserInfo, Long> {
     **/
     List<UserInfo> findByUserNameAndUserPhoneNumber(String userName, String userPhoneNumber);
 
-    List<UserInfo> findByParentUserSeqOrderByUserName(Long userSeq);
+    List<UserInfo> findByParentUserSeqOrderByUserName(Long parentUserSeq);
 
     List<UserInfo> findByAgencySeqAndParentUserSeqAndUserRoleOrderByUserName(Integer agencySeq, Object o, Role uploader);
 }

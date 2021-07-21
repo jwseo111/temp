@@ -22,10 +22,11 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public Page<UserInfoDto> searchAll(JoinStat joinStat, String userName, Pageable pageable){
+    QUserInfo userInfo = QUserInfo.userInfo;
+    QUserInfo parentUserInfo = new QUserInfo("parentUserInfo");
+    QAgencyInfo agencyInfo = QAgencyInfo.agencyInfo;
 
-        QUserInfo userInfo = QUserInfo.userInfo;
-        QAgencyInfo agencyInfo = QAgencyInfo.agencyInfo;
+    public Page<UserInfoDto> searchAll(JoinStat joinStat, String userName, Pageable pageable){
 
         JPAQuery<UserInfoDto> query  =jpaQueryFactory
                 .select(Projections.constructor(UserInfoDto.class, userInfo, agencyInfo))
@@ -46,8 +47,6 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
     }
 
     public List<UserInfoDto> getUploaderList(Long userSeq){
-        QUserInfo userInfo = QUserInfo.userInfo;
-        QUserInfo parentUserInfo = new QUserInfo("parentUserInfo");
 
         JPAQuery<UserInfoDto> query  = jpaQueryFactory
                 .select(Projections.constructor(UserInfoDto.class, userInfo))

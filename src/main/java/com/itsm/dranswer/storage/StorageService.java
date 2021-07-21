@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -432,7 +433,10 @@ public class StorageService {
 
     public List<UserInfoDto> getReqStorageAuthList(String reqStorageId) {
         ReqStorageInfoDto reqStorageInfoDto = this.getReqStorage(reqStorageId);
-        List<UserInfoDto> listUserInfoDto = userService.getMyUploader(reqStorageInfoDto.getDiseaseManagerUserSeq());
+        if(reqStorageInfoDto.getDiseaseManagerUserSeq() == null){
+            return new ArrayList<>();
+        }
+        List<UserInfoDto> listUserInfoDto = userService.getOnlyMyUploader(reqStorageInfoDto.getDiseaseManagerUserSeq());
         listUserInfoDto.add(0, reqStorageInfoDto.getDiseaseManagerUserInfo());
         return listUserInfoDto;
     }

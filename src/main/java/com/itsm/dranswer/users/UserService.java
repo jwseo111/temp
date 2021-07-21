@@ -345,6 +345,12 @@ public class UserService {
 
     }
 
+    public List<UserInfoDto> getOnlyMyUploader(Long userSeq) {
+
+        return userInfoRepo.findByParentUserSeqOrderByUserName(userSeq).stream().map(UserInfoDto::new).collect(Collectors.toList());
+
+    }
+
     public List<UserInfoDto> saveMyUploader(Long userSeq, List<UserInfoDto> uploaders){
 
         for(UserInfoDto userInfoDto : uploaders){

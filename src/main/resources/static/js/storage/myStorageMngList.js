@@ -1,7 +1,7 @@
 
 /*
- * @name : myOpenList.js
- * @date : 2021-07-07 오전 11:05
+ * @name : myStorageMngList.js
+ * @date : 2021-07-21 오전 10:54
  * @author : lsj
  * @version : 1.0.0
  * @modifyed :
@@ -24,11 +24,11 @@ Vue.component('maincontents', {
             cond: {
                 page: 0,
                 size: 5,
-                openDataName: "",
-                openStorageStatCode: openStorageStatCode,
+                dataName: "",
+                reqStorageStatCode: reqStorageStatCode,
                 sort: ""
             },
-            openStorageList: [],
+            storageList: [],
             pageInfo: {
                 curr : 1,
                 max : 1,
@@ -39,13 +39,14 @@ Vue.component('maincontents', {
                 pages: [1]
             },
             messages : "",
-            openStorageStatCd : "", // 선택된 콤보박스
-            openStorageStatCdList : getCodeList('OpenStorageStat',this.callback), // 상태콤보박스 리스트
+            reqStoreStatCd : "", // 선택된 콤보박스
+            reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback), // 콤보박스 리스트
+            isYn : getCodeList('IsYn',this.callback)
 
         };
     },
     mounted:function(){
-        this.getMyOpenStorageList();
+        this.getStorageList();
     },
     methods:{
         onKeyup:function (e){
@@ -55,17 +56,19 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.openStorageStatCode = this.openStorageStatCd;
-            this.getMyOpenStorageList();
+            this.cond.reqStorageStatCode = this.reqStoreStatCd;
+            this.getStorageList();
         },
-        // 목록 > 신청번호 클릭(화면 이동)
-        onclickReq: function (openStorageId) {
-            location.href = "/my/open/req?menuId="+myMenuId+"&openStorageId="+openStorageId;
+        // 목록 > 상세보기 클릭(화면 이동)
+        onclickView: function (reqStorageId) {
+            let uri = "/my/storeMng/View?menuId="+myMenuId+"&reqStorageId=";
+            location.href = uri + reqStorageId;
         },
 
-        getMyOpenStorageList:function () {
+        getStorageList:function () {
+            this.cond.reqStorageStatCode = "S_ACC"; // 저장신청승인만 조회
             get(TID.SEARCH,
-                "/my/management/storage/open/list",
+                "/storage/req/list",
                 this.cond,
                 this.callback);
         },
@@ -74,17 +77,17 @@ Vue.component('maincontents', {
                 case TID.SEARCH:
                     this.searchCallback(results);
                     break;
-                case "OpenStorageStat":
+                case "ReqStorageStat":
                     console.log(results.response);
-                    this.openStorageStatCdList = results.response;
+                    this.reqStoreStatCdList = results.response;
                     break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results.response.content);
+                //console.log(results);
                 this.makePageNavi(results.response.pageable, results.response.total);
-                this.openStorageList = results.response.content;
+                this.storageList = results.response.content;
             } else {
                 console.log(results);
             }
@@ -116,7 +119,7 @@ Vue.component('maincontents', {
         },
         onclickPage : function (page){
             this.cond.page = page - 1;
-            this.getMyOpenStorageList();
+            this.getStorageList();
         },
     }
 });

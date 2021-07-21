@@ -90,10 +90,15 @@
                 </table>
             </div>
 
-            <div v-if="reqStorageInfo.reqStorageStatCode.name != 'S_REQ'" class="storage-title" >취소 정보</div>
-            <div  v-if="reqStorageInfo.reqStorageStatCode.name != 'S_REQ'"  class="storage-content">
+            <div  v-if="reqStorageInfo.reqStorageStatCode.name != 'S_REQ' &&
+                        reqStorageInfo.reqStorageStatCode.name != 'S_CCL'">
+            <div class="storage-title" >취소 정보</div>
+            <div class="storage-content">
                 <table class="result-table-detail">
-                    <tr>
+                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC' ||
+                              reqStorageInfo.reqStorageStatCode.name === 'D_REQ' ||
+                              reqStorageInfo.reqStorageStatCode.name === 'D_ACC' ||
+                              reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">
                         <th>취소사유</th>
                         <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'">
                             <input type="text" v-model="saveInfo.deleteReason" placeholder="승인상태이면 필수입력">
@@ -109,6 +114,7 @@
                         </td>
                     </tr>
                 </table>
+            </div>
             </div>
 
             <div class="btn_wrap" align="center">

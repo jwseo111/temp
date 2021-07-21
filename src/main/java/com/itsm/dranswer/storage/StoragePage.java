@@ -118,4 +118,18 @@ public class StoragePage {
         return "pages/storage/myAdminOpenView";
     }
 
+    // 마이페이지 > 저장소관리(ADMIN)
+    @GetMapping(value = "/my/storeMng/list")
+    public String myStoreMngList() {
+
+        return "pages/storage/myStorageMngList";
+    }
+
+    // 마이페이지 > 저장소상세(ADMIN)
+    @GetMapping(value = "/my/storeMng/View")
+    public String myStoreMngView() {
+
+        return "pages/storage/myStorageMngView";
+    }
+
 }

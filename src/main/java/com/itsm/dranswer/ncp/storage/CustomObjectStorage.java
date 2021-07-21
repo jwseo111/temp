@@ -207,7 +207,7 @@ public class CustomObjectStorage {
         final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
 
         AccessControlList accessControlList = s3.getBucketAcl(bucketName);
-        accessControlList.grantPermission(new CanonicalGrantee(ncpId), Permission.Read);
+        accessControlList.grantPermission(new CanonicalGrantee(ncpId), Permission.FullControl);
         s3.setBucketAcl(bucketName, accessControlList);
     }
 

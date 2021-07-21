@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/mypageLayout">
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
+        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/storage/myStorageMngView.js}"></script>
+        <script>
+            const reqStorageId = "[[${param.reqStorageId}]]";
+        </script>
+    </th:block>
+
+    <div layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="storage-contents-wrap" >
+
+            <div class="storage-title">마이페이지 > 저장소 상세정보</div>
+            <div class="storage-title">저장소 정보</div>
+            <div class="storage-content">
+                <table class="result-table-detail">
+                    <tr>
+                        <th>기관명</th>
+                        <td>{{reqStorageInfo.agencyInfo.agencyName}}</td>
+                        <th>질환명</th>
+                        <td>{{reqStorageInfo.diseaseCode.desc}}</td>
+                    </tr>
+                    <tr>
+                        <th>데이터명</th>
+                        <td>{{reqStorageInfo.dataName}}</td>
+                        <th>저장소명</th>
+                        <td>{{reqStorageInfo.bucketName}}</td>
+                    </tr>
+                    <tr>
+                        <th>신청자</th>
+                        <td>{{reqUserInfo.userName}}</td>
+                        <th>총 용량</th>
+                        <td>0000000</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="float:left;width:27%;border:1px solid;padding:5px;min-height: 300px;" class="storage-content">
+                <div class="storage-title">권한정보</div>
+                <div>
+                    <table class="result-table">
+                        <thead>
+                        <tr style="height: 35px;">
+                            <th>사용자</th>
+                            <th>질병책임자/데이터업로더</th>
+                        </tr>
+                        </thead>
+                        <tbody v-if="myStorageAuthList.length == 0">
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                no data.
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody v-if="myStorageAuthList.length > 0">
+                        <tr v-for="(auth, idx) in myStorageAuthList">
+                            <td>
+                                {{auth.userName}}
+                            </td>
+                            <td align="center">
+                                {{auth.userRole}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="float:right;width:70%;border:1px solid;padding:5px;min-height: 300px;" class="storage-content">
+                <div class="storage-title">오브젝트 정보</div>
+
+                <div>
+                    <table class="result-table">
+                        <thead>
+                        <tr style="height: 35px;">
+                            <th style="width: 40%;">파일명</th>
+                            <th>크기</th>
+                            <th>유형</th>
+                            <th>최종수정일시</th>
+                        </tr>
+                        </thead>
+                        <tbody v-if="myStorageObjectList.length == 0">
+                        <tr>
+                            <td colspan="4" style="text-align: center;">
+                                no data.
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody v-if="myStorageObjectList.length > 0">
+                        <tr v-for="(object, idx) in myStorageObjectList">
+                            <td>
+                                {{object.name}}
+                            </td>
+                            <td v-if="!object.eTag">
+                            </td>
+                            <td v-else align="right">
+                                {{object.size}} B
+                            </td>
+                            <td align="center">
+                                -
+                            </td>
+                            <td align="center">
+                                -
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div style="clear:both;padding:10px;"></div>
+
+
+            <div style="padding:10px;" class="btn_wrap" align="center">
+                <button v-on:click="onclickList">목록</button>
+                <button v-on:click="onclickDelete(reqStorageInfo.reqStorageId)">저장소삭제</button>
+            </div>
+
+        </div>
+        </script>
+
+        <script>
+        </script>
+    </div>
+</html>

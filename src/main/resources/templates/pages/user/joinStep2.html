@@ -135,28 +135,28 @@
                             <td>질병책임자여부</td>
                             <td>
                                 <input type="radio" ref="diseaseManagerY" id="diseaseManagerY" v-model="info.diseaseManagerYn" value="Y"><label for="diseaseManagerY">질병책임자</label>
-                                <input type="radio" id="diseaseManagerN" v-model="info.diseaseManagerYn" value="N"><label for="diseaseManagerN">데이터업로더</label>
+                                <input type="radio" id="diseaseManagerN" v-model="info.diseaseManagerYn" value="N" v-on:click="onclickManager()"><label for="diseaseManagerN">데이터업로더</label>
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
                             <td>NBP 아이디</td>
                             <td>
                                 <input type="text" ref="nCloudId" v-model="info.nCloudId">
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
                             <td>NBP 액세스키</td>
                             <td>
                                 <input type="text" ref="nCloudAccessKey" v-model="info.nCloudAccessKey">
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
                             <td>NBP 시크릿키</td>
                             <td>
                                 <input type="text" ref="nCloudSecretKey" v-model="info.nCloudSecretKey">
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
                             <td>오브젝트 스토리지 아이디</td>
                             <td>
                                 <input type="text" ref="nCloudObjStorageId" v-model="info.nCloudObjStorageId">

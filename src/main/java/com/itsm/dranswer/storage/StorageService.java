@@ -360,11 +360,6 @@ public class StorageService {
         List<ReqStorageInfo> reqStorageInfos = reqStorageInfoRepo.
                 findByDiseaseManagerUserSeqAndReqStorageStatCode(loginUserInfo.getUserSeq(), ReqStorageStat.S_ACC);
 
-//        List<Bucket> buckets = customObjectStorage.getBucketList(endPoint, regionName, accessKey, secretKey);
-
-//        this.setBucketACL("dranswer", "ncp-2670944-0");
-
-//        return buckets;
         return reqStorageInfos.stream().map(ReqStorageInfoDto::new).collect(Collectors.toList());
     }
 

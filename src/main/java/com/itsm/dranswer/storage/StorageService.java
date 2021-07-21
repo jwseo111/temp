@@ -358,7 +358,7 @@ public class StorageService {
         }
 
         List<ReqStorageInfo> reqStorageInfos = reqStorageInfoRepo.
-                findByDiseaseManagerUserSeqAndReqStorageStatCode(loginUserInfo.getUserSeq(), ReqStorageStat.S_ACC);
+                findByDiseaseManagerUserSeqAndReqStorageStatCode(userInfoDto.getUserSeq(), ReqStorageStat.S_ACC);
 
         return reqStorageInfos.stream().map(ReqStorageInfoDto::new).collect(Collectors.toList());
     }
@@ -428,5 +428,9 @@ public class StorageService {
         for(RequestObjectDto requestObjectDto : requestObjectDtos){
             deleteObject(requestObjectDto.getBucketName(), requestObjectDto.getObjectName(), loginUserInfo);
         }
+    }
+
+    public List<UserInfoDto> getStorageAuthList(String reqStorageId) {
+        return null;
     }
 }

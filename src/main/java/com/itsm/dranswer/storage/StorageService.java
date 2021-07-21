@@ -350,10 +350,12 @@ public class StorageService {
 
         UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
 
-//        String accessKey = laifAccessKey;
-//        String secretKey = laifSecretKey;
         String accessKey = userInfoDto.getNCloudAccessKey();
         String secretKey = userInfoDto.getNCloudSecretKey();
+        if(userInfoDto.getUserRole().equals(Role.ADMIN)){
+            accessKey = laifAccessKey;
+            secretKey = laifSecretKey;
+        }
 
         List<ReqStorageInfo> reqStorageInfos = reqStorageInfoRepo.
                 findByDiseaseManagerUserSeqAndReqStorageStatCode(loginUserInfo.getUserSeq(), ReqStorageStat.S_ACC);
@@ -370,10 +372,12 @@ public class StorageService {
 
         UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
 
-//        String accessKey = laifAccessKey;
-//        String secretKey = laifSecretKey;
         String accessKey = userInfoDto.getNCloudAccessKey();
         String secretKey = userInfoDto.getNCloudSecretKey();
+        if(userInfoDto.getUserRole().equals(Role.ADMIN)){
+            accessKey = laifAccessKey;
+            secretKey = laifSecretKey;
+        }
 
         return customObjectStorage.getObjectList(endPoint, regionName, accessKey, secretKey, bucketName, folderName);
     }

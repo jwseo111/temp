@@ -24,8 +24,7 @@ Vue.component('maincontents', {
             cond: {
                 page: 0,
                 size: 5,
-                //reqStorageStatCode: "S_ACC", // S_ACC(저장신청승인)
-                reqStorageStatCode: "", // S_ACC(저장신청승인)
+                reqStorageStatCode: "S_ACC", // S_ACC(저장신청승인)
                 dataName: "",
                 //sort: "agencyName"
             },

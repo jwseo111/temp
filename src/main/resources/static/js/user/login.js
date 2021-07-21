@@ -146,7 +146,7 @@ Vue.component('maincontents', {
                 setTimeout(this.hideMessage2, 3000);
                 this.$refs.email.focus();
             }else{
-                post(TID.CERT, "/user/cert/mail", this.info, this.callback);
+                post(TID.CERT, "/user/find/pw/cert/mail", this.info, this.callback);
             }
         },
         callbackCertChk : function(results) {

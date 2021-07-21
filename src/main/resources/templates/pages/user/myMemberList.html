@@ -79,7 +79,10 @@
                         <td>{{item.userSeq}}</td>
                         <td><a href="javascript:void(0);" v-on:click="onclickDetail(item.userSeq);">{{item.userName}}</a></td>
                         <td>{{item.userRole}} <br/>/ {{item.agencyInfo.agencyName}}</td>
-                        <td>{{item.diseaseCode.desc}}</td>
+                        <td>
+                            <span v-if="item.diseaseCode === null">-</span>
+                            <span v-else>{{item.diseaseCode.desc}}</span>
+                        </td>
                         <td> {{item.userPhoneNumber}}<br/>/ {{item.userEmail}}</td>
                         <td>{{item.joinStatCode.desc}}</td>
                         <td> {{item.createdDate}}<br/>/ {{item.modifiedDate}}</td>

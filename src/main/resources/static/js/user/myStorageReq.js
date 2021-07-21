@@ -66,7 +66,7 @@ Vue.component('maincontents', {
             let uri = "/my/management/storage/req/cancel/"; // 호출할 uri
 
             if(statCd == "S_ACC") { // 처리상태가 저장신청승인(S_ACC)이면 취소사유 필수
-                if(!this.saveInfo.cancelReason) {
+                if(!this.saveInfo.deleteReason) {
                     alert("저장신청승인 상태인 경우, 취소사유는 필수입니다.");
                     return;
                 }
@@ -80,6 +80,7 @@ Vue.component('maincontents', {
                 uri + this.reqStorageId,
                 this.saveInfo,
                 this.callback);
+
         },
 
         callback: function (tid, results) {

@@ -430,7 +430,10 @@ public class StorageService {
         }
     }
 
-    public List<UserInfoDto> getStorageAuthList(String reqStorageId) {
-        return null;
+    public List<UserInfoDto> getReqStorageAuthList(String reqStorageId) {
+        ReqStorageInfoDto reqStorageInfoDto = this.getReqStorage(reqStorageId);
+        List<UserInfoDto> listUserInfoDto = userService.getMyUploader(reqStorageInfoDto.getDiseaseManagerUserSeq());
+        listUserInfoDto.add(0, reqStorageInfoDto.getDiseaseManagerUserInfo());
+        return listUserInfoDto;
     }
 }

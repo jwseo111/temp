@@ -11,11 +11,14 @@ package com.itsm.dranswer.storage;
 
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
+import com.itsm.dranswer.users.UserInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import static com.itsm.dranswer.utils.ApiUtils.success;
@@ -115,6 +118,16 @@ public class ReqStorageRestCtrl {
                 storageService.getReqStorage(reqStorageId);
 
         return success(reqStorageInfoDto);
+    }
+
+    @GetMapping(value = "/storage/req/auth/list/{reqStorageId:.+(?<!\\.js)$}")
+    public ApiResult<List<UserInfoDto>> getReqStorageAuthList(
+            @PathVariable String reqStorageId){
+
+        List<UserInfoDto> listUserInfoDto =
+                storageService.getReqStorageAuthList(reqStorageId);
+
+        return success(listUserInfoDto);
     }
 
     /**

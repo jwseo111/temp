@@ -75,7 +75,7 @@ Vue.component('maincontents', {
         },
         loginCallback: function(results){
             if(results.success){
-                console.log(results);
+
                 if(this.login.saveId){
                     localStorage.setItem("auth_center_login_userId", this.login.email);
                 }else{
@@ -140,10 +140,10 @@ Vue.component('maincontents', {
             }
         },
         onclickCertSend : function(){ // 인증 email 전송
+            this.hideMessage();
             let result = regExp("EMAIL", this.info.userEmail);
             if(result === "N" || isNull(this.info.userEmail)){
                 this.messages = "E-Mail 형식으로 입력해주세요.";
-                setTimeout(this.hideMessage, 3000);
                 this.$refs.email.focus();
             }else{
                 post(TID.CERT, "/user/find/pw/cert/mail", this.info, this.callback);
@@ -159,14 +159,14 @@ Vue.component('maincontents', {
             }
         },
         onclickCertChk : function() { // 인증번호 확인
-
+            this.hideMessage();
             if(!isNull(this.certNumber) && this.info.certCode === this.certNumber){
                 alert("확인 되었습니다. 새로운 비밀번호로 변경해주세요.");
                 this.passChg = true;
                 this.certOk=false;
             }else{
-                this.messages2 ="인증번호를 다시 확인해 주세요.";
-                this.$refs.password2.focus();
+                this.messages ="인증번호를 다시 확인해 주세요.";
+                this.$refs.certCode.focus();
             }
         },
         onblurPassChk1 : function(){    //비밀번호 체크

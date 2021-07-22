@@ -59,9 +59,9 @@
                 <input type="button" @click="onclickCertSend();" value="인증요청">
             </div>
             <div class="line">
-                인증코드 <input type="text" v-model="info.certCode" placeholder="발송된 인증코드 입력">
+                인증코드 <input type="text" ref="certCode" v-model="info.certCode" placeholder="발송된 인증코드 입력">
             </div>
-            <div class="line">{{messages}}</div>
+            <div class="line" style="color:#fd8a51;height: 30px;vertical-align: middle;">{{messages}}</div>
             <div class="line">
                 <div class="login-btn-wrap">
                     <span class="btn login" @click="onclickPageMove('BACK');">취소</span>

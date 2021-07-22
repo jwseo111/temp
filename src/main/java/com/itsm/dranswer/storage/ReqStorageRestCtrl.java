@@ -9,6 +9,7 @@ package com.itsm.dranswer.storage;
  * @modifyed :
  */
 
+import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.UserInfoDto;
@@ -51,10 +52,12 @@ public class ReqStorageRestCtrl {
     public ApiResult<Page<ReqStorageInfoDto>> getReqStorageList(
             ReqStorageStat reqStorageStatCode,
             String dataName,
+            Disease diseaseCode,
+            String agencyName,
             Pageable pageable){
 
         Page<ReqStorageInfoDto> pageReqStorages =
-                storageService.getReqStorageList(reqStorageStatCode, dataName, null, pageable);
+                storageService.getReqStorageList(reqStorageStatCode, dataName, diseaseCode, agencyName, null, pageable);
 
         return success(pageReqStorages);
     }
@@ -93,7 +96,7 @@ public class ReqStorageRestCtrl {
             Pageable pageable){
 
         Page<ReqStorageInfoDto> pageReqStorages =
-                storageService.getReqStorageList(reqStorageStatCode, dataName, loginUserInfo.getUserSeq(), pageable);
+                storageService.getReqStorageList(reqStorageStatCode, dataName, null, null, loginUserInfo.getUserSeq(), pageable);
 
         return success(pageReqStorages);
     }

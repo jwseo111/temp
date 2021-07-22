@@ -11,6 +11,7 @@ package com.itsm.dranswer.storage;
  */
 
 
+import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.users.QAgencyInfo;
 import com.itsm.dranswer.users.QUserInfo;
 import com.querydsl.core.QueryResults;
@@ -33,7 +34,7 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public Page<ReqStorageInfoDto> searchAll(ReqStorageStat reqStorageStat, String dataName, Long userSeq, Pageable pageable){
+    public Page<ReqStorageInfoDto> searchAll(ReqStorageStat reqStorageStat, String dataName, Disease diseaseCode, String agencyName, Long userSeq, Pageable pageable){
 
         QReqStorageInfo reqStorageInfo = QReqStorageInfo.reqStorageInfo;
         QUserInfo userInfo = QUserInfo.userInfo;
@@ -44,10 +45,21 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
                 .from(reqStorageInfo)
                 .innerJoin(reqStorageInfo.diseaseManagerUserInfo, userInfo)
                 .innerJoin(userInfo.agencyInfo(), agencyInfo)
-                .where(reqStorageInfo.dataName.contains(dataName))
                 .orderBy(reqStorageInfo.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
+
+        if(diseaseCode != null){
+            query = query.where(reqStorageInfo.diseaseCode.eq(diseaseCode));
+        }
+
+        if(dataName != null){
+            query = query.where(reqStorageInfo.dataName.contains(dataName));
+        }
+
+        if(agencyName != null){
+            query = query.where(agencyInfo.agencyName.startsWith(agencyName));
+        }
 
         if(userSeq != null){
             query = query.where(reqStorageInfo.createdBy.eq(userSeq));

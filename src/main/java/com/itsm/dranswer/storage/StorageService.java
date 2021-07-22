@@ -10,6 +10,7 @@ package com.itsm.dranswer.storage;
  */
 
 
+import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.etc.FileUploadResponse;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
@@ -115,8 +116,10 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public Page<ReqStorageInfoDto> getReqStorageList(ReqStorageStat reqStorageStatCode, String dataName, Long userSeq, Pageable pageable) {
-        return reqStorageInfoRepoSupport.searchAll(reqStorageStatCode, dataName, userSeq, pageable);
+    public Page<ReqStorageInfoDto> getReqStorageList(ReqStorageStat reqStorageStatCode,
+                                                     String dataName, Disease diseaseCode,
+                                                     String agencyName, Long userSeq, Pageable pageable) {
+        return reqStorageInfoRepoSupport.searchAll(reqStorageStatCode, dataName, diseaseCode, agencyName, userSeq, pageable);
     }
 
     /**

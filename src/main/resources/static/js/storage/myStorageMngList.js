@@ -109,7 +109,6 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                //console.log(results);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.storageList = results.response.content;
             } else {

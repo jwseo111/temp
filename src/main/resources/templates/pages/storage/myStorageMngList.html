@@ -15,6 +15,7 @@
         <script th:src="@{/js/storage/myStorageMngList.js}"></script>
         <script>
             const reqStorageStatCode = "[[${param.reqStorageStatCode}]]";
+            const diseaseCode = "[[${param.diseaseCode}]]";
         </script>
     </th:block>
 
@@ -30,13 +31,18 @@
                 <div class="line">
                     <div class="cond">
                         <div class="content">
-                            <select v-model="reqStoreStatCd">
-                                <option value="">전체</option>
-                                <option v-for="option in reqStoreStatCdList" v-bind:value="option.name">
-                                    {{option.desc}}
+                            <select v-model="selected" style="width:100px;" @change="onChangeSelect()">
+                                <option v-for="select in selectList" v-bind:value="select.name">
+                                    {{select.desc}}
                                 </option>
                             </select>
-                            <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="데이터명">
+                            <select v-if="selected==='disease'" v-model="selectedDisease" style="width:120px;">
+                                <option value="">전체</option>
+                                <option v-for="disease in diseaseCdList" v-bind:value="disease.name">
+                                    {{disease.desc}}
+                                </option>
+                            </select>
+                            <input v-if="selected !=='disease'" type="text" v-model="searchVal" @keyup="onKeyup" placeholder="검색어">
                         </div>
                     </div>
                     <div class="btn_wrap">
@@ -48,7 +54,7 @@
                 <table class="result-table">
                     <thead>
                     <tr>
-                        <th>기관명</th>
+                        <th style="width: 180px;">기관명</th>
                         <th>질환명</th>
                         <th>데이터명</th>
                         <th>저장소명</th>

@@ -96,8 +96,10 @@
                             <td></td>
                         </tr>
                         <tr v-for="(object, idx) in myStorageObjectList">
-                            <td align="center">
+                            <td v-if="object.eTag" align="center">
                                 <input type="checkbox" v-model="delChecked[idx]">
+                            </td>
+                            <td v-else align="center">
                             </td>
                             <td v-on:click="onclickObject(object.name, object.eTag)" class="cusor">
                                 {{object.name}}
@@ -121,12 +123,12 @@
                 <ul style="border: 0px;">
                     <li style="display:inline-block;padding: 10px;">
                         <label for="uploadFile"><span class="cusor">파일업로드</span></label>
-                        <input type="file" id="uploadFile" @change="onclickUpload" ref="multipartFile" multiple style="display: none;">
+                        <input type="file" id="uploadFile" @change="onchangeUpload" @click="onclickUpload" ref="multipartFile" multiple style="display: none;">
                     </li>
 
                     <li style="display:inline-block;padding: 10px;">
                         <label for="uploadFoler"><span class="cusor">폴더업로드</span></label>
-                        <input type="file" id="uploadFoler" @change="onclickUploadFolder" ref="multipartFolder" webkitdirectory multiple style="display: none;">
+                        <input type="file" id="uploadFoler" @change="onchangeUploadFolder" @click="onclickUpload" ref="multipartFolder" webkitdirectory multiple style="display: none;">
                     </li>
                     <li style="display:inline-block;padding: 10px;">
                         <button class="btn" @click="onclickDelete">삭제</button>
@@ -143,7 +145,7 @@
                     <table class="result-table">
                         <thead>
                         <tr>
-                            <th>작업</th>
+                            <th>파일명</th>
                             <th style="width: 40%;">크기</th>
                             <th>처리(%)</th>
                             <th>처리결과</th>

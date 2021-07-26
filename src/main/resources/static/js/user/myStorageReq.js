@@ -93,7 +93,7 @@ Vue.component('maincontents', {
                     this.reqStoreStatCdList = results.response;
                     break;
                 case "IsYn":
-                    console.log(results.response);
+                    //console.log(results.response);
                     this.isYn = results.response;
                     break;
                 case "Disease":
@@ -106,6 +106,7 @@ Vue.component('maincontents', {
                         location.href = "/my/store/main"; // 목록으로 이동
                     } else {
                         console.log(results);
+                        alert("에러 :\n"+results.error.message);
                     }
                     break;
                 case TID.CANCEL: // 취소신청
@@ -114,6 +115,7 @@ Vue.component('maincontents', {
                         location.href = "/my/store/list"; // 목록으로 이동
                     } else {
                         console.log(results);
+                        alert("에러 :\n"+results.error.message);
                     }
                     break;
 
@@ -121,12 +123,12 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                //console.log(JSON.stringify(results.response));
-                console.log(results.response);
+                //console.log(results.response);
                 this.reqUserInfo = results.response.reqUserDto;
                 this.reqStorageInfo   = results.response;
             } else {
                 console.log(results);
+                alert("에러 :\n"+results.error.message);
             }
         }
     }

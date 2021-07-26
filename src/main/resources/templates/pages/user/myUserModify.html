@@ -63,9 +63,9 @@
                         </tr>
                         <tr>
                             <th>담당자이름</th>
-                            <td><input type="text" ref="userName" v-model="info.userName"/></td>
+                            <td><input type="text" ref="userName" v-model="info.userName" @input="onkeyupHanName" maxlength="10"/></td>
                             <th>담당자휴대전화</th>
-                            <td><input type="text" ref="userPhoneNumber"  v-model="info.userPhoneNumber"/></td>
+                            <td><input type="text" ref="userPhoneNumber"  v-model="info.userPhoneNumber" placeholder="하이픈('-') 없이 입력해주세요." maxlength="11" /></td>
                         </tr>
                         <tr>
                             <th>대표자명</th>
@@ -98,15 +98,15 @@
                         </tr>
                         <tr>
                             <th>NBP 아이디</th>
-                            <td><input type="text" ref="nCloudId" v-model="info.nCloudId"/></td>
+                            <td><input type="text" ref="nCloudId" v-model="info.nCloudId" maxlength="50"/></td>
                             <th>NBP 액세스키</th>
-                            <td><input type="text" ref="nCloudAccessKey" v-model="info.nCloudAccessKey"/></td>
+                            <td><input type="text" ref="nCloudAccessKey" v-model="info.nCloudAccessKey" maxlength="50"/></td>
                         </tr>
                         <tr>
                             <th>NBP 시크릿키</th>
-                            <td><input type="text" ref="nCloudSecretKey" v-model="info.nCloudSecretKey"/></td>
+                            <td><input type="text" ref="nCloudSecretKey" v-model="info.nCloudSecretKey" maxlength="50"/></td>
                             <th>오브젝트 스토리지 아이디</th>
-                            <td><input type="text" ref="" v-model="info.nCloudObjStorageId"/></td>
+                            <td><input type="text" ref="" v-model="info.nCloudObjStorageId" maxlength="50"/></td>
                         </tr>
                     </tbody>
                 </table>

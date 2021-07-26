@@ -379,7 +379,7 @@ public class UserService {
     public void checkMailAndSendCertMailForSignup(CertDto certDto) throws MessagingException, IOException {
         UserInfo userInfo = findByEmail(certDto.getUserEmail()).orElse(null);
         if(userInfo != null){
-            throw new DataIntegrityViolationException("사용중인 이메일 입니다.");
+            throw new IllegalArgumentException("사용중인 이메일 입니다.");
         }
         sendCertMail(certDto);
     }

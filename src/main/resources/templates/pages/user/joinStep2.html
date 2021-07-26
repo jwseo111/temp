@@ -57,7 +57,7 @@
                         <tr>
                             <td>이메일</td>
                             <td class="td_left">
-                                <input type="text" class="ipt_a3" ref="userEmail" v-model="info.userEmail" @input="onkeyupEmail">
+                                <input type="text" class="ipt_a3" ref="userEmail" v-model="info.userEmail" @input="onkeyupEmail" placeholder="이메일 형식에 맞게 입력해주세요." maxlength="50">
                                 <input type="button" v-on:click="onclickCertSend();" value="인증요청">
                                 <span v-text="message1"></span>
                             </td>
@@ -65,7 +65,7 @@
                         <tr>
                             <td>이메일인증코드</td>
                             <td class="td_left">
-                                <input type="text" class="ipt_a3" ref="certCode" v-model="info.certCode">
+                                <input type="text" class="ipt_a3" ref="certCode" v-model="info.certCode" @input="onkeyupCertCode" placeholder="발송된 인증코드 6자리를 입력해주세요." maxlength="6">
                                 <input type="button" v-on:click="onclickCertChk();" value="인증확인">
                                 <span v-text="message2"></span>
                             </td>
@@ -73,14 +73,14 @@
                         <tr>
                             <td>비밀번호</td>
                             <td class="td_left">
-                                <input type="password" class="ipt_a3" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();">
+                                <input type="password" class="ipt_a3" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();" placeholder="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다." maxlength="15">
                                 <span v-text="message3"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>비밀번호확인</td>
                             <td class="td_left">
-                                <input type="password" class="ipt_a3" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();">
+                                <input type="password" class="ipt_a3" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();" maxlength="15">
                                 <span v-text="message4"></span>
                             </td>
                         </tr>
@@ -94,20 +94,20 @@
                         <tr>
                             <td>기관명</td>
                             <td>
-                                <input type="text" class="ipt_a3" v-model="info.agencyName" readonly>
+                                <input type="text" class="ipt_a3" v-model="info.agencyName" placeholder="기관팝업을 이용해주세요." readonly>
                                 <input type="button" ref="popupAgency" @click="popupAgency();" value="팝업">
                             </td>
                         </tr>
                         <tr>
                             <td>대표자명</td>
                             <td>
-                                <input type="text" class="ipt_a3" v-model="info.ceoName" readonly>
+                                <input type="text" class="ipt_a3" v-model="info.ceoName" placeholder="기관팝업을 이용해주세요." readonly>
                             </td>
                         </tr>
                         <tr>
                             <td>사업자번호</td>
                             <td>
-                                <input type="text" class="ipt_a3" v-model="info.blNumber" readonly>
+                                <input type="text" class="ipt_a3" v-model="info.blNumber" placeholder="기관팝업을 이용해주세요." readonly>
                             </td>
                         </tr>
                         <tr>
@@ -122,13 +122,13 @@
                         <tr>
                             <td>담당자이름</td>
                             <td>
-                                <input type="text" ref="userName" v-model="info.userName">
+                                <input type="text" ref="userName" v-model="info.userName" @input="onkeyupHanName" maxlength="10">
                             </td>
                         </tr>
                         <tr>
                             <td>담당자휴대전화</td>
                             <td>
-                                <input type="text" ref="userPhoneNumber" v-model="info.userPhoneNumber" @input="onkeyupPhoneNumber" maxlength="11">
+                                <input type="text" ref="userPhoneNumber" v-model="info.userPhoneNumber" @input="onkeyupPhoneNumber" maxlength="11" placeholder="하이픈('-') 없이 입력해주세요.">
                             </td>
                         </tr>
                         <tr v-show="info.agencyTypeCode !== 'COMP'">
@@ -141,25 +141,25 @@
                         <tr v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
                             <td>NBP 아이디</td>
                             <td>
-                                <input type="text" ref="nCloudId" v-model="info.nCloudId">
+                                <input type="text" ref="nCloudId" v-model="info.nCloudId" maxlength="50">
                             </td>
                         </tr>
                         <tr v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
                             <td>NBP 액세스키</td>
                             <td>
-                                <input type="text" ref="nCloudAccessKey" v-model="info.nCloudAccessKey">
+                                <input type="text" ref="nCloudAccessKey" v-model="info.nCloudAccessKey" maxlength="50">
                             </td>
                         </tr>
                         <tr v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
                             <td>NBP 시크릿키</td>
                             <td>
-                                <input type="text" ref="nCloudSecretKey" v-model="info.nCloudSecretKey">
+                                <input type="text" ref="nCloudSecretKey" v-model="info.nCloudSecretKey" maxlength="50">
                             </td>
                         </tr>
                         <tr v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
                             <td>오브젝트 스토리지 아이디</td>
                             <td>
-                                <input type="text" ref="nCloudObjStorageId" v-model="info.nCloudObjStorageId">
+                                <input type="text" ref="nCloudObjStorageId" v-model="info.nCloudObjStorageId" maxlength="50">
                             </td>
                         </tr>
                         </tbody>

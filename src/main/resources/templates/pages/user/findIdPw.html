@@ -29,7 +29,7 @@
                 <p>회원가입시 등록한 이름 및 전화번호를 입력해주세요.</p>
             </div>
             <div class="line">
-                이름 <input type="text" ref="userName" v-model="info.userName" placeholder="이름을 입력하세요.">
+                이름 <input type="text" ref="userName" v-model="info.userName" placeholder="이름을 입력하세요." @input="onkeyupHanName" maxlength="10">
             </div>
             <div class="line">
                 휴대폰번호 <input type="text" ref="userPhoneNumber" v-model="info.userPhoneNumber" @input="onkeyupPhoneNumber" maxlength="11" placeholder="휴대폰번호를 (-)없이 입력하세요." >
@@ -55,11 +55,11 @@
                 </ul>
             </div>
             <div class="line">
-                아이디 <input type="text" ref="email" v-model="info.userEmail" placeholder="회원가입시 등록한 이메일">
+                아이디 <input type="text" ref="email" v-model="info.userEmail" @input="onkeyupEmail" placeholder="회원가입시 등록한 이메일" maxlength="50">
                 <input type="button" @click="onclickCertSend();" value="인증요청">
             </div>
             <div class="line">
-                인증코드 <input type="text" ref="certCode" v-model="info.certCode" placeholder="발송된 인증코드 입력">
+                인증코드 <input type="text" ref="certCode" v-model="info.certCode" @input="onkeyupCertCode" placeholder="발송된 인증코드 6자리를 입력해주세요." maxlength="6">
             </div>
             <div class="line" style="color:#fd8a51;height: 30px;vertical-align: middle;">{{messages}}</div>
             <div class="line">
@@ -75,10 +75,10 @@
             </div>
             <div class="line">
                 새로운 비밀번호<input type="password" ref="password1" v-model="info.password1" autocomplete="off"  v-on:blur="onblurPassChk1();"
-                               placeholder="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다.">
+                               placeholder="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다." maxlength="15">
             </div>
             <div class="line">
-                새로운 비밀번호확인 <input type="password" ref="password2" v-model="info.password2" autocomplete="off" placeholder="">
+                새로운 비밀번호확인 <input type="password" ref="password2" v-model="info.password2" autocomplete="off" maxlength="15">
             </div>
             <div class="line">{{messages}}</div>
             <div class="line">

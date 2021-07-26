@@ -95,14 +95,15 @@ Vue.component('maincontents', {
                         this.myStorageObjectList = results.response;
                     } else{
                         console.log(results);
+                        alert("에러 :\n"+results.error.message);
                     }
                     break;
                 case TID.SEARCH_AUTH:
-                    //console.log(results);//tmp
                     if(results.success) {
                         this.myStorageAuthList = results.response;
                     } else{
                         console.log(results);
+                        alert("에러 :\n"+results.error.message);
                     }
                     break;
                 case TID.DELETE: // 저장소삭제
@@ -128,6 +129,7 @@ Vue.component('maincontents', {
                 this.getMyStorageAuthList(results.response.reqStorageId);
             } else {
                 console.log(results);
+                alert("에러 :\n"+results.error.message);
             }
         }
     }

@@ -138,7 +138,7 @@ Vue.component('maincontents', {
                 this.$refs.userEmail.focus();
             }else{
                 this.message1 ="";
-                post("Cert", "/user/cert/mail", this.info, this.callBack);
+                post("Cert", "/user/checkAndCert/mail", this.info, this.callBack);
             }
         },
         onclickCertChk : function() { // 인증번호 확인

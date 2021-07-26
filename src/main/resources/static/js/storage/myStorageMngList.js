@@ -24,7 +24,9 @@ Vue.component('maincontents', {
             cond: {
                 page: 0,
                 size: 5,
-                dataName: "",
+                agencyName: "", // 기관명
+                dataName: "", // 데이터명
+                diseaseCode: diseaseCode, // 질환코드
                 reqStorageStatCode: reqStorageStatCode,
                 sort: ""
             },
@@ -39,10 +41,15 @@ Vue.component('maincontents', {
                 pages: [1]
             },
             messages : "",
-            reqStoreStatCd : "", // 선택된 콤보박스
-            reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback), // 콤보박스 리스트
-            isYn : getCodeList('IsYn',this.callback)
-
+            selected:"agencyName", // 선택된 콤보박스(default:기관명)
+            selectList:[
+                {name: "agencyName", desc:"기관명"},
+                {name: "disease", desc:"질환명"},
+                {name: "dataName", desc:"데이터명"},
+            ],
+            searchVal : "", // 입력된 검색어
+            selectedDisease : "", // 질환콤보박스 선택된 값
+            diseaseCdList : getCodeList('Disease',this.callback) // 질환콤보박스 리스트
         };
     },
     mounted:function(){
@@ -54,9 +61,25 @@ Vue.component('maincontents', {
                 this.onclickSearch();
             }
         },
+        onChangeSelect: function () {
+            this.selectedDisease = "";
+            this.searchVal = "";
+
+            this.cond.diseaseCode = this.selectedDisease;
+            this.cond.agencyName = this.searchVal ;
+            this.cond.dataName = this.searchVal ;
+
+        },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.reqStorageStatCode = this.reqStoreStatCd;
+
+            if(this.selected === "agencyName") {
+                this.cond.agencyName = this.searchVal;
+            } else if(this.selected === "dataName") {
+                this.cond.dataName = this.searchVal;
+            } else if(this.selected === "disease") {
+                this.cond.diseaseCode = this.selectedDisease;
+            }
             this.getStorageList();
         },
         // 목록 > 상세보기 클릭(화면 이동)
@@ -77,15 +100,15 @@ Vue.component('maincontents', {
                 case TID.SEARCH:
                     this.searchCallback(results);
                     break;
-                case "ReqStorageStat":
-                    console.log(results.response);
-                    this.reqStoreStatCdList = results.response;
+                case "Disease":
+                    //console.log(results.response);
+                    this.diseaseCdList = results.response;
                     break;
+
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                //console.log(results);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.storageList = results.response.content;
             } else {

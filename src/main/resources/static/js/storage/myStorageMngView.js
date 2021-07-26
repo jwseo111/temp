@@ -11,7 +11,8 @@ let appMain;
 const TID = {
     SEARCH : {value: 0, name: "search", code: "S"}, // 상세조회
     SEARCH_OBJECT : {value: 0, name: "searchObj", code: "S"}, // 오브젝트조회
-    CANCEL : {value: 0, name: "cancel",code: "D"}  // 취소
+    SEARCH_AUTH : {value: 0, name: "searchAuth", code: "S"}, // 권한조회
+    DELETE : {value: 0, name: "delete", code: "D"} // 저장소삭제
 };
 window.onload = function(){
     appMain = new Vue({
@@ -31,8 +32,6 @@ Vue.component('maincontents', {
             messages : "",
             reqStoreStatCd : "",
 
-            saveInfo: {
-            },
             reqStorageInfo : {
                 agencyInfo: {},
                 diseaseCode: {},
@@ -60,15 +59,14 @@ Vue.component('maincontents', {
         },
         // 오브젝트 정보 조회
         getMyStorageObjectList:function (bucketName){
-            get("searchObject",
+            get(TID.SEARCH_OBJECT,
                 "/my/management/storage/object/list/"+bucketName,
                 this.cond,
                 this.callback);
         },
         // 권한 정보 조회
         getMyStorageAuthList:function (reqStorageId){
-            console.log("@@ : " + reqStorageId);//tmp
-            get("searchAuth",
+            get(TID.SEARCH_AUTH,
                 "/storage/req/auth/list/"+reqStorageId,
                 this.cond,
                 this.callback);
@@ -92,14 +90,14 @@ Vue.component('maincontents', {
                 case TID.SEARCH: // 상세조회
                     this.searchCallback(results);
                     break;
-                case "searchObject": // 오브젝트정보 조회
+                case TID.SEARCH_OBJECT: // 오브젝트정보 조회
                     if(results.success) {
                         this.myStorageObjectList = results.response;
                     } else{
                         console.log(results);
                     }
                     break;
-                case "searchAuth":
+                case TID.SEARCH_AUTH:
                     //console.log(results);//tmp
                     if(results.success) {
                         this.myStorageAuthList = results.response;

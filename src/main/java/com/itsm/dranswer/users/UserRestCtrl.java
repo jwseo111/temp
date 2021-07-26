@@ -186,6 +186,14 @@ public class UserRestCtrl {
         return success(user);
     }
 
+    @PostMapping(value = "/user/checkAndCert/mail")
+    public ApiResult<CertDto> checkMail(@RequestBody @Valid CertDto certDto) throws MessagingException, IOException {
+
+        userService.checkMailAndSendCertMailForSignup(certDto);
+
+        return success(certDto);
+    }
+
     /**
      * 인증메일 발송
      * @methodName : certMail

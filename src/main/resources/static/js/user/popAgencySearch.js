@@ -42,7 +42,7 @@ Vue.component('maincontents', {
         };
     },
     mounted: function () {
-
+        this.getAgencyList();
     },
     methods: {
         onKeyup:function (e){

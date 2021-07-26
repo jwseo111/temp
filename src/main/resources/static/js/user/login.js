@@ -83,11 +83,23 @@ Vue.component('maincontents', {
                 }
                 location.href="/";
             }else{
-                this.messages = results.error.message;
-                setTimeout(this.hideMessage, 3000);
+                alert(results.error.message);
             }
         },
         onclickLogin : function(){
+
+            if(isNull(this.login.email)){
+                alert("회원가입시 사용한 이메일을 입력해주세요.");
+                this.$refs.loginEmail.focus();
+                return;
+            }
+
+            if(isNull(this.login.password)){
+                alert("비밀번호를 입력해주세요.");
+                this.$refs.loginPassword.focus();
+                return;
+            }
+
             post(TID.LOGIN, "/login", this.login, this.callback);
             // get(TID.LOGIN, "/agency/list", {page:0, size:100, agencyName:"", agencyTypeCode:"HOSP", sort:""}, this.callback);
         },
@@ -114,6 +126,10 @@ Vue.component('maincontents', {
             }
             location.href=url;
         },
+        onkeyupHanName : function(e){   // 한글
+            const numHan = /[^ㄱ-힣a-zA-Z]/gi;        // 숫자
+            this.info.userName = e.target.value.replace(numHan, "");
+        },
         onkeyupPhoneNumber : function(e){   // 핸드폰
 
             this.info.userPhoneNumber = e.target.value.replace(/[^0-9]/gi, "");
@@ -138,6 +154,15 @@ Vue.component('maincontents', {
                 this.messages = results.error.message;
                 setTimeout(this.hideMessage, 3000);
             }
+        },
+        onkeyupEmail : function(e){
+            //const email = /[^0-9a-zA-Z@\._-]/gi; // 이메일
+            const email = /[ㄱ-힣\s]/gi; // 이메일
+            this.info.userEmail = e.target.value.replace(email, "");
+        },
+        onkeyupCertCode : function(e){  // 인증코드
+            const numExp = /[^0-9]/gi;        // 숫자
+            this.info.certCode = e.target.value.replace(numExp, "");
         },
         onclickCertSend : function(){ // 인증 email 전송
             this.hideMessage();

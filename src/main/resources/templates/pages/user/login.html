@@ -23,10 +23,10 @@
         <script type="text/x-template" id="main-template" >
         <div class="wrap login-wrap" @keyup="onkeyupForm">
             <div class="line">
-                <div><input type="email" v-model="login.email" placeholder="E-mail" autocomplete="off"></div>
+                <div><input type="email" ref="loginEmail" v-model="login.email" placeholder="E-mail" autocomplete="off"></div>
             </div>
             <div class="line">
-                <div><input type="password" v-model="login.password" placeholder="Password" autocomplete="off"></div>
+                <div><input type="password" ref="loginPassword" v-model="login.password" placeholder="Password" autocomplete="off"></div>
             </div>
             <div class="line">
                 <div><input type="checkbox" id="saveid" v-model="login.saveId"><label for="saveid">아이디저장</label></div>

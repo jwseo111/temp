@@ -84,6 +84,7 @@ Vue.component('maincontents', {
                         this.onclickList(); // 목록으로 이동
                     } else {
                         console.log(results);
+                        alert("에러 :\n"+results.error.message);
                     }
                     break;
             }
@@ -94,6 +95,7 @@ Vue.component('maincontents', {
                 this.openStorageInfo   = results.response;
             } else {
                 console.log(results);
+                alert("에러 :\n"+results.error.message);
             }
         },
 

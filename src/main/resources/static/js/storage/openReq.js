@@ -124,6 +124,7 @@ Vue.component('maincontents', {
                 this.diseaseInfo   = results.response.diseaseCode; // 관리하는 질병
             } else {
                 console.log(results);
+                alert("에러 :\n"+results.error.message);
             }
         },
         saveCallback: function (results) {
@@ -132,6 +133,7 @@ Vue.component('maincontents', {
                 location.href = "/lndata/open/main";
             } else {
                 console.log(results);
+                alert("에러 :\n"+results.error.message);
             }
         },
     }

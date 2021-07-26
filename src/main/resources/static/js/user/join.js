@@ -1,9 +1,9 @@
 let appMain;
 let codeId;
-const numExp = /[^0-9]/gi;        // 숫자
 let agree1;
 let agree2;
 let next;
+
 window.onload = function(){
     appMain = new Vue({
         el: '#maincontentswrap',
@@ -104,6 +104,7 @@ Vue.component('maincontents', {
                         this.certNumber = result.response.certNumber;
                     }else{
                         alert(result.error.message);
+                        this.$refs.userEmail.focus();
                     }
                     break;
                 case "SAVE":
@@ -149,7 +150,7 @@ Vue.component('maincontents', {
 
             }else{
                 this.message2 ="인증번호를 다시 확인해 주세요.";
-                this.$refs.password2.focus();
+                this.$refs.certCode.focus();
                 this.info.passOk1="N";
             }
         },
@@ -184,13 +185,22 @@ Vue.component('maincontents', {
             }
             openPopupAgency(this.info.agencyTypeCode);
         },
+        onkeyupCertCode : function(e){  // 인증코드
+            const numExp = /[^0-9]/gi;        // 숫자
+            this.info.certCode = e.target.value.replace(numExp, "");
+        },
+        onkeyupHanName : function(e){   // 이름
+            const numHan = /[^ㄱ-힣a-zA-Z]/gi;        // 한글,영문
+            this.info.userName = e.target.value.replace(numHan, "");
+        },
         onkeyupPhoneNumber : function(e){   // 핸드폰
+            const numExp = /[^0-9]/gi;        // 숫자
             this.info.userPhoneNumber = e.target.value.replace(numExp, "");
         },
         onkeyupEmail : function(e){
             this.info.passOk1="N";
             //const email = /[^0-9a-zA-Z@\._-]/gi; // 이메일
-            const email = /[ㄱ-힣]/gi; // 이메일
+            const email = /[ㄱ-힣\s]/gi; // 이메일
             this.info.userEmail = e.target.value.replace(email, "");
         },
         callbackPopupAgency : function(item){   // 기관 팝업 Callback

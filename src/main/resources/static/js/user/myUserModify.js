@@ -134,6 +134,10 @@ Vue.component('maincontents', {
         onclickMovePage : function(){
           location.href="/my/userPasswd?menuId="+myMenuId;
         },
+        onkeyupHanName : function(e){   // 이름
+            const numHan = /[^ㄱ-힣a-zA-Z]/gi;        // 한글,영문
+            this.info.userName = e.target.value.replace(numHan, "");
+        },
         isFormValid : function(){
             let param =[
 

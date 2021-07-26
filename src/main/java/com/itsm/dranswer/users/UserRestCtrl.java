@@ -187,6 +187,25 @@ public class UserRestCtrl {
     }
 
     /**
+     * 
+     * @methodName : checkMail
+     * @date : 2021-07-26 오전 10:28
+     * @author : xeroman.k 
+     * @param certDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.CertDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/user/checkAndCert/mail")
+    public ApiResult<CertDto> checkMail(@RequestBody @Valid CertDto certDto) throws MessagingException, IOException {
+
+        userService.checkMailAndSendCertMailForSignup(certDto);
+
+        return success(certDto);
+    }
+
+    /**
      * 인증메일 발송
      * @methodName : certMail
      * @date : 2021-06-23 오후 2:23
@@ -205,8 +224,19 @@ public class UserRestCtrl {
         return success(certDto);
     }
 
+    /**
+     * 
+     * @methodName : fndPwCertMail
+     * @date : 2021-07-26 오전 10:28
+     * @author : xeroman.k 
+     * @param certDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.CertDto>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @PostMapping(value = "/user/find/pw/cert/mail")
-    public ApiResult<CertDto> fndPwCertMail(@RequestBody @Valid CertDto certDto) throws MessagingException, IOException {
+    public ApiResult<CertDto> findPwCertMail(@RequestBody @Valid CertDto certDto) throws MessagingException, IOException {
 
         userService.checkMailAndSendCertMailForFindPw(certDto);
 

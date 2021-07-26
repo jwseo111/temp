@@ -13,6 +13,7 @@ import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -373,6 +374,14 @@ public class UserService {
         findByEmailAndCheck(certDto.getUserEmail());
         sendCertMail(certDto);
 
+    }
+
+    public void checkMailAndSendCertMailForSignup(CertDto certDto) throws MessagingException, IOException {
+        UserInfo userInfo = findByEmail(certDto.getUserEmail()).orElse(null);
+        if(userInfo != null){
+            throw new IllegalArgumentException("사용중인 이메일 입니다.");
+        }
+        sendCertMail(certDto);
     }
 }
 

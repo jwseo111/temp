@@ -237,11 +237,16 @@ Vue.component('maincontents', {
                 }
             }
 
-            post(TID.DELETE,
-                "/my/management/storage/object/delete",
-                this.deleteList,
-                this.callback);
-
+            if(this.deleteList.length === 0) {
+                alert("선택된 항목이 없습니다.");
+                return;
+            }
+            if(confirm("삭제하시겠습니까?")) {
+                post(TID.DELETE,
+                    "/my/management/storage/object/delete",
+                    this.deleteList,
+                    this.callback);
+            }
         },
         callback: function (tid, results) {
             switch (tid) {

@@ -94,7 +94,6 @@ Vue.component('maincontents', {
                 console.log("파일명 : " +objectName);//tmp
                 console.log("현재 위치: " +this.cond.folderName);//tmp
             }
-
         },
 
         // object 목록 조회
@@ -238,11 +237,16 @@ Vue.component('maincontents', {
                 }
             }
 
-            post(TID.DELETE,
-                "/my/management/storage/object/delete",
-                this.deleteList,
-                this.callback);
-
+            if(this.deleteList.length === 0) {
+                alert("선택된 항목이 없습니다.");
+                return;
+            }
+            if(confirm("삭제하시겠습니까?")) {
+                post(TID.DELETE,
+                    "/my/management/storage/object/delete",
+                    this.deleteList,
+                    this.callback);
+            }
         },
         callback: function (tid, results) {
             switch (tid) {
@@ -419,5 +423,20 @@ function fileUpload(tid, uri, formData, progEvent, callback){
         })
 };
 */
+
+function fileSize(size){
+
+    let rtn = "";
+    if(size < 1024) {
+        rtn = size + " byte";
+    } else if (size < 1024 * 1024) {
+        rtn = (size/1024).toFixed(2)+ " KB";
+    } else if (size < 1024 * 1024 * 1024) {
+        rtn = (size/(1024 * 1024)).toFixed(2) + " MB";
+    } else {
+        rtn = (size/(1024 * 1024 * 1024)).toFixed(2) + " GB";
+    }
+    return rtn;
+};
 
 

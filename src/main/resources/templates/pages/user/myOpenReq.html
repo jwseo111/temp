@@ -72,7 +72,8 @@
                 <table class="result-table-detail">
                     <tr>
                         <th>취소사유</th>
-                        <td v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ'">
+                        <td v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ'||
+                                  openStorageInfo.openStorageStatCode.name === 'O_ACC'">
                             <input type="text" v-model="saveInfo.cancelReason" placeholder="">
                         </td>
                         <td v-else>
@@ -85,7 +86,8 @@
 
             <div class="btn_wrap" align="center">
                 <button v-on:click="onclickList">목록</button>
-                <button v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ'" v-on:click="onclickCancel">취소신청</button>
+                <button v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ' ||
+                              openStorageInfo.openStorageStatCode.name === 'O_ACC'" v-on:click="onclickCancel">취소신청</button>
             </div>
 
         </div>

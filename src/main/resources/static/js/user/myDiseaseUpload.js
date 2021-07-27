@@ -59,6 +59,15 @@ Vue.component('maincontents', {
         this.getMyStorageBucketList();
     },
     methods:{
+        // 저장소 선택 여부 체크
+        getChkSelected : function() {
+            if(!this.cond.bucketName || !this.cond.bucketName){
+                alert("선택된 저장소가 없습니다.");
+                return false;
+            } else {
+                return true;
+            }
+        },
         // 저장소(버킷) 목록 조회
         getMyStorageBucketList:function(){
             get(TID.SEARCH,
@@ -79,7 +88,6 @@ Vue.component('maincontents', {
         bucketSelect : function(idx, checked){
             this.bucketChecked = [];
             this.bucketChecked.push(idx);
-
         },
         // object 목록 클릭
         onclickObject : function (objectName, eTag){
@@ -107,14 +115,15 @@ Vue.component('maincontents', {
 
         // Path 클릭(해당 폴더로 이동)
         onclickPath : function(idx){
+            if(!this.getChkSelected()) return false;
             let pathName = this.path[idx]=="/"?"":this.path[idx];
             let folderName = "";
             for(let i=1; i < idx+1; i++){
                 folderName = folderName + this.path[i];
             }
+
             this.getMyStorageObjectList(this.cond.bucketName, folderName);
         },
-
         // 새로고침 클릭
         onclickReload : function(){
             this.myObjectResult = [];
@@ -225,6 +234,7 @@ Vue.component('maincontents', {
         },
         // 삭제 버튼 클릭
         onclickDelete : function(){
+
             this.deleteList = new Array();
             for(let i=0;i<this.myStorageObjectList.length;i++){
                 //console.log(i+" : " + this.cond.folderName + " : " + this.myStorageObjectList[i].name + " : " + this.delChecked[i]);
@@ -236,11 +246,11 @@ Vue.component('maincontents', {
                         })
                 }
             }
-
             if(this.deleteList.length === 0) {
                 alert("선택된 항목이 없습니다.");
                 return;
             }
+
             if(confirm("삭제하시겠습니까?")) {
                 post(TID.DELETE,
                     "/my/management/storage/object/delete",
@@ -303,7 +313,6 @@ Vue.component('maincontents', {
                 //console.log(results);
                 if(isLast) {
                     //alert("정상적으로 업로드되었습니다.");
-                    //this.onclickReload(); // 오브젝트 리스트 새로고침
                     this.getMyStorageObjectList(this.cond.bucketName, this.cond.folderName); // 오브젝트 리스트 조회
                 }
             } else {

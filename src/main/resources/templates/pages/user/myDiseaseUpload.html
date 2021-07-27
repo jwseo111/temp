@@ -44,7 +44,7 @@
                         <tr v-for="(bucket, idx) in myStorageBucketList">
                             <td v-on:click="onclickBucket(bucket.bucketName,idx)" style="padding:10px;">
                                 <span class="cusor">
-                                <input type="checkbox" v-model="bucketChecked" v-bind:value="idx" @change="bucketSelect(idx,event.target.checked)"> {{bucket.dataName}}
+                                <input type="checkbox" v-model="bucketChecked" v-bind:value="idx" @change="bucketSelect(idx,$event.target.checked)"> {{bucket.dataName}}
                                 </span>
                             </td>
                         </tr>
@@ -123,18 +123,18 @@
                 <ul style="border: 0px;">
                     <li style="display:inline-block;padding: 10px;">
                         <label for="uploadFile"><span class="cusor">파일업로드</span></label>
-                        <input type="file" id="uploadFile" @change="onchangeUpload" @click="onclickUpload" ref="multipartFile" multiple style="display: none;">
+                        <input type="file" id="uploadFile" @change="onchangeUpload" @click="onclickUpload" ref="multipartFile" multiple style="display: none;" :disabled="cond.bucketName < 1">
                     </li>
 
                     <li style="display:inline-block;padding: 10px;">
                         <label for="uploadFoler"><span class="cusor">폴더업로드</span></label>
-                        <input type="file" id="uploadFoler" @change="onchangeUploadFolder" @click="onclickUpload" ref="multipartFolder" webkitdirectory multiple style="display: none;">
+                        <input type="file" id="uploadFoler" @change="onchangeUploadFolder" @click="onclickUpload" ref="multipartFolder" webkitdirectory multiple style="display: none;" :disabled="cond.bucketName < 1">
                     </li>
                     <li style="display:inline-block;padding: 10px;">
-                        <button class="btn" @click="onclickDelete">삭제</button>
+                        <button class="btn" @click="onclickDelete" :disabled="cond.bucketName < 1">삭제</button>
                     </li>
                     <li style="display:inline-block;padding: 10px;">
-                        <button class="btn" @click="onclickReload">새로고침</button>
+                        <button class="btn" @click="onclickReload" :disabled="cond.bucketName < 1">새로고침</button>
                     </li>
                 </ul>
                 <!--<div>{{messages}}</div>-->

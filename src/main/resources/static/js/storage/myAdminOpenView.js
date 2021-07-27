@@ -11,7 +11,7 @@ let appMain;
 const TID = {
     SEARCH : {value: 0, name: "search", code: "S"},
     CANCEL : {value: 0, name: "cancel",code: "D"},  // 취소
-    APPR :{value: 0, name: "appr",code: "A"},  // 승인
+    APPR :{value: 0, name: "appr",code: "A"}  // 승인
 };
 window.onload = function(){
     appMain = new Vue({
@@ -96,6 +96,7 @@ Vue.component('maincontents', {
                         this.onclickList();
                     } else {
                         console.log(results);
+                        alert("에러 :\n"+results.error.message);
                     }
                     break;
                 case TID. APPR: // 승인신청 callback
@@ -104,6 +105,7 @@ Vue.component('maincontents', {
                         this.onclickList();
                     } else {
                         console.log(results);
+                        alert("에러 :\n"+results.error.message);
                     }
                     break;
             }
@@ -114,6 +116,7 @@ Vue.component('maincontents', {
                 this.openStorageInfo   = results.response;
             } else {
                 console.log(results);
+                alert("에러 :\n"+results.error.message);
             }
         },
 

@@ -65,6 +65,29 @@ Vue.component('headercontents', {
         },
         onclickMenu : function(menu){
             location.href = menu.uri;
+        },
+        onclickMypage : function(){         // 로그인 권한별 마이페이지
+            let pageUri;
+            switch (MY_ROLE){
+                case "ROLE_USER":       // 기업
+                    pageUri = "";
+                    break;
+                case "ROLE_ADMIN":      // 관리자
+                    pageUri = "/my/admin/memberList";
+                    break;
+                case "ROLE_MANAGER":    // 병원책임자
+                    pageUri = "/my/store/list";
+                    break;
+                case "ROLE_UPLOADER":   // 병원데이터업로더
+                    pageUri = "/my/store/list";
+                    break;
+            }
+
+            location.href = pageUri+"?menuId=0";
+        },
+        onclickLogout : function(){
+            location.href="/logout";
         }
+
     }
 });

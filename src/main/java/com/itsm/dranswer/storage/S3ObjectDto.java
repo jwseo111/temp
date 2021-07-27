@@ -30,6 +30,6 @@ public class S3ObjectDto {
         this.size = 0L;
         this.eTag = "";
         this.storageClass = "";
-        this.name = this.key.replace(folderName, "");
+        this.name = this.key.replaceFirst(folderName, "");
     }
 }

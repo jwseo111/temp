@@ -5,6 +5,9 @@
 
 <div th:fragment="headerFragment">
     <script th:src="@{/js/fragments/defaultHeader.js}"></script>
+    <script>
+        const MY_ROLE= "[[${#authentication.authorities[0]}]]";
+    </script>
     <link rel="stylesheet" th:href="@{/css/fragments/defaultHeader.css}" />
 
     <div id="headercontentswrap">
@@ -19,10 +22,12 @@
                 </div>
                 <div class="top-menu" sec:authorize="isAuthenticated()">
                     <span class="menu" style="font-weight: 700;">[[${#authentication.principal.name}]]([[${#authentication.authorities[0]}]])님</span>
-                    <div class="menu" v-for="(menu, key) in authenticatedTopMenus" v-on:click="onclickMenu(menu)">{{menu.name}}</div>
+                    <div class="menu" v-on:click="onclickMypage()">마이페이지</div>
+                    <div class="menu" v-on:click="onclickLogout()">로그아웃</div>
                 </div>
             </div>
             <div class="menus">
+                <div class="menu"><a href="/" style="text-decoration: none;">메인</a></div>
                 <div v-for="(menu, key) in menus">
                     <div v-if="menu.use" class="menu" v-on:mouseover="hoverParent(menu, true)" v-on:mouseout="hoverParent(menu, false)">
                         <div class="parent">{{menu.name}}</div>

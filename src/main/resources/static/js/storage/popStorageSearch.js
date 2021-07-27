@@ -42,7 +42,7 @@ Vue.component('maincontents', {
         };
     },
     mounted: function () {
-
+        this.getStorageList();
     },
     methods: {
         onKeyup:function (e){
@@ -73,6 +73,7 @@ Vue.component('maincontents', {
                 this.storageList = results.response.content;
             } else {
                 console.log(results);
+                alert("에러 :\n"+results.error.message);
             }
         },
         makePageNavi: function (pageable, total) {

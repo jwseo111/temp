@@ -94,7 +94,6 @@ Vue.component('maincontents', {
                 console.log("파일명 : " +objectName);//tmp
                 console.log("현재 위치: " +this.cond.folderName);//tmp
             }
-
         },
 
         // object 목록 조회
@@ -419,5 +418,20 @@ function fileUpload(tid, uri, formData, progEvent, callback){
         })
 };
 */
+
+function fileSize(size){
+
+    let rtn = "";
+    if(size < 1024) {
+        rtn = size + " byte";
+    } else if (size < 1024 * 1024) {
+        rtn = (size/1024).toFixed(2)+ " KB";
+    } else if (size < 1024 * 1024 * 1024) {
+        rtn = (size/(1024 * 1024)).toFixed(2) + " MB";
+    } else {
+        rtn = (size/(1024 * 1024 * 1024)).toFixed(2) + " GB";
+    }
+    return rtn;
+};
 
 

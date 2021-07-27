@@ -87,6 +87,10 @@
                         <th>저장요청ID</th>
                         <td>{{reqStorageInfo.reqStorageId}}</td>
                     </tr>
+                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'">
+                        <th>저장소ID</th>
+                        <td>{{reqStorageInfo.bucketName}}</td>
+                    </tr>
                 </table>
             </div>
 

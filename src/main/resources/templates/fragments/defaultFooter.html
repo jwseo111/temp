@@ -5,15 +5,21 @@
 <div th:fragment="footerFragment">
     <script th:src="@{/js/fragments/defaultFooter.js}"></script>
     <link rel="stylesheet" th:href="@{/css/fragments/defaultFooter.css}" />
-
     <div id="footercontentswrap">
         <footercontents ref="footercontents"></footercontents>
     </div>
 
     <script type="text/x-template" id="footer-template" >
-        <div class="footer-wrapper">
-            여기는 푸터
+
+        <div class=" foot_wrap_btm" >
+            <div class="foot_info">
+                <div>
+                    <p>07238 서울특별시 영등포구 은행로 37, 5층(여의도동, 기계진흥회관본관) (주)아이티아이즈</p>
+                    <p>Copyright © 2020 by ITeyes Inc. All Rights Reserved.</p>
+                </div>
+            </div>
         </div>
+
     </script>
 </div>
 </html>

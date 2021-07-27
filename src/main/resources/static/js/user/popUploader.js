@@ -39,7 +39,7 @@ Vue.component('maincontents', {
 
         get(TID.INFO, "/user/my/info", null,this.callback);
 
-        get(TID.LIST, "/user/my/uploader",null,this.callback);
+
 
     },
     methods: {
@@ -86,6 +86,9 @@ Vue.component('maincontents', {
             this.diseaseName = data.diseaseCode.desc;
             this.diseaseManageName = data.userName;
             this.parentUserSeq = data.userSeq;
+
+            // 업로더 조회
+            get(TID.LIST, "/user/my/uploader",null,this.callback);
 
         },
         getListCallback : function(result){

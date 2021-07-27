@@ -72,9 +72,9 @@
                         <td v-if="open.reqStorageStatCode === null" align="center">-</td>
                         <td v-else align="center">{{open.openStorageStatCode.desc}}</td>
                         <td v-if="open.createdDate === null" align="center">-</td>
-                        <td v-else align="center">{{open.createdDate}}</td>
+                        <td v-else align="center">{{open.createdDate.substr(0,10)}}</td>
                         <td v-if="open.modifiedDate === null" align="center">-</td>
-                        <td v-else align="center">{{open.modifiedDate}}</td>
+                        <td v-else align="center">{{open.modifiedDate.substr(0,10)}}</td>
                     </tr>
                     </tbody>
 

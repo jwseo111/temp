@@ -9,7 +9,6 @@ package com.itsm.dranswer.storage;
  * @modifyed :
  */
 
-import com.itsm.dranswer.users.AgencyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -57,28 +56,28 @@ public class StoragePage {
     @GetMapping(value = "/my/store/list")
     public String myStorageList() {
 
-        return "pages/user/myStorageList";
+        return "pages/storage/myStorageList";
     }
 
     // 마이페이지 > 질환데이터저장신청 상세
     @GetMapping(value = "/my/store/req")
     public String myStorageReq() {
 
-        return "pages/user/myStorageReq";
+        return "pages/storage/myStorageReq";
     }
 
     // 마이페이지 > 질환데이터 공개신청 목록
     @GetMapping(value = "/my/open/list")
     public String myOpenList() {
 
-        return "pages/user/myOpenList";
+        return "pages/storage/myOpenList";
     }
 
     // 마이페이지 > 질환데이터 공개신청 상세
     @GetMapping(value = "/my/open/req")
     public String myOpenReq() {
 
-        return "pages/user/myOpenReq";
+        return "pages/storage/myOpenReq";
     }
 
 
@@ -86,20 +85,20 @@ public class StoragePage {
     @GetMapping(value = "/my/admin/store/list")
     public String myAdminStorageList() {
 
-        return "pages/user/myAdminStorageList";
+        return "pages/storage/myAdminStorageList";
     }
     // 마이페이지 > 질환데이터저장신청 상세(ADMIN)
     @GetMapping(value = "/my/admin/store/req")
     public String myAdminStorageReq() {
 
-        return "pages/user/myAdminStorageReq";
+        return "pages/storage/myAdminStorageReq";
     }
 
     // 마이페이지 > 질환데이터 업로드
     @GetMapping(value = "/my/diseaseUpload")
     public String myDiseaseUpload() {
 
-        return "pages/user/myDiseaseUpload";
+        return "pages/storage/myDiseaseUpload";
     }
 
 

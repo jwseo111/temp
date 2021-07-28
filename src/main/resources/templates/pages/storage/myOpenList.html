@@ -12,9 +12,9 @@
 
     <th:block layout:fragment="script">
         <script th:src="@{/js/common/common.js}"></script>
-        <script th:src="@{/js/user/myAdminStorageList.js}"></script>
+        <script th:src="@{/js/storage/myOpenList.js}"></script>
         <script>
-            const reqStorageStatCode = "[[${param.reqStorageStatCode}]]";
+            const openStorageStatCode = "[[${param.openStorageStatCode}]]";
         </script>
     </th:block>
 
@@ -25,18 +25,17 @@
 
         <script type="text/x-template" id="main-template" >
         <div class="storage-contents-wrap" >
-            <div class="storage-title">질환데이터 저장신청 목록(ADMIN)</div>
             <div class="storage-search-wrap">
                 <div class="line">
                     <div class="cond">
                         <div class="content">
-                            <select v-model="reqStoreStatCd">
+                            <select v-model="openStorageStatCd" style="width:120px;">
                                 <option value="">전체</option>
-                                <option v-for="option in reqStoreStatCdList" v-bind:value="option.name">
+                                <option v-for="option in openStorageStatCdList" v-bind:value="option.name">
                                     {{option.desc}}
                                 </option>
                             </select>
-                            <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="데이터명">
+                            <input type="text" v-model="cond.openDataName" @keyup="onKeyup" placeholder="데이터명">
                         </div>
                     </div>
                     <div class="btn_wrap">
@@ -51,32 +50,31 @@
                         <th>질환</th>
                         <th>데이터명</th>
                         <th>제공병원</th>
-                        <th>연구책임자</th>
+                        <th>신청자</th>
                         <th>상태</th>
                         <th>신청일자</th>
                         <th>처리일자</th>
                     </tr>
                     </thead>
-                    <tbody v-if="reqStorageList.length == 0">
+                    <tbody v-if="openStorageList.length == 0">
                     <tr>
                         <td colspan="7" align="center">
                             no data.
                         </td>
                     </tr>
                     </tbody>
-
-                    <tbody v-if="reqStorageList.length > 0">
-                    <tr v-for="(storage, idx) in reqStorageList">
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.diseaseCode.desc}}</td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.dataName}}</td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.agencyInfo.agencyName}}</td>
-                        <td align="center">{{storage.diseaseManagerUserInfo.userName}}</td>
-                        <td v-if="storage.reqStorageStatCode === null" align="center">-</td>
-                        <td v-else align="center">{{storage.reqStorageStatCode.desc}}</td>
-                        <td v-if="storage.createdDate === null" align="center">-</td>
-                        <td v-else align="center">{{storage.createdDate.substr(0,10)}}</td>
-                        <td v-if="storage.modifiedDate === null" align="center">-</td>
-                        <td v-else align="center">{{storage.modifiedDate.substr(0,10)}}</td>
+                    <tbody v-if="openStorageList.length > 0">
+                    <tr v-for="(open, idx) in openStorageList">
+                        <td v-on:click="onclickReq(open.reqOpenId)"><span class="cusor">{{open.diseaseManagerUserInfo.diseaseCode.desc}}</span></td>
+                        <td v-on:click="onclickReq(open.reqOpenId)"><span class="cusor">{{open.openDataName}}</span></td>
+                        <td v-on:click="onclickReq(open.reqOpenId)"><span class="cusor">{{open.agencyInfo.agencyName}}</span></td>
+                        <td align="center">{{open.diseaseManagerUserInfo.userName}}</td>
+                        <td v-if="open.reqStorageStatCode === null" align="center">-</td>
+                        <td v-else align="center">{{open.openStorageStatCode.desc}}</td>
+                        <td v-if="open.createdDate === null" align="center">-</td>
+                        <td v-else align="center">{{open.createdDate.substr(0,10)}}</td>
+                        <td v-if="open.modifiedDate === null" align="center">-</td>
+                        <td v-else align="center">{{open.modifiedDate.substr(0,10)}}</td>
                     </tr>
                     </tbody>
 

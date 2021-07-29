@@ -2,9 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="format-detection" content="telephone=no">
     <meta name="description" content="DOCTOR ANSWER">
     <meta id="meta_title" property="og:title" content="DOCTOR ANSWER">
@@ -12,22 +14,22 @@
     <meta id="meta_image" property="og:image" content="/favicon.png">
     <meta id="meta_url" property="og:url" content="//dranswer.io">
 
+    <title>Dr.answer 2.0</title>
+    <link rel="stylesheet" href="/css/common.css" media="all">
+
     <script src="/external/vue/vue.min.js"></script>
     <script src="/external/vue/vue-router.js"></script>
     <script src="/external/axios/axios-0.21.1.min.js"></script>
-
     <th:block layout:fragment="css"></th:block>
     <th:block layout:fragment="script"></th:block>
 </head>
 <body>
 
-    <div class="main-wrapper">
-        <div class="main-wrap">
+    <div class="wrapper">
             <th:block th:replace="fragments/defaultHeader :: headerFragment"></th:block>
             <th:block th:replace="fragments/mypageHeader :: mypageFragment"></th:block>
             <th:block layout:fragment="contents"></th:block>
             <th:block th:replace="fragments/defaultFooter :: footerFragment"></th:block>
-        </div>
     </div>
 
 </body>

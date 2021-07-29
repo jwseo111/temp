@@ -54,6 +54,14 @@ Vue.component('headercontents', {
         };
     },
     mounted:function(){
+        $("#mainNav, #mainNavPop").hover(
+            function () {
+                $(".nav-cont").stop().slideDown(200);
+            },
+            function () {
+                $(".nav-cont").stop().slideUp(200);
+            }
+        );
     },
     methods:{
         hoverParent : function (menu, b){
@@ -70,7 +78,7 @@ Vue.component('headercontents', {
             let pageUri;
             switch (MY_ROLE){
                 case "ROLE_USER":       // 기업
-                    pageUri = "";
+                    pageUri = "/my/userModify";
                     break;
                 case "ROLE_ADMIN":      // 관리자
                     pageUri = "/my/admin/memberList";

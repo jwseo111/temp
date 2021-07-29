@@ -2,46 +2,70 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-
 <div th:fragment="headerFragment">
     <script th:src="@{/js/fragments/defaultHeader.js}"></script>
     <script>
         const MY_ROLE= "[[${#authentication.authorities[0]}]]";
     </script>
-    <link rel="stylesheet" th:href="@{/css/fragments/defaultHeader.css}" />
 
-    <div id="headercontentswrap">
+    <div class="header-wrapper" id="headercontentswrap">
         <headercontents ref="headercontents"></headercontents>
     </div>
 
     <script type="text/x-template" id="header-template" >
-        <div class="header-wrapper">
-            <div class="top-menu-wrap">
+
+            <header class="header">
+                <h1><a href="/"><img src="/images/logo.png" alt="닥터앤서 2.0" /></a></h1>
+
+                <nav class="main-nav" id="mainNav">
+                    <span>학습 포탈 소개</span>
+                    <span>학습 데이터 관리</span>
+                    <span>학습 환경 관리</span>
+                    <span>서비스 현황</span>
+                </nav>
+
                 <div class="top-menu" sec:authorize="isAnonymous()" >
-                    <div class="menu" v-for="(menu, key) in anonymousTopMenus" v-on:click="onclickMenu(menu)">{{menu.name}}</div>
+                    <a href="/login"><img src="/images/icon_login.png" />로그인</a>
+                    <a href="/signup">회원가입</a>
                 </div>
                 <div class="top-menu" sec:authorize="isAuthenticated()">
-                    <span class="menu" style="font-weight: 700;">[[${#authentication.principal.name}]]([[${#authentication.authorities[0]}]])님</span>
-                    <div class="menu" v-on:click="onclickMypage()">마이페이지</div>
-                    <div class="menu" v-on:click="onclickLogout()">로그아웃</div>
+                    <!--<span class="menu" style="font-weight: 700;">[[${#authentication.principal.name}]]([[${#authentication.authorities[0]}]])님</span>-->
+                    <a href="#" v-on:click="onclickMypage()">마이페이지</a>
+                    <a href="#">이용현황</a>
+                    <a href="#" v-on:click="onclickLogout()">로그아웃</a>
                 </div>
-            </div>
-            <div class="menus">
-                <div class="menu"><a href="/" style="text-decoration: none;">메인</a></div>
-                <div v-for="(menu, key) in menus">
-                    <div v-if="menu.use" class="menu" v-on:mouseover="hoverParent(menu, true)" v-on:mouseout="hoverParent(menu, false)">
-                        <div class="parent">{{menu.name}}</div>
-                        <div v-if="menu.children.length > 0" class="children" :style="menu.style">
-                            <div v-for="(child, key) in menu.children">
-                                <div v-if="child.use">
-                                    <div v-on:click="onclickMenu(child)" class="menu">{{child.name}}</div>
-                                </div>
-                            </div>
-                        </div>
+
+
+            <div class="nav-cont-wrap" id="mainNavPop">
+                <div class="nav-cont">
+                    <div class="gnb-wrap">
+                        <ul class="sub1">
+                            <li><a href="/intro/dranswer">닥터앤서 소개</a></li>
+                            <li><a href="/intro/guide">사용가이드</a></li>
+                        </ul>
+                        <ul class="sub2">
+                            <li><a href="/lndata/store/main">질환 데이터 저장 신청</a></li>
+                            <li><a href="/lndata/open/main">질환 데이터 공개 신청</a></li>
+                            <li><a href="/lndata/use/main">학습 데이터 사용 신청</a></li>
+                        </ul>
+                        <ul  class="sub3">
+                            <li><a href="/lnenv/main">학습 환경 사용 신청</a></li>
+                        </ul>
+                        <ul class="sub4">
+                            <li><a href="/status/archived/main">질환 데이터 적재 현황</a></li>
+                            <li><a href="/status/supplied/main">학습 데이터 활용 현황</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
+            </header>
+
+
+
+
+
+
+
     </script>
 
 </div>

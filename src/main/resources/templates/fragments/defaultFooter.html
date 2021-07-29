@@ -4,21 +4,36 @@
 
 <div th:fragment="footerFragment">
     <script th:src="@{/js/fragments/defaultFooter.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/fragments/defaultFooter.css}" />
-    <div id="footercontentswrap">
+    <div class="footer-wrapper" id="footercontentswrap" >
         <footercontents ref="footercontents"></footercontents>
     </div>
 
     <script type="text/x-template" id="footer-template" >
 
-        <div class=" foot_wrap_btm" >
-            <div class="foot_info">
-                <div>
-                    <p>07238 서울특별시 영등포구 은행로 37, 5층(여의도동, 기계진흥회관본관) (주)아이티아이즈</p>
-                    <p>Copyright © 2020 by ITeyes Inc. All Rights Reserved.</p>
+        <footer class="footer">
+            <div class="footer-nav">
+                <a href="#">공지사항</a>
+                <a href="#">문의하기</a>
+                <a href="#">FAQ</a>
+                <a href="#">이용약관</a>
+                <a href="#"><span>개인정보처리방침</span></a>
+            </div>
+            <div class="footer-company">
+                <p>(주)아이티스마트</p>
+                <p class="address">서울특별시 강서구 양천로 583 우림블루나인비즈니스센터 A동 2010호</p>
+            </div>
+            <div class="copyright">COPYRIGHT &copy; 2020 BY ITSMART.CO.LTD ALL RIGHTS RESERVED</div>
+            <div class="family-link">
+                <div class="dropdown">
+                    <button onclick="myFunction()" class="dropbtn">관련 사이트</button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="https://www.dranswer.kr" target="_blank">K - Dash</a>
+                        <a href="https://www.msit.go.kr" target="_blank">과학기술정보통신부</a>
+                        <a href="https://www.nipa.kr" target="_blank">정보통신산업진흥원</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </footer>
 
     </script>
 </div>

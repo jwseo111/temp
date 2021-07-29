@@ -5,28 +5,155 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layouts/defaultLayout">
 
-    <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/common/main.css}" />
-    </th:block>
+<th:block layout:fragment="script">
+    <script src="/js/jquery.js"></script>
+    <script th:src="@{/js/jquery.carouFredSel-5.5.0-packed.js}"></script>
+    <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/common/main.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+</th:block>
 
-    <th:block layout:fragment="script">
-        <script th:src="@{/js/common/common.js}"></script>
-        <script th:src="@{/js/common/main.js}"></script>
-    </th:block>
+<th:block layout:fragment="css">
+    <style>
+        .catebox .active{background:url(../images/dot_on.png) 0 0 no-repeat;}
+    </style>
+</th:block>
 
-    <div layout:fragment="contents">
-        <div id="maincontentswrap" >
-            <maincontents ref="maincontents"></maincontents>
+
+<div layout:fragment="contents"  id="maincontentswrap" >
+
+    <maincontents ref="maincontents"></maincontents>
+
+    <script type="text/x-template" id="main-template" >
+        <div>
+            <section class="main-section1-wrapper">
+                <div class="main-section1">
+                    <div class="section1-l-box">
+                        <div class="clearfix">
+                            <img src="/images/main_img.png" />
+                            <div class="info-text">
+                                <p class="text1">전국 30개 상급종합병원과<br/>
+                                    ICT•SW 기업 18개가<br/>
+                                    함께합니다.<br/>
+                                </p>
+                                <p class="text2">정밀 의료 서비스를 위해 AI 기반의<br/>
+                                    의료 플렛폼을 제공합니다.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="main-notice">
+                            <span class="title"><img src="/images/notice_title.png" alt="공지사항"/></span>
+                            <a href="#" v-if="noticeList.length == 0">
+                                <span class="text">데이타가 없습니다.</span>
+                            </a>
+                            <a href="#" v-else>
+                                <span class="text">학습환경 생성 및 사용 가이드</span>
+                                <span class="date">2020-12-24</span>
+                            </a>
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="section1-r-box">
+                        <h3>질환 카테고리
+                            <span class="catelinks-box">
+                                <a :class="topCate1.class" v-on:click="onclickCate('topCate1')"></a>
+                                <a :class="topCate2.class" v-on:click="onclickCate('topCate2')"></a>
+                            </span>
+                        </h3>
+
+                        <ul id="cate1" class="cate-content" v-show="topCate1.listShow">
+                            <li><a href="#"><img src="/images/icon_disease1.png" />간암</a></li>
+                            <li><a href="#"><img src="/images/icon_disease2.png" />간질환</a></li>
+                            <li><a href="#"><img src="/images/icon_disease3.png" />갑상선암</a></li>
+                            <li><a href="#"><img src="/images/icon_disease4.png" />고혈압</a></li>
+                            <li><a href="#"><img src="/images/icon_disease5.png" />뇌경색</a></li>
+                            <li><a href="#"><img src="/images/icon_disease6.png" />당뇨병</a></li>
+                            <li><a href="#"><img src="/images/icon_disease7.png" />우울증</a></li>
+                            <li><a href="#"><img src="/images/icon_disease8.png" />위암</a></li>
+                            <li><a href="#"><img src="/images/icon_disease9.png" />전립선 증식증</a></li>
+                            <li><a href="#"><img src="/images/icon_disease10.png" />폐렴</a></li>
+                        </ul>
+                        <ul id="cate2" class="cate-content" v-show="topCate2.listShow">
+                            <li><a href="#"><img src="/images/icon_disease11.png" />폐암</a></li>
+                            <li><a href="#"><img src="/images/icon_disease12.png" />피부과질환</a></li>
+                            <!--<li><a href="#"><img src="/images/icon_disease13.png" />심뇌혈관질환</a></li>
+                            <li><a href="#"><img src="/images/icon_disease14.png" />심장질환</a></li>
+                            <li><a href="#"><img src="/images/icon_disease15.png" />유방암</a></li>
+                            <li><a href="#"><img src="/images/icon_disease16.png" />대장암</a></li>
+                            <li><a href="#"><img src="/images/icon_disease17.png" />전림선암</a></li>
+                            <li><a href="#"><img src="/images/icon_disease18.png" />치매</a></li>
+                            <li><a href="#"><img src="/images/icon_disease19.png" />뇌전증</a></li>
+                            <li><a href="#"><img src="/images/icon_disease20.png" />소아희귀질환</a></li>-->
+                        </ul>
+
+                    </div>
+                </div>
+            </section>
+            <section class="main-section2-wrapper">
+                <div class="bg-half"></div>
+                <div class="main-section2">
+                    <div class="section2-l-box">
+                        <h3>가이드 안내</h3>
+                        <ul >
+                            <li><a href="#"><img src="/images/icon_guide1.png" />질병 데이터<br/>적재 가이드</a></li>
+                            <li><a href="#"><img src="/images/icon_guide2.png" />학습 데이터<br/>활용 가이드</a></li>
+                            <!--<li><a href="#"><img src="/images/icon_guide3.png" />실행 환경<br/>SW테스트</a></li>-->
+                        </ul>
+                    </div>
+                    <div class="section2-r-box">
+                        <h3>최신 질환 데이터</h3>
+                        <div class="data-btn-box">
+                            <a href="#" id="data_left" ><img src="/images/data_btn_prev.png"  alt="이전"/></a>
+                            <a href="#" id="data_right" ><img src="/images/data_btn_next.png" alt="다음"/></a>
+                            <a href="/lndata/open/main" ><img src="/images/data_btn_more.png" alt="더 보기"/></a>
+                        </div>
+
+                        <!-- rolling item -->
+                        <div class="flow_data_box">
+                            <div id="data" class="flow_data_area">
+                                <ul>
+                                    <li v-for="(open, idx) in openDataList">
+                                        <img :src="open.img"/><br/>
+                                        <a href="#">
+                                            <span class="">{{open.name}}</span>
+                                            {{open.title}}
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- //rolling item -->
+
+
+                    </div>
+                </div>
+            </section>
+            <section class="main-section3-wrapper">
+                <div class="main-section3">
+                    <h3>참여 의료기관
+                        <span class="catebox catelinks-box">
+                            <a :class="btmCate1.class" v-on:click="onclickCate('btmCate1')"></a>
+                            <a :class="btmCate2.class" v-on:click="onclickCate('btmCate2')"></a>
+                        </span>
+                    </h3>
+                    <ul v-show="btmCate1.listShow">
+                        <li v-for="(item,idx) in hospitalList1">
+                            <img :src="item.url" :alt="item.name"/>
+                        </li>
+                    </ul>
+                    <ul v-show="btmCate2.listShow">
+                        <li v-for="(item2,idx) in hospitalList2">
+                            <img :src="item2.url" :alt="item2.name"/>
+                        </li>
+                    </ul>
+                </div>
+            </section>
         </div>
+    </script>
 
-        <script type="text/x-template" id="main-template" >
-        <div class="main-contents-wrap" >
-            여기는 닥터앤서 메인페이지
-        </div>
-        </script>
-
-        <script>
-        </script>
-    </div>
+</div>
 </html>

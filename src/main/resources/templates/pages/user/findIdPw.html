@@ -40,11 +40,19 @@
                             <input type="text" ref="userPhoneNumber" v-model="info.userPhoneNumber" @input="onkeyupPhoneNumber" maxlength="11" placeholder="휴대폰번호를 (-)없이 입력하세요." >
                         </div>
 
-                        <a href="javascript:void(0);" class="com-btn mt-40" @click="onclickFindId();">확인</a>
+                        <a href="javascript:void(0);" class="com-btn mt-40" @click="onclickFindId();"> </a>
                         <a href="javascript:void(0);" class="com-btn btn-line-bl mt-20" @click="onclickPageMove('BACK');">취소</a>
-                        <div class="pb-20"></div>
-                        <div class="a-c" v-for="item in resultId">
-                            <label>{{item}}</label>
+                        <div class="pb-20" style="padding-top:20px;">
+
+                            <h4 v-if="resultId.length > 0" style="color:#00a0a6;">&centerdot;입력하신 정보와 일치하는 아이디 목록입니다.</h4>
+
+                            <div class="searchlinks-box"  style="border: 1px solid #a1a1a1; ">
+                                <span v-for="item in resultId">{{item}}<br/></span>
+                            </div>
+                            <div class="a-c mt-40" v-if="resultId.length > 0">
+                            <a href="/login" class="com-btn" style="width:84px;background-color: #00a0a6;">로그인</a>
+                            <a href="javascript:void(0);" class="com-btn" style="width:140px;background-color: #00a0a6;" @click="onclickPageMove('PASS');">비밀번호찾기</a>
+                            </div>
                         </div>
                 </div>
             </div>

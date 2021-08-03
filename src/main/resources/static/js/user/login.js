@@ -39,7 +39,7 @@ Vue.component('maincontents', {
             type: type,
             passChg: false,
             certOk: true,
-            resultId:[],
+            resultId:['1111', '11111'],
         };
     },
     mounted:function(){

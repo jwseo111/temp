@@ -256,7 +256,6 @@ function loadSelect() {
                 h.click();
             });
             b.appendChild(c);
-            document.getElementById("diseaseCode").options[8].selected=true;
         }
         x[i].appendChild(b);
         a.addEventListener("click", function (e) {

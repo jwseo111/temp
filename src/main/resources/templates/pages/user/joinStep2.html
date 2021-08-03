@@ -25,6 +25,7 @@
         </div>
         <script type="text/x-template" id="main-template" >
             <div class="content">
+                
                 <div class="sub-title-box">
                     <h2>회원가입</h2>
                     <p>MEMBER REGISTER</p>
@@ -53,13 +54,13 @@
                             <span class="join-input-group mr-40">
                                 <span class="join-txt-caution-pw" v-text="message1"></span>
                                 <label >이메일<span>*</span></label>
-                                <input type="email" class="input-495" ref="userEmail" v-model="info.userEmail" @input="onkeyupEmail" placeholder="이메일을 입력해주세요" maxlength="50">
+                                <input type="email" class="input-495" ref="userEmail" v-model="info.userEmail" @input="onkeyupEmail" placeholder="이메일을 입력해주세요" maxlength="50"/>
                                 <a href="javascript:void(0);" class="com-btn btn-s" v-on:click="onclickCertSend();">인증요청</a>
                             </span>
                             <span class="join-input-group">
                                 <span class="join-txt-caution-pw" v-text="message2"></span>
                                 <label>이메일 인증코드<span>*</span></label>
-                                <input type="text" class="input-495" ref="certCode" v-model="info.certCode" @input="onkeyupCertCode" placeholder="발송된 인증코드 6자리를 입력해주세요." maxlength="6">
+                                <input type="text" class="input-495" ref="certCode" v-model="info.certCode" @input="onkeyupCertCode" placeholder="발송된 인증코드 6자리를 입력해주세요." maxlength="6"/>
                                 <a href="javascript:void(0);" v-on:click="onclickCertChk();" class="com-btn btn-s">인증확인</a>
                             </span>
                         </li>
@@ -67,12 +68,12 @@
                             <span class="join-input-group mr-40">
                                 <span class="join-txt-caution-pw" v-text="message3">10~15자 이내의 영문,숫자,특수문자를 조합하여 입력해주세요</span>
                                 <label>비밀번호<span>*</span></label>
-                                <input type="password" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();" placeholder="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다." maxlength="15">
+                                <input type="password" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();" placeholder="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다." maxlength="15" autocomplete="off"/>
                             </span>
                             <span class="join-input-group">
                                <span class="join-txt-caution-pw" v-text="message4"></span>
                                 <label >비밀번호 확인<span>*</span></label>
-                                <input type="password" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();" maxlength="15">
+                                <input type="password" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();" maxlength="15" autocomplete="off"/>
                             </span>
                         </li>
                     </ul>

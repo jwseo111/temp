@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="popupFragment">
+
+    <script th:src="@{/js/common/cmmPopup.js}"></script>
+
+    <div id="popupagencywrap" >
+        <popupagencycontents ref="popupagencycontents"></popupagencycontents>
+    </div>
+
+    <script type="text/x-template" id="popup-template" >
+        <div>
+        <div id="agencyModal" class="common-popup">
+
+            <div class="common-popup-content">
+                <h3>병원/기관명 검색</h3>
+                <hr>
+
+                <div id="search1" class="search-content" style="display: block;">
+                    <div class="hosp-search-wrap mt-60">
+                        <input type="text" v-model="cond.agencyName" @keyup="onKeyup" placeholder="병원/기관명을 입력해주세요">
+                        <a href="javascript:void(0);" class="com-btn btn-hosp-search" @click="onclickSearch()">SEARCH</a>
+                    </div>
+                    <ul class="ul-hosp-result mt-60" v-if="agencyList.length == 0">
+                        <li class="title">
+                            <span>병원/기관명</span>
+                            <a>선택</a>
+                        </li>
+                        <li>
+                            <span>데이타가 없습니다.</span>
+                        </li>
+                    </ul>
+                    <ul class="ul-hosp-result mt-60" v-if="agencyList.length > 0">
+                        <li class="title">
+                            <span>병원/기관명</span>
+                            <a>선택</a>
+                        </li>
+                        <li v-for="(agency, idx) in agencyList">
+                            <span>{{agency.agencyName}}</span>
+                            <a href="javascript:void(0);" @click="selectAgency(agency)">선택</a>
+                        </li>
+                    </ul>
+                    <div class="pagination mb-50 mt-50">
+                        <a href="#" v-on:click="onclickPage(prev)"><span class="next-bar"></span><span class="next"></span></a>
+                        <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">
+                            {{page}}
+                        </a>
+                        <a href="#" v-on:click="onclickPage(next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                    </div>
+                </div>
+
+                <div class="btn-box mt-20">
+                    <a href="#" class="com-btn btn-line-bl" onclick="fnClosePopup('agencyModal')">닫기</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="alertMsgModal" class="common-popup">
+            <div class="common-popup-content">
+                <h3>알림</h3>
+                <hr>
+                <div class="alert-box">
+                    <p>{{alertMsg}}</p>
+                </div>
+                <div class="btn-box mt-20">
+                    <a href="#" class="com-btn btn-line-bl" @click="alertClose()">닫기</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </script>
+</div>
+</html>

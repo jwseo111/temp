@@ -153,7 +153,7 @@ function isValid(item){
         }
 
         if(isNull(item[i].value)){
-            alert(msg);
+            alertMsg(msg);
             if(!isNull(item[i].ref)){
                 item[i].ref.focus();
             }
@@ -191,3 +191,28 @@ function getUserInfo(tid,callback){
         {},
         callback);
 };
+
+// 공통 팝업 open (layer )
+function fnOpenPopup(id, code){
+    if("agencyModal" == id){    // 기관검색
+        popAgencyTypeCode=code;
+    }
+    document.getElementById(id).style.display = "block";
+    document.documentElement.style.overflowX = 'hidden';
+    document.documentElement.style.overflowY = 'hidden';
+
+}
+
+// 공통 팝업 close (layer )
+function fnClosePopup(id){
+    document.getElementById(id).style.display = "none";
+    document.documentElement.style.overflowX = 'auto';
+    document.documentElement.style.overflowY = 'auto';
+}
+
+// 알림 메세지 (layer )
+function alertMsg(msg){
+    appPop1.$refs.popupagencycontents.$data.alertMsg=msg;
+    fnOpenPopup('alertMsgModal');
+}
+

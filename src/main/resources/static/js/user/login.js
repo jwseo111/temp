@@ -32,6 +32,10 @@ Vue.component('maincontents', {
             },
             certNumber : "",
             messages : "",
+            messages3:"",
+            messages4:"",
+            messages5:"",
+            messages6:"",
             type: type,
             passChg: false,
             certOk: true,
@@ -165,10 +169,10 @@ Vue.component('maincontents', {
             this.info.certCode = e.target.value.replace(numExp, "");
         },
         onclickCertSend : function(){ // 인증 email 전송
-            this.hideMessage();
+            this.messages3="";
             let result = regExp("EMAIL", this.info.userEmail);
             if(result === "N" || isNull(this.info.userEmail)){
-                this.messages = "E-Mail 형식으로 입력해주세요.";
+                this.messages3 = "E-Mail 형식으로 입력해주세요.";
                 this.$refs.email.focus();
             }else{
                 post(TID.CERT, "/user/find/pw/cert/mail", this.info, this.callback);
@@ -177,32 +181,34 @@ Vue.component('maincontents', {
         callbackCertChk : function(results) {
 
             if (results.success) {
-                alert("인증 메일이 발송 되었습니다.");
+                alertMsg("인증 메일이 발송 되었습니다.");
                 this.certNumber = results.response.certNumber;
             } else {
                 alert(results.error.message);
             }
         },
         onclickCertChk : function() { // 인증번호 확인
-            this.hideMessage();
+            this.messages4="";
             if(!isNull(this.certNumber) && this.info.certCode === this.certNumber){
-                alert("확인 되었습니다. 새로운 비밀번호로 변경해주세요.");
+                alertMsg("확인 되었습니다. 새로운 비밀번호로 변경해주세요.");
                 this.passChg = true;
                 this.certOk=false;
             }else{
-                this.messages ="인증번호를 다시 확인해 주세요.";
+                this.messages4 ="인증번호를 다시 확인해 주세요.";
                 this.$refs.certCode.focus();
             }
         },
         onblurPassChk1 : function(){    //비밀번호 체크
             let result = regExp("PASS2", this.info.password1);
-            this.messages = result;
+            this.messages5 = result;
             if(!isNull(result)){
                 this.$refs.password1.focus();
             }
 
         },
         isFormValid : function(){
+            this.messages5="";
+            this.messages6="";
            let param =[
                 {value:this.info.password1, title:"비밀번호", ref:this.$refs.password1},
                 {value:this.info.password2, title:"비밀번호확인", ref:this.$refs.password2},
@@ -211,7 +217,7 @@ Vue.component('maincontents', {
             if(!isValid(param)) return false;
 
             if(this.info.password1 !== this.info.password2){
-                alert("비밀번호가 일치 하지 않습니다.");
+                this.messages6="비밀번호가 일치 하지 않습니다.";
                 this.$refs.password2.focus();
                 return false;
             }
@@ -234,8 +240,8 @@ Vue.component('maincontents', {
                 alert("새로운 비밀번호로 변경 되었습니다.");
                 location.href="/login";
             }else{
-                this.messages = results.error.message;
-                setTimeout(this.hideMessage, 3000);
+                alertMsg(results.error.message);
+
             }
         },
 

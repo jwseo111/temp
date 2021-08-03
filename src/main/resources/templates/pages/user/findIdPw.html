@@ -3,11 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layouts/emptyLayout">
+      layout:decorator="layouts/defaultLayout">
 
     <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/user/login.css}" />
+
     </th:block>
 
     <th:block layout:fragment="script">
@@ -16,82 +15,97 @@
         <script>
             type = "[[${param.type}]]";
         </script>
+    </th:block>
 
-    <div layout:fragment="contents">
-        <div id="maincontentswrap" >
+    <div class="member-container" layout:fragment="contents" >
+        <div id="maincontentswrap">
             <maincontents ref="maincontents"></maincontents>
         </div>
-
         <script type="text/x-template" id="main-template" >
-        <div class="wrap" style="text-align: center;">
-        <div v-if="type === 'ID'" >
-            <div class="line">
-                <p>회원가입시 등록한 이름 및 전화번호를 입력해주세요.</p>
+            <div class="content" v-if="type === 'ID'">
+                <div class="sub-title-box">
+                    <h2>아이디 찾기</h2>
+                    <p>FIND MEMBER ID</p>
+                    <hr>
+                </div>
+                <div class="login-wrap">
+                    <p class="member-info mb-60">회원가입시 등록한 이름 및 전화번호를 입력해주세요</p>
+                        <div class="login-input-group">
+                            <label >이름</label>
+                            <input type="text" ref="userName" v-model="info.userName" placeholder="이름을 입력하세요." @input="onkeyupHanName" maxlength="10">
+                            <p class="text-alert">{{messages}}<br/>
+                        </div>
+                        <div class="login-input-group">
+                            <label >휴대폰번호</label>
+                            <input type="text" ref="userPhoneNumber" v-model="info.userPhoneNumber" @input="onkeyupPhoneNumber" maxlength="11" placeholder="휴대폰번호를 (-)없이 입력하세요." >
+                        </div>
+
+                        <a href="javascript:void(0);" class="com-btn mt-40" @click="onclickFindId();">확인</a>
+                        <a href="javascript:void(0);" class="com-btn btn-line-bl mt-20" @click="onclickPageMove('BACK');">취소</a>
+                        <div class="pb-20"></div>
+                        <div class="a-c" v-for="item in resultId">
+                            <label>{{item}}</label>
+                        </div>
+                </div>
             </div>
-            <div class="line">
-                이름 <input type="text" ref="userName" v-model="info.userName" placeholder="이름을 입력하세요." @input="onkeyupHanName" maxlength="10">
-            </div>
-            <div class="line">
-                휴대폰번호 <input type="text" ref="userPhoneNumber" v-model="info.userPhoneNumber" @input="onkeyupPhoneNumber" maxlength="11" placeholder="휴대폰번호를 (-)없이 입력하세요." >
-            </div>
-           <div class="line">{{messages}}</div>
-            <div class="line">
-                <div class="login-btn-wrap">
-                    <span class="btn login" @click="onclickPageMove('BACK');">취소</span>
-                    <span class="btn login" @click="onclickFindId();">확인</span>
+            <div class="content" v-else-if="type === 'PASS'">
+                <div v-show="certOk">
+                <div class="sub-title-box">
+                    <h2>비밀번호 찾기</h2>
+                    <p>FIND MEMBER PASSWORD</p>
+                    <hr>
+                </div>
+                <div class="login-wrap">
+                    <p class="member-info">회원가입시 등록한 이메일을 입력해주세요.</p>
+                    <p class="member-info-s">이메일로 인증코드가 전송됩니다.<br/>
+                        인증이 완료되면 비밀번호를 재설정 할 수 있습니다.</p>
+                        <div class="login-input-group">
+                            <label>아이디</label>
+                            <input class="input-certi" type="email" ref="email" v-model="info.userEmail" @input="onkeyupEmail" placeholder="회원가입시 등록한 이메일을 입력해주세요" maxlength="50">
+                            <a href="javascript:void(0);" class="com-btn btn-s" @click="onclickCertSend();">인증요청</a>
+                            <p class="text-alert">{{messages3}}<br/>
+                        </div>
+                        <div class="login-input-group">
+                            <label>인증코드</label>
+                            <input type="text" ref="certCode" v-model="info.certCode" @input="onkeyupCertCode" placeholder="발송된 인증코드 6자리를 입력해주세요." maxlength="6">
+                            <p class="text-alert">{{messages4}}<br/>
+                        </div>
+
+                    <a href="javascript:void(0);" class="com-btn mt-40" @click="onclickCertChk();">인증확인</a>
+                    <a href="javascript:void(0);" class="com-btn btn-line-bl mt-20" @click="onclickPageMove('BACK');">취소</a>
+
+                </div>
+                </div>
+                <div v-show="passChg">
+                    <div class="sub-title-box">
+                        <h2>비밀번호 재설정</h2>
+                        <p>CHANGE PASSWORD</p>
+                        <hr>
+                    </div>
+                    <div class="login-wrap">
+                        <p class="member-info mb-60">변경할 비밀번호를 입력해주세요</p>
+                        <div class="login-input-group">
+                            <label></label>새로운 비밀번호</label>
+                            <input type="password" ref="password1" v-model="info.password1" autocomplete="off"  v-on:blur="onblurPassChk1();"
+                                   placeholder="10~15자 영문, 숫자를 조합하여 입력해주세요" maxlength="15">
+                            <p class="text-alert">{{messages5}}<br/>
+                        </div>
+                        <div class="login-input-group">
+                            <label>새로운 비밀번호 확인</label>
+                            <input type="password" ref="password2" v-model="info.password2" autocomplete="off" maxlength="15">
+                            <p class="text-alert">{{messages6}}<br/>
+                        </div>
+
+                        <a href="javascript:void(0);" class="com-btn mt-40" @click="onclickPassChg()">확인</a>
+                        <a href="javascript:void(0);" class="com-btn btn-line-bl mt-20" @click="onclickPageMove('BACK');">취소</a>
+
+                    </div>
+
                 </div>
             </div>
 
-            <div class="line" v-for="item in resultId"><span>{{item}}</span></div>
 
-        </div>
 
-        <div v-else-if="type === 'PASS'" v-show="certOk">
-            <div class="line">
-                <ul style="list-style: none;">
-                <li>회원가입시 등록한 이메일을 입력해주세요.</li>
-                <li>이메일로 인증코드가 전송됩니다.</li>
-                <li>인증이 완료되면 비밀번호를 재설정 할 수 있습니다.</li>
-                </ul>
-            </div>
-            <div class="line">
-                아이디 <input type="text" ref="email" v-model="info.userEmail" @input="onkeyupEmail" placeholder="회원가입시 등록한 이메일" maxlength="50">
-                <input type="button" @click="onclickCertSend();" value="인증요청">
-            </div>
-            <div class="line">
-                인증코드 <input type="text" ref="certCode" v-model="info.certCode" @input="onkeyupCertCode" placeholder="발송된 인증코드 6자리를 입력해주세요." maxlength="6">
-            </div>
-            <div class="line" style="color:#fd8a51;height: 30px;vertical-align: middle;">{{messages}}</div>
-            <div class="line">
-                <div class="login-btn-wrap">
-                    <span class="btn login" @click="onclickPageMove('BACK');">취소</span>
-                    <span class="btn login" @click="onclickCertChk();">인증확인</span>
-                </div>
-            </div>
-        </div>
-        <div v-show="passChg" style="padding-top : 30px;">
-            <div class="line">
-                <p>변경할 비밀번호를 입력해주세요.</p>
-            </div>
-            <div class="line">
-                새로운 비밀번호<input type="password" ref="password1" v-model="info.password1" autocomplete="off"  v-on:blur="onblurPassChk1();"
-                               placeholder="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다." maxlength="15">
-            </div>
-            <div class="line">
-                새로운 비밀번호확인 <input type="password" ref="password2" v-model="info.password2" autocomplete="off" maxlength="15">
-            </div>
-            <div class="line">{{messages}}</div>
-            <div class="line">
-                <div class="login-btn-wrap">
-                    <span class="btn login" @click="onclickPageMove('BACK');">취소</span>
-                    <span class="btn login" @click="onclickPassChg()">확인</span>
-                </div>
-            </div>
-        </div>
-        </div>
-        </script>
-
-        <script>
         </script>
     </div>
 </html>

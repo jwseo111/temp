@@ -77,3 +77,12 @@
 		 url('../fonts/Roboto-Black.woff2') format('woff2'),
 		 url('../fonts/Roboto-Black.woff') format('woff');
 }
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 200;
+	src: local('Roboto Light'), local('Roboto-Light'), url('../fonts/Roboto-Light.eot');
+	src: url('../fonts/Roboto-Light.eot?#iefix') format('embedded-opentype'),
+		 url('../fonts/Roboto-Light.woff2') format('woff2'),
+		 url('../fonts/Roboto-Light.woff') format('woff');
+}

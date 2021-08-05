@@ -199,6 +199,8 @@ function getUserInfo(tid,callback){
 function fnOpenPopup(id, code){
     if("agencyModal" == id){    // 기관검색
         popAgencyTypeCode=code;
+        appPop1.$refs.popupagencycontents.onclickSearch();
+
     }
     document.getElementById(id).style.display = "block";
     document.documentElement.style.overflowX = 'hidden';

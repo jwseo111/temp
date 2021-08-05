@@ -91,11 +91,11 @@
             <!-- 페이징 -->
             <div class="btn-box mt-40">
                 <div class="pagination fl-l">
-                    <a href="#" v-on:click="onclickPage(prev)"><span class="next-bar"></span><span class="next"></span></a>
+                    <a href="#" v-on:click="onclickPage(pageInfo.prev)"><span class="next-bar"></span><span class="next"></span></a>
                     <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)" v-bind:class="{active:pageInfo.curr==page}">
                         {{page}}
                     </a>
-                    <a href="#" v-on:click="onclickPage(next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                    <a href="#" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
                 </div>
                 <a href="#" class="com-btn btn-w-332 fl-r" v-on:click="onclickReq">신청</a>
             </div>

@@ -40,17 +40,10 @@ Vue.component('maincontents', {
             deleteList: [
             ]
             ,
-            uploadType : {
-                style : {display : "none"},
-                type :[
-                    {name: "파일 업로드", uri: "", use: true},
-                    {name: "폴더 업로드", uri: "", use: true}
-                ]
-            },
             path : ["/"],
             messages : "",
             delChecked:[], // 삭제 체크박스
-            bucketChecked:[], // 버킷(저장소) 체크박
+            bucketChecked:[], // 버킷(저장소) 체크박스
             checked:"checked",
             fileName:""
         };
@@ -88,6 +81,7 @@ Vue.component('maincontents', {
         bucketSelect : function(idx, checked){
             this.bucketChecked = [];
             this.bucketChecked.push(idx);
+            this.myObjectResult = []; // 업로드 결과리스트  초기화
         },
         // object 목록 클릭
         onclickObject : function (objectName, eTag){
@@ -95,7 +89,7 @@ Vue.component('maincontents', {
             let bucketName = this.cond.bucketName;
 
             if(!eTag) { // 폴더 클릭시 조회
-                this.myObjectResult = [];
+                this.myObjectResult = []; // 업로드 결과리스트  초기화
                 this.getMyStorageObjectList(bucketName, folderName);
             } else { //  파일 클릭
                 // console.log("파일 클릭");//tmp
@@ -121,7 +115,7 @@ Vue.component('maincontents', {
             for(let i=1; i < idx+1; i++){
                 folderName = folderName + this.path[i];
             }
-
+            this.myObjectResult = []; // 업로드 결과리스트  초기화
             this.getMyStorageObjectList(this.cond.bucketName, folderName);
         },
 
@@ -135,7 +129,7 @@ Vue.component('maincontents', {
         //
         // },
 
-        uploadProgressEvent: function(progressEvent, fileName){
+        uploadProgressEvent: function(progressEvent, fileName, fileSize){
             this.messages = "";
             this.messages = progressEvent.loaded.format() + "/" + progressEvent.total.format()
                 + " ("+ (Math.round(progressEvent.loaded/progressEvent.total*10000)/100) +"%) ";
@@ -154,7 +148,8 @@ Vue.component('maincontents', {
             if(idx < 0) {
                 this.myObjectResult.push({
                     task: fileName,
-                    size: progressEvent.total.format(),
+                    //size: progressEvent.total.format(),
+                    size: fileSize,
                     progress: (Math.round(progressEvent.loaded / progressEvent.total * 10000) / 100),
                     result: result
                 });
@@ -240,13 +235,13 @@ Vue.component('maincontents', {
                 return;
             }
 
-            if(confirm("삭제하시겠습니까?")) {
-                post(TID.DELETE,
-                    "/my/management/storage/object/delete",
-                    this.deleteList,
-                    this.callback);
-            }
-
+            confirmMsg("삭제하시겠습니까?",this.delete);
+        },
+        delete: function() {
+            post(TID.DELETE,
+                "/my/management/storage/object/delete",
+                this.deleteList,
+                this.callback);
         },
 
         // 새로고침 클릭
@@ -358,10 +353,11 @@ function fileUpload(tid, uri, multipartFile, progEvent, callback, bucketName, fo
         formData.append("bucketName", bucketName);
         formData.append("folderName", folderName);
         let fileName = multipartFile.files[i].name;
+        let fileSize = multipartFile.files[i].size;
         //axios.post(uri, formData, config)
         axios.post(uri, formData, {
                                     headers: headers,
-                                    onUploadProgress: progressEvent => progEvent(progressEvent, fileName)
+                                    onUploadProgress: progressEvent => progEvent(progressEvent, fileName, fileSize)
                                     //onUploadProgress: progressEvent => progEvent(progressEvent)
         })
             .then((response) => {

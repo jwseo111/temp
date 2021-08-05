@@ -44,8 +44,8 @@
                         </div>
                     </div>
                     <div class="upload-box-r">
-                        <p><label>- 저장소:</label> {{cond.bucketName}}</p>
-                        <p><label>- Path:</label>
+                        <p><label style="width: 50px;">- 저장소  </label> {{cond.bucketName}}</p>
+                        <p><label style="width: 50px;">- Path   </label>
                             <lo v-for="(pathName, idx) in path">
                             <span v-on:click="onclickPath(idx)" style="cursor: pointer;">{{pathName}}</span>
                             </lo></p>
@@ -140,17 +140,19 @@
     <!--                        <button class="btn" @click="onclickReload" :disabled="cond.bucketName < 1">새로고침</button>-->
     <!--                    </li>-->
     <!--                </ul>-->
-                <table class="table-list mt-30">
+                </hr>
+                <div class="upload-box-r-inner" style="overflow:auto;height:300px;width:100%;">
+                <table class="table-list-s mt-30">
                     <colgroup>
                         <col />
-<!--                        <col style="width:20%" />-->
+                        <col style="width:20%" />
                         <col style="width:20%" />
                         <col style="width:20%" />
                     </colgroup>
                     <thead>
                     <tr>
                         <th scope="col">파일명</th>
-<!--                        <th scope="col">크기</th>-->
+                        <th scope="col">크기</th>
                         <th scope="col">처리 (%)</th>
                         <th scope="col">처리결과</th>
                     </tr>
@@ -158,17 +160,19 @@
                     <tbody v-if="myObjectResult.length > 0">
                     <tr v-for="(result, idx) in myObjectResult">
                         <td>{{result.task}}</td>
-<!--                        <td align="right">{{result.size}}</td>-->
-                        <td align="center">{{result.progress}}</td>
+                        <td align="right">{{fileSize(result.size)}}</td>
+                        <td align="center">{{result.progress}} %</td>
                         <td align="center">{{result.result}}</td>
                     </tr>
                     </tbody>
                     <tbody v-else>
                     <tr>
-                        <td colspan="3"></td>
+                        <td colspan="4"></td>
                     </tr>
                     </tbody>
                 </table>
+                </div>
+                <br/>
             </div>
         </div>
 

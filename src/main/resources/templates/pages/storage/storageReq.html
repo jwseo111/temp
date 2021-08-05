@@ -6,8 +6,7 @@
       layout:decorator="layouts/defaultLayout">
 
     <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+
     </th:block>
 
     <th:block layout:fragment="script">
@@ -16,69 +15,91 @@
 
     </th:block>
 
-    <div layout:fragment="contents">
+    <div class="member-container" layout:fragment="contents">
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
-        <div class="storage-contents-wrap" >
-
-            <div class="storage-title">질환데이터 저장신청</div>
-            <div class="storage-title">신청자 정보</div>
-            <div class="storage-content">
-                <table class="result-table">
-                    <tr>
-                        <th>신청자명</th>
-                        <td>{{userInfo.userName}}</td>
-                        <th>병원명</th>
-                        <td>{{userInfo.agencyName}}</td>
-                    </tr>
-                    <tr>
-                        <th>질병주관병원여부</th>
-                        <td>
-                            <lo v-for="radio in isYn">
-                                <input type="radio" v-bind:id="radio.value" v-bind:value="radio.value" disabled v-model="userInfo.diseaseMainYn">
-                                <label v-if="radio.value=='Y'">예</label>
-                                <label v-if="radio.value=='N'">아니오</label>
-                            </lo>
-                        </td>
-
-                        <th>관리하는 질병</th>
-                        <td>{{diseaseInfo.desc}}</td>
-                    </tr>
-                    <tr>
-                        <th>연락처</th>
-                        <td>{{userInfo.userPhoneNumber}}</td>
-                        <th>이메일</th>
-                        <td>{{userInfo.userEmail}}</td>
-                    </tr>
-                    <tr>
-                        <th>질병책임자명</th>
-                        <td colspan="3">{{userInfo.managerUserName}}</td>
-                    </tr>
-                </table>
+        <div class="content" >
+            <div class="sub-title-box">
+                <h2>질환데이터 저장신청</h2>
+                <p>Application for storage of disease data</p>
+                <hr>
             </div>
 
-            <div class="storage-title">신청 정보</div>
-            <div class="storage-content">
-                <table class="result-table">
-                    <tr>
-                        <th>저장데이터명</th>
-                        <td colspan="3"><input type="text" v-model="saveInfo.dataName" placeholder="필수입력"></td>
-                    </tr>
-                </table>
+            <div class="join-cont-box clearfix">
+                <h3>신청자 정보</h3>
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group mr-40">
+                            <label >신청자명</label>
+                            <input type="text" v-bind:value="userInfo.userName" readonly>
+                        </span>
+                        <span class="join-input-group">
+                            <label >병원명</label>
+                            <input type="text" v-bind:value="userInfo.agencyName" readonly>
+                        </span>
+                    </li>
+                    <li>
+<!--                        <span class="join-input-group mr-40">-->
+<!--                            <label>질병주관병원 여부</label>-->
+<!--                            <span class="radio-wrap join-radio bdr-b" v-for="radio in isYn">-->
+<!--                                <input type="radio" v-bind:id="radio.value" v-bind:value="radio.value" disabled v-model="userInfo.diseaseMainYn">-->
+<!--                                <label v-if="radio.value=='Y'">예</label>-->
+<!--                                <label v-if="radio.value=='N'">아니오</label>-->
+<!--                            </span>-->
+<!--                        </span>-->
+                        <span class="join-input-group mr-40">
+                                <label>질병주관병원 여부</label>
+                                <span class="radio-wrap join-radio bdr-b">
+                                    <input type="radio" id="radio3_op1" value="1" name="save-op3" v-bind:checked="userInfo.diseaseMainYn === 'Y'" disabled/>
+                                    <label for="radio3_op1"><span></span>예</label>
+                                    <input type="radio" id="radio3_op2" value="2" name="save-op3" v-bind:checked="userInfo.diseaseMainYn === 'N'" disabled/>
+                                    <label for="radio3_op2"><span></span>아니오</label>
+                                </span>
+                            </span>
+                        <span class="join-input-group">
+                            <label>관리하는 질병</label>
+                            <input type="text" v-bind:value="diseaseInfo.desc" readonly>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group mr-40">
+                            <label>연락처</label>
+                            <input type="tel" v-bind:value="userInfo.userPhoneNumber" readonly>
+                        </span>
+                        <span class="join-input-group">
+                            <label >이메일</label>
+                            <input type="email" v-bind:value="userInfo.userEmail" readonly>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group ">
+                            <label >질병 책임자명</label>
+                            <input type="text" v-bind:value="userInfo.managerUserName" readonly>
+                        </span>
+                    </li>
+                </ul>
             </div>
-
-            <div class="btn_wrap" align="center">
-                <button v-on:click="onclickCancel">취소</button>
-                <button v-on:click="onclickReqSave">신청</button>
+            <div class="join-cont-box">
+                <h3>신청 정보</h3>
+                <span class="join-txt-caution">* 필수 입력 항목</span>
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>저장 데이터명<span>*</span></label>
+                            <input class="w-100" type="text" v-model="saveInfo.dataName" placeholder="저장 데이터명을 입력해주세요">
+                        </span>
+                    </li>
+                </ul>
             </div>
-
+            <div class="btn-box a-r mt-60">
+                <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCancel">목록</a>
+                <a href="#" class="com-btn btn-w-332" v-on:click="onclickReqSave">신청</a>
+            </div>
         </div>
-        </script>
 
-        <script>
         </script>
     </div>
 </html>

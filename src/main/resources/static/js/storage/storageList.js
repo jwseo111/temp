@@ -126,12 +126,12 @@ Vue.component('maincontents', {
             let next = last + 1;
             next = next>max?max:next;
 
-            this.first = first;
-            this.max = max;
-            this.curr = curr;
-            this.last = last;
-            this.prev = prev;
-            this.next = next;
+            this.pageInfo.first = first;
+            this.pageInfo.max = max;
+            this.pageInfo.curr = curr;
+            this.pageInfo.last = last;
+            this.pageInfo.prev = prev;
+            this.pageInfo.next = next;
             this.total = Math.ceil(total / pageable.size);
 
             this.pageInfo.pages = new Array();
@@ -140,8 +140,9 @@ Vue.component('maincontents', {
             }
         },
         onclickPage : function (page){
-
-            if(page === this.curr){
+            // this.cond.page = page - 1;
+            // this.getReqStorageList();
+            if(page === this.pageInfo.curr){
 
             } else {
 

@@ -39,7 +39,7 @@ Vue.component('maincontents', {
             type: type,
             passChg: false,
             certOk: true,
-            resultId:['1111', '11111'],
+            resultId:[],
         };
     },
     mounted:function(){
@@ -87,20 +87,18 @@ Vue.component('maincontents', {
                 }
                 location.href="/";
             }else{
-                alert(results.error.message);
+                alertMsg(results.error.message);
             }
         },
         onclickLogin : function(){
 
             if(isNull(this.login.email)){
-                alert("회원가입시 사용한 이메일을 입력해주세요.");
-                this.$refs.loginEmail.focus();
+                alertMsg("회원가입시 사용한 이메일을 입력해주세요.", this.$refs.loginEmail);
                 return;
             }
 
             if(isNull(this.login.password)){
-                alert("비밀번호를 입력해주세요.");
-                this.$refs.loginPassword.focus();
+                alertMsg("비밀번호를 입력해주세요.", this.$refs.loginPassword);
                 return;
             }
 
@@ -138,6 +136,7 @@ Vue.component('maincontents', {
 
             this.info.userPhoneNumber = e.target.value.replace(/[^0-9]/gi, "");
         },
+        // 아이디 찾기 확인
        onclickFindId : function(){
            let param =[
                {value:this.info.userName, title:"이름", ref:this.$refs.userName},
@@ -184,7 +183,7 @@ Vue.component('maincontents', {
                 alertMsg("인증 메일이 발송 되었습니다.");
                 this.certNumber = results.response.certNumber;
             } else {
-                alert(results.error.message);
+                alertMsg(results.error.message);
             }
         },
         onclickCertChk : function() { // 인증번호 확인
@@ -235,9 +234,9 @@ Vue.component('maincontents', {
             post(TID.CHG, "/user/change/pw", this.info, this.callback);
         },
         callbackPassChg : function(results){
-            console.log(results);
+
             if(results.success){
-                alert("새로운 비밀번호로 변경 되었습니다.");
+                alertMsg("새로운 비밀번호로 변경 되었습니다.");
                 location.href="/login";
             }else{
                 alertMsg(results.error.message);

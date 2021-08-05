@@ -6,9 +6,7 @@
       layout:decorator="layouts/mypageLayout">
 
     <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/common/reset.css}" />
-        <link rel="stylesheet" th:href="@{/css/common/board.css}" />
+
     </th:block>
 
     <th:block layout:fragment="script">
@@ -17,99 +15,89 @@
 
     </th:block>
 
-    <div layout:fragment="contents">
-        <div id="maincontentswrap" >
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap">
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
-            <div class="contents_wrap sub">
-
-                <div class="sub_tit">
+            <div class="content">
+                <div class="mypage-content mt-40">
                     <h3>회원목록</h3>
-                    <ul class="location">
-                        <li><a>회원목록</a></li>
-                        <li><a>마이페이지 > </a></li>
-                    </ul>
+                    <div class="list-search-wrap a-r mt-20">
+                        <label>Search</label>
+                        <div class="custom-select search-select">
+                            <select ref="joinStat" v-model="search.joinStat">
+                                <option value="">전체</option>
+                                <option v-for="option in joinStatCode" v-bind:value="option.name">
+                                    {{option.desc}}
+                                </option>
+                            </select>
+                        </div>
+                        <input type="text" v-model="search.userName" placeholder="검색어를 입력하세요">
+                        <a href="javascript:;" class="com-btn btn-hosp-search" @click="onclickSearch">SEARCH</a>
+                    </div>
+                    <table class="table-list mt-50">
+                        <colgroup>
+                            <col style="width:5%;" />
+                            <col style="width:8%;"/>
+                            <col style="width:8%;"/>
+                            <col style="width:10%;"/>
+                            <col style="width:10%;"/>
+                            <col style="width:10%;"/>
+                            <col style="width:10%;"/>
+                            <col style="width:10%;"/>
+                            <col style="width:12%;"/>
+                            <col style="width:12%;"/>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col">신청번호</th>
+                            <th scope="col">이름</th>
+                            <th scope="col">회원구분</th>
+                            <th scope="col">기관명</th>
+                            <th scope="col">질병명</th>
+                            <th scope="col">전화번호</th>
+                            <th scope="col">이메일</th>
+                            <th scope="col">가입처리상태</th>
+                            <th scope="col">신청일자</th>
+                            <th scope="col">처리일자</th>
+                        </tr>
+                        </thead>
+                        <tbody v-if="list.length == 0">
+                        <tr class="tr-link" >
+                            <td colspan="10" class="a-c">데이타가 없습니다.</td>
+                        </tr>
+                        </tbody>
+                        <tbody v-else>
+                        <tr class="tr-link" v-for="(item, idx) in list">
+                            <td>{{item.userSeq}}</td>
+                            <td class="a-c"><a href="javascript:void(0);" v-on:click="onclickDetail(item.userSeq);">{{item.userName}}</a></td>
+                            <td class="a-c">{{item.userRole}}</td>
+                            <td class="a-c">{{item.agencyInfo.agencyName}}</td>
+                            <td class="a-c">
+                                <span v-if="item.diseaseCode === null">-</span>
+                                <span v-else>{{item.diseaseCode.desc}}</span>
+                            </td>
+                            <td class="a-c">{{item.userPhoneNumber}}</td>
+                            <td class="a-c">{{item.userEmail}}</td>
+                            <td class="a-c">{{item.joinStatCode.desc}}</td>
+                            <td class="a-c">{{item.createdDate}}</td>
+                            <td class="a-r">{{item.modifiedDate}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 페이징 -->
+                    <div class="btn-box mt-40">
+                        <div class="pagination fl-l">
+                            <a href="javascript:;" v-on:click="onclickPage(pageInfo.prev)" ><span class="next-bar"></span><span class="next"></span></a>
+                            <a href="javascript:;" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)" v-bind:class="{active:pageInfo.curr==page}">{{page}}</a>
+                            <a href="javascript:;" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                        </div>
+                    </div>
                 </div>
-            <div class="srch_wrap">
-                <div class="srch_div">
-                    <select v-model="search.joinStat">
-                        <option value="">전체</option>
-                        <option v-for="option in joinStatCode" v-bind:value="option.name">
-                            {{option.desc}}
-                        </option>
-                    </select>
-                    <input type="text" class="ipt_srch" v-model="search.userName" placeholder="사용자명">
-                    <input type="button" class="btn_ipt_srch btn_gray" v-on:click="onclickSearch" value="검색">
-                </div>
             </div>
-            <div class="">
-                <table class="boardT">
-                    <colgroup>
-                        <col width="5%;">
-                        <col width="8%;">
-                        <col width="8%;">
-                        <col width="10%;">
-                        <col width="10%;">
-                        <col width="10%;">
-                        <col width="10%;">
-                        <col width="10%;">
-                        <col width="12%;">
-                        <col width="12%;">
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th>신청번호</th>
-                        <th>이름</th>
-                        <th>회원구분</th>
-                        <th>기관명</th>
-                        <th>질병명</th>
-                        <th>전화번호</th>
-                        <th>이메일</th>
-                        <th>가입처리상태</th>
-                        <th>신청일자</th>
-                        <th>처리일자</th>
-                    </tr>
-                    </thead>
-                    <tbody v-if="list.length == 0">
-                    <tr>
-                        <td colspan="10" align="center">
-                            no data.
-                        </td>
-                    </tr>
-                    </tbody>
-                    <tbody v-else>
-                    <tr v-for="(item, idx) in list">
-                        <td>{{item.userSeq}}</td>
-                        <td><a href="javascript:void(0);" v-on:click="onclickDetail(item.userSeq);">{{item.userName}}</a></td>
-                        <td>{{item.userRole}}</td>
-                        <td>{{item.agencyInfo.agencyName}}</td>
-                        <td>
-                            <span v-if="item.diseaseCode === null">-</span>
-                            <span v-else>{{item.diseaseCode.desc}}</span>
-                        </td>
-                        <td>{{item.userPhoneNumber}}</td>
-                        <td>{{item.userEmail}}</td>
-                        <td>{{item.joinStatCode.desc}}</td>
-                        <td>{{item.createdDate}}</td>
-                        <td>{{item.modifiedDate}}</td>
-                    </tr>
-                    </tbody>
-
-                </table>
-            </div>
-            <!-- 페이징 -->
-            <div class="page-navi-wrap">
-                <div v-on:click="onclickPage(prev)"><</div>
-                <div v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">{{page}}</div>
-                <div v-on:click="onclickPage(next)">></div>
-            </div>
-
-        </div>
-        </script>
-
-        <script>
         </script>
     </div>
 </html>

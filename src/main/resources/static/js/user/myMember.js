@@ -63,6 +63,7 @@ Vue.component('maincontents', {
         };
     },
     mounted:function(){
+
         if(isNull(this.userSeq)){
             codeId = "JoinStat";
             getCodeList(codeId, this.callback);
@@ -74,11 +75,15 @@ Vue.component('maincontents', {
             get(TID.INFO, url, null,this.callback);
 
         }
+        setTimeout(function() {
+            loadSelect();
+        },500);
     },
     computed: function(){
     },
     methods:{
         onclickSearch : function(){
+            this.search.joinStat=this.$refs.joinStat.value;
             get(TID.SEARCH,"/user/list", this.search, this.callback);
         },
         callback: function(tid, results){
@@ -109,9 +114,10 @@ Vue.component('maincontents', {
             }
         },
         makePageNavi: function(pageable, total){
+
             let max = Math.ceil(total / pageable.size);
             max = max == 0 ? 1 : max;
-            const curr = pageable.page + 1;
+            let curr = pageable.page + 1;
 
             const first = Math.ceil(curr / 5) * 5 - 4;
             let last = first + 4;
@@ -121,12 +127,12 @@ Vue.component('maincontents', {
             let next = last + 1;
             next = next>max?max:next;
 
-            this.first = first;
-            this.max = max;
-            this.curr = curr;
-            this.last = last;
-            this.prev = prev;
-            this.next = next;
+            this.pageInfo.first = first;
+            this.pageInfo.max = max;
+            this.pageInfo.curr = curr;
+            this.pageInfo.last = last;
+            this.pageInfo.prev = prev;
+            this.pageInfo.next = next;
 
             this.pageInfo.pages = new Array();
             for (let i=first; i<=last; i++){
@@ -180,18 +186,18 @@ Vue.component('maincontents', {
 
         },
         onclickAccept : function(){ // 승인
-            if(confirm("승인 하시겠습니까?")){
-                post(TID.ACCEPT,"/user/accept", this.info, this.callback);
-            }
-
+            confirmMsg("승인 하시겠습니까?", this.save);
+        },
+        save : function() {
+            post(TID.ACCEPT,"/user/accept", this.info, this.callback);
         },
         onclickAcceptCallback : function(results){
 
             if (results.success) {
-                alert("정상적으로 승인처리 되었습니다.");
+                alertMsg("정상적으로 승인처리 되었습니다.");
                 location.href=""
             } else {
-                alert(results.error.message);
+                alertMsg(results.error.message);
             }
         },
         onclickBack : function(){

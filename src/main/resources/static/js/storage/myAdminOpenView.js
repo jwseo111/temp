@@ -61,29 +61,28 @@ Vue.component('maincontents', {
         },
         // 승인버튼
         onclickApprove: function (){
-
-            if(confirm("승인하시겠습니까?")){
-                post(TID.APPR,
+            confirmMsg("승인하시겠습니까?", this.apprSave);
+        },
+        apprSave: function(){
+            post(TID.APPR,
                 "/management/storage/open/approve/"+this.openStorageId,
                 null, this.callback);
-            }
-
         },
         // 취소신청버튼 클릭
         onclickCancel: function () {
-            //let statCd = this.openStorageInfo.openStorageStatCode.name; // 처리상태
-
 
             if(!this.saveInfo.rejectReason){
-                alert("거절사유는 필수입니다.");
+                alertMsg("거절사유는 필수입니다.");
                 return;
             }
-            if(confirm("거절하시겠습니까?")) {
-                post(TID.CANCEL,
-                    "/management/storage/open/reject/" + this.openStorageId,
-                    this.saveInfo,
-                    this.callback);
-            }
+            confirmMsg("거절하시겠습니까?", this.cancelSave);
+
+        },
+        cancelSave: function(){
+            post(TID.CANCEL,
+                "/management/storage/open/reject/" + this.openStorageId,
+                this.saveInfo,
+                this.callback);
         },
         callback: function (tid, results) {
             switch (tid) {
@@ -92,31 +91,27 @@ Vue.component('maincontents', {
                     break;
                 case TID.CANCEL: // 거절신청 callback
                     if (results.success) {
-                        alert("정상적으로 거절되었습니다.");
+                        alertMsg("정상적으로 거절되었습니다.");
                         this.onclickList();
                     } else {
-                        console.log(results);
-                        alert("에러 :\n"+results.error.message);
+                        alertMsg(results.error.message);
                     }
                     break;
-                case TID. APPR: // 승인신청 callback
+                case TID.APPR: // 승인신청 callback
                     if (results.success) {
-                        alert("정상적으로 승인되었습니다.");
+                        alertMsg("정상적으로 승인되었습니다.");
                         this.onclickList();
                     } else {
-                        console.log(results);
-                        alert("에러 :\n"+results.error.message);
+                        alertMsg(results.error.message);
                     }
                     break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results.response);
                 this.openStorageInfo   = results.response;
             } else {
-                console.log(results);
-                alert("에러 :\n"+results.error.message);
+                alertMsg(results.error.message);
             }
         },
 

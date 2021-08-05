@@ -22,7 +22,7 @@ Vue.component('maincontents', {
     template : "#main-template",
     data: function() {
         return {
-            cond: {
+            search: {
                 page: 0,
                 size: 5,
                 openDataName: "",
@@ -48,7 +48,9 @@ Vue.component('maincontents', {
     },
     mounted:function(){
         this.getMyOpenStorageList();
-
+        setTimeout(function() {
+            loadSelect();
+        },500);
     },
     methods:{
         onKeyup:function (e){
@@ -57,7 +59,7 @@ Vue.component('maincontents', {
             }
         },
         onclickSearch: function () {
-            this.cond.page = 0;
+            this.search.openStorageStatCode=this.$refs.openStorageStatCode.value;
             this.getMyOpenStorageList();
         },
         // 목록 > 신청번호 클릭(화면 이동)
@@ -68,7 +70,7 @@ Vue.component('maincontents', {
         getMyOpenStorageList:function () {
             get(TID.SEARCH,
                 "/storage/open/list",
-                this.cond,
+                this.search,
                 this.callback);
         },
         callback: function (tid, results) {
@@ -83,7 +85,6 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.openStorageList = results.response.content;
             } else {
@@ -103,12 +104,12 @@ Vue.component('maincontents', {
             let next = last + 1;
             next = next>max?max:next;
 
-            this.first = first;
-            this.max = max;
-            this.curr = curr;
-            this.last = last;
-            this.prev = prev;
-            this.next = next;
+            this.pageInfo.first = first;
+            this.pageInfo.max = max;
+            this.pageInfo.curr = curr;
+            this.pageInfo.last = last;
+            this.pageInfo.prev = prev;
+            this.pageInfo.next = next;
 
             this.pageInfo.pages = new Array();
             for (let i=first; i<=last; i++){
@@ -116,7 +117,7 @@ Vue.component('maincontents', {
             }
         },
         onclickPage : function (page){
-            this.cond.page = page - 1;
+            this.search.page = page - 1;
             this.getMyOpenStorageList();
         },
     }

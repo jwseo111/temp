@@ -6,8 +6,7 @@
       layout:decorator="layouts/mypageLayout">
 
     <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
+
     </th:block>
 
     <th:block layout:fragment="script">
@@ -18,80 +17,95 @@
         </script>
     </th:block>
 
-    <div layout:fragment="contents">
-        <div id="maincontentswrap" >
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap">
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
-        <div class="storage-contents-wrap" >
-            <div class="sub_tit">
-                <h3>질환테이터 공개신청관리 상세</h3>
-                <ul class="location">
-                    <li><a>질환테이터 공개신청관리 상세</a></li>
-                    <li><a>마이페이지 > </a></li>
-                </ul>
+            <div class="content">
+                <div class="mypage-content mt-40">
+                    <h3>질환테이터 공개신청관리 상세</h3>
+                    <div class="join-cont-box mt-30">
+                        <h4>신청자 정보</h4>
+                        <ul class="com-ul">
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>신청자명</label>
+                                    <p class="txt-data">{{openStorageInfo.reqUserDto.userName}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>병원명</label>
+                                    <p class="txt-data">{{openStorageInfo.reqUserDto.agencyName}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>연락처</label>
+                                    <p class="txt-data">{{openStorageInfo.reqUserDto.userPhoneNumber}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>관리하는 질병</label>
+                                    <p class="txt-data">{{openStorageInfo.reqUserDto.diseaseCode.desc}}</p>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="join-input-group">
+                                    <label>이메일</label>
+                                    <p class="txt-data">{{openStorageInfo.reqUserDto.userEmail}}</p>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="join-cont-box mt-30">
+                        <h4>저장소 정보</h4>
+                        <ul class="com-ul">
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>저장소명</label>
+                                    <p class="txt-data">{{openStorageInfo.reqStorageInfo.dataName}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>공개데이터명</label>
+                                    <p class="txt-data">{{openStorageInfo.openDataName}}</p>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="join-input-group mr-40">
+                                    <label>처리상태</label>
+                                    <p class="txt-data">{{openStorageInfo.openStorageStatCode.desc}}</p>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="join-cont-box mt-30" v-if="openStorageInfo.openStorageStatCode.name !== 'O_ACC'">
+                        <h4>거절 정보</h4>
+                        <ul class="com-ul">
+                            <li v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ' || openStorageInfo.openStorageStatCode.name === 'C_REQ'">
+                                <span class="join-input-group w-100" >
+                                    <label>거절사유</label>
+                                    <input class="w-100" type="text" v-model="saveInfo.rejectReason" placeholder="거절사유를 입력해주세요">
+                                </span>
+                            </li>
+                            <li v-else>
+                                <span class="join-input-group w-100" >
+                                    <label>거절사유</label>
+                                    <p class="txt-data">{{openStorageInfo.rejectReason}}</p>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-box mt-70 a-r" v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ' || openStorageInfo.openStorageStatCode.name === 'C_REQ'">
+                        <a href="javascript:;" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
+                        <a href="javascript:;" class="com-btn btn-w-208 ml-10" v-on:click="onclickApprove">승인</a>
+                        <a href="javascript:;" class="com-btn btn-gray btn-w-208 ml-10" v-on:click="onclickCancel">거절</a>
+                    </div>
+                    <div class="btn-box mt-70 a-r" v-else>
+                        <a href="javascript:;" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickList">목록</a>
+                    </div>
+                </div>
             </div>
-
-            <div class="storage-title">신청자 정보</div>
-            <div class="storage-content">
-                <table class="result-table-detail">
-                    <tr>
-                        <th>신청자명</th>
-                        <td>{{openStorageInfo.reqUserDto.userName}}</td>
-                        <th>병원명</th>
-                        <td>{{openStorageInfo.reqUserDto.agencyName}}</td>
-                    </tr>
-                    <tr>
-                        <th>연락처</th>
-                        <td>{{openStorageInfo.reqUserDto.userPhoneNumber}}</td>
-                        <th>관리하는 질병</th>
-                        <td>{{openStorageInfo.reqUserDto.diseaseCode.desc}}</td>
-                    </tr>
-                    <tr>
-                        <th>이메일</th>
-                        <td colspan="3">{{openStorageInfo.reqUserDto.userEmail}}</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="storage-title">저장소 정보</div>
-            <div class="storage-content">
-                <table class="result-table-detail">
-                    <tr>
-                        <th>저장소명</th>
-                        <td>{{openStorageInfo.reqStorageInfo.dataName}}</td>
-                    </tr>
-                    <tr>
-                        <th>공개데이터명</th>
-                        <td>{{openStorageInfo.openDataName}}</td>
-                    </tr>
-                    <tr>
-                        <th>처리상태</th>
-                        <td>{{openStorageInfo.openStorageStatCode.desc}}</td>
-                    </tr>
-                    <tr>
-                        <th>거절사유</th>
-                        <td v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ' || openStorageInfo.openStorageStatCode.name === 'C_REQ'">
-                            <input type="text" v-model="saveInfo.rejectReason" placeholder="">
-                        </td>
-                        <td v-else>
-                            {{openStorageInfo.rejectReason}}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="btn_wrap" align="center">
-                <button v-on:click="onclickList">목록</button>
-                <button v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ' || openStorageInfo.openStorageStatCode.name === 'C_REQ'" v-on:click="onclickApprove">승인</button>
-                <button v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ' || openStorageInfo.openStorageStatCode.name === 'C_REQ'" v-on:click="onclickCancel">거절</button>
-            </div>
-
-        </div>
         </script>
 
-        <script>
-        </script>
     </div>
 </html>

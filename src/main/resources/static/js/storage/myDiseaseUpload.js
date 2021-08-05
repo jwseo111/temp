@@ -62,7 +62,7 @@ Vue.component('maincontents', {
         // 저장소 선택 여부 체크
         getChkSelected : function() {
             if(!this.cond.bucketName || !this.cond.bucketName){
-                alert("선택된 저장소가 없습니다.");
+                alertMsg("선택된 저장소가 없습니다.");
                 return false;
             } else {
                 return true;
@@ -98,9 +98,9 @@ Vue.component('maincontents', {
                 this.myObjectResult = [];
                 this.getMyStorageObjectList(bucketName, folderName);
             } else { //  파일 클릭
-                console.log("파일 클릭");//tmp
-                console.log("파일명 : " +objectName);//tmp
-                console.log("현재 위치: " +this.cond.folderName);//tmp
+                // console.log("파일 클릭");//tmp
+                // console.log("파일명 : " +objectName);//tmp
+                // console.log("현재 위치: " +this.cond.folderName);//tmp
             }
         },
 
@@ -124,25 +124,16 @@ Vue.component('maincontents', {
 
             this.getMyStorageObjectList(this.cond.bucketName, folderName);
         },
-        // 새로고침 클릭
-        onclickReload : function(){
-            this.myObjectResult = [];
-            this.getMyStorageObjectList(this.cond.bucketName, this.cond.folderName);
-        },
-        // 업로드 버튼 over
-        hoverUpload : function(b){
-            if(b){
-                this.uploadType.style.display = "block";
-            } else{
-                this.uploadType.style.display = "none";
-            }
-        },
 
-        // 업로드 버튼 클릭
-        onclickUpload : function(){
-            this.uploadType.style.display = "block";
-
-        },
+        //
+        // // 업로드 버튼 클릭
+        // onclickUpload : function(){
+        //
+        //     this.uploadType.style.display = "block";
+        //
+        //
+        //
+        // },
 
         uploadProgressEvent: function(progressEvent, fileName){
             this.messages = "";
@@ -152,7 +143,7 @@ Vue.component('maincontents', {
             if (progressEvent.loaded == progressEvent.total){
                 //this.messages = "업로드 완료";
             }
-            //this.myObjectResult = [];
+
             let result = "진행중";
 
             if (progressEvent.loaded == progressEvent.total){
@@ -227,13 +218,11 @@ Vue.component('maincontents', {
             fileUpload(TID.UPLOAD, uri, multipartFile, this.uploadProgressEvent, this.callback, bucketName, folderName);
         },
 
-
-        //
-        onclick : function(type){
-
-        },
         // 삭제 버튼 클릭
         onclickDelete : function(){
+            if(!this.cond.bucketName){
+                return;
+            }
 
             this.deleteList = new Array();
             for(let i=0;i<this.myStorageObjectList.length;i++){
@@ -247,7 +236,7 @@ Vue.component('maincontents', {
                 }
             }
             if(this.deleteList.length === 0) {
-                alert("선택된 항목이 없습니다.");
+                alertMsg("선택된 항목이 없습니다.");
                 return;
             }
 
@@ -257,6 +246,19 @@ Vue.component('maincontents', {
                     this.deleteList,
                     this.callback);
             }
+
+        },
+
+        // 새로고침 클릭
+        onclickReload : function(){
+            if(!this.cond.bucketName){
+                return;
+            }
+
+            this.myObjectResult = [];
+            this.delChecked = []; // 삭제 대상
+            this.deleteList = []; // 삭제 대상 리스트
+            this.getMyStorageObjectList(this.cond.bucketName, this.cond.folderName);
         },
         callback: function (tid, results) {
             switch (tid) {
@@ -271,10 +273,11 @@ Vue.component('maincontents', {
                     break;
                 case TID.DELETE:
                     if (results.success) {
-                        alert("정상적으로 삭제되었습니다.");
+                        alertMsg("정상적으로 삭제되었습니다.");
+                        this.delChecked = [];
                         this.onclickReload(); // 오브젝트 리스트 새로고침
                     } else {
-                        alert("에러 :\n"+results.error.message);
+                        alertMsg(results.error.message);
                     }
                     break;
             }
@@ -284,8 +287,8 @@ Vue.component('maincontents', {
                 //console.log(results);
                 this.myStorageBucketList = results.response;
             } else {
-                console.log(results);
-                alert("에러 :\n"+results.error.message);
+                //console.log(results);
+                alertMsg(results.error.message);
             }
         },
         searchObjectCallback: function (results) {
@@ -304,15 +307,14 @@ Vue.component('maincontents', {
                 this.delChecked = [];
 
             } else {
-                console.log(results);
-                alert("에러 :\n"+results.error.message);
+                //console.log(results);
+                alertMsg(results.error.message);
             }
         },
         uploadCallback: function (results) {
             if(results.success){
                 //console.log(results);
                 if(isLast) {
-                    //alert("정상적으로 업로드되었습니다.");
                     this.getMyStorageObjectList(this.cond.bucketName, this.cond.folderName); // 오브젝트 리스트 조회
                 }
             } else {
@@ -388,12 +390,12 @@ function fileUpload(tid, uri, multipartFile, progEvent, callback, bucketName, fo
                     // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
                     // Node.js의 http.ClientRequest 인스턴스입니다.
                      console.log(error.request);
-                    alert(error.message);
+                    alertMsg(error.message);
                 }
                 else {
                     // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
                      console.log('Error', error.message);
-                     alert(error.message);
+                    alertMsg(error.message);
                 }
             })
     }

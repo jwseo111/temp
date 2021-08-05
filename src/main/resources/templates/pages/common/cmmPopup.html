@@ -43,11 +43,9 @@
                         </li>
                     </ul>
                     <div class="pagination mb-50 mt-50">
-                        <a href="#" v-on:click="onclickPage(prev)"><span class="next-bar"></span><span class="next"></span></a>
-                        <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">
-                            {{page}}
-                        </a>
-                        <a href="#" v-on:click="onclickPage(next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                        <a href="javascript:;" v-on:click="onclickPage(pageInfo.prev)" ><span class="next-bar"></span><span class="next"></span></a>
+                        <a href="javascript:;" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)" v-bind:class="{active:pageInfo.curr==page}">{{page}}</a>
+                        <a href="javascript:;" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
                     </div>
                 </div>
 

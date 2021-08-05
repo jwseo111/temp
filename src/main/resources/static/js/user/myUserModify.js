@@ -1,5 +1,5 @@
 let appMain;
-
+let uploadMain;
 const TID = {
     SEARCH: {value: 0, name: "search", code: "S"},
     INFO: {value: 0, name: "info"},
@@ -11,6 +11,9 @@ const TID = {
 window.onload = function(){
     appMain = new Vue({
         el: '#maincontentswrap',
+    });
+    uploadMain = new Vue({
+        el: '#uploadcontentswrap',
     });
 
 }
@@ -44,6 +47,7 @@ Vue.component('maincontents', {
                 parentUserYn:false,
                 parentYn:false,
             },
+            memberText:"",
             managerYn:false,
             messages: "",
         };
@@ -110,6 +114,8 @@ Vue.component('maincontents', {
             this.info.userPhoneNumber = item.userPhoneNumber;
             this.info.userRole = item.userRole;
             this.info.userSeq = item.userSeq;
+
+            this.memberText = this.info.agencyTypeName + "(" + this.info.userRole + ")";
             if(!isNull(item.parentUserInfo)){
                 this.info.parentUserName =item.parentUserInfo.userName;
                 this.info.parentYn = true;
@@ -131,6 +137,10 @@ Vue.component('maincontents', {
 
 
         },
+        onclickUploderPop : function(){
+            uploadMain.$refs.uploadcontents.loadUploader();
+            fnOpenPopup('uploaderModal');
+        },
         onclickMovePage : function(){
           location.href="/my/userPasswd?menuId="+myMenuId;
         },
@@ -140,23 +150,26 @@ Vue.component('maincontents', {
         },
         isFormValid : function(){
             let param =[
-
                     {value:this.info.userName, title:"담당자이름", ref:this.$refs.userName},
                     {value:this.info.userPhoneNumber, title:"담당자휴대전화", ref:this.$refs.userPhoneNumber},
                     {value:this.info.nCloudId, title:"NBP 아이디", ref:this.$refs.nCloudId},
-                    {value:this.info.nCloudAccessKey, title:"NBP 액세스키", ref:this.$refs.nCloudAccessKey},
-                    {value:this.info.nCloudSecretKey, title:"NBP 시크릿키", ref:this.$refs.nCloudSecretKey},
                 ];
 
             if(!isValid(param)) return false;
 
             if(this.info.agencyTypeCode === 'COMP' || this.info.diseaseManagerYn === 'Y'){
                 if(isNull(this.info.nCloudObjStorageId)){
-                    alert("오브젝트 스토리지 아이디는 필수입니다.");
-                    this.$refs.nCloudObjStorageId.focus();
+                    alertMsg("오브젝트 스토리지 아이디는 필수입니다.", this.$refs.nCloudObjStorageId);
                     return false;
                 }
             }
+
+            param =[
+                {value:this.info.nCloudAccessKey, title:"NBP 액세스키", ref:this.$refs.nCloudAccessKey},
+                {value:this.info.nCloudSecretKey, title:"NBP 시크릿키", ref:this.$refs.nCloudSecretKey},
+            ];
+
+            if(!isValid(param)) return false;
 
             return true;
         },
@@ -166,17 +179,17 @@ Vue.component('maincontents', {
                 return false;
             }
 
-            if(confirm("수정 하시겠습니까?")){
-                post(TID.SAVE,"/user/my/info", this.info, this.callback);
-            }
-
+            confirmMsg("수정 하시겠습니까?",this.save);
+        },
+        save: function(){
+            post(TID.SAVE,"/user/my/info", this.info, this.callback);
         },
         onclickSaveCallback : function(results){
 
             if (results.success) {
-                alert("정상적으로 수정 되었습니다.");
+                alertMsg("정상적으로 수정 되었습니다.");
             } else {
-                alert(results.error.message);
+                alertMsg(results.error.message);
             }
         },
         popupUploader : function(){ // 데이터 업로더팝업
@@ -190,13 +203,107 @@ Vue.component('maincontents', {
         },
         onclickChgManageCallback : function(results){
             if (results.success) {
-                alert("정상적으로 수정 되었습니다.");
+                alertMsg("정상적으로 수정 되었습니다.");
                 this.getUserInfo();
             }else{
-                alert(results.error.message);
+                alertMsg(results.error.message);
             }
         }
 
     },
 
+});
+
+Vue.component('uploadcontents', {
+    template: "#upload-template",
+    data: function () {
+        return {
+
+            agencyName:"",
+            diseaseName:"",
+            diseaseManageName:"",
+            parentUserSeq:"",
+            uploaderList:[],
+            messages: "",
+            checked:[],
+
+        };
+    },
+    mounted: function () {
+
+    },
+    methods: {
+        callback: function(tid, results){
+
+            switch (tid) {
+                case TID.INFO:
+                    this.loadUploaderCallback(results);
+                    break;
+                case TID.LIST:
+                    this.getListCallback(results);
+                    break;
+                case TID.SAVE:
+                    this.onclickUploaderSaveCallback(results);
+                    break;
+
+            }
+
+        },
+        loadUploader: function(){
+            get(TID.INFO, "/user/my/info", null,this.callback);
+        },
+        onclickUploaderSave: function(){
+            for(let i=0;i < this.uploaderList.length;i++){
+                let data = null;
+                for (let y=0;y < this.checked.length;y++){
+
+                    if(this.checked[y] ===this.uploaderList[i].userSeq){
+                        data = this.parentUserSeq;
+                    }
+
+                }
+                this.uploaderList[i].parentUserSeq = data;
+            }
+
+           confirmMsg("저장 하시겠습니까?",this.save);
+        },
+        save:function(){
+            post(TID.SAVE,"/user/my/uploader",this.uploaderList,this.callback);
+        },
+        loadUploaderCallback : function(result) {
+
+            let data = result.response;
+            this.agencyName= data.agencyInfo.agencyName;
+            this.diseaseName = data.diseaseCode.desc;
+            this.diseaseManageName = data.userName;
+            this.parentUserSeq = data.userSeq;
+
+            // 업로더 조회
+            get(TID.LIST, "/user/my/uploader",null,this.callback);
+
+        },
+        getListCallback : function(result){
+            this.uploaderList=result.response;
+            for(let i=0;i < this.uploaderList.length;i++){
+                if(this.uploaderList[i].parentUserSeq === this.parentUserSeq){
+                    this.checked.push(this.uploaderList[i].userSeq);
+                }
+
+            }
+        },
+        onclickUploaderSaveCallback : function(result){
+
+            if (result.success) {
+                alertMsg("정상적으로 수정 되었습니다.");
+                setTimeout(function() {
+                    fnClosePopup('uploaderModal');
+                }, 1000);
+
+            } else {
+                alertMsg(result.error.message);
+            }
+        },
+
+
+    },
 });

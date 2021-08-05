@@ -178,7 +178,7 @@ a.btn-s{width:84px;font-size:1.4rem;font-weight:400;letter-spacing:0}
 /* layout */
 .wrapper{width:100%;}
 .member-container{position:relative;padding-bottom:120px;width:100%;min-height:700px;background:url(../images/member_bg.png) top center no-repeat;}
-.mypage-container{position:relative;padding-bottom:120px;width:100%;min-height:700px;background:url(../images/mypage_bg.png) top center no-repeat;}
+.mypage-container{position:relative;width:100%;min-height:100px;background:url(../images/mypage_bg.png) top center no-repeat;}
 .content{position:relative;margin:0 auto;padding:0 40px;width:1280px;}
 .sub-title-box{position:relative;width:100%;padding-top:120px;text-align:center} 
 .sub-title-box h2{padding-left:30px;font-size:4rem;color:#000;line-height:1.4;letter-spacing: 30px;}

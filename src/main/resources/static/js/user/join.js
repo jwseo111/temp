@@ -81,7 +81,7 @@ Vue.component('maincontents', {
 
           if(isNull(this.join.agree1) && isNull(this.join.agree2)) {
 
-              alert("잘 못된 접근방식 입니다.");
+              alertMsg("잘 못된 접근방식 입니다.");
               location.href = "/";
               return;
           }
@@ -104,7 +104,7 @@ Vue.component('maincontents', {
         },
         onclickNext : function(){
             if(!this.join.agree1 || !this.join.agree2 ){
-                alert("모든 약관에 동의 해주세요.");
+                alertMsg("모든 약관에 동의 해주세요.");
                 return;
             }
             document.frm.submit();
@@ -120,19 +120,19 @@ Vue.component('maincontents', {
                     break;
                 case "Cert":
                     if(result.success) {
-                        alert("인증 메일이 발송 되었습니다.");
+                        alertMsg("인증 메일이 발송 되었습니다.");
                         this.certNumber = result.response.certNumber;
                     }else{
-                        alert(result.error.message);
+                        alertMsg(result.error.message);
                         this.$refs.userEmail.focus();
                     }
                     break;
                 case "SAVE":
                     if(result.success){
-                        alert("정상적으로 등록되었습니다.");
+                        alertMsg("정상적으로 등록되었습니다.");
                         location.href="/joinComplete";
                     }else{
-                        alert(result.error.message);
+                        alertMsg(result.error.message);
                     }
                     break;
                 default :
@@ -199,8 +199,7 @@ Vue.component('maincontents', {
         },
         popupAgency : function(){         // 기관 팝업
             if(isNull(this.info.agencyTypeCode)){
-                alert("회원 구분을 선택해주세요.");
-                document.getElementById("rdo0").focus();
+                alertMsg("회원 구분을 선택해주세요.", this.$refs.rdo0);
                 return;
             }
 
@@ -241,7 +240,8 @@ Vue.component('maincontents', {
 
         },
         isFormValid : function(){
-
+            // 질병명
+            this.info.diseaseCode=this.$refs.diseaseCode.value;
             let param =[
                 {value:this.info.agencyTypeCode, title:"회원구분", ref:document.getElementById("rdo0"), type:"S", msg:""},
                 {value:this.info.userEmail, title:"이메일", ref:this.$refs.userEmail},
@@ -251,8 +251,7 @@ Vue.component('maincontents', {
             if(!isValid(param)) return false;
 
             if(this.info.passOk1 === "N"){
-                alert("이메일 인증확인은 필수입니다.");
-                this.$refs.certCode.focus();
+                alertMsg("이메일 인증확인은 필수입니다.", this.$refs.certCode);
                 return false;
             }
 
@@ -264,8 +263,7 @@ Vue.component('maincontents', {
             if(!isValid(param)) return false;
 
             if(this.info.passOk2 === "N"){
-                alert("비밀번호가 일치 하지 않습니다.");
-                this.$refs.password2.focus();
+                alertMsg("비밀번호가 일치 하지 않습니다.", this.$refs.password2);
                 return false;
             }
 
@@ -279,8 +277,7 @@ Vue.component('maincontents', {
             if(!isValid(param)) return false;
 
             if(this.info.agencyTypeCode !=="COMP" && isNull(this.info.diseaseManagerYn)){
-                alert("질병책임자여부를 선택해주세요.");
-                this.$refs.diseaseManagerY.focus();
+                alertMsg("질병책임자여부를 선택해주세요.", this.$refs.diseaseManagerY);
                 return false;
             }
 
@@ -295,16 +292,18 @@ Vue.component('maincontents', {
                 if(!isValid(param)) return false;
             }
 
+
             return true;
         },
         btnSave : function(){
 
-            // 질병명
-            this.info.diseaseCode=this.$refs.diseaseCode.value;
+
+
 
             if(!this.isFormValid()){
-                return false;
+               return false;
             }
+
 
             if(this.info.passOk2 === "Y"){
                 this.info.inputPw=this.info.password1;
@@ -320,10 +319,15 @@ Vue.component('maincontents', {
                 }
             }
 
-            if(confirm("등록 하시겠습니까?")){
-                post("SAVE", "/user/join", this.info, this.callBack);
-            }
+            confirmMsg("등록 하시겠습니까?", this.save);
+
         },
+        save : function(){
+            post("SAVE", "/user/join", this.info, this.callBack);
+        }
     },
 
 });
+function fnchk(){
+    alert("1");
+}

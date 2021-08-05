@@ -5,11 +5,18 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layouts/defaultLayout">
 
-    <th:block layout:fragment="css">
+<th:block layout:fragment="css">
 
-    </th:block>
+    <style>
+        input:focus{
+            box-shadow: 0 0 5px #a1a1a1;
+            border: 1px solid #7F7F7F;
+        }
+    </style>
+</th:block>
 
-    <th:block layout:fragment="script">
+
+<th:block layout:fragment="script">
         <script th:src="@{/js/common/common.js}"></script>
         <script th:src="@{/js/user/join.js}"></script>
         <script>
@@ -38,10 +45,10 @@
                 </div>
                 <div class="join-cont-box">
                     <h3>회원 구분</h3>
-                    <ul class="com-ul">
+                    <ul class="com-ul" ref="ddd">
                         <li>
                             <span class="radio-wrap" v-for="(agency, idx) in info.agencyTypeList" >
-                            <input type="radio" v-bind:id="['rdo' + idx]" v-model="info.agencyTypeCode" v-bind:value="agency.name" v-on:change="onclickAgency();"><label v-bind:for="['rdo' + idx]"><span></span>{{agency.desc}}</label>
+                            <input type="radio" v-bind:id="['rdo' + idx]" v-bind:ref="['rdo' + idx]" v-model="info.agencyTypeCode" v-bind:value="agency.name" v-on:change="onclickAgency();"><label v-bind:for="['rdo' + idx]"><span></span>{{agency.desc}}</label>
                             </span>
                         </li>
                     </ul>
@@ -66,14 +73,14 @@
                         </li>
                         <li>
                             <span class="join-input-group mr-40">
-                                <span class="join-txt-caution-pw" v-text="message3">10~15자 이내의 영문,숫자,특수문자를 조합하여 입력해주세요</span>
+                                <span class="join-txt-caution-pw" v-text="message3"></span>
                                 <label>비밀번호<span>*</span></label>
-                                <input type="password" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();" placeholder="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다." maxlength="15" autocomplete="off"/>
+                                <input type="password" ref="password1" v-model="info.password1" v-on:blur="onblurPassChk1();" placeholder="10~15자 이내의 영문,숫자를 조합하여 입력해주세요" maxlength="15" autocomplete="off"/>
                             </span>
                             <span class="join-input-group">
                                <span class="join-txt-caution-pw" v-text="message4"></span>
                                 <label >비밀번호 확인<span>*</span></label>
-                                <input type="password" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();" maxlength="15" autocomplete="off"/>
+                                <input type="password" ref="password2" v-model="info.password2" v-on:blur="onblurPassChk2();" placeholder="비밀번호를 다시 입력해주세요." maxlength="15" autocomplete="off"/>
                             </span>
                         </li>
                     </ul>
@@ -91,7 +98,7 @@
                             <span class="join-input-group">
                                 <label>질병명<span>*</span></label>
                                 <div class="custom-select">
-                                    <select ref="diseaseCode" data-value="" v-model="info.diseaseCode">
+                                    <select ref="diseaseCode" v-model="info.diseaseCode" onchange="fnchk();">
                                     <option value="">선택</option>
                                     <option v-for="(item, idx) in info.diseaseList"  v-bind:value="item.name">{{item.desc}}</option>
                                     </select>

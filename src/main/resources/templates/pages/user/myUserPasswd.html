@@ -5,86 +5,57 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layouts/mypageLayout">
 
-<th:block layout:fragment="css">
+    <th:block layout:fragment="css">
+        <style>
+            input:focus{
+                box-shadow: 0 0 5px #a1a1a1;
+                border: 1px solid #7F7F7F;
+            }
 
-    <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-    <link rel="stylesheet" th:href="@{/css/common/reset.css}" />
-    <link rel="stylesheet" th:href="@{/css/common/board.css}" />
-    <style>
-        input:focus{
-            box-shadow: 0 0 5px #a1a1a1;
-            border: 1px solid #7F7F7F;
-        }
+        </style>
+    </th:block>
 
-    </style>
-</th:block>
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/user/myUserPasswd.js}"></script>
+        <script>
+            const userSeq="[[${#authentication.principal.id}]]";
+        </script>
 
-<th:block layout:fragment="script">
-    <script th:src="@{/js/common/common.js}"></script>
-    <script th:src="@{/js/user/myUserPasswd.js}"></script>
-    <script>
-        const userSeq="[[${#authentication.principal.id}]]";
-    </script>
-
-</th:block>
-
-<div layout:fragment="contents" id="container">
-    <div id="maincontentswrap" >
-        <maincontents ref="maincontents"></maincontents>
-    </div>
-
-    <script type="text/x-template" id="main-template" >
-        <div class="contents_wrap sub">
-
-            <div class="sub_tit">
-                <h3>비밀번호변경</h3>
-                <ul class="location">
-                    <li><a>비밀번호변경</a></li>
-                    <li><a>마이페이지 > </a></li>
-                </ul>
-            </div>
-
-            <div>
+    </th:block>
 
 
-            </div>
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap">
+            <maincontents ref="maincontents"></maincontents>
+        </div>
 
-            <div class="app_info">
-                <table class="infoT" style="width:30%;">
-                    <colgroup>
-                        <col width="40%">
-                        <col width="*">
-                    </colgroup>
-                    <tbody>
-                    <tr>
-                        <th>현재비밀번호</th>
-                        <td>
-                            <input type="password" ref="inputOldPw" v-model="info.inputOldPw" maxlength="15" style="width:90%;" autocomplete="off" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>새로운비밀번호</th>
-                        <td><input type="password" ref="password1" v-model="password1" maxlength="15" style="width:90%;" autocomplete="off" v-on:blur="onblurPassChk1();"/></td>
-                    </tr>
-                    <tr>
-                        <th>새로운비밀번호확인</th>
-                        <td><input type="password" ref="password2" v-model="password2" maxlength="15" style="width:90%;" autocomplete="off" v-on:blur="onblurPassChk2();"/></td>
-                    </tr>
+        <script type="text/x-template" id="main-template" >
+            <div class="content">
+                <div class="mypage-content mt-60">
+                    <h3>비밀번호 변경</h3>
+                    <div class="login-wrap mt-20">
+                            <div class="login-input-group">
+                                <label >현재 비밀번호</label>
+                                <input type="password" ref="inputOldPw" v-model="info.inputOldPw" maxlength="15" autocomplete="off"  placeholder="현재 비밀번호를 입력해주세요"/>
+                            </div>
+                            <div class="login-input-group">
+                                <span class="text-alert" v-text="message1"></span>
+                                <label >새로운 비밀번호</label>
+                                <input type="password" ref="password1" v-model="password1" maxlength="15" autocomplete="off" placeholder="새로운 비밀번호를 입력해주세요(10~15자 이내의 영문,숫자,특수문자를 조합)" v-on:blur="onblurPassChk1();"/>
+                            </div>
+                            <div class="login-input-group">
+                                <span class="text-alert" v-text="message2"></span>
+                                <label>새로운 비밀번호 확인</label>
+                                <input type="password" ref="password2" v-model="password2" maxlength="15" autocomplete="off" placeholder="새로운 비밀번호를 다시 입력해주세요" v-on:blur="onblurPassChk2();"/>
+                            </div>
 
-                    </tbody>
-                </table>
-                <div style="width: 100%;text-align: center;padding-top:10px;">
-                    <span style="width:30%;color:#ff810e;font-weight: 700;" v-text="messages"></span>
+                            <a href="javascript:void(0);" class="com-btn mt-40" v-on:click="onclickSave();">수정</a>
+                            <a href="javascript:void(0);" class="com-btn btn-line-bl mt-20" v-on:click="onclickBack();">이전</a>
+                    </div>
                 </div>
             </div>
+        </script>
 
-            <div class="btn_btm_div">
-                <a href="javascript:void(0);"><span class="btn btn_gray" v-on:click="onclickBack()">이전</span></a>
-                <a href="javascript:void(0);"><span class="btn btn_mint" v-on:click="onclickSave();">수정</span></a>
-            </div>
-    </script>
-
-    <script>
-    </script>
-</div>
+    </div>
 </html>

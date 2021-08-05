@@ -38,6 +38,8 @@ Vue.component('popupagencycontents', {
             },
             messages: "",
             alertMsg: "",
+            focusId:"",
+            confirmMsg:"",
         };
     },
     mounted: function () {
@@ -101,10 +103,6 @@ Vue.component('popupagencycontents', {
             callbackPopupAgency(agency);
             fnClosePopup('agencyModal');
         },
-        alertClose : function(){
-            this.alertMsg="";
-            fnClosePopup('alertMsgModal');
-        }
 
     }
 });

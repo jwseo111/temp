@@ -20,7 +20,7 @@ window.addEventListener('load', function() {
 });
 
 function get(tid, uri, params, callback){
-    
+
     axios.get(uri, {
         params:params
     })
@@ -116,7 +116,7 @@ function regExp(id, str){
     }else if(id === "PASS2"){
 
         if(!pass2Exp.test(str) && str !== ""){
-            rtnMsg ="10~15자 영문, 숫자 각 1회 이상 입력 가능합니다.";
+            rtnMsg ="10~15자 이내의 영문,숫자를 조합하여 입력해주세요";
         }
     }
 
@@ -137,6 +137,7 @@ function isNull(val){
 // value - 항목의 값, title - 항목의 필드명, ref - ref or id  항목으로 focus, msg - 체크 메세지, type - S : radio,selectbox
 //ex) let param =[  {value:this.info.agencyTypeCode, title:"회원구분", ref:this.$refs.agencyTypeCode, type:"S", msg:""},]
 //    if(!isValid(param)) return false;
+
 function isValid(item){
     for(let i=0;i < item.length;i++){
         let type = item[i].type;
@@ -153,9 +154,11 @@ function isValid(item){
         }
 
         if(isNull(item[i].value)){
-            alertMsg(msg);
+
             if(!isNull(item[i].ref)){
-                item[i].ref.focus();
+                alertMsg(msg, item[i].ref);
+            }else{
+                alertMsg(msg);
             }
             return false;
         }
@@ -210,10 +213,50 @@ function fnClosePopup(id){
     document.documentElement.style.overflowY = 'auto';
 }
 
-// 알림 메세지 (layer )
-function alertMsg(msg){
+// 알림 메세지 (layer, id )
+let FOCUS_ID;
+function alertMsg(msg, targetId){
+
     appPop1.$refs.popupagencycontents.$data.alertMsg=msg;
+    if(!isNull(targetId)){
+        FOCUS_ID = targetId;
+    }
     fnOpenPopup('alertMsgModal');
+}
+// 알림 메세지 Close
+function alertMsgClose(){
+
+    fnClosePopup('alertMsgModal');
+    if(!isNull(FOCUS_ID)){
+        FOCUS_ID.focus();
+    }
+    appPop1.$refs.popupagencycontents.$data.alertMsg="";
+    FOCUS_ID="";
+}
+
+// 확인 메세지 (msg, function(){})
+let FUNC_NAME;
+function confirmMsg(msg, func){
+
+    appPop1.$refs.popupagencycontents.$data.confirmMsg=msg;
+    const btnOk = document.querySelector("#btnConfirmOk");
+    if(!isNull(func) && typeof(func) == 'function' ) {
+        FUNC_NAME=function(){
+                    func();
+                confirmMsgClose();
+        };
+        btnOk.addEventListener("click", FUNC_NAME);
+
+    }
+    fnOpenPopup('confirmModal');
+}
+
+// 확인 메세지 Close
+function confirmMsgClose(){
+    appPop1.$refs.popupagencycontents.$data.confirmMsg="";
+    fnClosePopup('confirmModal');
+    const btnOk = document.querySelector("#btnConfirmOk");
+    btnOk.removeEventListener("click", FUNC_NAME);
 }
 
 

@@ -65,10 +65,24 @@
                     <p>{{alertMsg}}</p>
                 </div>
                 <div class="btn-box mt-20">
-                    <a href="#" class="com-btn btn-line-bl" @click="alertClose()">닫기</a>
+                    <a href="#" class="com-btn btn-line-bl" @click="alertMsgClose()">닫기</a>
                 </div>
             </div>
         </div>
+
+            <div id="confirmModal" class="common-popup">
+                <div class="common-popup-content">
+                    <h3>확인</h3>
+                    <hr>
+                    <div class="alert-box">
+                        <p>{{confirmMsg}}</p>
+                    </div>
+                    <div class="btn-box mt-20 a-c">
+                        <a href="#" class="com-btn btn-w-208" id="btnConfirmOk">확인</a>
+                        <a href="#" class="com-btn btn-w-208 btn-line-bl ml-10" @click="confirmMsgClose()">취소</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </script>
 </div>

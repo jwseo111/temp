@@ -25,7 +25,8 @@ Vue.component('maincontents', {
                 page: 0,
                 size: 5,
                 dataName: "",
-                reqStorageStatCode: reqStorageStatCode,
+                //reqStorageStatCode: reqStorageStatCode,
+                reqStorageStatCode: "",
                 sort: ""
             },
             reqStorageList: [],
@@ -36,17 +37,18 @@ Vue.component('maincontents', {
                 last : 1,
                 prev : 1,
                 next : 1,
-                pages: [1]
+                pages: [1],
+                total: 1
             },
             messages : "",
-            reqStoreStatCd : "", // 선택된 콤보박스
+            //reqStoreStatCd : "", // 선택된 콤보박스
             reqStoreStatCdList : getCodeList('ReqStorageStat',this.callback), // 콤보박스 리스트
-            isYn : getCodeList('IsYn',this.callback)
 
         };
     },
     mounted:function(){
         this.getReqStorageList();
+
     },
     methods:{
         onKeyup:function (e){
@@ -56,7 +58,7 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.reqStorageStatCode = this.reqStoreStatCd;
+            this.cond.reqStorageStatCode = this.$refs.reqStoreStatCd.value;//처리상태
             this.getReqStorageList();
         },
         // 목록 > 신청 클릭(화면 이동)
@@ -76,24 +78,24 @@ Vue.component('maincontents', {
                     this.searchCallback(results);
                     break;
                 case "ReqStorageStat":
-                    console.log(results.response);
+                    //console.log(results.response);
                     this.reqStoreStatCdList = results.response;
+                    setTimeout(function() {
+                        loadSelect();
+                    },1000);
                     break;
-                case "IsYn":
-                    console.log(results.response);
-                    this.isYn = results.response;
-                    break;
+
                 case "usrInfo":
                     if (results.success) {
                         let userRole = results.response.userRole;
                         if (userRole === "MANAGER") { // 병원-질병책임자
                             location.href = "/lndata/store/req";
                         } else { // USER(기업), UPLOADER(병원-업로더), ADMIN(관리자)
-                            alert("병원 소속 질병책임자만 신청이 가능합니다.");
+                            alertMsg("병원 소속 질병책임자만 신청이 가능합니다.");
                             return;
                         }
                     } else {
-                        console.log(results);
+                        //console.log(results);
                         if(confirm("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?")){
                             location.href = "/login";
                         } else {
@@ -130,6 +132,7 @@ Vue.component('maincontents', {
             this.last = last;
             this.prev = prev;
             this.next = next;
+            this.total = Math.ceil(total / pageable.size);
 
             this.pageInfo.pages = new Array();
             for (let i=first; i<=last; i++){
@@ -137,8 +140,15 @@ Vue.component('maincontents', {
             }
         },
         onclickPage : function (page){
-            this.cond.page = page - 1;
-            this.getReqStorageList();
+
+            if(page === this.curr){
+
+            } else {
+
+                this.cond.page = page - 1;
+                this.pageInfo.curr = page;
+                this.getReqStorageList();
+            }
         },
     }
 });

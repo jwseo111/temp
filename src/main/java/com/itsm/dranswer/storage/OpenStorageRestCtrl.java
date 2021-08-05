@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+
 import static com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import static com.itsm.dranswer.utils.ApiUtils.success;
 
@@ -150,7 +153,7 @@ public class OpenStorageRestCtrl {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/storage/open/approve/{openStorageId:.+(?<!\\.js)$}")
     public ApiResult<OpenStorageInfoDto> approveOpenStorage(
-            @PathVariable String openStorageId){
+            @PathVariable String openStorageId) throws MessagingException, IOException {
 
         OpenStorageInfoDto OpenStorageInfoDto =
                 storageService.approveOpenStorageInfo(openStorageId);
@@ -174,7 +177,7 @@ public class OpenStorageRestCtrl {
     @PostMapping(value = "/management/storage/open/reject/{openStorageId:.+(?<!\\.js)$}")
     public ApiResult<OpenStorageInfoDto> rejectOpenStorage(
             @PathVariable String openStorageId,
-            @RequestBody OpenStorageInfoDto openStorageInfoDto){
+            @RequestBody OpenStorageInfoDto openStorageInfoDto) throws MessagingException, IOException {
 
         OpenStorageInfoDto OpenStorageInfoDto =
                 storageService.rejectOpenStorageInfo(openStorageId, openStorageInfoDto);

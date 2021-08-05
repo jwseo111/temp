@@ -11,6 +11,7 @@ package com.itsm.dranswer.storage;
 
 
 import com.itsm.dranswer.commons.Disease;
+import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.etc.FileUploadResponse;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,6 +51,8 @@ public class StorageService {
 
     private final BucketInfoRepo bucketInfoRepo;
 
+    private final CustomMailSender customMailSender;
+
     @Value("${ncp.laif.end-point}")
     private String endPoint;
     @Value("${ncp.laif.region-name}")
@@ -59,7 +63,7 @@ public class StorageService {
     private String laifSecretKey;
 
     @Autowired
-    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, OpenStorageInfoRepoSupport openStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo) {
+    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, OpenStorageInfoRepoSupport openStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo, CustomMailSender customMailSender) {
         this.userService = userService;
         this.reqStorageInfoRepo = reqStorageInfoRepo;
         this.openStorageInfoRepo = openStorageInfoRepo;
@@ -67,6 +71,7 @@ public class StorageService {
         this.openStorageInfoRepoSupport = openStorageInfoRepoSupport;
         this.customObjectStorage = customObjectStorage;
         this.bucketInfoRepo = bucketInfoRepo;
+        this.customMailSender = customMailSender;
     }
 
     /**
@@ -235,7 +240,7 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId, BucketInfoDto bucketInfoDto) {
+    public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId, BucketInfoDto bucketInfoDto) throws MessagingException, IOException {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         UserInfo managerInfo = reqStorageInfo.getDiseaseManagerUserInfo();
@@ -244,6 +249,13 @@ public class StorageService {
         setBucketACL(bucketInfo.getBucketName(), managerInfo.getNCloudObjStorageId());
 
         reqStorageInfo.approve(bucketInfo);
+
+        String email = managerInfo.getUserEmail();
+        String mailsubject = "[닥터앤서]저장신청 승인 안내";
+        String title = "저장신청";
+        String userName = managerInfo.getUserName();
+        String subject = "저장신청";
+        customMailSender.sendAcceptMail(email, mailsubject, title, userName, subject);
 
         return reqStorageInfo.convertDto();
     }
@@ -270,9 +282,18 @@ public class StorageService {
         return reqStorageInfo.convertDto();
     }
 
-    public ReqStorageInfoDto rejectReqStorageInfo(String reqStorageId, ReqStorageInfoDto reqStorageInfoDto) {
+    public ReqStorageInfoDto rejectReqStorageInfo(String reqStorageId, ReqStorageInfoDto reqStorageInfoDto) throws MessagingException, IOException {
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         reqStorageInfo.reject(reqStorageInfoDto.getRejectReason());
+
+        UserInfo userInfo = reqStorageInfo.getDiseaseManagerUserInfo();
+        String email = userInfo.getUserEmail();
+        String mailsubject = "[닥터앤서]저장신청 거절 안내";
+        String title = "저장신청";
+        String userName = userInfo.getUserName();
+        String subject = "저장신청";
+        String reject = reqStorageInfo.getRejectReason();
+        customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
 
         return reqStorageInfo.convertDto();
     }
@@ -332,7 +353,7 @@ public class StorageService {
         return openStorageInfo.convertDto();
     }
 
-    public OpenStorageInfoDto approveOpenStorageInfo(String openStorageId) {
+    public OpenStorageInfoDto approveOpenStorageInfo(String openStorageId) throws MessagingException, IOException {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         openStorageInfo.approve();
 
@@ -340,12 +361,54 @@ public class StorageService {
             // bucket 권한 차단
         }
 
+        if(openStorageInfo.isApproved()){
+            UserInfo userInfo = openStorageInfo.getDiseaseManagerUserInfo();
+            String email = userInfo.getUserEmail();
+            String mailsubject = "[닥터앤서]공개신청 승인 안내";
+            String title = "공개신청";
+            String userName = userInfo.getUserName();
+            String subject = "공개신청";
+            customMailSender.sendAcceptMail(email, mailsubject, title, userName, subject);
+        }
+
+        if(openStorageInfo.isCanceled()){
+            UserInfo userInfo = openStorageInfo.getDiseaseManagerUserInfo();
+            String email = userInfo.getUserEmail();
+            String mailsubject = "[닥터앤서]공개취소신청 승인 안내";
+            String title = "공개취소신청";
+            String userName = userInfo.getUserName();
+            String subject = "공개취소신청";
+            customMailSender.sendAcceptMail(email, mailsubject, title, userName, subject);
+        }
+
         return openStorageInfo.convertDto();
     }
 
-    public OpenStorageInfoDto rejectOpenStorageInfo(String openStorageId, OpenStorageInfoDto openStorageInfoDto) {
+    public OpenStorageInfoDto rejectOpenStorageInfo(String openStorageId, OpenStorageInfoDto openStorageInfoDto) throws MessagingException, IOException {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         openStorageInfo.reject(openStorageInfoDto.getRejectReason());
+
+        if(openStorageInfo.isRejected()){
+            UserInfo userInfo = openStorageInfo.getDiseaseManagerUserInfo();
+            String email = userInfo.getUserEmail();
+            String mailsubject = "[닥터앤서]공개신청 거절 안내";
+            String title = "공개신청";
+            String userName = userInfo.getUserName();
+            String subject = "공개신청";
+            String reject = openStorageInfo.getRejectReason();
+            customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
+        }
+
+        if(openStorageInfo.isCancelRejected()){
+            UserInfo userInfo = openStorageInfo.getDiseaseManagerUserInfo();
+            String email = userInfo.getUserEmail();
+            String mailsubject = "[닥터앤서]공개취소신청 거절 안내";
+            String title = "공개취소신청";
+            String userName = userInfo.getUserName();
+            String subject = "공개취소신청";
+            String reject = openStorageInfo.getRejectReason();
+            customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
+        }
 
         return openStorageInfo.convertDto();
     }

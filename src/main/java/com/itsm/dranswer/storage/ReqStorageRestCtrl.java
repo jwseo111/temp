@@ -19,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 import static com.itsm.dranswer.utils.ApiUtils.ApiResult;
@@ -191,7 +193,7 @@ public class ReqStorageRestCtrl {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/storage/req/approve/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> approveReqStorage(
-            @PathVariable String reqStorageId, @RequestBody BucketInfoDto bucketInfoDto){
+            @PathVariable String reqStorageId, @RequestBody BucketInfoDto bucketInfoDto) throws MessagingException, IOException {
 
         return success(storageService.approveReqStorageInfo(reqStorageId, bucketInfoDto));
     }
@@ -231,7 +233,7 @@ public class ReqStorageRestCtrl {
     @PostMapping(value = "/management/storage/req/reject/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> rejectReqStorage(
             @PathVariable String reqStorageId,
-            @RequestBody ReqStorageInfoDto reqStorageInfoDto){
+            @RequestBody ReqStorageInfoDto reqStorageInfoDto) throws MessagingException, IOException {
 
         return success(storageService.rejectReqStorageInfo(reqStorageId, reqStorageInfoDto));
     }

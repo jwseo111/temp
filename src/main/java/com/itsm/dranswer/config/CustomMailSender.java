@@ -36,4 +36,30 @@ public class CustomMailSender {
 
         javaMailSender.send(message);
     }
+
+    public void sendAcceptMail(String email, String mailsubject, String title, String userName, String subject) throws MessagingException, IOException {
+        String template = "mail/accept";
+//        String mailsubject = "[닥터앤서]이메일 인증을 위한 인증번호가 발급되었습니다.";
+        String[] to = {email};
+        Context ctx = new Context();
+        ctx.setVariable("title", title);
+        ctx.setVariable("userName", userName);
+        ctx.setVariable("subject", subject);
+
+        this.sendMail(template, mailsubject, to, ctx);
+    }
+
+    public void sendRejectMail(String email, String mailsubject, String title, String userName, String subject, String reject) throws MessagingException, IOException {
+        String template = "mail/accept";
+//        String mailsubject = "[닥터앤서]이메일 인증을 위한 인증번호가 발급되었습니다.";
+        String[] to = {email};
+        Context ctx = new Context();
+        ctx.setVariable("title", title);
+        ctx.setVariable("userName", userName);
+        ctx.setVariable("subject", subject);
+        ctx.setVariable("reject", reject);
+
+        this.sendMail(template, mailsubject, to, ctx);
+
+    }
 }

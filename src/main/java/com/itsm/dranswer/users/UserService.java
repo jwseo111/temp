@@ -13,7 +13,6 @@ import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -134,6 +133,17 @@ public class UserService {
     public void sendCertMail(CertDto certDto) throws MessagingException, IOException {
 
         String template = "mail/cert";
+        String subject = "[닥터앤서]이메일 인증을 위한 인증번호가 발급되었습니다.";
+        String[] to = {certDto.getUserEmail()};
+        Context ctx = new Context();
+        ctx.setVariable("certNumber", certDto.getCertNumber());
+
+
+        customMailSender.sendMail(template, subject, to, ctx);
+    }
+    public void sendCertMailForFindPw(CertDto certDto) throws MessagingException, IOException {
+
+        String template = "mail/pwdCert";
         String subject = "[닥터앤서]이메일 인증을 위한 인증번호가 발급되었습니다.";
         String[] to = {certDto.getUserEmail()};
         Context ctx = new Context();
@@ -299,7 +309,7 @@ public class UserService {
 
     public void sendAcceptMail(UserInfo userInfo) {
 
-        String template = "mail/accept";
+        String template = "mail/joinAccept";
         String subject = "[닥터앤서]가입이 승인 되었습니다.";
         String[] to = {userInfo.getUserEmail()};
         Context ctx = new Context();
@@ -372,7 +382,7 @@ public class UserService {
     public void checkMailAndSendCertMailForFindPw(CertDto certDto) throws MessagingException, IOException {
 
         findByEmailAndCheck(certDto.getUserEmail());
-        sendCertMail(certDto);
+        sendCertMailForFindPw(certDto);
 
     }
 

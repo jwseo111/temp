@@ -7,12 +7,6 @@
 
 <th:block layout:fragment="css">
 
-    <style>
-        input:focus{
-            box-shadow: 0 0 5px #a1a1a1;
-            border: 1px solid #7F7F7F;
-        }
-    </style>
 </th:block>
 
 
@@ -98,7 +92,7 @@
                             <span class="join-input-group">
                                 <label>질병명<span>*</span></label>
                                 <div class="custom-select">
-                                    <select ref="diseaseCode" v-model="info.diseaseCode">
+                                    <select id="diseaseCode" ref="diseaseCode" v-model="info.diseaseCode">
                                     <option value="">선택</option>
                                     <option v-for="(item, idx) in info.diseaseList"  v-bind:value="item.name">{{item.desc}}</option>
                                     </select>

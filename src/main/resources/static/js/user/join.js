@@ -244,7 +244,12 @@ Vue.component('maincontents', {
         },
         isFormValid : function(){
             // 질병명
-            this.info.diseaseCode=this.$refs.diseaseCode.value;
+            let code = document.querySelector("#diseaseCode").getAttribute("data-value");
+
+            this.info.diseaseCode=code;
+            console.log(this.info.diseaseCode + " / " + code);
+
+
             let param =[
                 {value:this.info.agencyTypeCode, title:"회원구분", ref:document.getElementById("rdo0"), type:"S", msg:""},
                 {value:this.info.userEmail, title:"이메일", ref:this.$refs.userEmail},
@@ -271,13 +276,14 @@ Vue.component('maincontents', {
             }
 
             param =[
-                {value:this.info.agencyName, title:"비밀번호", ref:this.$refs.popupAgency, msg:"기관팝업을 클릭하여 기관명을 선택해주세요."},
+                {value:this.info.agencyName, title:"기관명", ref:this.$refs.popupAgency, msg:"기관팝업을 클릭하여 기관명을 선택해주세요."},
                 {value:this.info.diseaseCode, title:"질병명", ref:this.$refs.diseaseCode, type:"S"},
                 {value:this.info.userName, title:"담당자이름", ref:this.$refs.userName},
                 {value:this.info.userPhoneNumber, title:"담당자휴대전화", ref:this.$refs.userPhoneNumber, type:"I"},
             ];
 
             if(!isValid(param)) return false;
+
 
             if(this.info.agencyTypeCode !=="COMP" && isNull(this.info.diseaseManagerYn)){
                 alertMsg("질병책임자여부를 선택해주세요.", this.$refs.diseaseManagerY);

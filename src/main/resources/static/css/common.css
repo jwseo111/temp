@@ -106,7 +106,7 @@ a.btn-s{width:84px;font-size:1.4rem;font-weight:400;letter-spacing:0}
 
 /* pagination */
 .pagination{text-align:center}
-.pagination a {position: relative;display:inline-block;width:48px;height:48px;margin:0 8px;border:1px solid #dbdbdb;line-height:2.8;font-size:1.8rem;text-align:center;color:#666;vertical-align:middle;font-family:'PoppinsLight';transition:0.1s}
+.pagination a {position: relative;display:inline-block;width:48px;height:48px;margin:0 8px;border:1px solid #dbdbdb;line-height:2.4;font-size:1.8rem;text-align:center;color:#666;vertical-align:middle;font-family:'PoppinsLight';transition:0.1s}
 .pagination a > span{display: inline-block;position:absolute;width:12px;height:12px;border-top: 1px solid #000;border-right: 1px solid #000;}
 .pagination a > span.next{top:13px;left:13px;transform-origin: 100% 50%;transform: rotate(-135deg); }
 .pagination a > span.prev{top:16px;left:9px;transform-origin: 50% 100%;transform: rotate(45deg); }
@@ -348,7 +348,7 @@ a.btn-hosp-search{width:124px;height:56px;font-family:'Roboto';font-size:1.4rem;
 .main-section1-wrapper{width:100%;height:507px}
 .main-section2-wrapper{position:relative;width:100%;height:280px;background-color:#05a7b2}
 .bg-half{position:absolute;top:0;right:0;width:calc(50% + 20px );height:280px;background-color:#103260;}
-.main-section3-wrapper{width:100%;height:778px;background-color:#f4f4f4}
+.main-section3-wrapper{width:100%;height:658px;background-color:#f4f4f4}
 .main-section1,.main-section2,.main-section3{position:relative;margin:0 auto;padding:0 40px;width:1280px;} 
 .main-section2{height:280px;background:url(../images/bg_section2.jpg) top center no-repeat;}
 .section1-l-box{float:left;width:580px;height:280px;padding-top:60px}
@@ -415,7 +415,7 @@ a.btn-join{margin-top:50px;background:#fff;border:1px solid #13a1af;color:#13a1a
 .join-step .step1{position: absolute;top: 30px;left: 30px;width:200px;height:64px;vertical-align:middle}
 .join-step .step2{position: absolute;top: 30px;left: 485px;width:200px;height:64px;vertical-align:middle}
 .join-step .step3{position: absolute;top: 30px;right: 0;width:200px;height:64px;vertical-align:middle}
-.join-step span{display:inline-block;margin-right:20px;width:64px;height:64px;background:#f4f7f7;border-radius:50%;font-size:2.2rem;color:#999;font-weight:900;line-height:7rem;text-align:center;vertical-align:middle}
+.join-step span{display:inline-block;margin-right:20px;width:64px;height:64px;background:#f4f7f7;border-radius:50%;font-size:2.2rem;color:#999;font-weight:900;line-height:6rem;text-align:center;vertical-align:middle}
 .join-step .active{color:#000}
 .join-step .active span{background:#000;color:#fff}
 .term-iframe{width:100%;height:302px;overflow:auto;margin:20px 0 0 0;padding:0;border-top:3px solid #222;}

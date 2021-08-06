@@ -91,7 +91,7 @@
                             <a href="javascript:void(0);" class="com-btn btn-s btn-w-208" v-show="info.parentYn" @click="onclickChgManage();">질병책임자 변경</a>
                         </span>
                     </li>
-                    <li>
+                    <li v-if="info.userRole !=='ADMIN' && info.agencyTypeCode === 'COMP' || this.info.diseaseManagerYn === 'Y'">
                         <span class="join-input-group mr-40">
                             <label>NBP 아이디</label>
                             <input type="text" ref="nCloudId" v-model="info.nCloudId" maxlength="50"/>
@@ -101,7 +101,7 @@
                             <input type="text" ref="nCloudObjStorageId" v-model="info.nCloudObjStorageId" maxlength="50"/>
                         </span>
                     </li>
-                    <li>
+                    <li v-if="info.userRole !=='ADMIN' && info.agencyTypeCode === 'COMP' || this.info.diseaseManagerYn === 'Y'">
                         <span class="join-input-group mr-40">
                             <label>NBP 액세스키</label>
                             <input type="text" ref="nCloudAccessKey" v-model="info.nCloudAccessKey" maxlength="50"/>

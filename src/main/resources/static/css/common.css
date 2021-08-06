@@ -36,7 +36,7 @@ fieldset {margin:0; padding:0; border:0;}
 legend {overflow:hidden; width:0; height:0; font-size:1px; line-height:0.1; text-indent:-9999px;}
 
 /* label */
-label {display:inline-block; vertical-align:middle; cursor:pointer;}
+label {display:inline-block; vertical-align:middle;}
 
 button {margin:0; padding:0; border:0; outline:0; cursor:pointer; background-color:transparent;}
 

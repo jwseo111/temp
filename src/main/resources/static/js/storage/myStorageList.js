@@ -83,7 +83,7 @@ Vue.component('maincontents', {
                     this.reqStoreStatCdList = results.response;
                     setTimeout(function() {
                         loadSelect();
-                    },1000);
+                    },300);
                     break;
                 case "IsYn":
                     //console.log(results.response);

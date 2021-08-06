@@ -161,16 +161,23 @@ Vue.component('maincontents', {
         getUserInfoCallback : function(results){
 
             const item = results.response;
-            this.info.agencyName = item.agencyInfo.agencyName;
-            this.info.agencyTypeCode = item.agencyInfo.agencyTypeCode.name;
-            this.info.agencyTypeName = item.agencyInfo.agencyTypeCode.desc;
-            this.info.blNumber = item.agencyInfo.blNumber;
-            this.info.ceoName = item.agencyInfo.ceoName;
-            this.info.diseaseCode = item.diseaseCode.name;
-            this.info.diseaseName = item.diseaseCode.desc;
+            if(!isNull(item.agencyInfo)) {
+                this.info.agencyName = item.agencyInfo.agencyName;
+                this.info.agencyTypeCode = item.agencyInfo.agencyTypeCode.name;
+                this.info.agencyTypeName = item.agencyInfo.agencyTypeCode.desc;
+                this.info.blNumber = item.agencyInfo.blNumber;
+                this.info.ceoName = item.agencyInfo.ceoName;
+            }
+
+            if(!isNull(item.diseaseCode)) {
+                this.info.diseaseCode = item.diseaseCode.name;
+                this.info.diseaseName = item.diseaseCode.desc;
+            }
             this.info.diseaseManagerYn = item.diseaseManagerYn;
-            this.info.joinStatCode = item.joinStatCode.name;
-            this.info.joinStatName = item.joinStatCode.desc;
+            if(!isNull(item.joinStatCode)) {
+                this.info.joinStatCode = item.joinStatCode.name;
+                this.info.joinStatName = item.joinStatCode.desc;
+            }
             this.info.nCloudId = item.nCloudId;
             this.info.nCloudObjStorageId = item.nCloudObjStorageId;
             this.info.nCloudAccessKey = item.nCloudAccessKey;

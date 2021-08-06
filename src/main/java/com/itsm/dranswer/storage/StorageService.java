@@ -124,9 +124,15 @@ public class StorageService {
     public Page<ReqStorageInfoDto> getReqStorageList(ReqStorageStat reqStorageStatCode,
                                                      String dataName, Disease diseaseCode,
                                                      String agencyName, Long userSeq, Pageable pageable) {
-        UserInfoDto userInfoDto = userService.getOriginUser(userSeq);
 
-        return reqStorageInfoRepoSupport.searchAll(reqStorageStatCode, dataName, diseaseCode, agencyName, userInfoDto.getUserSeq(), pageable);
+        Long inqUserSeq = null;
+
+        if(userSeq != null){
+            UserInfoDto userInfoDto = userService.getOriginUser(userSeq);
+            inqUserSeq = userInfoDto.getUserSeq();
+        }
+
+        return reqStorageInfoRepoSupport.searchAll(reqStorageStatCode, dataName, diseaseCode, agencyName, inqUserSeq, pageable);
     }
 
     /**
@@ -338,9 +344,15 @@ public class StorageService {
     }
 
     public Page<OpenStorageInfoDto> getOpenStorageList(OpenStorageStat openStorageStatCode, String dataName, Long userSeq, Pageable pageable) {
-        UserInfoDto userInfoDto = userService.getOriginUser(userSeq);
 
-        return openStorageInfoRepoSupport.searchAll(openStorageStatCode, dataName, userInfoDto.getUserSeq(), pageable);
+        Long inqUserSeq = null;
+
+        if(userSeq != null){
+            UserInfoDto userInfoDto = userService.getOriginUser(userSeq);
+            inqUserSeq = userInfoDto.getUserSeq();
+        }
+
+        return openStorageInfoRepoSupport.searchAll(openStorageStatCode, dataName, inqUserSeq, pageable);
     }
 
     public OpenStorageInfoDto openStorage(OpenStorageInfoDto openStorageInfoDto) {

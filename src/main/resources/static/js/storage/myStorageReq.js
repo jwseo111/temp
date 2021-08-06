@@ -63,33 +63,37 @@ Vue.component('maincontents', {
         // 취소신청버튼 클릭
         onclickCancel: function () {
             let statCd = this.reqStorageInfo.reqStorageStatCode.name;
+            if(statCd == "S_ACC") { // 처리상태가 저장신청승인(S_ACC)이면 취소사유 필수
+                if(!this.saveInfo.deleteReason) {
+                    alertMsg("저장신청승인 상태인 경우, 취소사유는 필수입니다.", this.$refs.deleteReason);
+                    return;
+                }
+                confirmMsg("저장소 데이터가 삭제되고, 공개 대상에서 제외됩니다.\n취소하시겠습니까?", this.cancel);
+            } else {
+                confirmMsg("취소하시겠습니까?", this.cancel);
+            }
+
+        },
+        cancel: function() {
+            let statCd = this.reqStorageInfo.reqStorageStatCode.name;
             let uri = "/my/management/storage/req/cancel/"; // 호출할 uri
 
             if(statCd == "S_ACC") { // 처리상태가 저장신청승인(S_ACC)이면 취소사유 필수
-                if(!this.saveInfo.deleteReason) {
-                    alert("저장신청승인 상태인 경우, 취소사유는 필수입니다.");
-                    return;
-                }
-                if(!confirm("저장소 데이터가 삭제되고, 공개 대상에서 제외됩니다.\n취소하시겠습니까?")) {
-                    return;
-                }
                 uri = "/my/management/storage/req/delete/";
             }
-
+            //console.log("uri : " + uri);
             post(TID.CANCEL,
                 uri + this.reqStorageId,
                 this.saveInfo,
                 this.callback);
-
         },
-
         callback: function (tid, results) {
             switch (tid) {
                 case TID.SEARCH: // 상세조회
                     this.searchCallback(results);
                     break;
                 case "ReqStorageStat":
-                    console.log(results.response);
+                    //console.log(results.response);
                     this.reqStoreStatCdList = results.response;
                     break;
                 case "IsYn":
@@ -102,23 +106,20 @@ Vue.component('maincontents', {
                 case TID.APPROVE: // 승인처리
                     //console.log(results);
                     if (results.success) {
-                        alert("정상적으로 승인처리되었습니다.");
-                        location.href = "/my/store/main"; // 목록으로 이동
+                        alertMsgRtn("정상적으로 승인처리되었습니다.", this.onclickList);
                     } else {
                         console.log(results);
-                        alert("에러 :\n"+results.error.message);
+                        alertMsg("에러 :\n"+results.error.message);
                     }
                     break;
                 case TID.CANCEL: // 취소신청
                     if (results.success) {
-                        alert("정상적으로 취소신청되었습니다.");
-                        location.href = "/my/store/list"; // 목록으로 이동
+                        alertMsgRtn("정상적으로 취소신청되었습니다.", this.onclickList);
                     } else {
                         console.log(results);
-                        alert("에러 :\n"+results.error.message);
+                        alertMsg("에러 :\n"+results.error.message);
                     }
                     break;
-
             }
         },
         searchCallback: function (results) {
@@ -128,7 +129,7 @@ Vue.component('maincontents', {
                 this.reqStorageInfo   = results.response;
             } else {
                 console.log(results);
-                alert("에러 :\n"+results.error.message);
+                alertMsg("에러 :\n"+results.error.message);
             }
         }
     }

@@ -6,8 +6,6 @@
       layout:decorator="layouts/mypageLayout">
 
     <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
     </th:block>
 
     <th:block layout:fragment="script">
@@ -18,119 +16,133 @@
         </script>
     </th:block>
 
-    <div layout:fragment="contents">
+    <div class="mypage-container" layout:fragment="contents">
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
-        <div class="storage-contents-wrap" >
+            <div class="content" >
 
-            <div class="storage-title">마이페이지 > 질환데이터 저장신청 상세정보</div>
-            <div class="storage-title">신청자 정보</div>
-            <div class="storage-content">
-                <table class="result-table-detail">
-                    <tr>
-                        <th>신청자명</th>
-                        <td>{{reqUserInfo.userName}}</td>
-                        <th>병원명</th>
-                        <td>{{reqUserInfo.agencyName}}</td>
-                    </tr>
-                    <tr>
-                        <th>질병주관병원여부</th>
-                        <td>
-                            <lo v-for="radio in isYn">
-                                <input type="radio" v-bind:id="radio.value" v-bind:value="radio.value" disabled v-model="reqUserInfo.diseaseMainYn">
-                                <label v-if="radio.value=='Y'">예</label>
-                                <label v-if="radio.value=='N'">아니오</label>
-                            </lo>
-                        </td>
+                <div class="mypage-content mt-40 mb-40">
+                    <h3>저장 신청 데이터 보기</h3>
+                    <div class="join-cont-box mt-30">
+                        <h4>신청자 정보</h4>
+                        <ul class="com-ul">
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label >신청자명</label>
+                                    <p class="txt-data">{{reqUserInfo.userName}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label >병원명</label>
+                                    <p class="txt-data">{{reqUserInfo.agencyName}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>질병주관병원 여부</label>
+                                    <span class="radio-wrap join-radio">
+                                        <input type="radio" id="radio3_op1" value="1" name="save-op3" v-bind:checked="reqUserInfo.diseaseMainYn === 'Y'" disabled/>
+                                        <label for="radio3_op1"><span></span>예</label>
+                                        <input type="radio" id="radio3_op2" value="2" name="save-op3" v-bind:checked="reqUserInfo.diseaseMainYn === 'N'" disabled/>
+                                        <label for="radio3_op2"><span></span>아니오</label>
+                                    </span>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>관리하는 질병</label>
+                                    <p class="txt-data">{{reqUserInfo.diseaseCode.desc}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>연락처</label>
+                                    <p class="txt-data">{{reqUserInfo.userPhoneNumber}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label >이메일</label>
+                                    <p class="txt-data">{{reqUserInfo.userEmail}}</p>>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="join-input-group ">
+                                    <label >질병 책임자명</label>
+                                    <p class="txt-data">{{reqUserInfo.managerUserName}}</p>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
 
-                        <th>관리하는 질병</th>
-                        <td>{{reqUserInfo.diseaseCode.desc}}</td>
-                    </tr>
-                    <tr>
-                        <th>연락처</th>
-                        <td>{{reqUserInfo.userPhoneNumber}}</td>
-                        <th>이메일</th>
-                        <td>{{reqUserInfo.userEmail}}</td>
-                    </tr>
-                    <tr>
-                        <th>질병책임자명</th>
-                        <td colspan="3">{{reqUserInfo.managerUserName}}</td>
-                    </tr>
-                </table>
+                    <div class="join-cont-box mt-30">
+                        <h4>신청 정보</h4>
+                        <ul class="com-ul">
+                            <li  class=" bdr-b">
+                                <span class="join-input-group w-100">
+                                    <label>저장 데이터명</label>
+                                    <p class="txt-data">{{reqStorageInfo.dataName}}</p>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="join-input-group mr-40">
+                                    <label>신청일자</label>
+                                    <p class="txt-data">{{reqStorageInfo.createdDate}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label >처리상태</label>
+                                    <p class="txt-data">{{reqStorageInfo.reqStorageStatCode.desc}}</p>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="join-cont-box mt-30">
+                        <h4>생성 정보</h4>
+                        <ul class="com-ul">
+                            <li>
+                                <span class="join-input-group w-100">
+                                    <label>저장 요청 아이디</label>
+                                    <p class="txt-data">{{reqStorageInfo.reqStorageId}}</p>
+                                </span>
+                            </li>
+                            <li>
+                                <span v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'" class="join-input-group w-100">
+                                    <label>저장소ID</label>
+                                    <p class="txt-data">{{reqStorageInfo.bucketName}}</p>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="join-cont-box mt-30" v-if="reqStorageInfo.reqStorageStatCode.name != 'S_REQ' && reqStorageInfo.reqStorageStatCode.name != 'S_CCL'">
+                        <h4>취소 정보</h4>
+                        <span class="join-txt-caution">* 승인상태면 필수 입력</span>
+                        <ul class="com-ul">
+                            <li v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC' ||
+                                      reqStorageInfo.reqStorageStatCode.name === 'D_REQ' ||
+                                      reqStorageInfo.reqStorageStatCode.name === 'D_ACC' ||
+                                      reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">
+                                <span class="join-input-group w-100">
+                                    <label>취소사유<span>*</span></label>
+                                    <input v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'" ref="deleteReason" class="w-100" type="text" v-model="saveInfo.deleteReason" placeholder="승인상태이면 필수입력입니다.">
+                                    <input v-else class="w-100" type="text" v-bind:value="reqStorageInfo.deleteReason" readonly>
+                                </span>
+                            </li>
+                            <li v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REJ'">
+                                <span class="join-input-group w-100">
+                                    <label>거절사유</label>
+                                    <input class="w-100" type="text" v-bind:value="reqStorageInfo.rejectReason" readonly>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-box mt-70 a-r">
+                        <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickList">목록</a>
+                        <a href="#" v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' || reqStorageInfo.reqStorageStatCode.name === 'S_ACC'"
+                                    class="com-btn btn-w-332" v-on:click="onclickCancel">취소신청</a>
+                    </div>
+
+                 </div>
             </div>
-
-            <div class="storage-title">신청 정보</div>
-            <div class="storage-content">
-                <table class="result-table-detail">
-                    <tr>
-                        <th>저장데이터명</th>
-                        <td>{{reqStorageInfo.dataName}}</td>
-                    </tr>
-                    <tr>
-                        <th>신청일자</th>
-                        <td>{{reqStorageInfo.createdDate}}</td>
-                    </tr>
-                    <tr>
-                        <th>처리상태</th>
-                        <td>{{reqStorageInfo.reqStorageStatCode.desc}}</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="storage-title">생성 정보</div>
-            <div class="storage-content">
-                <table class="result-table-detail">
-                    <tr>
-                        <th>저장요청ID</th>
-                        <td>{{reqStorageInfo.reqStorageId}}</td>
-                    </tr>
-                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'">
-                        <th>저장소ID</th>
-                        <td>{{reqStorageInfo.bucketName}}</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div  v-if="reqStorageInfo.reqStorageStatCode.name != 'S_REQ' &&
-                        reqStorageInfo.reqStorageStatCode.name != 'S_CCL'">
-            <div class="storage-title" >취소 정보</div>
-            <div class="storage-content">
-                <table class="result-table-detail">
-                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC' ||
-                              reqStorageInfo.reqStorageStatCode.name === 'D_REQ' ||
-                              reqStorageInfo.reqStorageStatCode.name === 'D_ACC' ||
-                              reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">
-                        <th>취소사유</th>
-                        <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'">
-                            <input type="text" v-model="saveInfo.deleteReason" placeholder="승인상태이면 필수입력">
-                        </td>
-                        <td v-else>
-                            {{reqStorageInfo.deleteReason}}
-                        </td>
-                    </tr>
-                    <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REJ'">
-                        <th>거절사유</th>
-                        <td>
-                            {{reqStorageInfo.rejectReason}}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            </div>
-
-            <div class="btn_wrap" align="center">
-                <button v-on:click="onclickList">목록</button>
-                <button v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
-                              reqStorageInfo.reqStorageStatCode.name === 'S_ACC'" v-on:click="onclickCancel">취소신청</button>
-            </div>
-
-        </div>
-        </script>
-
-        <script>
         </script>
     </div>
 </html>

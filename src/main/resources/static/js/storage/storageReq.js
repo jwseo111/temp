@@ -63,7 +63,7 @@ Vue.component('maincontents', {
         // 신청 메소드 호출
         saveReqStorage:function () {
             if(!this.saveInfo.dataName){
-                alertMsg("저장데이터명은 필수입니다.", dataName );
+                alertMsg("저장데이터명은 필수입니다.", this.$refs.dataName );
                 return false;
             }
             this.saveInfo.diseaseManagerUserSeq = this.userInfo.managerUserSeq;

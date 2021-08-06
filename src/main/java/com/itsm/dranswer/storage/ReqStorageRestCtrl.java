@@ -212,7 +212,7 @@ public class ReqStorageRestCtrl {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/storage/req/delete/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> deleteReqStorage(
-            @PathVariable String reqStorageId){
+            @PathVariable String reqStorageId) throws MessagingException, IOException {
 
         return success(storageService.deleteReqStorageInfo(reqStorageId));
     }

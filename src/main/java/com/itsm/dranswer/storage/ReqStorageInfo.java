@@ -103,4 +103,12 @@ public class ReqStorageInfo extends BaseEntity implements Serializable {
         this.rejectReason = rejectReason;
 
     }
+
+    public boolean isRejected(){
+        return this.reqStorageStatCode == ReqStorageStat.S_REJ;
+    }
+
+    public boolean isDeleteRejected(){
+        return this.reqStorageStatCode == ReqStorageStat.D_REJ;
+    }
 }

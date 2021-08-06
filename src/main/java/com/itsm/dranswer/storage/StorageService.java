@@ -271,13 +271,23 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto deleteReqStorageInfo(String reqStorageId) {
+    public ReqStorageInfoDto deleteReqStorageInfo(String reqStorageId) throws MessagingException, IOException {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         reqStorageInfo.delete();
 
         BucketInfo bucketInfo = reqStorageInfo.getBucketInfo();
         deleteBucket(bucketInfo.getBucketName());
+
+        UserInfo userInfo = reqStorageInfo.getDiseaseManagerUserInfo();
+
+        String email = userInfo.getUserEmail();
+        String mailsubject = "[닥터앤서]삭제신청 승인 안내";
+        String title = "삭제신청";
+        String userName = userInfo.getUserName();
+        String subject = reqStorageInfo.getDataName();
+        String reject = reqStorageInfo.getRejectReason();
+        customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
 
         return reqStorageInfo.convertDto();
     }
@@ -287,13 +297,25 @@ public class StorageService {
         reqStorageInfo.reject(reqStorageInfoDto.getRejectReason());
 
         UserInfo userInfo = reqStorageInfo.getDiseaseManagerUserInfo();
-        String email = userInfo.getUserEmail();
-        String mailsubject = "[닥터앤서]저장신청 거절 안내";
-        String title = "저장신청";
-        String userName = userInfo.getUserName();
-        String subject = reqStorageInfo.getDataName();
-        String reject = reqStorageInfo.getRejectReason();
-        customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
+        if(reqStorageInfo.isRejected()){
+            String email = userInfo.getUserEmail();
+            String mailsubject = "[닥터앤서]저장신청 거절 안내";
+            String title = "저장신청";
+            String userName = userInfo.getUserName();
+            String subject = reqStorageInfo.getDataName();
+            String reject = reqStorageInfo.getRejectReason();
+            customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
+        }
+
+        if(reqStorageInfo.isDeleteRejected()){
+            String email = userInfo.getUserEmail();
+            String mailsubject = "[닥터앤서]삭제신청 거절 안내";
+            String title = "삭제신청";
+            String userName = userInfo.getUserName();
+            String subject = reqStorageInfo.getDataName();
+            String reject = reqStorageInfo.getRejectReason();
+            customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
+        }
 
         return reqStorageInfo.convertDto();
     }

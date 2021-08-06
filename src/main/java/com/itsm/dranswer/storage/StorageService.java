@@ -288,8 +288,7 @@ public class StorageService {
         String title = "삭제신청";
         String userName = userInfo.getUserName();
         String subject = reqStorageInfo.getDataName();
-        String reject = reqStorageInfo.getRejectReason();
-        customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
+        customMailSender.sendAcceptMail(email, mailsubject, title, userName, subject);
 
         return reqStorageInfo.convertDto();
     }

@@ -50,7 +50,7 @@ public class CustomMailSender {
     }
 
     public void sendRejectMail(String email, String mailsubject, String title, String userName, String subject, String reject) throws MessagingException, IOException {
-        String template = "mail/accept";
+        String template = "mail/reject";
 //        String mailsubject = "[닥터앤서]이메일 인증을 위한 인증번호가 발급되었습니다.";
         String[] to = {email};
         Context ctx = new Context();

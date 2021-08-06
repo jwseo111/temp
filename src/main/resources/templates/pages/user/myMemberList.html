@@ -27,7 +27,7 @@
                     <div class="list-search-wrap a-r mt-20">
                         <label>Search</label>
                         <div class="custom-select search-select">
-                            <select ref="joinStat" v-model="search.joinStat">
+                            <select id="joinStat" data-value="" v-model="search.joinStat">
                                 <option value="">전체</option>
                                 <option v-for="option in joinStatCode" v-bind:value="option.name">
                                     {{option.desc}}

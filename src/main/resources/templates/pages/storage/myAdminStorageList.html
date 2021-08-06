@@ -67,9 +67,9 @@
                             </tr>
                             </tbody>
                             <tbody v-if="reqStorageList.length > 0">
-                            <tr v-for="(storage, idx) in reqStorageList" v-on:click="onclickReq(storage.reqStorageId)" class="tr-link">
+                            <tr v-for="(storage, idx) in reqStorageList" class="tr-link">
                                 <td>{{storage.diseaseCode.desc}}</td>
-                                <td style="text-align: left;">{{storage.dataName}}</td>
+                                <td><a href="javascript:void(0);" v-on:click="onclickReq(storage.reqStorageId)">{{storage.dataName}}</a></td>
                                 <td>{{storage.agencyInfo.agencyName}}</td>
                                 <td>{{storage.diseaseManagerUserInfo.userName}}</td>
                                 <td>{{storage.reqStorageStatCode.desc}}</td>

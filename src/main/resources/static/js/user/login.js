@@ -236,14 +236,16 @@ Vue.component('maincontents', {
         callbackPassChg : function(results){
 
             if(results.success){
-                alertMsg("새로운 비밀번호로 변경 되었습니다.");
-                location.href="/login";
+                alertMsgRtn("새로운 비밀번호로 변경 되었습니다.", this.saveRtn);
+
             }else{
                 alertMsg(results.error.message);
 
             }
         },
-
+        saveRtn : function(){
+            location.href="/login";
+        },
     }
 });
 

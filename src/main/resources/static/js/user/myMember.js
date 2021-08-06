@@ -110,7 +110,7 @@ Vue.component('maincontents', {
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.list = results.response.content;
             } else {
-                console.log(results);
+                alertMsg(results.error.message);
             }
         },
         makePageNavi: function(pageable, total){
@@ -194,11 +194,13 @@ Vue.component('maincontents', {
         onclickAcceptCallback : function(results){
 
             if (results.success) {
-                alertMsg("정상적으로 승인처리 되었습니다.");
-                location.href=""
+                alertMsgRtn("정상적으로 승인처리 되었습니다.", this.saveRtn);
             } else {
                 alertMsg(results.error.message);
             }
+        },
+        saveRtn : function(){
+            location.href="my/admin/memberList?menuId=0";
         },
         onclickBack : function(){
             history.back();

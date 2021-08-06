@@ -54,6 +54,18 @@ Vue.component('headercontents', {
         };
     },
     mounted:function(){
+        $("#mainNav, #mainNavPop").on({
+            mouseenter: function () {
+                if ($(".nav-cont").is(":animated")) {return false;}
+                $(".nav-cont").slideDown(200);
+            }, mouseleave : function(){
+                $(".nav-cont").slideUp(200);
+            }
+        });
+
+
+
+        /*
         $("#mainNav, #mainNavPop").hover(
             function () {
                 $(".nav-cont").stop().slideDown(200);
@@ -62,6 +74,8 @@ Vue.component('headercontents', {
                 $(".nav-cont").stop().slideUp(200);
             }
         );
+        */
+
     },
     methods:{
         hoverParent : function (menu, b){

@@ -290,7 +290,7 @@ public class UserRestCtrl {
     @GetMapping(value = "/user/origin/info")
     public ApiResult<UserInfoDto> originUserSeq(@LoginUser LoginUserInfo loginUserInfo){
 
-        UserInfoDto parent = userService.getOriginUser(loginUserInfo);
+        UserInfoDto parent = userService.getOriginUser(loginUserInfo.getUserSeq());
 
         return success(parent);
     }

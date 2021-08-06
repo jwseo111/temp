@@ -10,7 +10,6 @@ package com.itsm.dranswer.users;
  */
 
 import com.itsm.dranswer.config.CustomMailSender;
-import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -203,17 +202,17 @@ public class UserService {
     /**
      *
      * @methodName : getOriginUser
-     * @date : 2021-06-23 오후 6:12
+     * @date : 2021-08-06 오후 6:55
      * @author : xeroman.k
-     * @param loginUserInfo
+ * @param loginUserSeq
      * @return : com.itsm.dranswer.users.UserInfoDto
      * @throws
      * @modifyed :
      *
     **/
-    public UserInfoDto getOriginUser(LoginUserInfo loginUserInfo) {
+    public UserInfoDto getOriginUser(Long loginUserSeq) {
 
-        UserInfo userInfo = findUserInfo(loginUserInfo.getUserSeq());
+        UserInfo userInfo = findUserInfo(loginUserSeq);
         Long parentSeq = userInfo.getParentUserSeq();
 
         if(parentSeq == null){

@@ -133,6 +133,9 @@ public class UserInfo extends BaseEntity implements Serializable {
     }
 
     public void afterLoginSuccess() {
+        if(loginCount == null){
+            loginCount = 0L;
+        }
         loginCount++;
         lastLoginAt = now();
     }

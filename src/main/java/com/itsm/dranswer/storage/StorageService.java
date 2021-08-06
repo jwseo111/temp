@@ -124,7 +124,9 @@ public class StorageService {
     public Page<ReqStorageInfoDto> getReqStorageList(ReqStorageStat reqStorageStatCode,
                                                      String dataName, Disease diseaseCode,
                                                      String agencyName, Long userSeq, Pageable pageable) {
-        return reqStorageInfoRepoSupport.searchAll(reqStorageStatCode, dataName, diseaseCode, agencyName, userSeq, pageable);
+        UserInfoDto userInfoDto = userService.getOriginUser(userSeq);
+
+        return reqStorageInfoRepoSupport.searchAll(reqStorageStatCode, dataName, diseaseCode, agencyName, userInfoDto.getUserSeq(), pageable);
     }
 
     /**
@@ -337,7 +339,9 @@ public class StorageService {
     }
 
     public Page<OpenStorageInfoDto> getOpenStorageList(OpenStorageStat openStorageStatCode, String dataName, Long userSeq, Pageable pageable) {
-        return openStorageInfoRepoSupport.searchAll(openStorageStatCode, dataName, userSeq, pageable);
+        UserInfoDto userInfoDto = userService.getOriginUser(userSeq);
+
+        return openStorageInfoRepoSupport.searchAll(openStorageStatCode, dataName, userInfoDto.getUserSeq(), pageable);
     }
 
     public OpenStorageInfoDto openStorage(OpenStorageInfoDto openStorageInfoDto) {
@@ -437,7 +441,7 @@ public class StorageService {
 
     public List<ReqStorageInfoDto> getMyStorageBucketList(LoginUserInfo loginUserInfo) {
 
-        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
+        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo.getUserSeq());
 
         String accessKey = userInfoDto.getNCloudAccessKey();
         String secretKey = userInfoDto.getNCloudSecretKey();
@@ -454,7 +458,7 @@ public class StorageService {
 
     public List<S3ObjectDto> getObjectList(LoginUserInfo loginUserInfo, String bucketName, String folderName) {
 
-        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
+        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo.getUserSeq());
 
         String accessKey = userInfoDto.getNCloudAccessKey();
         String secretKey = userInfoDto.getNCloudSecretKey();
@@ -470,7 +474,7 @@ public class StorageService {
         int fileCnt = 0;
         long fileSize = 0L;
 
-        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
+        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo.getUserSeq());
 
         for(MultipartFile multipartFile : multipartFiles){
             fileCnt++;
@@ -501,7 +505,7 @@ public class StorageService {
 
     public void deleteObject(String bucketName, String objectName, LoginUserInfo loginUserInfo){
 
-        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo);
+        UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo.getUserSeq());
 
 //        String accessKey = laifAccessKey;
 //        String secretKey = laifSecretKey;

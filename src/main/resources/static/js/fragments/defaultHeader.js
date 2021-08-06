@@ -55,28 +55,30 @@ Vue.component('headercontents', {
     },
     mounted:function(){
 
-        /*$("#mainNav, #mainNavPop").on({
+        $(".header_menu").on({
             mouseenter: function () {
-                if ($(".nav-cont").is(":animated")) {return false;}
-                $(".nav-cont").slideDown(200);
+                //$(".nav-cont").stop().slideDown(200);
+                $(".nav-cont").show();
             }, mouseleave : function(){
-
-                $(".nav-cont").slideUp(200);
+                $(".nav-cont").hide ();
+                //$(".nav-cont").stop().slideUp(200);
             }
-        });*/
+        });
 
 
-
+        /*
 
         $("#mainNav, #mainNavPop").hover(
             function () {
+                if($(".nav-cont").is(":animated")) {return false;}
                 $(".nav-cont").stop().slideDown(300);
             },
             function () {
+                //if($(".nav-cont").is(":animated")) {return false;}
                 $(".nav-cont").stop().slideUp(300);
             }
         );
-
+        */
 
     },
     methods:{

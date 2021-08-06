@@ -108,12 +108,15 @@ Vue.component('maincontents', {
         },
         saveCallback: function (results) {
             if (results.success) {
-                alertMsg("정상적으로 신청되었습니다.");
-                location.href = "/lndata/store/main";
+                alertMsgRtn("정상적으로 신청되었습니다.",this.saveRtn);
+
             } else {
                 //console.log(results);
                 alertMsg(results.error.message);
             }
+        },
+        saveRtn: function() {
+            location.href = "/lndata/store/main";
         },
     }
 });

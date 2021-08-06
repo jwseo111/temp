@@ -9,6 +9,9 @@
     <div id="popupagencywrap" >
         <popupagencycontents ref="popupagencycontents"></popupagencycontents>
     </div>
+    <div id="popupstoragewrap" >
+        <popupstoragecontents ref="popupstoragecontents"></popupstoragecontents>
+    </div>
 
     <script type="text/x-template" id="popup-template" >
         <div>
@@ -55,6 +58,8 @@
             </div>
         </div>
 
+
+
         <div id="alertMsgModal" class="common-popup">
             <div class="common-popup-content">
                 <h3>알림</h3>
@@ -63,7 +68,7 @@
                     <p>{{alertMsg}}</p>
                 </div>
                 <div class="btn-box mt-20">
-                    <a href="#" class="com-btn btn-line-bl" @click="alertMsgClose()">닫기</a>
+                    <a href="#" class="com-btn btn-line-bl" id="btnClose" @click="alertMsgClose()">닫기</a>
                 </div>
             </div>
         </div>
@@ -78,6 +83,54 @@
                     <div class="btn-box mt-20 a-c">
                         <a href="#" class="com-btn btn-w-208" id="btnConfirmOk">확인</a>
                         <a href="#" class="com-btn btn-w-208 btn-line-bl ml-10" @click="confirmMsgClose()">취소</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="popup-template-storage" >
+        <div>
+            <!-- 저장소 정보 검색-->
+            <div id="storageModal" class="common-popup">
+                <div class="common-popup-content">
+                    <h3>저장소 정보 검색</h3>
+                    <hr>
+                    <div class="search-content" style="display: block;">
+                        <div class="hosp-search-wrap mt-40">
+                            <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="저장데이터명을 입력해주세요" style="width: 400px">
+                            <a href="javascript:void(0);" class="com-btn btn-hosp-search" @click="onclickSearch()">SEARCH</a>
+                        </div>
+                        <ul class="ul-hosp-result mt-60" v-if="storageList.length == 0">
+                            <li class="title">
+                                <span>저장데이터명</span>
+                                <a>선택</a>
+                            </li>
+                            <li style="text-align: center">
+                                <span>데이터가 없습니다.</span>
+                            </li>
+                        </ul>
+                        <ul class="ul-hosp-result mt-60" v-if="storageList.length > 0">
+                            <li class="title">
+                                <span>저장데이터명</span>
+                                <a>선택</a>
+                            </li>
+                            <li v-for="(storage, idx) in storageList">
+                                <span>{{storage.dataName}}</span>
+                                <a href="javascript:void(0);" @click="selectStorage(storage)">선택</a>
+                            </li>
+                        </ul>
+                        <div class="pagination mb-50 mt-50">
+                            <a href="#" v-on:click="onclickPage(prev)"><span class="next-bar"></span><span class="next"></span></a>
+                            <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">
+                                {{page}}
+                            </a>
+                            <a href="#" v-on:click="onclickPage(next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                        </div>
+                    </div>
+
+                    <div class="btn-box mt-20">
+                        <a href="#" class="com-btn btn-line-bl" onclick="fnClosePopup('storageModal')">닫기</a>
                     </div>
                 </div>
             </div>

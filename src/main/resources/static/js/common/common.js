@@ -200,8 +200,10 @@ function fnOpenPopup(id, code){
     if("agencyModal" == id){    // 기관검색
         popAgencyTypeCode=code;
         appPop1.$refs.popupagencycontents.onclickSearch();
-
+    } else if("storageModal" == id){    // 저장소 검색 팝업
+        appPop2.$refs.popupstoragecontents.onclickSearch();
     }
+
     document.getElementById(id).style.display = "block";
     document.documentElement.style.overflowX = 'hidden';
     document.documentElement.style.overflowY = 'hidden';
@@ -225,6 +227,23 @@ function alertMsg(msg, targetId){
     }
     fnOpenPopup('alertMsgModal');
 }
+
+// 알림 메세지 (layer, callback )
+let RTN_FUNC;
+function alertMsgRtn(msg, rtn){
+
+    appPop1.$refs.popupagencycontents.$data.alertMsg=msg;
+    const btnClose = document.querySelector("#btnClose");
+    if(!isNull(rtn)){
+        RTN_FUNC=function(){
+            rtn();
+            alertMsgClose();
+        };
+        btnClose.addEventListener("click", RTN_FUNC);
+    }
+    fnOpenPopup('alertMsgModal');
+}
+
 // 알림 메세지 Close
 function alertMsgClose(){
 

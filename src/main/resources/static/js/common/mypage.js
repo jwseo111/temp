@@ -28,8 +28,8 @@ Vue.component('mypagemenus', {
                 {name: "저장소관리", uri:"/my/storeMng/list", use : true}
             ],
             menus_uploader : [ // #####
-                {name: "저장신청 데이터 보기", uri: "/my/store/list", use: false},
-                {name: "질환데이터 업로드", use: true},
+                {name: "저장신청 데이터 보기", uri: "/my/store/list", use: true},
+                {name: "질환데이터 업로드", uri: "/my/diseaseUpload", use: true},
                 {name: "공개신청 데이터 보기", uri:"/my/open/list", use : false}
             ],
             menus_user : [ // 기업

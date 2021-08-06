@@ -105,7 +105,7 @@ public class OpenStorageRestCtrl {
      * @modifyed :
      *
     **/
-    @Secured(value = {"ROLE_MANAGER", "ROLE_ADMIN"})
+    @Secured(value = {"ROLE_MANAGER", "ROLE_ADMIN", "ROLE_UPLOADER"})
     @GetMapping(value = "/my/management/storage/open/{openStorageId:.+(?<!\\.js)$}")
     public ApiResult<OpenStorageInfoDto> getMyOpenStorageInfo(
             @PathVariable String openStorageId){

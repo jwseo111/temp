@@ -26,7 +26,7 @@
         <script type="text/x-template" id="main-template" >
             <div class="content">
                 <div class="mypage-content mt-40">
-                    <h3>회원상세정보</h3>
+                    <h3>회원 정보 상세</h3>
 
                     <div class="join-cont-box mt-30">
                         <ul class="com-ul">
@@ -44,6 +44,16 @@
                                 <span class="join-input-group mr-40">
                                     <label >기관명</label>
                                     <p class="txt-data">{{info.agencyName}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label >이메일</label>
+                                    <p class="txt-data">{{info.userEmail}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label >담당자 이름</label>
+                                    <p class="txt-data">{{info.userName}}</p>
                                 </span>
                                 <span class="join-input-group">
                                     <label >담당자휴대전화</label>
@@ -80,7 +90,7 @@
                                     <p class="txt-data">{{info.nCloudObjStorageId}}</p>
                                 </span>
                             </li>
-                            <li>
+                            <li class=" bdr-b">
                                 <span class="join-input-group mr-40">
                                     <label >NBP 액세스키</label>
                                     <p class="txt-data">{{info.nCloudAccessKey}}</p>

@@ -91,21 +91,24 @@ Vue.component('maincontents', {
             if(!this.isFormValid()){
                 return false;
             }
-            if(confirm("비밀번호를 변경 하시겠습니까?")){
-                this.info.inputNewPw=this.password1;
-                this.info.userSeq=userSeq;
-                post(TID.SAVE, "/user/my/pw", this.info, this.callback);
-            }
 
+            this.info.inputNewPw=this.password1;
+            this.info.userSeq=userSeq;
+            confirmMsg("비밀번호를 변경 하시겠습니까?", this.save);
+
+        },
+        save : function() {
+            post(TID.SAVE, "/user/my/pw", this.info, this.callback);
         },
         onclickSaveCallback : function(results){
             if(results.success){
-                alert("비밀번호가 변경되었습니다. 자동으로 로그아웃 됩니다.");
-                location.href="/logout";
+                alertMsgRtn("비밀번호가 변경되었습니다. 자동으로 로그아웃 됩니다.", this.saveRtn);
             }else{
-                alert(results.error.message);
+                alertMsg(results.error.message);
             }
-
+        },
+        saveRtn : function(){
+            location.href="/logout";
         }
 
     }

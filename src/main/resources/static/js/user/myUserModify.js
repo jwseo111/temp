@@ -196,15 +196,14 @@ Vue.component('maincontents', {
             openPopupUploader(this.info.userSeq);
         },
         onclickChgManage : function(){
-            if(confirm("질병책임자를 변경하시겠습니까?")){
-                post(TID.CHG,"/user/my/manager", null, this.callback);
-            }
-
+            confirmMsg("질병책임자를 변경하시겠습니까?", this.saveManage);
+        },
+        saveManage: function() {
+            post(TID.CHG,"/user/my/manager", null, this.callback);
         },
         onclickChgManageCallback : function(results){
             if (results.success) {
-                alertMsg("정상적으로 수정 되었습니다.");
-                this.getUserInfo();
+                alertMsgRtn("정상적으로 수정 되었습니다.", this.getUserInfo);
             }else{
                 alertMsg(results.error.message);
             }
@@ -294,14 +293,13 @@ Vue.component('uploadcontents', {
         onclickUploaderSaveCallback : function(result){
 
             if (result.success) {
-                alertMsg("정상적으로 수정 되었습니다.");
-                setTimeout(function() {
-                    fnClosePopup('uploaderModal');
-                }, 1000);
-
+                alertMsgRtn("정상적으로 수정 되었습니다.", this.saveRtn);
             } else {
                 alertMsg(result.error.message);
             }
+        },
+        saveRtn : function(){
+            fnClosePopup('uploaderModal');
         },
 
 

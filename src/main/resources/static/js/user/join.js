@@ -129,8 +129,7 @@ Vue.component('maincontents', {
                     break;
                 case "SAVE":
                     if(result.success){
-                        alertMsg("정상적으로 등록되었습니다.");
-                        location.href="/joinComplete";
+                        alertMsgRtn("정상적으로 등록되었습니다.", this.saveRtn);
                     }else{
                         alertMsg(result.error.message);
                     }
@@ -139,6 +138,10 @@ Vue.component('maincontents', {
                     break;
 
             }
+        },
+        // 저장후 다음페이지
+        saveRtn : function(){
+            location.href="/joinComplete";
         },
         onclickAgency : function(){
             // 변경시 기관정보 초기화
@@ -291,20 +294,12 @@ Vue.component('maincontents', {
 
                 if(!isValid(param)) return false;
             }
-
-
             return true;
         },
         btnSave : function(){
-
-
-
-
             if(!this.isFormValid()){
                return false;
             }
-
-
             if(this.info.passOk2 === "Y"){
                 this.info.inputPw=this.info.password1;
             }
@@ -328,6 +323,4 @@ Vue.component('maincontents', {
     },
 
 });
-function fnchk(){
-    alert("1");
-}
+

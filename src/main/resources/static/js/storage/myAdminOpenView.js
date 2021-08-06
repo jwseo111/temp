@@ -91,16 +91,14 @@ Vue.component('maincontents', {
                     break;
                 case TID.CANCEL: // 거절신청 callback
                     if (results.success) {
-                        alertMsg("정상적으로 거절되었습니다.");
-                        this.onclickList();
+                        alertMsgRtn("정상적으로 거절되었습니다.", this.onclickList);
                     } else {
                         alertMsg(results.error.message);
                     }
                     break;
                 case TID.APPR: // 승인신청 callback
                     if (results.success) {
-                        alertMsg("정상적으로 승인되었습니다.");
-                        this.onclickList();
+                        alertMsgRtn("정상적으로 승인되었습니다.", this.onclickList);
                     } else {
                         alertMsg(results.error.message);
                     }
@@ -109,7 +107,7 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                this.openStorageInfo   = results.response;
+                this.openStorageInfo = results.response;
             } else {
                 alertMsg(results.error.message);
             }

@@ -54,27 +54,29 @@ Vue.component('headercontents', {
         };
     },
     mounted:function(){
-        $("#mainNav, #mainNavPop").on({
+
+        /*$("#mainNav, #mainNavPop").on({
             mouseenter: function () {
                 if ($(".nav-cont").is(":animated")) {return false;}
                 $(".nav-cont").slideDown(200);
             }, mouseleave : function(){
+
                 $(".nav-cont").slideUp(200);
             }
-        });
+        });*/
 
 
 
-        /*
+
         $("#mainNav, #mainNavPop").hover(
             function () {
-                $(".nav-cont").stop().slideDown(200);
+                $(".nav-cont").stop().slideDown(300);
             },
             function () {
-                $(".nav-cont").stop().slideUp(200);
+                $(".nav-cont").stop().slideUp(300);
             }
         );
-        */
+
 
     },
     methods:{

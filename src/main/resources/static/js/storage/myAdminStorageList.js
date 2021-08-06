@@ -36,7 +36,8 @@ Vue.component('maincontents', {
                 last : 1,
                 prev : 1,
                 next : 1,
-                pages: [1]
+                pages: [1],
+                total : 1,
             },
             messages : "",
             reqStoreStatCd : "", // 선택된 콤보박스
@@ -56,7 +57,8 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.reqStorageStatCode = this.reqStoreStatCd;
+            //this.cond.reqStorageStatCode = this.reqStoreStatCd;
+            this.cond.reqStorageStatCode = this.$refs.reqStoreStatCd.value;//처리상태
             this.getReqStorageList();
         },
         getReqStorageList:function () {
@@ -77,6 +79,9 @@ Vue.component('maincontents', {
                 case "ReqStorageStat":
                     //console.log(results.response);
                     this.reqStoreStatCdList = results.response;
+                    setTimeout(function() {
+                        loadSelect();
+                    },1000);
                     break;
                 case "IsYn":
                     console.log(results.response);
@@ -107,12 +112,13 @@ Vue.component('maincontents', {
             let next = last + 1;
             next = next>max?max:next;
 
-            this.first = first;
-            this.max = max;
-            this.curr = curr;
-            this.last = last;
-            this.prev = prev;
-            this.next = next;
+            this.pageInfo.first = first;
+            this.pageInfo.max = max;
+            this.pageInfo.curr = curr;
+            this.pageInfo.last = last;
+            this.pageInfo.prev = prev;
+            this.pageInfo.next = next;
+            this.total = Math.ceil(total / pageable.size);
 
             this.pageInfo.pages = new Array();
             for (let i=first; i<=last; i++){
@@ -120,8 +126,14 @@ Vue.component('maincontents', {
             }
         },
         onclickPage : function (page){
-            this.cond.page = page - 1;
-            this.getReqStorageList();
+            // this.cond.page = page - 1;
+            // this.getReqStorageList();
+            if(page === this.pageInfo.curr){
+            } else {
+                this.cond.page = page - 1;
+                this.pageInfo.curr = page;
+                this.getReqStorageList();
+            }
         },
     }
 });

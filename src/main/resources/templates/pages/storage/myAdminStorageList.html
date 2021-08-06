@@ -6,8 +6,6 @@
       layout:decorator="layouts/mypageLayout">
 
     <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
     </th:block>
 
     <th:block layout:fragment="script">
@@ -18,81 +16,84 @@
         </script>
     </th:block>
 
-    <div layout:fragment="contents">
+    <div class="mypage-container" layout:fragment="contents">
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
-        <div class="storage-contents-wrap" >
-            <div class="storage-title">질환데이터 저장신청 목록(ADMIN)</div>
-            <div class="storage-search-wrap">
-                <div class="line">
-                    <div class="cond">
-                        <div class="content">
-                            <select v-model="reqStoreStatCd" style="width:120px;">
-                                <option value="">전체</option>
-                                <option v-for="option in reqStoreStatCdList" v-bind:value="option.name">
-                                    {{option.desc}}
-                                </option>
-                            </select>
+            <div class="content" >
+                <div class="mypage-content">
+                    <div class="mypage-content mt-40 mb-40">
+                        <h3>질환데이터 저장신청 관리</h3>
+                        <div class="list-search-wrap a-r mt-20">
+                            <label>Search</label>
+                            <div class="custom-select search-select" style="width: 150px;">
+                                <select ref="reqStoreStatCd" v-model="cond.reqStorageStatCode">
+                                    <option value="">전체</option>
+                                    <option v-for="option in reqStoreStatCdList" v-bind:value="option.name">{{option.desc}}</option>
+                                </select>
+                            </div>
                             <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="데이터명을 입력하세요.">
+                            <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
+                        </div>
+
+                        <table class="table-list mt-50">
+                            <colgroup>
+                                <col style="width:13%" />
+                                <col style="width:23%" />
+                                <col style="width:20%" />
+                                <col style="width:12%" />
+                                <col style="width:11%" />
+                                <col style="width:10%" />
+                                <col style="width:9%" />
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col">질환</th>
+                                <th scope="col">데이타명</th>
+                                <th scope="col">제공병원</th>
+                                <th scope="col">연구책임자</th>
+                                <th scope="col">상태</th>
+                                <th scope="col">신청일자</th>
+                                <th scope="col">처리일자</th>
+                            </tr>
+                            </thead>
+                            <tbody v-if="reqStorageList.length == 0">
+                            <tr>
+                                <td colspan="7" style="text-align: center">
+                                    데이터가 없습니다.
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody v-if="reqStorageList.length > 0">
+                            <tr v-for="(storage, idx) in reqStorageList" v-on:click="onclickReq(storage.reqStorageId)" class="tr-link">
+                                <td>{{storage.diseaseCode.desc}}</td>
+                                <td style="text-align: left;">{{storage.dataName}}</td>
+                                <td>{{storage.agencyInfo.agencyName}}</td>
+                                <td>{{storage.diseaseManagerUserInfo.userName}}</td>
+                                <td>{{storage.reqStorageStatCode.desc}}</td>
+                                <td v-if="storage.createdDate === null" align="center">-</td>
+                                <td v-else>{{storage.createdDate.substr(0,10)}}</td>
+                                <td v-if="storage.modifiedDate === null" align="center">-</td>
+                                <td v-else>{{storage.modifiedDate.substr(0,10)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 페이징 -->
+                        <div class="btn-box mt-40">
+                            <div class="pagination fl-l">
+                                <a href="#" v-on:click="onclickPage(pageInfo.prev)"><span class="next-bar"></span><span class="next"></span></a>
+                                <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)" v-bind:class="{active:pageInfo.curr==page}">
+                                    {{page}}
+                                </a>
+                                <a href="#" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                            </div>
                         </div>
                     </div>
-                    <div class="btn_wrap">
-                        <button v-on:click="onclickSearch">검색</button>
-                    </div>
                 </div>
-            </div>
-            <div class="storage-content">
-                <table class="result-table">
-                    <thead>
-                    <tr>
-                        <th>질환</th>
-                        <th>데이터명</th>
-                        <th>제공병원</th>
-                        <th>연구책임자</th>
-                        <th>상태</th>
-                        <th>신청일자</th>
-                        <th>처리일자</th>
-                    </tr>
-                    </thead>
-                    <tbody v-if="reqStorageList.length == 0">
-                    <tr>
-                        <td colspan="7" align="center">
-                            no data.
-                        </td>
-                    </tr>
-                    </tbody>
-
-                    <tbody v-if="reqStorageList.length > 0">
-                    <tr v-for="(storage, idx) in reqStorageList">
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.diseaseCode.desc}}</td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.dataName}}</td>
-                        <td v-on:click="onclickReq(storage.reqStorageId)"><span class="cusor">{{storage.agencyInfo.agencyName}}</td>
-                        <td align="center">{{storage.diseaseManagerUserInfo.userName}}</td>
-                        <td v-if="storage.reqStorageStatCode === null" align="center">-</td>
-                        <td v-else align="center">{{storage.reqStorageStatCode.desc}}</td>
-                        <td v-if="storage.createdDate === null" align="center">-</td>
-                        <td v-else align="center">{{storage.createdDate.substr(0,10)}}</td>
-                        <td v-if="storage.modifiedDate === null" align="center">-</td>
-                        <td v-else align="center">{{storage.modifiedDate.substr(0,10)}}</td>
-                    </tr>
-                    </tbody>
-
-                </table>
-            </div>
-            <!-- 페이징 -->
-            <div class="page-navi-wrap">
-                <div v-on:click="onclickPage(prev)"><</div>
-                <div v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">{{page}}</div>
-                <div v-on:click="onclickPage(next)">></div>
-            </div>
-
         </div>
-        </script>
-
-        <script>
         </script>
     </div>
 </html>

@@ -75,15 +75,25 @@ Vue.component('maincontents', {
             get(TID.INFO, url, null,this.callback);
 
         }
+
         setTimeout(function() {
             loadSelect();
-        },500);
+        },300);
     },
     computed: function(){
+
+
     },
     methods:{
         onclickSearch : function(){
-            this.search.joinStat=this.$refs.joinStat.value;
+
+
+            this.search.page = 0;
+            this.getMemberList();
+        },
+        getMemberList(){
+            let code = document.querySelector("#joinStat").getAttribute("data-value");
+            this.search.joinStat=code;
             get(TID.SEARCH,"/user/list", this.search, this.callback);
         },
         callback: function(tid, results){
@@ -141,8 +151,9 @@ Vue.component('maincontents', {
 
         },
         onclickPage : function (page){
+
             this.search.page = page - 1;
-            this.onclickSearch();
+            this.getMemberList();
         },
         onclickDetail : function(seq){
             location.href="/my/admin/memberView?menuId="+myMenuId+"&userSeq="+seq;
@@ -200,7 +211,7 @@ Vue.component('maincontents', {
             }
         },
         saveRtn : function(){
-            location.href="my/admin/memberList?menuId=0";
+            location.href="/my/admin/memberList?menuId=0";
         },
         onclickBack : function(){
             history.back();

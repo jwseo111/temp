@@ -6,12 +6,9 @@
       layout:decorator="layouts/mypageLayout">
 
     <th:block layout:fragment="css">
-
         <style>
-             input:focus{
-                box-shadow: 0 0 5px #a1a1a1;
-                border: 1px solid #7F7F7F;
-            }
+
+            input[readonly]{border:none;background:#f2f2f2 !important;}
         </style>
     </th:block>
 
@@ -21,7 +18,7 @@
 
     </th:block>
 
-    <div class="member-container" layout:fragment="contents">
+    <div class="mypage-container" layout:fragment="contents">
         <div id="maincontentswrap">
             <maincontents ref="maincontents"></maincontents>
         </div>
@@ -35,21 +32,21 @@
                     <li>
                         <span class="join-input-group mr-40">
                             <label>회원구분</label>
-                            <input type="text"  :value="memberText" disabled>
+                            <input type="text"  :value="memberText" readonly>
                         </span>
                         <span class="join-input-group">
                             <label>가입처리 상태</label>
-                            <input type="text" :value="info.joinStatName" disabled>
+                            <input type="text" :value="info.joinStatName" readonly>
                         </span>
                     </li>
                     <li>
                         <span class="join-input-group mr-40">
                             <label>기관명</label>
-                            <input type="text" :value="info.agencyName" disabled>
+                            <input type="text" :value="info.agencyName" readonly>
                         </span>
                         <span class="join-input-group">
                             <label>이메일</label>
-                            <input type="text" :value="info.userEmail" disabled>
+                            <input type="text" :value="info.userEmail" readonly>
                         </span>
                     </li>
                     <li>
@@ -65,32 +62,32 @@
                     <li>
                         <span class="join-input-group mr-40">
                             <label>대표자명</label>
-                            <input type="text" :value="info.ceoName" disabled>
+                            <input type="text" :value="info.ceoName" readonly>
                         </span>
                         <span class="join-input-group">
                             <label>사업자 번호</label>
-                            <input type="text" :value="info.blNumber" disabled>
+                            <input type="text" :value="info.blNumber" readonly>
                         </span>
                     </li>
                     <li>
                         <span class="join-input-group mr-40">
                             <label>질병명</label>
-                            <input type="text" :value="info.diseaseName" disabled>
+                            <input type="text" :value="info.diseaseName" readonly>
                         </span>
                         <span class="join-input-group" v-if="managerYn">
                             <label>질병책임자 여부</label>
-                            <input class="input-372" type="text" :value="info.diseaseManagerName" disabled>
+                            <input class="input-372" type="text" :value="info.diseaseManagerName" readonly>
                             <a href="javascript:void(0);" class="com-btn btn-s btn-w-208" @click="onclickUploderPop();" >데이터 업로드 설정</a>
                         </span>
                         <span class="join-input-group" v-else>
                             <label>질병책임자 여부</label>
-                            <input type="text" :value="info.diseaseManagerName" disabled>
+                            <input type="text" :value="info.diseaseManagerName" readonly>
                         </span>
                     </li>
                     <li v-show="info.parentUserYn">
                         <span class="join-input-group mr-40">
                             <label>질병 책임자명</label>
-                            <input class="input-372" type="text" :value="info.parentUserName" disabled>
+                            <input class="input-372" type="text" :value="info.parentUserName" readonly>
                             <a href="javascript:void(0);" class="com-btn btn-s btn-w-208" v-show="info.parentYn" @click="onclickChgManage();">질병책임자 변경</a>
                         </span>
                     </li>

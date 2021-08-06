@@ -254,7 +254,7 @@ public class StorageService {
         String mailsubject = "[닥터앤서]저장신청 승인 안내";
         String title = "저장신청";
         String userName = managerInfo.getUserName();
-        String subject = "저장신청";
+        String subject = reqStorageInfo.getDataName();
         customMailSender.sendAcceptMail(email, mailsubject, title, userName, subject);
 
         return reqStorageInfo.convertDto();
@@ -291,7 +291,7 @@ public class StorageService {
         String mailsubject = "[닥터앤서]저장신청 거절 안내";
         String title = "저장신청";
         String userName = userInfo.getUserName();
-        String subject = "저장신청";
+        String subject = reqStorageInfo.getDataName();
         String reject = reqStorageInfo.getRejectReason();
         customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
 
@@ -367,7 +367,7 @@ public class StorageService {
             String mailsubject = "[닥터앤서]공개신청 승인 안내";
             String title = "공개신청";
             String userName = userInfo.getUserName();
-            String subject = "공개신청";
+            String subject = openStorageInfo.getOpenDataName();
             customMailSender.sendAcceptMail(email, mailsubject, title, userName, subject);
         }
 
@@ -377,7 +377,7 @@ public class StorageService {
             String mailsubject = "[닥터앤서]공개취소신청 승인 안내";
             String title = "공개취소신청";
             String userName = userInfo.getUserName();
-            String subject = "공개취소신청";
+            String subject = openStorageInfo.getOpenDataName();
             customMailSender.sendAcceptMail(email, mailsubject, title, userName, subject);
         }
 
@@ -394,7 +394,7 @@ public class StorageService {
             String mailsubject = "[닥터앤서]공개신청 거절 안내";
             String title = "공개신청";
             String userName = userInfo.getUserName();
-            String subject = "공개신청";
+            String subject = openStorageInfo.getOpenDataName();
             String reject = openStorageInfo.getRejectReason();
             customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
         }
@@ -405,7 +405,7 @@ public class StorageService {
             String mailsubject = "[닥터앤서]공개취소신청 거절 안내";
             String title = "공개취소신청";
             String userName = userInfo.getUserName();
-            String subject = "공개취소신청";
+            String subject = openStorageInfo.getOpenDataName();
             String reject = openStorageInfo.getRejectReason();
             customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
         }

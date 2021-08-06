@@ -63,7 +63,6 @@ Vue.component('maincontents', {
         },
         // 승인버튼 클릭
         onclickApprove: function () {
-
             if(!this.saveInfo.bucketDesc){
                 alert("저장소설명은 필수입니다.");
                 return false;
@@ -79,26 +78,43 @@ Vue.component('maincontents', {
         // 거절버튼 클릭
         onclickReject: function () {
             let uri = "/management/storage/req/reject/"; // 호출할 uri
+            let statCd = this.reqStorageInfo.reqStorageStatCode.name;
 
             if(!this.saveInfo.rejectReason) {
                 alert("거절사유는 필수입니다.");
+                this.$refs.rejectReason.focus();
                 return;
             }
-            if(confirm("거절하시겠습니까?")) {
+            if(statCd == "S_REQ" && confirm("거절하시겠습니까?")) {
+                post(TID.REJECT,
+                    uri + this.reqStorageId,
+                    this.saveInfo,
+                    this.callback);
+            }
+
+            if(statCd == "D_REQ" && confirm("삭제신청 거절하시겠습니까?")) {
                 post(TID.REJECT,
                     uri + this.reqStorageId,
                     this.saveInfo,
                     this.callback);
             }
         },
-
+      // 삭제신청 승인버튼 클릭
+        onclickDelApprove: function () {
+            if(confirm("삭제신청 승인하시겠습니까?")) {
+                post(TID.APPROVE,
+                    "/management/storage/req/delete/" + this.reqStorageId,
+                    {},
+                    this.callback);
+            }
+        },
         callback: function (tid, results) {
             switch (tid) {
                 case TID.SEARCH: // 상세조회
                     this.searchCallback(results);
                     break;
                 case "ReqStorageStat":
-                    console.log(results.response);
+                    //console.log(results.response);
                     this.reqStoreStatCdList = results.response;
                     break;
                 case "IsYn":
@@ -133,7 +149,7 @@ Vue.component('maincontents', {
         searchCallback: function (results) {
             if (results.success) {
                 //console.log(JSON.stringify(results.response));
-                console.log(results.response);
+                //console.log(results.response);
                 this.reqUserInfo = results.response.reqUserDto;
                 this.reqStorageInfo   = results.response;
             } else {

@@ -100,12 +100,16 @@
                         <td v-else>-</td>
                     </tr>
                     <tr v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
-                              reqStorageInfo.reqStorageStatCode.name === 'S_REJ'">
+                              reqStorageInfo.reqStorageStatCode.name === 'S_REJ' ||
+                              reqStorageInfo.reqStorageStatCode.name === 'D_REQ' ||
+                              reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">
                         <th>거절사유</th>
-                        <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'">
-                            <input type="text" v-model="saveInfo.rejectReason" placeholder="거절시 필수입력">
+                        <td v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
+                                  reqStorageInfo.reqStorageStatCode.name === 'D_REQ'">
+                            <input type="text" v-model="saveInfo.rejectReason" ref="rejectReason" placeholder="거절시 필수입력">
                         </td>
-                        <td v-else-if="reqStorageInfo.reqStorageStatCode.name ==='S_REJ'">
+                        <td v-else-if="reqStorageInfo.reqStorageStatCode.name ==='S_REJ' ||
+                                       reqStorageInfo.reqStorageStatCode.name ==='D_REJ'">
                             {{reqStorageInfo.rejectReason}}
                         </td>
                         <td v-else>-</td>
@@ -121,6 +125,8 @@
                 <button v-on:click="onclickList">목록</button>
                 <button v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" v-on:click="onclickApprove">승인</button>
                 <button v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" v-on:click="onclickReject">거절</button>
+                <button v-if="reqStorageInfo.reqStorageStatCode.name === 'D_REQ'" v-on:click="onclickDelApprove">승인</button>
+                <button v-if="reqStorageInfo.reqStorageStatCode.name === 'D_REQ'" v-on:click="onclickReject">거절</button>
             </div>
 
         </div>

@@ -75,7 +75,7 @@ Vue.component('maincontents', {
                     this.searchCallback(results);
                     break;
                 case "ReqStorageStat":
-                    console.log(results.response);
+                    //console.log(results.response);
                     this.reqStoreStatCdList = results.response;
                     break;
                 case "IsYn":

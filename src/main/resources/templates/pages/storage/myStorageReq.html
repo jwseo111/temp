@@ -104,7 +104,7 @@
                                 </span>
                             </li>
                             <li>
-                                <span v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'" class="join-input-group w-100">
+                                <span v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC' || reqStorageInfo.reqStorageStatCode.name === 'D_REJ'" class="join-input-group w-100">
                                     <label>저장소ID</label>
                                     <p class="txt-data">{{reqStorageInfo.bucketName}}</p>
                                 </span>
@@ -126,7 +126,7 @@
                                     <input v-else class="w-100" type="text" v-bind:value="reqStorageInfo.deleteReason" readonly>
                                 </span>
                             </li>
-                            <li v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REJ'">
+                            <li v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REJ' || reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">
                                 <span class="join-input-group w-100">
                                     <label>거절사유</label>
                                     <input class="w-100" type="text" v-bind:value="reqStorageInfo.rejectReason" readonly>

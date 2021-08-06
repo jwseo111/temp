@@ -211,7 +211,7 @@ Vue.component('maincontents', {
             }
         },
         saveRtn : function(){
-            location.href="my/admin/memberList?menuId=0";
+            location.href="/my/admin/memberList?menuId=0";
         },
         onclickBack : function(){
             history.back();

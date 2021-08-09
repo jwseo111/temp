@@ -53,6 +53,20 @@ public class StoragePage {
         return "pages/storage/popStorageSearch";
     }
 
+    // 학습 데이터 사용신청 리스트
+    @GetMapping(value = "/lndata/use/main")
+    public String useList() {
+
+        return "pages/storage/useList";
+    }
+
+    // 학습 데이터 사용신청
+    @GetMapping(value = "/lndata/use/req")
+    public String useReq() {
+
+        return "pages/storage/useReq";
+    }
+
     // 마이페이지 > 질환데이터저장신청 목록
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/store/list")
@@ -62,6 +76,7 @@ public class StoragePage {
     }
 
     // 마이페이지 > 질환데이터저장신청 상세
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/store/req")
     public String myStorageReq() {
 
@@ -69,6 +84,7 @@ public class StoragePage {
     }
 
     // 마이페이지 > 질환데이터 공개신청 목록
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/open/list")
     public String myOpenList() {
 
@@ -76,20 +92,22 @@ public class StoragePage {
     }
 
     // 마이페이지 > 질환데이터 공개신청 상세
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/open/req")
     public String myOpenReq() {
 
         return "pages/storage/myOpenReq";
     }
 
-
     // 마이페이지 > 질환데이터저장신청 목록(ADMIN)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/admin/store/list")
     public String myAdminStorageList() {
 
         return "pages/storage/myAdminStorageList";
     }
     // 마이페이지 > 질환데이터저장신청 상세(ADMIN)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/admin/store/req")
     public String myAdminStorageReq() {
 
@@ -97,6 +115,7 @@ public class StoragePage {
     }
 
     // 마이페이지 > 질환데이터 업로드
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/diseaseUpload")
     public String myDiseaseUpload() {
 
@@ -105,14 +124,14 @@ public class StoragePage {
 
 
     // 마이페이지 > 질환데이터 공개신청 목록(ADMIN)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/admin/open/list")
     public String myAdminOpenList() {
 
         return "pages/storage/myAdminOpenList";
     }
-
-
     // 마이페이지 > 질환데이터 공개신청 상세(ADMIN)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/admin/open/view")
     public String myAdminOpenView() {
 
@@ -120,17 +139,32 @@ public class StoragePage {
     }
 
     // 마이페이지 > 저장소관리(ADMIN)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/storeMng/list")
     public String myStoreMngList() {
 
         return "pages/storage/myStorageMngList";
     }
-
     // 마이페이지 > 저장소상세(ADMIN)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/my/storeMng/View")
     public String myStoreMngView() {
 
         return "pages/storage/myStorageMngView";
     }
 
+    // 마이페이지 > 학습데이터사용신청 목록(기업)
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/my/use/list")
+    public String myUseList() {
+
+        return "pages/storage/myUseList";
+    }
+    // 마이페이지 > 학습데이터사용신청 목록(기업)
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/my/use/view")
+    public String myUseView() {
+
+        return "pages/storage/myUseView";
+    }
 }

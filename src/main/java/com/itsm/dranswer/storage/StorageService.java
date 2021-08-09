@@ -322,6 +322,7 @@ public class StorageService {
             String subject = reqStorageInfo.getDataName();
             String reject = reqStorageInfo.getRejectReason();
             customMailSender.sendRejectMail(email, mailsubject, title, userName, subject, reject);
+            System.out.println("");
         }
 
         return reqStorageInfo.convertDto();

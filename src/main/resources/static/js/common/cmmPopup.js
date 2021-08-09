@@ -187,8 +187,14 @@ Vue.component('popupstoragecontents', {
             }
         },
         onclickPage : function (page){
-            this.cond.page = page - 1;
-            this.getStorageList();
+            // this.cond.page = page - 1;
+            // this.getStorageList();
+            if(page === this.pageInfo.curr){
+            } else {
+                this.cond.page = page - 1;
+                this.pageInfo.curr = page;
+                this.getStorageList();
+            }
         },
         selectStorage : function (storage){
             callbackPopupStorage(storage);

@@ -6,8 +6,6 @@
       layout:decorator="layouts/mypageLayout">
 
     <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
     </th:block>
 
     <th:block layout:fragment="script">
@@ -19,83 +17,90 @@
         </script>
     </th:block>
 
-    <div layout:fragment="contents">
+    <div class="mypage-container" layout:fragment="contents">
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
-        <div class="storage-contents-wrap" >
-            <div class="storage-title">저장소 목록</div>
-            <div class="storage-search-wrap">
-                <div class="line">
-                    <div class="cond">
-                        <div class="content">
-                            <select v-model="selected" style="width:100px;" @change="onChangeSelect()">
-                                <option v-for="select in selectList" v-bind:value="select.name">
-                                    {{select.desc}}
-                                </option>
-                            </select>
-                            <select v-if="selected==='disease'" v-model="selectedDisease" style="width:120px;">
-                                <option value="">전체</option>
-                                <option v-for="disease in diseaseCdList" v-bind:value="disease.name">
-                                    {{disease.desc}}
-                                </option>
-                            </select>
-                            <input v-if="selected !=='disease'" type="text" v-model="searchVal" @keyup="onKeyup" placeholder="검색어">
+            <div class="content" >
+                <div class="mypage-content">
+
+                    <div class="mypage-content mt-40 mb-40">
+                        <h3>저장소 관리</h3>
+                        <div class="list-search-wrap a-r mt-20">
+                            <label>Search</label>
+                            <div class="custom-select search-select" >
+                                <select v-model="selected" id="selected"  data-value="" onchange="selectChange()" >
+                                    <option v-for="select in selectList" v-bind:value="select.name">
+                                        {{select.desc}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div v-show="selected =='disease'"  class="custom-select search-select"  style="width:372px;" >
+                                <select ref="selectedDisease" v-model="cond.diseaseCode" >
+                                    <option value="">전체</option>
+                                    <option v-for="disease in diseaseCdList" v-bind:value="disease.name">{{disease.desc}}</option>
+                                </select>
+                            </div>
+                            <input v-show="selected !=='disease'" type="text" v-model="searchVal" @keyup="onKeyup" placeholder="검색어를 입력하세요.">
+                            <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
                         </div>
+                        <table class="table-list mt-50">
+                            <colgroup>
+                                <col style="width:18%" />
+                                <col style="width:15%" />
+                                <col style="width:16%" />
+                                <col style="width:28%" />
+                                <col style="width:13%" />
+                                <col style="width:10%" />
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col">기관명</th>
+                                <th scope="col">질환명</th>
+                                <th scope="col">데이타명</th>
+                                <th scope="col">저장소명</th>
+                                <th scope="col">신청자</th>
+                                <th scope="col">신청일자</th>
+                            </tr>
+                            </thead>
+                            <tbody v-if="storageList.length == 0">
+                            <tr>
+                                <td colspan="6" style="text-align: center">
+                                    데이터가 없습니다.
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody v-if="storageList.length > 0">
+                            <tr v-for="(storage, idx) in storageList" class="tr-link" >
+                                <td><a href="javascript:void(0);" v-on:click="onclickView(storage.reqStorageId)">{{storage.agencyInfo.agencyName}}</a></td>
+                                <td><a href="javascript:void(0);" v-on:click="onclickView(storage.reqStorageId)">{{storage.diseaseCode.desc}}</a></td>
+                                <td><a href="javascript:void(0);" v-on:click="onclickView(storage.reqStorageId)">{{storage.dataName}}</a></td>
+                                <td v-if="storage.bucketName === null">-</td>
+                                <td v-else align="center">{{storage.bucketName}}</td>
+                                <td>{{storage.diseaseManagerUserInfo.userName}}</td>
+                                <td v-if="storage.createdDate === null" align="center">-</td>
+                                <td v-else align="center">{{storage.createdDate.substr(0,10)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 페이징 -->
+                        <div class="btn-box mt-40">
+                            <div class="pagination fl-l">
+                                <a href="#" v-on:click="onclickPage(pageInfo.prev)"><span class="next-bar"></span><span class="next"></span></a>
+                                <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)" v-bind:class="{active:pageInfo.curr==page}">
+                                    {{page}}
+                                </a>
+                                <a href="#" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="btn_wrap">
-                        <button v-on:click="onclickSearch">검색</button>
-                    </div>
-                </div>
             </div>
-            <div class="storage-content">
-                <table class="result-table">
-                    <thead>
-                    <tr>
-                        <th style="width: 180px;">기관명</th>
-                        <th>질환명</th>
-                        <th>데이터명</th>
-                        <th>저장소명</th>
-                        <th>신청자</th>
-                        <th>신청일자</th>
-                    </tr>
-                    </thead>
-                    <tbody v-if="storageList.length == 0">
-                    <tr>
-                        <td colspan="6" align="center">
-                            no data.
-                        </td>
-                    </tr>
-                    </tbody>
-
-                    <tbody v-if="storageList.length > 0">
-                    <tr v-for="(storage, idx) in storageList">
-                        <td v-on:click="onclickView(storage.reqStorageId)"><span class="cusor">{{storage.agencyInfo.agencyName}}</span></td>
-                        <td>{{storage.diseaseCode.desc}}</td>
-                        <td>{{storage.dataName}}</td>
-                        <td v-if="storage.bucketName === null">-</td>
-                        <td v-else align="center">{{storage.bucketName}}</td>
-                        <td align="center">{{storage.diseaseManagerUserInfo.userName}}</td>
-                        <td v-if="storage.createdDate === null" align="center">-</td>
-                        <td v-else align="center">{{storage.createdDate.substr(0,10)}}</td>
-                    </tr>
-                    </tbody>
-
-                </table>
-            </div>
-            <!-- 페이징 -->
-            <div class="page-navi-wrap">
-                <div v-on:click="onclickPage(prev)"><</div>
-                <div v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)">{{page}}</div>
-                <div v-on:click="onclickPage(next)">></div>
-            </div>
-
         </div>
-        </script>
-
-        <script>
         </script>
     </div>
 </html>

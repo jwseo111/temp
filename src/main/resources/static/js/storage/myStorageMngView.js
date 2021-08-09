@@ -78,12 +78,13 @@ Vue.component('maincontents', {
         },
         // 저장소삭제 버튼 클릭
         onclickDelete: function (reqStorageId){
-            if(confirm("저장소를 삭제하시겠습니까?")) {
-                post(TID.DELETE,
-                    "/management/storage/req/delete/" + this.reqStorageId,
-                    {},
-                    this.callback);
-            }
+            confirmMsg("저장소를 삭제하시겠습니까?",this.delete);
+        },
+        delete: function() {
+            post(TID.DELETE,
+                "/management/storage/req/delete/" + this.reqStorageId,
+                {},
+                this.callback);
         },
         callback: function (tid, results) {
             switch (tid) {
@@ -95,7 +96,7 @@ Vue.component('maincontents', {
                         this.myStorageObjectList = results.response;
                     } else{
                         console.log(results);
-                        alert("에러 :\n"+results.error.message);
+                        alertMsg("에러 :\n"+results.error.message);
                     }
                     break;
                 case TID.SEARCH_AUTH:
@@ -103,20 +104,17 @@ Vue.component('maincontents', {
                         this.myStorageAuthList = results.response;
                     } else{
                         console.log(results);
-                        alert("에러 :\n"+results.error.message);
+                        alertMsg("에러 :\n"+results.error.message);
                     }
                     break;
                 case TID.DELETE: // 저장소삭제
                     if (results.success) {
-                        alert("정상적으로 삭제되었습니다.");
-                        this.onclickList();// 목록으로 이동
+                        alertMsgRtn("정상적으로 삭제되었습니다.",this.onclickList);
                     } else {
                         console.log(results);
-                        alert("에러:\n" + results.error.message);
+                        alertMsg("에러:\n" + results.error.message);
                     }
                     break;
-
-
             }
         },
         searchCallback: function (results) {
@@ -129,9 +127,25 @@ Vue.component('maincontents', {
                 this.getMyStorageAuthList(results.response.reqStorageId);
             } else {
                 console.log(results);
-                alert("에러 :\n"+results.error.message);
+                alertMsg("에러 :\n"+results.error.message);
             }
         }
     }
 });
+
+
+function fileSize(size){
+
+    let rtn = "";
+    if(size < 1024) {
+        rtn = size + " byte";
+    } else if (size < 1024 * 1024) {
+        rtn = (size/1024).toFixed(2)+ " KB";
+    } else if (size < 1024 * 1024 * 1024) {
+        rtn = (size/(1024 * 1024)).toFixed(2) + " MB";
+    } else {
+        rtn = (size/(1024 * 1024 * 1024)).toFixed(2) + " GB";
+    }
+    return rtn;
+};
 

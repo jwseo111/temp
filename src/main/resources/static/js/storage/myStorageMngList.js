@@ -24,6 +24,7 @@ Vue.component('maincontents', {
             cond: {
                 page: 0,
                 size: 5,
+                //selected: "",
                 agencyName: "", // 기관명
                 dataName: "", // 데이터명
                 diseaseCode: diseaseCode, // 질환코드
@@ -38,7 +39,8 @@ Vue.component('maincontents', {
                 last : 1,
                 prev : 1,
                 next : 1,
-                pages: [1]
+                pages: [1],
+                total: 1
             },
             messages : "",
             selected:"agencyName", // 선택된 콤보박스(default:기관명)
@@ -61,24 +63,14 @@ Vue.component('maincontents', {
                 this.onclickSearch();
             }
         },
-        onChangeSelect: function () {
-            this.selectedDisease = "";
-            this.searchVal = "";
-
-            this.cond.diseaseCode = this.selectedDisease;
-            this.cond.agencyName = this.searchVal ;
-            this.cond.dataName = this.searchVal ;
-
-        },
         onclickSearch: function () {
             this.cond.page = 0;
-
             if(this.selected === "agencyName") {
                 this.cond.agencyName = this.searchVal;
             } else if(this.selected === "dataName") {
                 this.cond.dataName = this.searchVal;
             } else if(this.selected === "disease") {
-                this.cond.diseaseCode = this.selectedDisease;
+                this.cond.diseaseCode = this.$refs.selectedDisease.value;
             }
             this.getStorageList();
         },
@@ -103,8 +95,10 @@ Vue.component('maincontents', {
                 case "Disease":
                     //console.log(results.response);
                     this.diseaseCdList = results.response;
+                    setTimeout(function() {
+                        loadSelect();
+                    },300);
                     break;
-
             }
         },
         searchCallback: function (results) {
@@ -113,6 +107,7 @@ Vue.component('maincontents', {
                 this.storageList = results.response.content;
             } else {
                 console.log(results);
+                alertMsg(results.error.message);
             }
         },
         makePageNavi: function (pageable, total) {
@@ -128,12 +123,13 @@ Vue.component('maincontents', {
             let next = last + 1;
             next = next>max?max:next;
 
-            this.first = first;
-            this.max = max;
-            this.curr = curr;
-            this.last = last;
-            this.prev = prev;
-            this.next = next;
+            this.pageInfo.first = first;
+            this.pageInfo.max = max;
+            this.pageInfo.curr = curr;
+            this.pageInfo.last = last;
+            this.pageInfo.prev = prev;
+            this.pageInfo.next = next;
+            this.total = Math.ceil(total / pageable.size);
 
             this.pageInfo.pages = new Array();
             for (let i=first; i<=last; i++){
@@ -141,9 +137,31 @@ Vue.component('maincontents', {
             }
         },
         onclickPage : function (page){
-            this.cond.page = page - 1;
-            this.getStorageList();
+            // this.cond.page = page - 1;
+            // this.getStorageList();
+            if(page === this.pageInfo.curr){
+            } else {
+                this.cond.page = page - 1;
+                this.pageInfo.curr = page;
+                this.getStorageList();
+            }
         },
+        // 검색 selectebox 이벤트
+        searchChange:function(data){
+            this.selected = data;
+
+            this.selectedDisease = "";
+            this.searchVal = "";
+
+            this.cond.diseaseCode = this.selectedDisease;
+            this.cond.agencyName = this.searchVal ;
+            this.cond.dataName = this.searchVal ;
+        }
     }
 });
 
+// 검색 selectebox 이벤트
+function selectChange(){
+    const data= document.querySelector("#selected").value;
+    appMain.$refs.maincontents.searchChange(data);
+}

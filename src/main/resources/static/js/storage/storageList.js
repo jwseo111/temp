@@ -96,13 +96,13 @@ Vue.component('maincontents', {
                         }
                     } else {
                         //console.log(results);
-                        if(confirm("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?")){
-                            location.href = "/login";
-                        } else {
-                        }
+                        confirmMsg("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?", this.login);
                     }
                     break;
             }
+        },
+        login: function() {
+            location.href = "/login";
         },
         searchCallback: function (results) {
             if (results.success) {

@@ -287,6 +287,10 @@ function loadSelect() {
     l = x.length;
     for (i = 0; i < l; i++) {
         selElmnt = x[i].getElementsByTagName("select")[0];
+        var ev ="";
+        if(!isNull(selElmnt.onchange )){
+            ev = selElmnt.onchange;
+        }
         ll = selElmnt.length;
         a = document.createElement("DIV");
         a.setAttribute("class", "select-selected");
@@ -314,11 +318,15 @@ function loadSelect() {
                             y[k].removeAttribute("class");
                         }
                         this.setAttribute("class", "same-as-selected");
+
                         break;
                     }
                 }
                 h.click();
             });
+            if(!isNull(ev)){
+                c.addEventListener("click", ev);
+            }
             b.appendChild(c);
         }
         x[i].appendChild(b);
@@ -351,3 +359,17 @@ function loadSelect() {
     document.addEventListener("click", closeAllSelect);
 }
 
+// guide tab
+function openGuide(evt, tabName) {
+    var i, searchcontent, searchlinks;
+    guidecontent = document.getElementsByClassName("guide-content");
+    for (i = 0; i < guidecontent.length; i++) {
+        guidecontent[i].style.display = "none";
+    }
+    guidelinks = document.getElementsByClassName("guidelinks");
+    for (i = 0; i < guidelinks.length; i++) {
+        guidelinks[i].className = guidelinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}

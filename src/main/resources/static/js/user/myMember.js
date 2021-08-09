@@ -223,15 +223,7 @@ Vue.component('maincontents', {
         onclickBack : function(){
             history.back();
         },
-        fntest: function(data){
-            alert(data);
-        }
+
     },
 
 });
-
-function joinchange(){
-    const data= document.querySelector("#joinStat").value;
-
-    appMain.$refs.maincontents.fntest(data);
-}

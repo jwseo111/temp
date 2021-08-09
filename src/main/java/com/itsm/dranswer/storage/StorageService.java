@@ -329,6 +329,7 @@ public class StorageService {
     }
 
     public BucketInfo makeBucketInfo(ReqStorageInfo reqStorageInfo, BucketInfoDto bucketInfoDto){
+        System.out.println("");
         return bucketInfoRepo.save(new BucketInfo(reqStorageInfo, bucketInfoDto));
     }
 

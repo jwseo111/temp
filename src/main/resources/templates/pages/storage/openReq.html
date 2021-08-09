@@ -6,8 +6,6 @@
       layout:decorator="layouts/defaultLayout">
 
     <th:block layout:fragment="css">
-        <link rel="stylesheet" th:href="@{/css/common/common.css}" />
-        <link rel="stylesheet" th:href="@{/css/storage/storage.css}" />
     </th:block>
 
     <th:block layout:fragment="script">
@@ -16,62 +14,83 @@
 
     </th:block>
 
-    <div layout:fragment="contents">
+    <div class="member-container" layout:fragment="contents">
         <div id="maincontentswrap" >
             <maincontents ref="maincontents"></maincontents>
         </div>
 
         <script type="text/x-template" id="main-template" >
-        <div class="storage-contents-wrap" >
-
-            <div class="storage-title">질환데이터 공개신청</div>
-            <div class="storage-title">신청자 정보</div>
-            <div class="storage-content">
-                <table class="result-table-detail">
-                    <tr>
-                        <th>신청자명</th>
-                        <td>{{userInfo.userName}}</td>
-                        <th>병원명</th>
-                        <td>{{userInfo.agencyName}}</td>
-                    </tr>
-                    <tr>
-                        <th>연락처</th>
-                        <td>{{userInfo.userPhoneNumber}}</td>
-                        <th>관리하는 질병</th>
-                        <td>{{diseaseInfo.desc}}</td>
-                    </tr>
-                    <tr>
-                        <th>이메일</th>
-                        <td colspan="3">{{userInfo.userEmail}}</td>
-                    </tr>
-                </table>
+        <div class="content">
+            <div class="sub-title-box">
+                <h2>질환데이터 공개신청</h2>
+                <p>Application for storage of disease data</p>
+                <hr>
+            </div>
+            <div class="join-cont-box clearfix">
+                <h3>신청자 정보</h3>
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group mr-40">
+                            <label >신청자명</label>
+                            <input type="text" v-bind:value="userInfo.userName" readonly>
+                        </span>
+                        <span class="join-input-group">
+                            <label >병원명</label>
+                            <input type="text" v-bind:value="userInfo.agencyName" readonly>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group mr-40">
+                            <label>연락처</label>
+                            <input type="text" v-bind:value="userInfo.userPhoneNumber" readonly>
+                        </span>
+                        <span class="join-input-group">
+                            <label >관리하는 질병</label>
+                            <input type="text" v-bind:value="diseaseInfo.desc" readonly>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group ">
+                            <label >이메일</label>
+                            <input type="text" v-bind:value="userInfo.userEmail" readonly>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="join-cont-box">
+                <h3>저장소 정보<span class="join-txt-red ml-10">기존 저장소 선택 시, 새 버킷 정보를 입력할 수 없습니다.</span></h3>
+                <div class="join-btn-box a-r">
+                    <a href="#" class="com-btn-s btn-w-208" v-on:click="openStorageModalPop">기존 저장소 불러오기</a>
+                    <a href="#" class="com-btn-s btn-gray btn-w-208" v-on:click="onclickReset">신청정보 초기화</a>
+                </div>
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>저장소명</label>
+                            <input class="w-100" type="text" v-model="saveInfo.bucketName" placeholder="" readonly>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>저장소요청ID</label>
+                            <input class="w-100" type="text" v-bind:value="saveInfo.reqStorageId" readonly>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>공개데이터명</label>
+                            <input class="w-100" type="text" v-model="saveInfo.openDataName" ref="openDataName" placeholder="">
+                        </span>
+                    </li>
+                </ul>
             </div>
 
-            <div class="storage-title">저장소 정보 <button v-on:click="onclickOpenStorage">기존 저장소 불러오기</button> <button v-on:click="onclickReset">신청정보 초기화</button></div>
-            <div class="storage-content">
-                <table class="result-table-detail">
-                    <tr>
-                        <th>저장소명</th>
-                        <td colspan="3">
-                            <input type="text" v-model="saveInfo.bucketName" placeholder="" readonly> {{saveInfo.reqStorageId}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>공개데이터명</th>
-                        <td colspan="3"><input type="text" v-model="saveInfo.openDataName" placeholder=""></td>
-                    </tr>
-                </table>
+            <div class="btn-box a-r mt-60">
+                <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCancel">취소</a>
+                <a href="#" class="com-btn btn-w-332" v-on:click="onclickReqSave">신청</a>
             </div>
-
-            <div class="btn_wrap" align="center">
-                <button v-on:click="onclickCancel">취소</button>
-                <button v-on:click="onclickReqSave">신청</button>
-            </div>
-
         </div>
-        </script>
 
-        <script>
         </script>
     </div>
 </html>

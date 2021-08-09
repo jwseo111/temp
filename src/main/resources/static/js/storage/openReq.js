@@ -22,24 +22,9 @@ Vue.component('maincontents', {
     template : "#main-template",
     data: function() {
         return {
-            cond: {
-                //page: 0,
-                //size: 5,
-                //dataName: ""
-                //sort: ""
-            },
             //reqStorageList: [],
             userInfo : [],
             diseaseInfo : [],
-            pageInfo: {
-                curr : 1,
-                max : 1,
-                first : 1,
-                last : 1,
-                prev : 1,
-                next : 1,
-                pages: [1]
-            },
             messages : "",
             reqStoreStatCd : "",
             diseaseCdList : getCodeList('Disease',this.callback),
@@ -59,13 +44,17 @@ Vue.component('maincontents', {
         getReqUser:function (){
             get(TID.SEARCH_USER,
                 "/user/req/storage",
-                //this.cond,
                 {},
                 this.callback);
         },
+        // // 저장소불러오기(팝업)
+        // onclickOpenStorage: function () {
+        //     window.open("/popup/storage", "pop", "width=500px,height=500px");
+        // },
+
         // 저장소불러오기(팝업)
-        onclickOpenStorage: function () {
-            window.open("/popup/storage", "pop", "width=500px,height=500px");
+        openStorageModalPop : function() {
+            fnOpenPopup("storageModal", "");
         },
         callbackPopupStorage : function(item){   // 저장소불러오기(팝업) Callback
             this.saveInfo.bucketName = item.dataName; // 저장소명
@@ -89,22 +78,22 @@ Vue.component('maincontents', {
         saveReqStorage:function () {
 
             if(!this.saveInfo.reqStorageId){
-                alert("저장소를 선택해주세요.");
+                alertMsg("저장소를 선택해주세요.");
                 return false;
             }
-
             if(!this.saveInfo.openDataName){
-                alert("공개데이터명은 필수입니다.");
+                alertMsg("공개데이터명은 필수입니다.",this.$refs.openDataName);
                 return false;
             }
-            this.saveInfo.diseaseManagerUserSeq = this.userInfo.managerUserSeq;
 
-            if(confirm("신청하시겠습니까?")) {
-                post(TID.SAVE,
-                    "/storage/open",
-                    this.saveInfo,
-                    this.callback);
-            }
+            this.saveInfo.diseaseManagerUserSeq = this.userInfo.managerUserSeq;
+            confirmMsg("신청하시겠습니까?", this.save);
+        },
+        save: function(){
+            post(TID.SAVE,
+                "/storage/open",
+                this.saveInfo,
+                this.callback);
         },
         callback: function (tid, results) {
             switch (tid) {
@@ -113,7 +102,7 @@ Vue.component('maincontents', {
                     break;
 
                 case TID.SAVE:
-                    console.log(results);
+                    //console.log(results);
                     this.saveCallback(results);
                     break;
             }
@@ -123,17 +112,18 @@ Vue.component('maincontents', {
                 this.userInfo      = results.response;
                 this.diseaseInfo   = results.response.diseaseCode; // 관리하는 질병
             } else {
-                console.log(results);
-                alert("에러 :\n"+results.error.message);
+                //console.log(results);
+                alertMsg(results.error.message);
             }
         },
         saveCallback: function (results) {
             if (results.success) {
-                alert("정상적으로 신청되었습니다.");
-                location.href = "/lndata/open/main";
+                alertMsgRtn("정상적으로 신청되었습니다.", this.onclickCancel);
+                // alert("정상적으로 신청되었습니다.");
+                // location.href = "/lndata/open/main";
             } else {
                 console.log(results);
-                alert("에러 :\n"+results.error.message);
+                alertMsg(results.error.message);
             }
         },
     }

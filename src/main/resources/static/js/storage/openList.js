@@ -25,7 +25,8 @@ Vue.component('maincontents', {
                 page: 0,
                 size: 5,
                 openDataName: "",
-                openStorageStatCode: openStorageStatCode,
+                //openStorageStatCode: openStorageStatCode,
+                openStorageStatCode: "",
                 sort: ""
             },
             openStorageList: [],
@@ -39,7 +40,7 @@ Vue.component('maincontents', {
                 pages: [1]
             },
             messages : "",
-            openStorageStatCd : "", // 선택된 콤보박스
+            //openStorageStatCd : "", // 선택된 콤보박스
             openStorageStatCdList : getCodeList('OpenStorageStat',this.callback), // 상태콤보박스 리스트
             //isYn : getCodeList('IsYn',this.callback)
 
@@ -56,7 +57,8 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.openStorageStatCode = this.openStorageStatCd;
+            //this.cond.openStorageStatCode = this.openStorageStatCd;
+            this.cond.openStorageStatCode = this.$refs.openStorageStatCd.value;//처리상태
             this.getOpenStorageList();
         },
         // 목록 > 신청 클릭(화면 이동)
@@ -77,6 +79,9 @@ Vue.component('maincontents', {
                     break;
                 case "OpenStorageStat":
                     this.openStorageStatCdList = results.response;
+                    setTimeout(function() {
+                        loadSelect();
+                    },300);
                     break;
                 case "usrInfo":
                     if (results.success) {
@@ -84,26 +89,27 @@ Vue.component('maincontents', {
                         if (userRole === "MANAGER") { // 병원-질병책임자
                             location.href = "/lndata/open/req";
                         } else { // USER(기업), UPLOADER(병원-업로더), ADMIN(관리자)
-                            alert("병원 소속 질병책임자만 신청이 가능합니다.");
+                            alertMsg("병원 소속 질병책임자만 신청이 가능합니다.");
                             return;
                         }
                     } else {
-                        console.log(results);
-                        if(confirm("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?")){
-                            location.href = "/login";
-                        } else {
-                        }
+                        //console.log(results);
+                        confirmMsg("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?", this.login);
                     }
                     break;
             }
         },
+        login: function() {
+            location.href = "/login";
+        },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results.response.content);
+                //console.log(results.response.content);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.openStorageList = results.response.content;
             } else {
-                console.log(results);
+                //console.log(results);
+                alertMsg(results.error.message);
             }
         },
         makePageNavi: function (pageable, total) {
@@ -119,12 +125,13 @@ Vue.component('maincontents', {
             let next = last + 1;
             next = next>max?max:next;
 
-            this.first = first;
-            this.max = max;
-            this.curr = curr;
-            this.last = last;
-            this.prev = prev;
-            this.next = next;
+            this.pageInfo.first = first;
+            this.pageInfo.max = max;
+            this.pageInfo.curr = curr;
+            this.pageInfo.last = last;
+            this.pageInfo.prev = prev;
+            this.pageInfo.next = next;
+            this.total = Math.ceil(total / pageable.size);
 
             this.pageInfo.pages = new Array();
             for (let i=first; i<=last; i++){
@@ -132,8 +139,14 @@ Vue.component('maincontents', {
             }
         },
         onclickPage : function (page){
-            this.cond.page = page - 1;
-            this.getOpenStorageList();
+            // this.cond.page = page - 1;
+            // this.getOpenStorageList();
+            if(page === this.pageInfo.curr){
+            } else {
+                this.cond.page = page - 1;
+                this.pageInfo.curr = page;
+                this.getOpenStorageList();
+            }
         },
     }
 });

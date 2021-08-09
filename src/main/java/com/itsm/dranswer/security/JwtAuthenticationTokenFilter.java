@@ -56,6 +56,10 @@ public class JwtAuthenticationTokenFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setHeader("Expires", "0"); // Proxies.
+
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             String authorizationToken = obtainAuthorizationToken(request);
             if (authorizationToken != null) {

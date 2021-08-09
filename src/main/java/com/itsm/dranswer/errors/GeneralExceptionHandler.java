@@ -27,7 +27,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 
@@ -64,9 +66,13 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<?> handleAccessDeniedException(HttpServletRequest request,
-                                                         Exception e) {
+    public ResponseEntity<?> handleAccessDeniedException(HttpServletRequest request, HttpServletResponse response,
+                                                         Exception e) throws IOException {
         String contentType = request.getHeader("Content-Type");
+
+        if (contentType == null) {
+            response.sendRedirect("/");
+        }
 
         return newResponse(e, HttpStatus.FORBIDDEN);
     }

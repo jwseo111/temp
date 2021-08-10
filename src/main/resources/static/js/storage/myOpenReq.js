@@ -27,7 +27,6 @@ Vue.component('maincontents', {
             diseaseInfo : [],
             messages : "",
             reqStoreStatCd : "",
-            //diseaseCdList : getCodeList('Disease',this.callback),
             saveInfo: {},
             openStorageInfo:{
                 reqStorageInfo : {
@@ -62,17 +61,17 @@ Vue.component('maincontents', {
         onclickCancel: function () {
             //let statCd = this.openStorageInfo.openStorageStatCode.name; // 처리상태
             if(!this.saveInfo.cancelReason){
-                alert("취소사유는 필수입니다.");
+                alertMsg("취소사유는 필수입니다.", this.$refs.cancelReason);
                 return;
             }
-            if(confirm("취소하시겠습니까?")) {
-                post(TID.CANCEL,
-                    "/my/management/storage/open/cancel/"+this.openStorageId,
-                    this.saveInfo,
-                    this.callback);
-            }
+            confirmMsg("취소하시겠습니까?", this.cancel);
         },
-
+        cancel: function() {
+            post(TID.CANCEL,
+                "/my/management/storage/open/cancel/"+this.openStorageId,
+                this.saveInfo,
+                this.callback);
+        },
         callback: function (tid, results) {
             switch (tid) {
                 case TID.SEARCH:
@@ -80,22 +79,22 @@ Vue.component('maincontents', {
                     break;
                 case TID.CANCEL: // 취소신청 callback
                     if (results.success) {
-                        alert("정상적으로 취소신청되었습니다.");
-                        this.onclickList(); // 목록으로 이동
+                        alertMsgRtn("정상적으로 취소신청되었습니다.",this.onclickList);
+                        //this.onclickList(); // 목록으로 이동
                     } else {
-                        console.log(results);
-                        alert("에러 :\n"+results.error.message);
+                        //console.log(results);
+                        alertMsg("에러 :\n"+results.error.message);
                     }
                     break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results.response);
+                //console.log(results.response);
                 this.openStorageInfo   = results.response;
             } else {
                 console.log(results);
-                alert("에러 :\n"+results.error.message);
+                alertMsg("에러 :\n"+results.error.message);
             }
         },
 

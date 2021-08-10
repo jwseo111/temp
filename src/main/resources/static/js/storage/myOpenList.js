@@ -55,7 +55,8 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.openStorageStatCode = this.openStorageStatCd;
+            //this.cond.openStorageStatCode = this.openStorageStatCd;
+            this.cond.openStorageStatCode = this.$refs.openStorageStatCd.value;//처리상태
             this.getMyOpenStorageList();
         },
         // 목록 > 신청번호 클릭(화면 이동)
@@ -75,18 +76,22 @@ Vue.component('maincontents', {
                     this.searchCallback(results);
                     break;
                 case "OpenStorageStat":
-                    console.log(results.response);
+                    //console.log(results.response);
                     this.openStorageStatCdList = results.response;
+                    setTimeout(function() {
+                        loadSelect();
+                    },300);
                     break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results.response.content);
+                //console.log(results.response.content);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.openStorageList = results.response.content;
             } else {
-                console.log(results);
+                //console.log(results);
+                alertMsg("에러 :\n"+results.error.message);
             }
         },
         makePageNavi: function (pageable, total) {
@@ -115,8 +120,14 @@ Vue.component('maincontents', {
             }
         },
         onclickPage : function (page){
-            this.cond.page = page - 1;
-            this.getMyOpenStorageList();
+            // this.cond.page = page - 1;
+            // this.getMyOpenStorageList();
+            if(page === this.pageInfo.curr){
+            } else {
+                this.cond.page = page - 1;
+                this.pageInfo.curr = page;
+                this.getMyOpenStorageList();
+            }
         },
     }
 });

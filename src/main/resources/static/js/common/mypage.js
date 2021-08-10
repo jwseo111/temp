@@ -14,7 +14,7 @@ Vue.component('mypagemenus', {
             menus_manager : [ // 병원
                 {name: "저장신청 데이터 보기", uri: "/my/store/list", use: true},
                 {name: "질환데이터 업로드", uri: "/my/diseaseUpload", use: true},
-                {name: "공개신청 데이터 보기", uri:"/my/open/list", use : false},
+                {name: "공개신청 데이터 보기", uri:"/my/open/list", use : true},
                 {name: "기업요청 데이터 보기", uri:"", use : false},
                 {name: "회원정보변경", uri:"/my/userModify", use : true},
                 ],
@@ -30,7 +30,7 @@ Vue.component('mypagemenus', {
             menus_uploader : [ // #####
                 {name: "저장신청 데이터 보기", uri: "/my/store/list", use: true},
                 {name: "질환데이터 업로드", uri: "/my/diseaseUpload", use: true},
-                {name: "공개신청 데이터 보기", uri:"/my/open/list", use : false},
+                {name: "공개신청 데이터 보기", uri:"/my/open/list", use : true},
                 {name: "회원정보변경", uri:"/my/userModify", use : true},
             ],
             menus_user : [ // 기업

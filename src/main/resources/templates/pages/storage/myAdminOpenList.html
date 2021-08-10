@@ -39,8 +39,7 @@
                     <table class="table-list mt-50">
                         <colgroup>
                             <col style="width:10%;"/>
-                            <col style="width:10%;"/>
-                            <col style="width:20%;"/>
+                            <col style="width:30%;"/>
                             <col style="width:15%;"/>
                             <col style="width:10%;"/>
                             <col style="width:8%;"/>
@@ -49,7 +48,6 @@
                         </colgroup>
                     <thead>
                         <tr>
-                            <th scope="col">신청번호</th>
                             <th scope="col">질환</th>
                             <th scope="col">데이터명</th>
                             <th scope="col">제공병원</th>
@@ -61,12 +59,11 @@
                     </thead>
                     <tbody v-if="openStorageList.length == 0">
                         <tr class="tr-link" >
-                            <td colspan="8" class="a-c">데이타가 없습니다.</td>
+                            <td colspan="7" class="a-c">데이타가 없습니다.</td>
                         </tr>
                     </tbody>
                     <tbody v-if="openStorageList.length > 0">
                         <tr class="tr-link"  v-for="(open, idx) in openStorageList">
-                            <td>{{open.reqOpenId}}</td>
                             <td><a href="javascript:;" v-on:click="onclickReq(open.reqOpenId)">{{open.diseaseManagerUserInfo.diseaseCode.desc}}</a></td>
                             <td  class="a-l"><a href="javascript:;" v-on:click="onclickReq(open.reqOpenId)">{{open.openDataName}}</a></td>
                             <td><a href="javascript:;" v-on:click="onclickReq(open.reqOpenId)">{{open.agencyInfo.agencyName}}</a></td>

@@ -72,7 +72,7 @@ Vue.component('maincontents', {
         onclickCancel: function () {
 
             if(!this.saveInfo.rejectReason){
-                alertMsg("거절사유는 필수입니다.");
+                alertMsg("거절사유는 필수입니다.",this.$refs.rejectReason);
                 return;
             }
             confirmMsg("거절하시겠습니까?", this.cancelSave);

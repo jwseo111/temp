@@ -61,24 +61,24 @@
                 <h3>저장소 정보<span class="join-txt-red ml-10">기존 저장소 선택 시, 새 버킷 정보를 입력할 수 없습니다.</span></h3>
                 <div class="join-btn-box a-r">
                     <a href="#" class="com-btn-s btn-w-208" v-on:click="openStorageModalPop">기존 저장소 불러오기</a>
-                    <a href="#" class="com-btn-s btn-gray btn-w-208" v-on:click="onclickReset">신청정보 초기화</a>
+                    <a href="#" class="com-btn-s btn-gray btn-w-208 ml-10" v-on:click="onclickReset">신청정보 초기화</a>
                 </div>
                 <ul class="com-ul">
                     <li>
                         <span class="join-input-group w-100">
-                            <label>저장소명</label>
+                            <label>저장소명<span>*</span></label>
                             <input class="w-100" type="text" v-model="saveInfo.bucketName" placeholder="" readonly>
                         </span>
                     </li>
                     <li>
                         <span class="join-input-group w-100">
-                            <label>저장소요청ID</label>
+                            <label>저장소요청ID<span>*</span></label>
                             <input class="w-100" type="text" v-bind:value="saveInfo.reqStorageId" readonly>
                         </span>
                     </li>
                     <li>
                         <span class="join-input-group w-100">
-                            <label>공개데이터명</label>
+                            <label>공개데이터명<span>*</span></label>
                             <input class="w-100" type="text" v-model="saveInfo.openDataName" ref="openDataName" placeholder="">
                         </span>
                     </li>
@@ -87,7 +87,7 @@
 
             <div class="btn-box a-r mt-60">
                 <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCancel">취소</a>
-                <a href="#" class="com-btn btn-w-332" v-on:click="onclickReqSave">신청</a>
+                <a href="#" class="com-btn btn-w-332 ml-10" v-on:click="onclickReqSave">신청</a>
             </div>
         </div>
 

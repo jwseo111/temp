@@ -93,7 +93,9 @@
                         </li>
                     </ul>
                 </div>
-                <div class="join-cont-box mt-30">
+                <div class="join-cont-box mt-30"
+                     v-if="reqStorageInfo.reqStorageStatCode.name !== 'S_REJ' &&
+                           reqStorageInfo.reqStorageStatCode.name !== 'S_CCL'">
                     <h4>저장소 정보</h4>
                     <ul class="com-ul">
                         <li v-if="reqStorageInfo.reqStorageStatCode.name === 'S_ACC'">
@@ -104,17 +106,60 @@
                         </li>
                         <li>
                             <span class="join-input-group w-100">
-                                <label>저장소설명<span>*</span></label>
+                                <label>저장소설명<span v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'">*</span></label>
                                 <input v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" ref="bucketDesc" class="w-100" type="text" v-model="saveInfo.bucketDesc" placeholder="저장신청 승인시 필수입력입니다.">
                                 <input v-else-if="reqStorageInfo.bucketInfo != null" class="w-100" type="text" v-bind:value="reqStorageInfo.bucketInfo.bucketDesc" readonly>
                             </span>
                         </li>
-                        <li v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
-                                  reqStorageInfo.reqStorageStatCode.name === 'S_REJ' ||
-                                  reqStorageInfo.reqStorageStatCode.name === 'D_REQ' ||
-                                  reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">
+<!--                        <li v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||-->
+<!--                                  reqStorageInfo.reqStorageStatCode.name === 'S_REJ' ||-->
+<!--                                  reqStorageInfo.reqStorageStatCode.name === 'D_REQ' ||-->
+<!--                                  reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">-->
+<!--                            <span class="join-input-group w-100">-->
+<!--                                <label>거절사유<span>*</span></label>-->
+<!--                                <input v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||-->
+<!--                                             reqStorageInfo.reqStorageStatCode.name === 'D_REQ'"-->
+<!--                                       ref="rejectReason" class="w-100" type="text" v-model="saveInfo.rejectReason" placeholder="거절시 필수입력입니다.">-->
+<!--                                <input v-else-if="reqStorageInfo.reqStorageStatCode.name === 'S_REJ' ||-->
+<!--                                                  reqStorageInfo.reqStorageStatCode.name === 'D_REJ'"-->
+<!--                                       class="w-100" type="text" v-model="reqStorageInfo.rejectReason" readonly>-->
+<!--                            </span>-->
+<!--                        </li>-->
+<!--                        <li v-if="reqStorageInfo.reqStorageStatCode.name === 'D_REQ'">-->
+<!--                            <span class="join-input-group w-100">-->
+<!--                                <label>취소사유</label>-->
+<!--                                <p class="txt-data">{{reqStorageInfo.deleteReason}}</p>-->
+<!--                            </span>-->
+<!--                        </li>-->
+                    </ul>
+                </div>
+
+                <div class="join-cont-box mt-30" v-if="reqStorageInfo.reqStorageStatCode.name === 'D_REQ' ||
+                                                       reqStorageInfo.reqStorageStatCode.name === 'D_ACC' ||
+                                                       reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">
+                    <h4>취소 정보</h4>
+                    <ul class="com-ul">
+                        <li>
                             <span class="join-input-group w-100">
-                                <label>거절사유<span>*</span></label>
+                                <label>취소사유</label>
+                                <input class="w-100" type="text" v-model="reqStorageInfo.deleteReason" readonly>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="join-cont-box mt-30"
+                     v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
+                           reqStorageInfo.reqStorageStatCode.name === 'S_REJ' ||
+                           reqStorageInfo.reqStorageStatCode.name === 'D_REQ' ||
+                           reqStorageInfo.reqStorageStatCode.name === 'D_REJ'">
+                    <h4>거절 정보</h4>
+                    <ul class="com-ul">
+                        <li>
+                            <span class="join-input-group w-100">
+                                <label>거절사유<span v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
+                                                         reqStorageInfo.reqStorageStatCode.name === 'D_REQ'">*</span>
+                                </label>
                                 <input v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' ||
                                              reqStorageInfo.reqStorageStatCode.name === 'D_REQ'"
                                        ref="rejectReason" class="w-100" type="text" v-model="saveInfo.rejectReason" placeholder="거절시 필수입력입니다.">
@@ -123,21 +168,19 @@
                                        class="w-100" type="text" v-model="reqStorageInfo.rejectReason" readonly>
                             </span>
                         </li>
-                        <li v-if="reqStorageInfo.reqStorageStatCode.name === 'D_REQ'">
-                            <span class="join-input-group w-100">
-                                <label>취소사유</label>
-                                <p class="txt-data">{{reqStorageInfo.deleteReason}}</p>
-                            </span>
-                        </li>
+
                     </ul>
                 </div>
 
+
+
+
                 <div class="btn-box mt-70 a-r">
-                    <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickList">목록</a>
+                    <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
+                    <a href="#" v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" class="com-btn btn-w-208 ml-10" v-on:click="onclickApprove">승인</a>
+                    <a href="#" v-if="reqStorageInfo.reqStorageStatCode.name === 'D_REQ'" class="com-btn btn-w-208 ml-10" v-on:click="onclickDelApprove">승인</a>
                     <a href="#" v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' || reqStorageInfo.reqStorageStatCode.name === 'D_REQ'"
-                       class="com-btn btn-line-bl btn-w-332" v-on:click="onclickReject">거절</a>
-                    <a href="#" v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ'" class="com-btn btn-w-332" v-on:click="onclickApprove">승인</a>
-                    <a href="#" v-if="reqStorageInfo.reqStorageStatCode.name === 'D_REQ'" class="com-btn btn-w-332" v-on:click="onclickDelApprove">승인</a>
+                       class="com-btn btn-line-bl btn-gray btn-w-208 ml-10" v-on:click="onclickReject">거절</a>
                 </div>
             </div>
         </div>

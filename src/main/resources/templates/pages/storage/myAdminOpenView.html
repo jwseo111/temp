@@ -78,19 +78,34 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="join-cont-box mt-30" v-if="openStorageInfo.openStorageStatCode.name !== 'O_ACC'">
+                    <div class="join-cont-box mt-30"
+                         v-if="openStorageInfo.openStorageStatCode.name === 'C_REQ' ||
+                               openStorageInfo.openStorageStatCode.name === 'C_ACC' ||
+                               openStorageInfo.openStorageStatCode.name === 'C_REJ'">
+                        <h4>취소 정보</h4>
+                        <ul class="com-ul">
+                            <li>
+                                <span class="join-input-group w-100">
+                                    <label>취소사유</label>
+                                    <input class="w-100" type="text" v-bind:value="openStorageInfo.cancelReason" readonly>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="join-cont-box mt-30" v-if="openStorageInfo.openStorageStatCode.name !== 'O_ACC' &&
+                                                           openStorageInfo.openStorageStatCode.name !== 'C_ACC'">
                         <h4>거절 정보</h4>
                         <ul class="com-ul">
                             <li v-if="openStorageInfo.openStorageStatCode.name === 'O_REQ' || openStorageInfo.openStorageStatCode.name === 'C_REQ'">
                                 <span class="join-input-group w-100" >
                                     <label>거절사유</label>
-                                    <input class="w-100" type="text" v-model="saveInfo.rejectReason" placeholder="거절사유를 입력해주세요">
+                                    <input class="w-100" type="text" v-model="saveInfo.rejectReason" ref="rejectReason" placeholder="거절사유를 입력해주세요">
                                 </span>
                             </li>
                             <li v-else>
                                 <span class="join-input-group w-100" >
                                     <label>거절사유</label>
-                                    <p class="txt-data">{{openStorageInfo.rejectReason}}</p>
+                                    <input class="w-100" type="text" v-bind:value="openStorageInfo.rejectReason" readonly>
                                 </span>
                             </li>
                         </ul>

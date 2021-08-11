@@ -11,15 +11,21 @@
 
 <th:block layout:fragment="script">
     <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/intro/guide.js}"></script>
 
+    <script>
+        const tabs = "[[${param.tab}]]";
+
+    </script>
 </th:block>
 
 <div class="member-container" layout:fragment="contents" >
     <div id="maincontentswrap">
-
+        <maincontents ref="maincontents"></maincontents>
     </div>
+    <script type="text/x-template" id="main-template" >
 
-    <div class="content">
+        <div class="content">
         <div class="sub-title-box">
             <h2>사용가이드</h2>
             <p>guide to use</p>
@@ -27,13 +33,13 @@
         </div>
 
         <div class="guidelinks-box mt-40">
-            <a class="guidelinks active" onClick="openGuide(event, 'guide1')">[질환데이터적재] 프로세스</a>
-            <a class="guidelinks" onClick="openGuide(event, 'guide2')">[질환데이터제공] 프로세스</a>
-            <a class="guidelinks" onClick="openGuide(event, 'guide3')">[학습데이터활용] 프로세스</a>
+            <a :class="['guidelinks' ,{'active' : tab1 === true}]" @click="onclickTab(1)">[질환데이터적재] 프로세스</a>
+            <a :class="['guidelinks' ,{'active' : tab2 === true}]" @click="onclickTab(2)">[질환데이터제공] 프로세스</a>
+            <a :class="['guidelinks' ,{'active' : tab3 === true}]" @click="onclickTab(3)">[학습데이터활용] 프로세스</a>
         </div>
 
         <!-- guide1 -->
-        <div id="guide1" class="guide-content" style="display: block;">
+        <div class="guide-content" v-show="tab1">
             <h3>[질환데이터적재] 프로세스</h3>
             <div class="guide-circle-box mt-40 clearfix">
                 <ul>
@@ -74,7 +80,7 @@
         </div>
 
         <!-- guide2 -->
-        <div id="guide2" class="guide-content" style="display: none;">
+        <div class="guide-content" v-show="tab2">
             <h3>[질환데이터제공] 프로세스</h3>
             <div class="guide-circle-box mt-40 clearfix">
                 <ul>
@@ -132,7 +138,7 @@
         </div>
 
         <!-- guide3 -->
-        <div id="guide3" class="guide-content" style="display: none;">
+        <div class="guide-content" v-show="tab3">
             <h3>[학습데이터활용] 프로세스</h3>
             <div class="guide-circle-box mt-40 clearfix">
                 <ul>
@@ -202,7 +208,7 @@
 
 
     </div>
-
+    </script>
 </div>
 
 

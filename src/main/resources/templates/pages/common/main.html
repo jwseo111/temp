@@ -12,9 +12,7 @@
 </th:block>
 
 <th:block layout:fragment="css">
-    <!--<style>
-        .catebox .active{background:url(../images/dot_on.png) 0 0 no-repeat;}
-    </style>-->
+
 </th:block>
 
 
@@ -48,21 +46,18 @@
                                 <span class="text">학습환경 생성 및 사용 가이드</span>
                                 <span class="date">2020-12-24</span>
                             </a>
-
-
-
                         </div>
                     </div>
 
                     <div class="section1-r-box">
                         <h3>질환 카테고리
                             <span class="catelinks-box">
-                                <a :class="topCate1.class" v-on:click="onclickCate('topCate1')"></a>
-                                <a :class="topCate2.class" v-on:click="onclickCate('topCate2')"></a>
+                                <a :class="['catelinks' ,{'active' : topCate1 === true}]" v-on:click="onclickCate('topCate1')"></a>
+                                <a :class="['catelinks' ,{'active' : topCate2 === true}]" v-on:click="onclickCate('topCate2')"></a>
                             </span>
                         </h3>
 
-                        <ul id="cate1" class="cate-content" v-show="topCate1.listShow">
+                        <ul id="cate1" class="cate-content" v-show="topCate1">
                             <li><a href="#"><img src="/images/icon_disease1.png" />간암</a></li>
                             <li><a href="#"><img src="/images/icon_disease2.png" />간질환</a></li>
                             <li><a href="#"><img src="/images/icon_disease3.png" />갑상선암</a></li>
@@ -74,7 +69,7 @@
                             <li><a href="#"><img src="/images/icon_disease9.png" />전립선 증식증</a></li>
                             <li><a href="#"><img src="/images/icon_disease10.png" />폐렴</a></li>
                         </ul>
-                        <ul id="cate2" class="cate-content" v-show="topCate2.listShow">
+                        <ul id="cate2" class="cate-content" v-show="topCate2">
                             <li><a href="#"><img src="/images/icon_disease11.png" />폐암</a></li>
                             <li><a href="#"><img src="/images/icon_disease12.png" />피부과질환</a></li>
                             <!--<li><a href="#"><img src="/images/icon_disease13.png" />심뇌혈관질환</a></li>
@@ -96,8 +91,8 @@
                     <div class="section2-l-box">
                         <h3>가이드 안내</h3>
                         <ul >
-                            <li><a href="#"><img src="/images/icon_guide1.png" />질병 데이터<br/>적재 가이드</a></li>
-                            <li><a href="#"><img src="/images/icon_guide2.png" />학습 데이터<br/>활용 가이드</a></li>
+                            <li><a href="/intro/guide"><img src="/images/icon_guide1.png" />질병 데이터<br/>적재 가이드</a></li>
+                            <li><a href="/intro/guide?tab=3"><img src="/images/icon_guide2.png" />학습 데이터<br/>활용 가이드</a></li>
                             <!--<li><a href="#"><img src="/images/icon_guide3.png" />실행 환경<br/>SW테스트</a></li>-->
                         </ul>
                     </div>
@@ -120,13 +115,10 @@
                                             {{open.title}}
                                         </a>
                                     </li>
-
                                 </ul>
                             </div>
                         </div>
                         <!-- //rolling item -->
-
-
                     </div>
                 </div>
             </section>
@@ -134,18 +126,18 @@
                 <div class="main-section3">
                     <h3>참여 의료기관
                         <span class="catebox catelinks-box">
-                            <a :class="btmCate1.class" v-on:click="onclickCate('btmCate1')"></a>
-                            <a :class="btmCate2.class" v-on:click="onclickCate('btmCate2')"></a>
+                            <a :class="['catelinks' ,{'active' : btmCate1 === true}]" v-on:click="onclickCate('btmCate1')"></a>
+                            <a :class="['catelinks' ,{'active' : btmCate2 === true}]" v-on:click="onclickCate('btmCate2')"></a>
                         </span>
                     </h3>
-                    <ul v-show="btmCate1.listShow">
+                    <ul v-show="btmCate1">
                         <li v-for="(item,idx) in hospitalList1">
-                            <img :src="item.url" :alt="item.name"/>
+                            <img :src="item.url" :alt="item.name" @click="onclickLinkPage(item.link)" style="cursor: pointer;">
                         </li>
                     </ul>
-                    <ul v-show="btmCate2.listShow">
+                    <ul v-show="btmCate2">
                         <li v-for="(item2,idx) in hospitalList2">
-                            <img :src="item2.url" :alt="item2.name"/>
+                            <img :src="item2.url" :alt="item2.name" @click="onclickLinkPage(item2.link)" style="cursor: pointer;"/>
                         </li>
                     </ul>
                 </div>

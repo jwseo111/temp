@@ -3,35 +3,33 @@ const TID = {
     MAIN: {value: 0, name: "main", code: "S"}
 };
 const hospitalList1 = [
-    {url: "/images/icon_hospital1.png", name: "서울아산병원"},
-   /* {url: "/images/icon_hospital2.png", name: "세브란스병원"},
-    {url: "/images/icon_hospital3.png", name: "삼성서울병원"},
-    {url: "/images/icon_hospital4.png", name: "가천대길병원"},
-    {url: "/images/icon_hospital5.png", name: "분당서울대학교병원"},
-    {url: "/images/icon_hospital6.png", name: "서울대학교병원"},
-    {url: "/images/icon_hospital7.png", name: "고려대학교구로병원"},
-    {url: "/images/icon_hospital8.png", name: "카톨릭대학교 서울성모병원"},
-    {url: "/images/icon_hospital9.png", name: "강남세브란스병원"},
-    {url: "/images/icon_hospital10.png", name: "강릉아산병원"},
-    {url: "/images/icon_hospital11.png", name: "경북대학교병원"},
-    {url: "/images/icon_hospital12.png", name: "국립암센터"},
-    {url: "/images/icon_hospital13.png", name: "부산대학교병원"},
-    {url: "/images/icon_hospital14.png", name: "분당차병원"},
-    {url: "/images/icon_hospital15.png", name: "양산부산대학교병원"},
-    {url: "/images/icon_hospital16.png", name: "여의도성모병원"},
-    {url: "/images/icon_hospital17.png", name: "울산대학교병원"},
-    {url: "/images/icon_hospital18.png", name: "이대목동병원"},
-    {url: "/images/icon_hospital19.png", name: "전남대학교병원"},
-    {url: "/images/icon_hospital20.png", name: "제주대학교병원"},*/
+
+    {url:"/images/h_logo1.png", name: "분당서울대학교병원", link:"http://www.snubh.org"},
+    {url:"/images/h_logo2.png", name: "가천대길병원", link:"http://www.gilhospital.com"},
+    {url:"/images/h_logo3.png", name: "가톨릭대학교서울성모병원", link:"http://www.cmcseoul.or.kr"},
+    {url:"/images/h_logo4.png", name: "건국대학교병원", link:"http://www.kuh.ac.kr"},
+    {url:"/images/h_logo5.png", name: "경북대학교병원", link:"http://knuh.kr"},
+    {url:"/images/h_logo6.png", name: "고대 안산병원", link:"http://ansan.kumc.or.kr"},
+    {url:"/images/h_logo7.png", name: "고려대학교 구로병원", link:"http://guro.kumc.or.kr"},
+    {url:"/images/h_logo8.png", name: "고려대학교 안암병원", link:"http://anam.kumc.or.kr"},
+    {url:"/images/h_logo9.png", name: "국립암센터", link:"http://www.ncc.re.kr"},
+    {url:"/images/h_logo10.png", name: "부산대병원", link:"http://www.pnuh.or.kr"},
+    {url:"/images/h_logo11.png", name: "부천성모병원", link:"http://www.cmcbucheon.or.kr"},
+    {url:"/images/h_logo12.png", name: "삼성서울병원", link:"http://www.samsunghospital.com"},
+    {url:"/images/h_logo13.png", name: "서울대학교병원", link:"http://www.snuh.org"},
+    {url:"/images/h_logo14.png", name: "서울아산병원", link:"http://www.amc.seoul.kr"},
+    {url:"/images/h_logo15.png", name: "아주대학교의료원", link:"http://www.ajoumc.or.kr"},
+    {url:"/images/h_logo16.png", name: "영남대학교의료원", link:"http://yumc.ac.kr:8443"},
+    {url:"/images/h_logo17.png", name: "이대목동병원", link:"http://mokdong.eumc.ac.kr"},
+    {url:"/images/h_logo18.png", name: "일산백병원", link:"http://www.paik.ac.kr/ilsan"},
+    {url:"/images/h_logo19.png", name: "전남대학교병원", link:"http://www.cnuh.com"},
+    {url:"/images/h_logo20.png", name: "청주성모병원", link:"http://www.ccmc.or.kr"},
 
 ];
 const hospitalList2 = [
-
-    /*{url: "/images/icon_hospital21.png", name: "충남대학교병원"},
-    {url: "/images/icon_hospital22.png", name: "충북대학교병원"},
-    {url: "/images/icon_hospital23.png", name: "칠곡경북대학교병원"},
-    {url: "/images/icon_hospital24.png", name: "한양대학교병원"},
-    {url: "/images/icon_hospital25.png", name: "화순전남대학교병원"},*/
+    {url:"/images/h_logo21.png", name: "충북대병원", link:"http://www.cbnuh.or.kr"},
+    {url:"/images/h_logo22.png", name: "한림대성심병원", link:"http://hallym.hallym.or.kr/index.asp"},
+    {url:"/images/h_logo23.png", name: "한양대병원", link:"http://seoul.hyumc.com"},
 ];
 
 
@@ -58,14 +56,14 @@ Vue.component('maincontents', {
             hospitalList1: hospitalList1,
             hospitalList2: hospitalList2,
 
-            topCate1: {class: "catelinks active", listShow: true},
-            topCate2: {class: "catelinks", listShow: false},
-            btmCate1: {class: "catelinks active", listShow: true},
-            btmCate2: {class: "catelinks", listShow: false},
+            topCate1: true,
+            topCate2: false,
+            btmCate1: true,
+            btmCate2: false,
         };
     },
     mounted: function () {
-        this.loadHospital();
+        //this.loadHospital();
         this.loadOpenData();
 
     },
@@ -74,25 +72,17 @@ Vue.component('maincontents', {
         onclickCate: function (cate) {
 
             if ("topCate1" === cate) {
-                this.topCate1.class = "catelinks active";
-                this.topCate1.listShow = true;
-                this.topCate2.class = "catelinks";
-                this.topCate2.listShow = false;
+                this.topCate1 = true;
+                this.topCate2 = false;
             } else if ("topCate2" === cate) {
-                this.topCate1.class = "catelinks";
-                this.topCate1.listShow = false;
-                this.topCate2.class = "catelinks active";
-                this.topCate2.listShow = true;
+                this.topCate1 = false;
+                this.topCate2 = true;
             } else if ("btmCate1" === cate) {
-                this.btmCate1.class = "catelinks active";
-                this.btmCate1.listShow = true;
-                this.btmCate2.class = "catelinks";
-                this.btmCate2.listShow = false;
+                this.btmCate1 = true;
+                this.btmCate2 = false;
             } else if ("btmCate2" === cate) {
-                this.btmCate1.class = "catelinks";
-                this.btmCate1.listShow = false;
-                this.btmCate2.class = "catelinks active";
-                this.btmCate2.listShow = true;
+                this.btmCate1 = false;
+                this.btmCate2 = true;
             }
 
         },
@@ -171,6 +161,9 @@ Vue.component('maincontents', {
             }, 500);
 
         },
+        onclickLinkPage: function(url){
+            window.open(url);
+        }
 
     }
 });

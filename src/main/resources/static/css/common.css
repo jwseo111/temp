@@ -332,6 +332,10 @@ a.btn-s{width:84px;font-size:1.4rem;font-weight:400;letter-spacing:0}
 .setting-date-box .setting-date-txt{position:absolute;top:50px;left:90px;font-size:1.6rem;color:#ff0000;}
 .info-text-bm{position:absolute;bottom:5px;right:0;font-size:1.6rem;}
 
+.join-cont-box::-webkit-scrollbar {width: 6px;}
+.join-cont-box::-webkit-scrollbar-thumb {background: #7f7f7f; border-radius: 10px;}
+.join-cont-box::-webkit-scrollbar-thumb:hover {background: #7f7f7f}
+
 /* 리스트 공통 table */
 .table-list{width:100%;table-layout:fixed}
 .table-list thead tr{border-bottom:3px solid #222;}

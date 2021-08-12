@@ -41,11 +41,12 @@ Vue.component('maincontents', {
             reqUserInfo:{
                 diseaseCode:{}
             },
-
+            userInfo:{}
         };
     },
     mounted:function(){
         this.getMyReqStorageInfo();
+        this.getUserInfo();
     },
     methods:{
         // 마이페이지 > 스토리지저장신청목록 > 상세 조회
@@ -54,6 +55,9 @@ Vue.component('maincontents', {
                 "/my/management/storage/req/"+this.reqStorageId,
                 {},
                 this.callback);
+        },
+        getUserInfo: function(){
+            get("usrInfo","/user/my/info",{},this.callback);
         },
         // 목록버튼 클릭
         onclickList: function () {
@@ -108,16 +112,24 @@ Vue.component('maincontents', {
                     if (results.success) {
                         alertMsgRtn("정상적으로 승인처리되었습니다.", this.onclickList);
                     } else {
-                        console.log(results);
-                        alertMsg("에러 :\n"+results.error.message);
+                        //console.log(results);
+                        alertMsg(results.error.message);
                     }
                     break;
                 case TID.CANCEL: // 취소신청
                     if (results.success) {
                         alertMsgRtn("정상적으로 취소신청되었습니다.", this.onclickList);
                     } else {
-                        console.log(results);
-                        alertMsg("에러 :\n"+results.error.message);
+                        //console.log(results);
+                        alertMsg(results.error.message);
+                    }
+                    break;
+                case "usrInfo":
+                    if (results.success) {
+                        this.userInfo = results.response;
+                    } else {
+                        //console.log(results);
+                        alertMsg(results.error.message);
                     }
                     break;
             }

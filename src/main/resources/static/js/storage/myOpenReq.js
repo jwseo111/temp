@@ -39,11 +39,12 @@ Vue.component('maincontents', {
                     diseaseCode : {}
                 }
             },
-
+            userInfo:{}
         };
     },
     mounted:function(){
         this.getMyOpenStorageInfo();
+        this.getUserInfo();
     },
     methods:{
         // 마이페이지 > 공개신청 목록 > 상세조회
@@ -52,6 +53,9 @@ Vue.component('maincontents', {
                 "/my/management/storage/open/"+this.openStorageId,
                 {},
                 this.callback);
+        },
+        getUserInfo: function(){
+            get("usrInfo","/user/my/info",{},this.callback);
         },
         // 목록버튼 클릭
         onclickList: function () {
@@ -83,7 +87,15 @@ Vue.component('maincontents', {
                         //this.onclickList(); // 목록으로 이동
                     } else {
                         //console.log(results);
-                        alertMsg("에러 :\n"+results.error.message);
+                        alertMsg(results.error.message);
+                    }
+                    break;
+                case "usrInfo":
+                    if (results.success) {
+                        this.userInfo = results.response;
+                    } else {
+                        //console.log(results);
+                        alertMsg(results.error.message);
                     }
                     break;
             }
@@ -93,8 +105,8 @@ Vue.component('maincontents', {
                 //console.log(results.response);
                 this.openStorageInfo   = results.response;
             } else {
-                console.log(results);
-                alertMsg("에러 :\n"+results.error.message);
+                //console.log(results);
+                alertMsg(results.error.message);
             }
         },
 

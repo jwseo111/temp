@@ -146,7 +146,8 @@
 
                     <div class="btn-box mt-70 a-r">
                         <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
-                        <a href="#" v-if="reqStorageInfo.reqStorageStatCode.name === 'S_REQ' || reqStorageInfo.reqStorageStatCode.name === 'S_ACC'"
+                        <a href="#" v-if="(reqStorageInfo.reqStorageStatCode.name === 'S_REQ' || reqStorageInfo.reqStorageStatCode.name === 'S_ACC')
+                                           && userInfo.userRole === 'MANAGER'"
                                     class="com-btn btn-w-208 ml-10" v-on:click="onclickCancel">취소신청</a>
                     </div>
 

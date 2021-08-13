@@ -42,9 +42,9 @@
                             <a href="#" v-if="noticeList.length == 0">
                                 <span class="text">데이타가 없습니다.</span>
                             </a>
-                            <a href="#" v-else>
-                                <span class="text">학습환경 생성 및 사용 가이드</span>
-                                <span class="date">2020-12-24</span>
+                            <a href="#" v-for="data in noticeList">
+                                <span class="text" v-text="data.title"></span>
+                                <span class="date" v-text="data.createdDate"></span>
                             </a>
                         </div>
                     </div>

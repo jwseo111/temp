@@ -9,9 +9,9 @@ const hospitalList1 = [
     {url:"/images/h_logo3.png", name: "가톨릭대학교서울성모병원", link:"http://www.cmcseoul.or.kr"},
     {url:"/images/h_logo4.png", name: "건국대학교병원", link:"http://www.kuh.ac.kr"},
     {url:"/images/h_logo5.png", name: "경북대학교병원", link:"http://knuh.kr"},
-    {url:"/images/h_logo6.png", name: "고대 안산병원", link:"http://ansan.kumc.or.kr"},
+    {url:"/images/h_logo6.png", name: "고려대학교 안산병원", link:"http://ansan.kumc.or.kr"},
     {url:"/images/h_logo7.png", name: "고려대학교 구로병원", link:"http://guro.kumc.or.kr"},
-    {url:"/images/h_logo8.png", name: "고려대학교 안암병원", link:"http://anam.kumc.or.kr"},
+    //{url:"/images/h_logo8.png", name: "고려대학교 안암병원", link:"http://anam.kumc.or.kr"},
     {url:"/images/h_logo9.png", name: "국립암센터", link:"http://www.ncc.re.kr"},
     {url:"/images/h_logo10.png", name: "부산대병원", link:"http://www.pnuh.or.kr"},
     {url:"/images/h_logo11.png", name: "부천성모병원", link:"http://www.cmcbucheon.or.kr"},
@@ -24,10 +24,9 @@ const hospitalList1 = [
     {url:"/images/h_logo18.png", name: "일산백병원", link:"http://www.paik.ac.kr/ilsan"},
     {url:"/images/h_logo19.png", name: "전남대학교병원", link:"http://www.cnuh.com"},
     {url:"/images/h_logo20.png", name: "청주성모병원", link:"http://www.ccmc.or.kr"},
-
+    {url:"/images/h_logo21.png", name: "충북대병원", link:"http://www.cbnuh.or.kr"},
 ];
 const hospitalList2 = [
-    {url:"/images/h_logo21.png", name: "충북대병원", link:"http://www.cbnuh.or.kr"},
     {url:"/images/h_logo22.png", name: "한림대성심병원", link:"http://hallym.hallym.or.kr/index.asp"},
     {url:"/images/h_logo23.png", name: "한양대병원", link:"http://seoul.hyumc.com"},
 ];

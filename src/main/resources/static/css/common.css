@@ -560,3 +560,6 @@ a.btn-join{margin-top:50px;background:#fff;border:1px solid #13a1af;color:#13a1a
 .ul-stack .volume{font-size:1.6rem;font-family:'Roboto';font-weight:700}
 .ul-stack .volume-num{margin-right:8px;font-size:2.6rem;font-weight:900}
 .graph-box{position:relative;width:100%}
+
+/* loading bar */
+.div-loading{position:relative;margin:auto;top:150px;text-align: center;}

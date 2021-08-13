@@ -202,7 +202,7 @@ Vue.component('maincontents', {
         },
         popupAgency : function(){         // 기관 팝업
             if(isNull(this.info.agencyTypeCode)){
-                alertMsg("회원 구분을 선택해주세요.", this.$refs.rdo0);
+                alertMsg("회원 구분을 선택해주세요.");
                 return;
             }
 

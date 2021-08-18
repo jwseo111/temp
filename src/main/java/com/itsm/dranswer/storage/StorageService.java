@@ -14,6 +14,7 @@ import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.etc.FileUploadResponse;
+import com.itsm.dranswer.etc.FileUploadResponse.FileObject;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import com.itsm.dranswer.users.*;
 import org.apache.commons.io.FileUtils;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,6 +63,10 @@ public class StorageService {
     private String laifAccessKey;
     @Value("${ncp.laif.secret-key}")
     private String laifSecretKey;
+    @Value("${ncp.laif.server-access-key}")
+    private String laifServerAccessKey;
+    @Value("${ncp.laif.server-secret-key}")
+    private String laifServerSecretKey;
 
     @Autowired
     public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, OpenStorageInfoRepoSupport openStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo, CustomMailSender customMailSender) {
@@ -489,6 +495,8 @@ public class StorageService {
 
         UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo.getUserSeq());
 
+        List<FileObject> listObject = new ArrayList<>();
+
         for(MultipartFile multipartFile : multipartFiles){
             fileCnt++;
             fileSize += multipartFile.getSize();
@@ -508,12 +516,18 @@ public class StorageService {
             String accessKey = userInfoDto.getNCloudAccessKey();
             String secretKey = userInfoDto.getNCloudSecretKey();
 
-            customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
+            String keyName = customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
+
+            FileObject fileObject = new FileObject();
+            fileObject.setOrgFileName(multipartFile.getOriginalFilename());
+            fileObject.setKeyName(keyName);
+
+            listObject.add(fileObject);
 
             targetFile.delete();
         }
 
-        return new FileUploadResponse(fileCnt, fileSize);
+        return new FileUploadResponse(fileCnt, fileSize, listObject);
     }
 
     public void deleteObject(String bucketName, String objectName, LoginUserInfo loginUserInfo){
@@ -544,5 +558,43 @@ public class StorageService {
         List<UserInfoDto> listUserInfoDto = userService.getOnlyMyUploader(reqStorageInfoDto.getDiseaseManagerUserSeq());
         listUserInfoDto.add(0, reqStorageInfoDto.getDiseaseManagerUserInfo());
         return listUserInfoDto;
+    }
+
+    public FileUploadResponse uploadBoardFile(String folderName, List<MultipartFile> multipartFiles) throws InterruptedException {
+        int fileCnt = 0;
+        long fileSize = 0L;
+
+        String bucketName = "dranswer-upload-files";
+        List<FileObject> listObject = new ArrayList<>();
+
+        for(MultipartFile multipartFile : multipartFiles){
+            fileCnt++;
+            fileSize += multipartFile.getSize();
+            File targetFile = new File("/drAnswer/temp/" + multipartFile.getOriginalFilename());
+            try {
+                InputStream fileStream = multipartFile.getInputStream();
+                FileUtils.copyInputStreamToFile(fileStream, targetFile);
+            } catch (IOException e) {
+                FileUtils.deleteQuietly(targetFile);
+                e.printStackTrace();
+            }
+
+            String objectName = new Date().getTime() + "_" + multipartFile.getOriginalFilename();
+
+            String accessKey = laifServerAccessKey;
+            String secretKey = laifServerSecretKey;
+
+            String keyName = customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
+
+            FileObject fileObject = new FileObject();
+            fileObject.setOrgFileName(multipartFile.getOriginalFilename());
+            fileObject.setKeyName(keyName);
+
+            listObject.add(fileObject);
+
+            targetFile.delete();
+        }
+
+        return new FileUploadResponse(fileCnt, fileSize, listObject);
     }
 }

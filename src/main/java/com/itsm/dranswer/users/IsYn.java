@@ -29,7 +29,7 @@ public enum IsYn {
                 return obj;
             }
         }
-        return null;
+        return IsYn.N;
     }
 
     public static List<Map<String, String>> codes(){

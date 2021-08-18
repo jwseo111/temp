@@ -249,7 +249,7 @@ public class CustomObjectStorage {
         s3.setBucketAcl(bucketName, accessControlList);
     }
 
-    public void uploadObject(String endPoint, String regionName,
+    public String uploadObject(String endPoint, String regionName,
                              String accessKey, String secretKey,
                              String bucketName, String folderName,
                              String objectName, File file) throws InterruptedException {
@@ -257,9 +257,9 @@ public class CustomObjectStorage {
         final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
 
         if(checkFileSize(file)){
-            this.multipartUpload(s3, bucketName, folderName, objectName, file);
+            return this.multipartUpload(s3, bucketName, folderName, objectName, file);
         }else {
-            this.upload(s3, bucketName, folderName, objectName, file);
+            return this.upload(s3, bucketName, folderName, objectName, file);
         }
 
     }
@@ -296,13 +296,15 @@ public class CustomObjectStorage {
         }
     }
 
-    private void upload(AmazonS3 s3, String bucketName, String folderName, String objectName, File file){
+    private String upload(AmazonS3 s3, String bucketName, String folderName, String objectName, File file){
 
         try {
             String keyName = folderName+objectName;
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, file);
             s3.putObject(putObjectRequest);
-            System.out.format("Object %s has been created.\n", objectName);
+//            System.out.format("Object %s has been created.\n", objectName);
+
+            return keyName;
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
             throw e;
@@ -312,7 +314,7 @@ public class CustomObjectStorage {
         }
     }
 
-    private void multipartUpload(AmazonS3 s3, String bucketName, String folderName, String objectName, File file) throws InterruptedException {
+    private String multipartUpload(AmazonS3 s3, String bucketName, String folderName, String objectName, File file) throws InterruptedException {
         String keyName = folderName+objectName;
 
         TransferManager tm = TransferManagerBuilder.standard()
@@ -323,5 +325,7 @@ public class CustomObjectStorage {
 
         Upload upload = tm.upload(bucketName, keyName, file);
         upload.waitForCompletion();
+
+        return keyName;
     }
 }

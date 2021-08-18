@@ -74,6 +74,7 @@ public class BoardService {
     }
 
     public void deleteNotice(Long noticeSeq) {
+        noticeFileRepo.deleteByNoticeSeq(noticeSeq);
         noticeRepo.deleteById(noticeSeq);
     }
 

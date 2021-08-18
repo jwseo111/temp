@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NoticeFileRepo extends JpaRepository<NoticeFile, Long> {
+    void deleteByNoticeSeq(Long noticeSeq);
 }

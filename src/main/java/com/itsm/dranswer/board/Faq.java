@@ -23,11 +23,21 @@ public class Faq extends BaseEntity implements Serializable {
 
     @Column(columnDefinition = "varchar(36) COMMENT 'Faq 유형'")
     @Enumerated(EnumType.STRING)
-    private QuestionType fapType;
+    private QuestionType faqType;
 
     @Column(columnDefinition = "varchar(100) COMMENT 'Faq 제목'")
     private String title;
 
     @Column(columnDefinition = "text COMMENT 'Faq 내용'")
     private String contents;
+
+    public Faq(FaqDto faqDto) {
+        this.faqType = faqDto.getFaqType();
+        this.title = faqDto.getTitle();
+        this.contents = faqDto.getContents();
+    }
+
+    public FaqDto convertDto() {
+        return new FaqDto(this);
+    }
 }

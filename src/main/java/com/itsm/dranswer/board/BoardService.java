@@ -21,13 +21,16 @@ public class BoardService {
 
     private final NoticeRepo noticeRepo;
 
+    private final NoticeRepoSupport noticeRepoSupport;
+
     private final NoticeFileRepo noticeFileRepo;
 
     private final StorageService storageService;
 
     @Autowired
-    public BoardService(NoticeRepo noticeRepo, NoticeFileRepo noticeFileRepo, StorageService storageService) {
+    public BoardService(NoticeRepo noticeRepo, NoticeRepoSupport noticeRepoSupport, NoticeFileRepo noticeFileRepo, StorageService storageService) {
         this.noticeRepo = noticeRepo;
+        this.noticeRepoSupport = noticeRepoSupport;
         this.noticeFileRepo = noticeFileRepo;
         this.storageService = storageService;
     }
@@ -69,7 +72,14 @@ public class BoardService {
 
         notice.incCnt();
 
-        return notice.convertDto();
+        NoticeDto prev = noticeRepoSupport.prev(noticeSeq);
+        NoticeDto next = noticeRepoSupport.next(noticeSeq);
+
+        NoticeDto noticeDto = notice.convertDto();
+
+        noticeDto.setPrevAndNext(prev, next);
+
+        return noticeDto;
 
     }
 

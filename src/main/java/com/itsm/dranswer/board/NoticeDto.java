@@ -30,6 +30,9 @@ public class NoticeDto extends BaseEntity {
 
     private List<NoticeFileDto> noticeFiles = new ArrayList<>();
 
+    private NoticeDto prev;
+    private NoticeDto next;
+
     public NoticeDto(Notice notice){
         copyProperties(notice, this);
         setNoticeFiles(notice.getNoticeFiles());
@@ -37,6 +40,11 @@ public class NoticeDto extends BaseEntity {
 
     private void setNoticeFiles(List<NoticeFile> noticeFiles) {
         this.noticeFiles = noticeFiles.stream().map(NoticeFileDto::new).collect(Collectors.toList());
+    }
+
+    public void setPrevAndNext(NoticeDto prev, NoticeDto next) {
+        this.prev = prev;
+        this.next = next;
     }
 }
 

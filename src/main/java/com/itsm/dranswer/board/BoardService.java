@@ -108,7 +108,7 @@ public class BoardService {
 
         SimpleDateFormat fm = new SimpleDateFormat("yyyyMMdd");
         String yyyyMMdd = fm.format(new Date());
-        String folderName = "notice/" + yyyyMMdd + "/" + loginUserInfo.getUserSeq();
+        String folderName = "notice/" + yyyyMMdd + "/" + noticeSeq + "/"+ loginUserInfo.getUserSeq();
 
         FileUploadResponse response = storageService.uploadBoardFile(folderName, multipartFiles);
 

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/board/noticeView.js}"></script>
+        <script>
+            const noticeSeq = "[[${param.noticeSeq}]]";
+        </script>
+    </th:block>
+
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="content" >
+            <div class="sub-title-box">
+                <h2>공지사항</h2>
+                <p>Notice</p>
+                <hr>
+            </div>
+
+            <table class="table-list mt-60">
+                <colgroup>
+                    <col style="width:5%" />
+                    <col/>
+                    <col style="width:15%" />
+                    <col style="width:10%" />
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col" class="a-l pl-20">제목</th>
+                    <th scope="col">게시일</th>
+                    <th scope="col">조회수</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td v-if="notice.importantYn === 'Y'" class="t-red">중요</td>
+                    <td v-else>{{notice.noticeSeq}}</td>
+                    <td class="a-l t-w700 t-20">{{notice.title}}</td>
+                    <td v-if="notice.createdDate === null" align="center">-</td>
+                    <td v-else align="center">{{notice.createdDate.substr(0,10)}}</td>
+                    <td>{{notice.inqCount}}</td>
+                </tr>
+                <tr >
+                    <td colspan="4" class="table-td-cont">
+<!--                        <div>{{notice.contents}}</div>-->
+                        <textarea class="write-textarea" ref="contents" v-bind:value="notice.contents" readonly></textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div v-if="notice.noticeFiles.length > 0">
+                <ul>
+                    <span class="join-input-group w-100">
+                        <label>첨부파일</label>
+                    </span>
+                    </ul>
+                    <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
+                    <li v-for="(item, idx) in notice.noticeFiles">
+                        <label><a href="#" v-on:click="onclickDownload(item.fileSeq)">{{item.fileName}}</a></label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="btn-box a-r mt-80">
+                <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
+                <a v-if="userInfo.userRole === 'ADMIN'" href="#" class="com-btn btn-w-208 ml-10" v-on:click="onclickModify">수정</a>
+                <a v-if="userInfo.userRole === 'ADMIN'" href="#" class="com-btn btn-w-208 ml-10" v-on:click="onclickDelete">삭제</a>
+            </div>
+
+            <table class="table-list mt-80">
+                <colgroup>
+                    <col style="width:8%" />
+                    <col/>
+                </colgroup>
+                <tbody>
+                <tr class="bdr-top tr-link">
+                    <td class="t-bl t-w700">이전글</td>
+                    <td v-if="notice.prev === null" class="a-l  t-18">이전 글이 없습니다.</td>
+                    <td v-else class="a-l  t-18"><a href="javascript:void(0);" v-on:click="onclickView(notice.prev.noticeSeq)">{{notice.prev.title}}<a/></td>
+                </tr>
+                <tr class="tr-link" onClick="onclickView(notice.next.noticeSeq)'">
+                    <td class="t-bl t-w700">다음글</td>
+                    <td v-if="notice.next === null" class="a-l  t-18">다음 글이 없습니다.</td>
+                    <td v-else class="a-l  t-18"><a href="javascript:void(0);" v-on:click="onclickView(notice.next.noticeSeq)">{{notice.next.title}}</a></td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        </script>
+    </div>
+</html>

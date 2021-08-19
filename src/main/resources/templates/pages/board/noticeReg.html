@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/board/noticeReg.js}"></script>
+        <script>
+            const noticeSeq = "[[${param.noticeSeq}]]";
+            //const noticeMode = "[[${param.noticeMode}]]";
+        </script>
+    </th:block>
+
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="content" >
+            <div class="sub-title-box">
+                <h2>공지사항</h2>
+                <p>Notice</p>
+                <hr>
+            </div>
+
+            <div class="join-cont-box">
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group">
+                            <label>제목<span>*</span></label>
+                            <input v-if="noticeReg"type="text" ref="title" v-model="saveInfo.title" placeholder="제목을 입력해주세요">
+                            <input v-else type="text" ref="title" v-model="saveInfo.title">
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>중요여부<span>*</span></label>
+                            <span class="radio-wrap join-radio bdr-b">
+                                    <input type="radio" ref="importantY" id="importantY" v-model="saveInfo.importantYn" value="Y"/>
+                                    <label for="importantY"><span></span>예</label>
+                                    <input type="radio" ref="importantN" id="importantN" v-model="saveInfo.importantYn" value="N"/>
+                                    <label for="importantN"><span></span>아니오</label>
+                                </span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>내용<span>*</span></label>
+                            <textarea v-if="noticeReg" class="write-textarea" ref="contents" v-model="saveInfo.contents" placeholder="내용을 입력해주세요"></textarea>
+                            <textarea v-else class="write-textarea" ref="contents" v-model="saveInfo.contents"></textarea>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>첨부파일</label>
+<!--                             <input type="file" id="uploadFile"  ref="multipartFile" style="display:block;">-->
+                            <input type="file" id="uploadFile"  ref="uploadFile" style="border: 0px;">
+<!--                             <a href="#" class="com-btn btn-w-332 ml-10" v-on:click="document.getElementById('uploadFile').click();">파일찾기</a>-->
+
+<!--                            <div class="filebox">-->
+<!--                            <input type="file" id="uploadFile"  ref="uploadFile" style="display:block;">-->
+<!--                            </div>-->
+                        </span>
+                    </li>
+                </ul>
+                <ul v-if="notice != null" class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
+                    <li v-for="(item, idx) in notice.noticeFiles">
+                        <label><a href="#" v-on:click="onclickDownload(item.fileSeq)">{{item.fileName}}</a></label>
+                    </li>
+                </ul>
+            </div>
+
+<!--            <div class="upload-btn-box mt-20">-->
+<!--                <input type="file" id="uploadFile"  ref="multipartFile" multiple style="display: none;">-->
+<!--                <a href="#">-->
+<!--                    <img src="/images/upload_icon1.png" @click="document.getElementById('uploadFile').click();"/>파일 업로드-->
+<!--                </a>-->
+<!--            </div>-->
+
+
+
+            <div class="btn-box a-r mt-60">
+                <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCancel">취소</a>
+                <a v-if="noticeReg" href="#" class="com-btn btn-w-332 ml-10" v-on:click="onclickSave">등록</a>
+                <a v-else href="#" class="com-btn btn-w-332 ml-10" v-on:click="onclickSave">수정</a>
+            </div>
+        </div>
+
+        </script>
+    </div>
+</html>

@@ -98,7 +98,13 @@ public class BoardService {
     public NoticeDto saveNoticeFile(String sNoticeSeq, List<MultipartFile> multipartFiles, LoginUserInfo loginUserInfo)
             throws InterruptedException {
 
-        Long noticeSeq = Long.parseLong(sNoticeSeq);
+        Long noticeSeq = null;
+
+        try{
+            noticeSeq = Long.parseLong(sNoticeSeq);
+        }catch (NumberFormatException e){
+            throw new NumberFormatException("공지사항 번호의 형식이 올바르지 않습니다.");
+        }
 
         SimpleDateFormat fm = new SimpleDateFormat("yyyyMMdd");
         String yyyyMMdd = fm.format(new Date());

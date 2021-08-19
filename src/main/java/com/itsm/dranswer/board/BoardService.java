@@ -25,13 +25,19 @@ public class BoardService {
 
     private final NoticeFileRepo noticeFileRepo;
 
+    private final FaqRepo faqRepo;
+
+    private final FaqRepoSupport faqRepoSupport;
+
     private final StorageService storageService;
 
     @Autowired
-    public BoardService(NoticeRepo noticeRepo, NoticeRepoSupport noticeRepoSupport, NoticeFileRepo noticeFileRepo, StorageService storageService) {
+    public BoardService(NoticeRepo noticeRepo, NoticeRepoSupport noticeRepoSupport, NoticeFileRepo noticeFileRepo, FaqRepo faqRepo, FaqRepoSupport faqRepoSupport, StorageService storageService) {
         this.noticeRepo = noticeRepo;
         this.noticeRepoSupport = noticeRepoSupport;
         this.noticeFileRepo = noticeFileRepo;
+        this.faqRepo = faqRepo;
+        this.faqRepoSupport = faqRepoSupport;
         this.storageService = storageService;
     }
 
@@ -109,5 +115,35 @@ public class BoardService {
         Notice notice = noticeRepo.findById(noticeSeq).orElseThrow(()-> new NotFoundException("존재하지 않는 정보 입니다."));
 
         return notice.convertDto();
+    }
+
+    public Page<FaqDto> pageFaqs(QuestionType questionType, String keyword, Pageable pageable) {
+
+        return faqRepoSupport.searchAll(questionType, keyword, pageable);
+    }
+
+    public FaqDto faq(Long faqSeq) {
+
+        FaqDto faqDto = faqRepo.findById(faqSeq).orElseThrow(()->new NotFoundException("존재하지 않는 정보 입니다")).convertDto();
+
+        FaqDto prev = faqRepoSupport.prev(faqSeq);
+        FaqDto next = faqRepoSupport.next(faqSeq);
+
+        faqDto.setPrevAndNext(prev, next);
+
+        return faqDto;
+    }
+
+    public void deleteFaq(Long faqSeq) {
+        faqRepo.deleteById(faqSeq);
+    }
+
+    public FaqDto saveFaq(FaqDto request) {
+
+        Faq faq = new Faq(request);
+
+        faq = faqRepo.save(faq);
+
+        return faq.convertDto();
     }
 }

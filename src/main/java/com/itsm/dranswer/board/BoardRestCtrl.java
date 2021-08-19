@@ -70,4 +70,41 @@ public class BoardRestCtrl {
 
         return success(boardService.saveNoticeFile(sNoticeSeq, multipartFiles, loginUserInfo));
     }
+
+
+    @GetMapping(value = "/board/faq/list")
+    public ApiResult<Page<FaqDto>> getFaqList(
+            @RequestParam(required = false) QuestionType questionType,
+            @RequestParam(required = false) String keyword,
+            Pageable pageable){
+
+        Page<FaqDto> pageFaqs =
+                boardService.pageFaqs(questionType, keyword, pageable);
+
+        return success(pageFaqs);
+    }
+
+    @GetMapping(value = "/board/faq/get/{faqSeq:.+(?<!\\.js)$}")
+    public ApiResult<FaqDto> getFaq(
+            @PathVariable Long faqSeq){
+
+        return success(boardService.faq(faqSeq));
+    }
+
+    @PostMapping(value = "/board/faq/delete/{faqSeq:.+(?<!\\.js)$}")
+    public ApiResult<FaqDto> deleteFaq(
+            @PathVariable Long faqSeq){
+
+        boardService.deleteFaq(faqSeq);
+
+        return success(null);
+    }
+
+    @PostMapping(path = "/board/faq/save")
+    public ApiResult<FaqDto> saveFaq(
+            @RequestBody
+                    FaqDto request){
+
+        return success(boardService.saveFaq(request));
+    }
 }

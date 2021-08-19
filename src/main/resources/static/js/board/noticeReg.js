@@ -133,7 +133,7 @@ Vue.component('maincontents', {
                     }
                     break;
                 case TID.SAVE:
-                    //console.log(results);
+                    console.log(results);
                     this.saveCallback(results);
                     break;
                 case TID.UPLOAD:
@@ -157,9 +157,9 @@ Vue.component('maincontents', {
             }
         },
         saveCallback: function (results) {
-            console.log(results);//tmp
+            //console.log(results);
             if (results.success) {
-                // 첨부파일이 있을 경우 첨부파일 등록 로직 추가
+                // 저장 성공시 첨부파일이 있을 경우 첨부파일 등록 로직 추가
                 const frm = new FormData();
                 const uploadFile = this.$refs.uploadFile;
                 console.log("### 파일 : " + uploadFile.files.length);//tmp
@@ -168,6 +168,8 @@ Vue.component('maincontents', {
                         frm.append("multipartFile", uploadFile.files[i]);
                         console.log("uploadFile.files : "  +uploadFile.files[i].name);//tmp
                     }
+                    //
+                    this.noticeSeq = results.response.noticeSeq;
                     frm.append("noticeSeq", this.noticeSeq);
                     console.log(frm);
                     fileUpload(TID.UPLOAD, "/board/notice/file/upload", frm, this.callback);
@@ -196,17 +198,19 @@ function fileUpload(tid, uri, formData, callback){
         //onUploadProgress: progressEvent => progEvent(progressEvent),
         headers: headers
     };
-
+    openLoading();
     axios.post(uri, formData, config)
         .then((response) => {
             // 응답 처리
             callback(tid, response.data);
+            closeLoading();
         })
         .catch((error) => {
             // 예외 처리
             if (error.response) {
                 // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
                 callback(tid, error.response.data);
+                closeLoading();
             }
             else if (error.request) {
                 // 요청이 이루어 졌으나 응답을 받지 못했습니다.

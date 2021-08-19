@@ -41,9 +41,55 @@ public class CustomObjectStorage {
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))
                 .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
                 .build();
+
         return s3;
     }
-    
+
+    public void putBucketCORS(String endPoint, String regionName,
+                              String accessKey, String secretKey, String bucketName){
+
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
+
+        BucketCrossOriginConfiguration bucketCrossOriginConfiguration = new BucketCrossOriginConfiguration();
+
+        CORSRule corsRule = new CORSRule();
+        corsRule.setAllowedOrigins("*");
+        corsRule.setAllowedHeaders("*");
+        corsRule.setExposedHeaders("ETag");
+        corsRule.setMaxAgeSeconds(3000);
+        corsRule.setAllowedMethods(CORSRule.AllowedMethods.GET, CORSRule.AllowedMethods.PUT,
+                CORSRule.AllowedMethods.POST, CORSRule.AllowedMethods.HEAD);
+
+        bucketCrossOriginConfiguration.withRules(corsRule);
+
+        s3.setBucketCrossOriginConfiguration(bucketName, bucketCrossOriginConfiguration);
+
+    }
+
+    public void getBucketCORS(String endPoint, String regionName,
+                              String accessKey, String secretKey, String bucketName){
+
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
+
+        BucketCrossOriginConfiguration b = s3.getBucketCrossOriginConfiguration(bucketName);
+        for(CORSRule corsRule : b.getRules()){
+            corsRule.getAllowedOrigins().forEach(e->{
+//                System.out.println(e);
+            });
+        }
+
+        CannedAccessControlList cannedAccessControlList = CannedAccessControlList.PublicRead;
+        s3.setBucketAcl(bucketName, cannedAccessControlList);
+
+        AccessControlList accessControlList =  s3.getBucketAcl(bucketName);
+        for(Grant grant : accessControlList.getGrantsAsList()){
+            System.out.println("dpName = "+accessControlList.getOwner().getDisplayName());
+            System.out.println("getIdentifier = "+grant.getGrantee().getIdentifier());
+            System.out.println("permName = "+grant.getPermission().name());
+
+        }
+    }
+
     /**
      * 
      * @methodName : makeBucket
@@ -252,16 +298,21 @@ public class CustomObjectStorage {
     public String uploadObject(String endPoint, String regionName,
                              String accessKey, String secretKey,
                              String bucketName, String folderName,
-                             String objectName, File file) throws InterruptedException {
+                             String objectName, File file,
+                               CannedAccessControlList cannedAccessControlList) throws InterruptedException {
 
         final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
 
+        String keyName = folderName+objectName;
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, file).withCannedAcl(cannedAccessControlList);
+
         if(checkFileSize(file)){
-            return this.multipartUpload(s3, bucketName, folderName, objectName, file);
+            this.multipartUpload(s3, putObjectRequest);
         }else {
-            return this.upload(s3, bucketName, folderName, objectName, file);
+            this.upload(s3, putObjectRequest);
         }
 
+        return keyName;
     }
 
     public void deleteObject(String endPoint, String regionName,
@@ -296,15 +347,11 @@ public class CustomObjectStorage {
         }
     }
 
-    private String upload(AmazonS3 s3, String bucketName, String folderName, String objectName, File file){
+    private void upload(AmazonS3 s3, PutObjectRequest putObjectRequest){
 
         try {
-            String keyName = folderName+objectName;
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, file);
             s3.putObject(putObjectRequest);
-//            System.out.format("Object %s has been created.\n", objectName);
 
-            return keyName;
         } catch (AmazonS3Exception e) {
             e.printStackTrace();
             throw e;
@@ -314,18 +361,15 @@ public class CustomObjectStorage {
         }
     }
 
-    private String multipartUpload(AmazonS3 s3, String bucketName, String folderName, String objectName, File file) throws InterruptedException {
-        String keyName = folderName+objectName;
+    private void multipartUpload(AmazonS3 s3, PutObjectRequest putObjectRequest) throws InterruptedException {
 
         TransferManager tm = TransferManagerBuilder.standard()
                 .withS3Client(s3)
                 .withMultipartUploadThreshold((long) (10 * 1024 * 1024))
                 .withExecutorFactory(() -> Executors.newFixedThreadPool(10))
                 .build();
-
-        Upload upload = tm.upload(bucketName, keyName, file);
+        Upload upload = tm.upload(putObjectRequest);
         upload.waitForCompletion();
 
-        return keyName;
     }
 }

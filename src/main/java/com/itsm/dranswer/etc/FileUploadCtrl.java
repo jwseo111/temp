@@ -1,5 +1,6 @@
 package com.itsm.dranswer.etc;
 
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class FileUploadCtrl {
 
             String objectName = multipartFile.getOriginalFilename();
 
-            customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
+            customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile, CannedAccessControlList.Private);
 
             targetFile.delete();
         }

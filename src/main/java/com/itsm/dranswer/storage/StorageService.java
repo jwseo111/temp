@@ -10,6 +10,7 @@ package com.itsm.dranswer.storage;
  */
 
 
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
@@ -516,7 +517,8 @@ public class StorageService {
             String accessKey = userInfoDto.getNCloudAccessKey();
             String secretKey = userInfoDto.getNCloudSecretKey();
 
-            String keyName = customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
+            String keyName = customObjectStorage.uploadObject(endPoint, regionName,
+                    accessKey, secretKey, bucketName, folderName, objectName, targetFile, CannedAccessControlList.Private);
 
             FileObject fileObject = new FileObject();
             fileObject.setOrgFileName(multipartFile.getOriginalFilename());
@@ -584,7 +586,8 @@ public class StorageService {
             String accessKey = laifServerAccessKey;
             String secretKey = laifServerSecretKey;
 
-            String keyName = customObjectStorage.uploadObject(endPoint, regionName, accessKey, secretKey, bucketName, folderName, objectName, targetFile);
+            String keyName = customObjectStorage.uploadObject(endPoint, regionName, accessKey,
+                    secretKey, bucketName, folderName, objectName, targetFile, CannedAccessControlList.PublicRead);
 
             FileObject fileObject = new FileObject();
             fileObject.setOrgFileName(multipartFile.getOriginalFilename());

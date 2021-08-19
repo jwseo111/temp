@@ -2,7 +2,9 @@ package com.itsm.dranswer.board;
 
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
+import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +21,12 @@ public class BoardRestCtrl {
 
     private final BoardService boardService;
 
+    private final CustomObjectStorage customObjectStorage;
+
     @Autowired
-    public BoardRestCtrl(BoardService boardService) {
+    public BoardRestCtrl(BoardService boardService, CustomObjectStorage customObjectStorage) {
         this.boardService = boardService;
+        this.customObjectStorage = customObjectStorage;
     }
 
     @GetMapping(value = "/board/notice/list")
@@ -106,5 +111,29 @@ public class BoardRestCtrl {
                     FaqDto request){
 
         return success(boardService.saveFaq(request));
+    }
+
+    @Value("${ncp.laif.end-point}")
+    private String endPoint;
+    @Value("${ncp.laif.region-name}")
+    private String regionName;
+    @Value("${ncp.laif.access-key}")
+    private String laifAccessKey;
+    @Value("${ncp.laif.secret-key}")
+    private String laifSecretKey;
+    @Value("${ncp.laif.server-access-key}")
+    private String laifServerAccessKey;
+    @Value("${ncp.laif.server-secret-key}")
+    private String laifServerSecretKey;
+
+    @GetMapping(path = "/board/test")
+    public ApiResult<String> test(){
+
+        String bucketName = "dranswer-upload-files";
+
+        customObjectStorage.putBucketCORS(endPoint, regionName, laifServerAccessKey, laifServerSecretKey, bucketName);
+        customObjectStorage.getBucketCORS(endPoint, regionName, laifServerAccessKey, laifServerSecretKey, bucketName);
+
+        return success("OK");
     }
 }

@@ -40,4 +40,10 @@ public class Faq extends BaseEntity implements Serializable {
     public FaqDto convertDto() {
         return new FaqDto(this);
     }
+
+    public void update(FaqDto faqDto) {
+        this.questionType = faqDto.getQuestionType();
+        this.title = faqDto.getTitle();
+        this.contents = faqDto.getContents();
+    }
 }

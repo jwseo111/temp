@@ -55,6 +55,7 @@ public class BoardService {
 
         if(noticeDto.getNoticeSeq() == null){
             notice = new Notice(noticeDto);
+            notice = noticeRepo.save(notice);
         }else{
             notice = noticeRepo.findById(noticeDto.getNoticeSeq())
                     .orElseThrow(() -> new NotFoundException("존재하지 않는 정보 입니다."));
@@ -138,11 +139,17 @@ public class BoardService {
         faqRepo.deleteById(faqSeq);
     }
 
-    public FaqDto saveFaq(FaqDto request) {
+    public FaqDto saveFaq(FaqDto faqDto) {
 
-        Faq faq = new Faq(request);
+        Faq faq = null;
+        if(faqDto.getFaqSeq() == null){
+            faq = new Faq(faqDto);
+            faq = faqRepo.save(faq);
+        }else{
+            faq = faqRepo.findById(faqDto.getFaqSeq()).orElseThrow(()->new NotFoundException("존재하지 않는 정보 입니다."));
+            faq.update(faqDto);
+        }
 
-        faq = faqRepo.save(faq);
 
         return faq.convertDto();
     }

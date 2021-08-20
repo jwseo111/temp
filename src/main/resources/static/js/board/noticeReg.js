@@ -169,7 +169,8 @@ Vue.component('maincontents', {
                     frm.append("noticeSeq", this.noticeSeq);
                     fileUpload(TID.UPLOAD, "/board/notice/file/upload", frm, this.callback);
                 } else {
-                        alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
+                    this.noticeSeq = results.response.noticeSeq;
+                    alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
                 }
 
             } else {

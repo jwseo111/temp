@@ -25,7 +25,7 @@ Vue.component('maincontents', {
                 page: 0,
                 size: 5,
                 keyword: "",
-                sort: ""
+                sort: "importantYn"
             },
             noticeList: [],
             pageInfo: {
@@ -89,9 +89,6 @@ Vue.component('maincontents', {
                     break;
             }
         },
-        login: function() {
-            location.href = "/login";
-        },
         searchCallback: function (results) {
             if (results.success) {
                 //console.log(results);
@@ -99,6 +96,7 @@ Vue.component('maincontents', {
                 this.noticeList = results.response.content;
             } else {
                 //console.log(results);
+                alertMsg(results.error.message);
             }
         },
         makePageNavi: function (pageable, total) {

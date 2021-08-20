@@ -14,6 +14,7 @@ import com.itsm.dranswer.storage.ReqStorageStat;
 import com.itsm.dranswer.users.AgencyType;
 import com.itsm.dranswer.users.IsYn;
 import com.itsm.dranswer.users.JoinStat;
+import com.itsm.dranswer.board.QuestionType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,6 +63,9 @@ public class CodeRestCtrl {
                 break;
             case "IsYn":
                 codes = IsYn.codes();
+                break;
+            case "QuestionType":
+                codes = QuestionType.codes();
                 break;
         }
 

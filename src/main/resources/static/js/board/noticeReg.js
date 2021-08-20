@@ -26,6 +26,7 @@ Vue.component('maincontents', {
             noticeSeq : noticeSeq,
             noticeReg : true,
             notice : [],
+            noticeFiles : [],
             userInfo : [],
             messages : "",
             saveInfo: {
@@ -33,7 +34,8 @@ Vue.component('maincontents', {
                 importantYn : "",
                 contents : ""
             },
-
+            maxFileCnt : 5,
+            maxFileSize : 5,
         };
     },
     mounted:function(){
@@ -54,36 +56,38 @@ Vue.component('maincontents', {
         getUserInfo: function(){
             get("usrInfo","/user/my/info",{},this.callback);
         },
-        // 업로드 변경
-        onchangeUpload : function(){
-            /*
-                        const frm = new FormData();
-                        const multipartFile = this.$refs.multipartFile;
-                        //for(let i in multipartFile.files){
-                        for(let i=0; i<multipartFile.files.length;i++){
-                            frm.append("multipartFile", multipartFile.files[i]);
-                            frm.append("bucketName",this.cond.bucketName);
-                            frm.append("folderName",this.cond.folderName);
-                            this.fileName = multipartFile.files[i].name;
 
-                        }
-                        this.messages = "";
-
-                        fileUpload(TID.UPLOAD, "/my/management/storage/object/fileUpload", frm, this.uploadProgressEvent, this.callback);
-            */
-            this.messages = "";
-            const multipartFile = this.$refs.multipartFile;
-            let uri="/my/management/storage/object/fileUpload";
-            let bucketName = this.cond.bucketName;
-            let folderName = this.cond.folderName;
-            fileUpload(TID.UPLOAD, uri, multipartFile, this.uploadProgressEvent, this.callback, bucketName, folderName);
-
+        onChange: function(e, idx) {
+            document.getElementById("uploadText"+idx).value = e.target.files[0].name;
+            if(!this.fileSizeChk(e.target.files[0])) {
+                alertMsg("첨부파일 사이즈는  5MB 이내로 등록 가능합니다.");
+                document.getElementById("uploadFile"+idx).value = "";
+                document.getElementById("uploadText"+idx).value = "";
+                return false;
+            }
+        },
+        // 신규 첨부파일 삭제
+        onClickFileDelete: function (idx) {
+            document.getElementById("uploadFile"+idx).value = "";
+            document.getElementById("uploadText"+idx).value = "";
+        },
+        // 기존 첨부파일 삭제
+        onClickOrgFileDelete: function (fileSeq) {
+            let idx = this.noticeFiles.findIndex(function(key) {return  key.fileSeq === fileSeq});
+            this.noticeFiles.splice(idx, 1);
         },
         // 취소 클릭(목록 이동)
         onclickCancel: function () {
-            location.href = "/board/notice/main";
+            if(this.noticeSeq) { // 수정중
+                location.href = "/board/notice/view?noticeSeq="+this.noticeSeq;
+            } else { // 신규등록
+                location.href = "/board/notice/main";
+            }
         },
-
+        // (상세보기)
+        onclickView: function () {
+            location.href = "/board/notice/view?noticeSeq="+this.noticeSeq;
+        },
         // 저장 메소드 호출
         onclickSave:function () {
 
@@ -99,6 +103,7 @@ Vue.component('maincontents', {
                 alertMsg("내용은 필수입니다.", this.$refs.contents);
                 return false;
             }
+
             confirmMsg("저장하시겠습니까?",this.save);
         },
         save: function() {
@@ -107,18 +112,7 @@ Vue.component('maincontents', {
                 this.saveInfo,
                 this.callback);
         },
-        // 파일 업로드
-        fileUpload: function () {
-            const frm = new FormData();
-            const multipartFile = this.$refs.multipartFile;
-            //for(let i in multipartFile.files){
-            for(let i=0; i<multipartFile.files.length;i++){
-                frm.append("multipartFile", multipartFile.files[i]);
 
-                this.fileName = multipartFile.files[i].name;
-            }
-
-        },
         callback: function (tid, results) {
             switch (tid) {
                 case TID.SEARCH:
@@ -138,8 +132,8 @@ Vue.component('maincontents', {
                     break;
                 case TID.UPLOAD:
                     if (results.success) {
-                        console.log(results);
-                        alertMsgRtn("정상적으로 저장되었습니다.",this.onclickCancel);
+                        //console.log(results);
+                        alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
                     } else {
                         //console.log(results);
                         alertMsg(results.error.message);
@@ -149,9 +143,10 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results);
+                //console.log(results);
                 this.notice      = results.response;
                 this.saveInfo = this.notice;
+                this.noticeFiles = results.response.noticeFiles;
             } else {
                 alertMsg(results.error.message);
             }
@@ -161,21 +156,20 @@ Vue.component('maincontents', {
             if (results.success) {
                 // 저장 성공시 첨부파일이 있을 경우 첨부파일 등록 로직 추가
                 const frm = new FormData();
-                const uploadFile = this.$refs.uploadFile;
-                console.log("### 파일 : " + uploadFile.files.length);//tmp
-                if(uploadFile.files.length > 0) {
-                    for (let i in uploadFile.files){
-                        frm.append("multipartFile", uploadFile.files[i]);
-                        console.log("uploadFile.files : "  +uploadFile.files[i].name);//tmp
+                let cnt = document.getElementsByName("uploadFile").length;
+                for(let i=1; i < cnt+1 ; i++) {
+                    let file = document.getElementById("uploadFile"+i).files;
+                    if(file[0]) { // 첨부된 파일 있음
+                        frm.append("multipartFile", file[0]);
                     }
-                    //
+                }
+
+                if(frm.getAll("multipartFile").length > 0) {
                     this.noticeSeq = results.response.noticeSeq;
                     frm.append("noticeSeq", this.noticeSeq);
-                    console.log(frm);
                     fileUpload(TID.UPLOAD, "/board/notice/file/upload", frm, this.callback);
-
                 } else {
-                    alertMsgRtn("정상적으로 저장되었습니다.",this.onclickCancel);
+                        alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
                 }
 
             } else {
@@ -183,9 +177,16 @@ Vue.component('maincontents', {
                 alertMsg(results.error.message);
             }
         },
-        // saveRtn: function() {
-        //     location.href = "/lndata/store/main";
-        // },
+        fileSizeChk: function(file) {
+            let maxSize = maxFileSize * 1024 * 1024; // 5MB
+            let fileSize = file.size;
+
+            if(fileSize > maxSize) {
+                return false;
+            } else {
+                return true;
+            }
+        },
     }
 });
 
@@ -199,6 +200,7 @@ function fileUpload(tid, uri, formData, callback){
         headers: headers
     };
     openLoading();
+
     axios.post(uri, formData, config)
         .then((response) => {
             // 응답 처리

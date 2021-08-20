@@ -94,7 +94,7 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results);
+                //console.log(results);
                 this.notice      = results.response;
             } else {
                 alertMsg(results.error.message);

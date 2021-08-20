@@ -94,11 +94,11 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results);
+                //console.log(results);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.noticeList = results.response.content;
             } else {
-                console.log(results);
+                //console.log(results);
             }
         },
         makePageNavi: function (pageable, total) {

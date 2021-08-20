@@ -58,34 +58,27 @@
                             <textarea v-else class="write-textarea" ref="contents" v-model="saveInfo.contents"></textarea>
                         </span>
                     </li>
+                </ul>
+                <ul>
                     <li>
-                        <span class="join-input-group w-100">
+                        <span class="join-input-group w-744">
                             <label>첨부파일</label>
-<!--                             <input type="file" id="uploadFile"  ref="multipartFile" style="display:block;">-->
-                            <input type="file" id="uploadFile"  ref="uploadFile" style="border: 0px;">
-<!--                             <a href="#" class="com-btn btn-w-332 ml-10" v-on:click="document.getElementById('uploadFile').click();">파일찾기</a>-->
+                            <p v-for="(item, idx) in notice.noticeFiles" >
+                                <a href="#" class="btn-s" v-on:click="onClickOrgFileDelete(item.fileSeq)">삭제</a>
+                                <input type="text" v-bind:value="item.fileName" class="mr-30 ml-30" style="width:80%;height:30px;display: inline-block;vertical-align:middle;" readonly>
 
-<!--                            <div class="filebox">-->
-<!--                            <input type="file" id="uploadFile"  ref="uploadFile" style="display:block;">-->
-<!--                            </div>-->
+                            </p>
+                            <p v-for="idx in (maxFileCnt - noticeFiles.length)" >
+                                <a href="#" class="btn-s" v-on:click="onClickFileDelete(idx)">삭제</a>
+                                <input type="file" v-bind:id="['uploadFile' + idx]" ref="['uploadFile' + idx]" name="uploadFile" style="display: none;" @change="onChange($event, idx)">
+                                <input type="text" v-bind:id="['uploadText' + idx]" class="mr-30 ml-30" style="width:80%;height:30px;display: inline-block;vertical-align:middle;" readonly>
+                                <a href="#" class="btn-s" v-on:click="document.getElementById('uploadFile' + idx).click();">파일찾기</a>
+                            </p>
                         </span>
                     </li>
                 </ul>
-                <ul v-if="notice != null" class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
-                    <li v-for="(item, idx) in notice.noticeFiles">
-                        <label><a href="#" v-on:click="onclickDownload(item.fileSeq)">{{item.fileName}}</a></label>
-                    </li>
-                </ul>
+
             </div>
-
-<!--            <div class="upload-btn-box mt-20">-->
-<!--                <input type="file" id="uploadFile"  ref="multipartFile" multiple style="display: none;">-->
-<!--                <a href="#">-->
-<!--                    <img src="/images/upload_icon1.png" @click="document.getElementById('uploadFile').click();"/>파일 업로드-->
-<!--                </a>-->
-<!--            </div>-->
-
-
 
             <div class="btn-box a-r mt-60">
                 <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCancel">취소</a>

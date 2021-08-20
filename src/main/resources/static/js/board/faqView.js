@@ -1,7 +1,7 @@
 
 /*
- * @name : noticeView.js
- * @date : 2021-08-12 오후 3:27
+ * @name : faqView.js
+* @date : 2021-08-17 오전 9:32
  * @author : lsj
  * @version : 1.0.0
  * @modifyed :
@@ -9,8 +9,7 @@
 
 let appMain;
 const TID = {
-    SEARCH : {value: 0, name: "search", code: "S"},
-    DELETE : {value: 0, name: "delete", code: "D"}
+    SEARCH : {value: 0, name: "search", code: "S"}
 };
 window.onload = function(){
     appMain = new Vue({
@@ -22,21 +21,21 @@ Vue.component('maincontents', {
     template : "#main-template",
     data: function() {
         return {
-            noticeSeq : noticeSeq,
-            userInfo : [], // 사용자정보
-            notice : [], // 공지사항 상세
+            faqSeq: faqSeq,
+            userInfo : [],
+            faq: [],
             messages : "",
         };
     },
     mounted:function(){
-        this.getNoticeView();
+        this.getFaqView();
         this.getUserInfo();
     },
     methods:{
-        // 공지사항 상세 조회
-        getNoticeView:function (){
+        // FAQ 상세 조회
+        getFaqView:function (){
             get(TID.SEARCH,
-                "/board/notice/get/"+this.noticeSeq,
+                "/board/faq/get/"+this.faqSeq,
                 {},
                 this.callback);
         },
@@ -45,30 +44,30 @@ Vue.component('maincontents', {
         },
         // 취소 클릭(목록 이동)
         onclickList: function () {
-            location.href = "/board/notice/main";
+            location.href = "/board/faq/main";
         },
-        // 수정 클릭(ADMIN)
+
+        // 수정
         onclickModify: function () {
             confirmMsg("수정하시겠습니까?", this.mod);
         },
         mod: function() {
-            location.href = "/board/notice/reg?noticeSeq="+this.noticeSeq;
+            location.href = "/board/faq/reg?faqSeq="+this.faqSeq;
         },
-        // 삭제 클릭(ADMIN)
+        // 삭제
         onclickDelete: function () {
             confirmMsg("삭제하시겠습니까?", this.del);
         },
         del: function() {
             post(TID.DELETE,
-                "/board/notice/delete/"+this.noticeSeq,
+                "/board/faq/delete/"+this.faqSeq,
                 {},
                 this.callback);
         },
         // 제목 클릭(상세보기)
-        onclickView: function (noticeSeq) {
-            location.href = "/board/notice/view?noticeSeq="+noticeSeq;
+        onclickView: function (faqSeq) {
+            location.href = "/board/faq/view?faqSeq="+faqSeq;
         },
-
         callback: function (tid, results) {
             switch (tid) {
                 case TID.SEARCH:
@@ -89,36 +88,16 @@ Vue.component('maincontents', {
                         alertMsg(results.error.message);
                     }
                     break;
+
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                //console.log(results);
-                this.notice      = results.response;
+                this.faq = results.response;
             } else {
                 alertMsg(results.error.message);
             }
         },
-        onclickDownload:function (file){
-            const bucketAdress = "https://kr.object.ncloudstorage.com/dranswer-upload-files/";
-            const fileName = file.fileName;
-
-            axios({
-                url: bucketAdress+file.filePath,
-                method: 'GET',
-                responseType: 'blob'
-            })
-                .then((response) => {
-                    const url = window.URL
-                        .createObjectURL(new Blob([response.data]));
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', fileName);
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                })
-        }
 
     }
 });

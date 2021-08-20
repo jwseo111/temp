@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/board/faqReg.js}"></script>
+        <script>
+            const faqSeq = "[[${param.faqSeq}]]";
+        </script>
+    </th:block>
+
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="content" >
+            <div class="sub-title-box">
+                <h2>자주묻는 질문</h2>
+                <p>FAQ</p>
+                <hr>
+            </div>
+
+            <div class="join-cont-box mt-60 clearfix">
+                <h3>문의내용</h3>
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group">
+                            <label>제목<span>*</span></label>
+                            <input class="w-100" type="text" ref="title" v-model="saveInfo.title" placeholder="FAQ 제목을 입력해주세요">
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>문의유형<span>*</span></label>
+                            <div class="custom-select"  style="width: 180px;">
+                                <select v-model="saveInfo.questionType" id="questionType" ref="questionType" onchange="selectChange()">
+                                    <option value="">문의내용선택</option>
+                                    <option v-for="option in questionTypeList" v-bind:value="option.name">{{option.desc}}</option>
+                                </select>
+                            </div>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>내용<span>*</span></label>
+                            <textarea class="write-textarea" ref="contents" v-model="saveInfo.contents" placeholder="FAQ 내용을 입력해주세요"></textarea>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="btn-box a-r mt-60">
+                <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCancel">취소</a>
+                <a href="#" class="com-btn btn-w-332 ml-10" v-on:click="onclickSave">저장</a>
+            </div>
+        </div>
+
+        </script>
+    </div>
+</html>

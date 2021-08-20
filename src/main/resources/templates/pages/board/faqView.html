@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/board/faqView.js}"></script>
+        <script>
+            const faqSeq = "[[${param.faqSeq}]]";
+        </script>
+    </th:block>
+
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="content" >
+            <div class="sub-title-box">
+                <h2>자주묻는 질문</h2>
+                <p>FAQ</p>
+                <hr>
+            </div>
+
+            <table class="table-list mt-60">
+                <colgroup>
+                    <col style="width:5%" />
+                    <col style="width:10%" />
+                    <col/>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">문의유형</th>
+                    <th scope="col" class="a-l pl-20">제목</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{faq.faqSeq}}</td>
+                    <td>{{faq.questionType.desc}}</td>
+                    <td class="a-l t-w700 t-20">{{faq.title}}</td>
+                </tr>
+                <tr >
+                    <td colspan="3" class="table-td-cont">
+                        <textarea class="write-textarea" ref="contents" v-bind:value="faq.contents" readonly></textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div v-if="userInfo.userRole === 'ADMIN'" class="btn-box a-r mt-80">
+                <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
+                <a href="#" class="com-btn btn-w-208 ml-10" v-on:click="onclickModify">수정</a>
+                <a href="#" class="com-btn btn-w-208 ml-10" v-on:click="onclickDelete">삭제</a>
+            </div>
+            <div v-else class="btn-box a-r mt-80">
+                <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
+            </div>
+
+            <table class="table-list mt-80">
+                <colgroup>
+                    <col style="width:8%" />
+                    <col/>
+                </colgroup>
+                <tbody>
+                <tr class="bdr-top tr-link">
+                    <td class="t-bl t-w700">이전글</td>
+                    <td v-if="faq.prev === null" class="a-l  t-18">이전 글이 없습니다.</td>
+                    <td v-else class="a-l  t-18"><a href="javascript:void(0);" v-on:click="onclickView(faq.prev.faqSeq)">{{faq.prev.title}}<a/></td>
+                </tr>
+                <tr class="tr-link" onClick="onclickView(faq.next.faqSeq)'">
+                    <td class="t-bl t-w700">다음글</td>
+                    <td v-if="faq.next === null" class="a-l  t-18">다음 글이 없습니다.</td>
+                    <td v-else class="a-l  t-18"><a href="javascript:void(0);" v-on:click="onclickView(faq.next.faqSeq)">{{faq.next.title}}</a></td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        </script>
+    </div>
+</html>

@@ -1,7 +1,7 @@
 
 /*
- * @name : noticeList.js
- * @date : 2021-08-12 오후 3:27
+ * @name : faqList.js
+ * @date : 2021-08-17 오전 9:32
  * @author : lsj
  * @version : 1.0.0
  * @modifyed :
@@ -25,9 +25,10 @@ Vue.component('maincontents', {
                 page: 0,
                 size: 5,
                 keyword: "",
-                sort: "importantYn"
+                questionType:"",
+                sort: ""
             },
-            noticeList: [],
+            faqList: [],
             pageInfo: {
                 curr : 1,
                 max : 1,
@@ -39,12 +40,13 @@ Vue.component('maincontents', {
                 total: 1
             },
             messages : "",
-            userInfo:{},
+            userInfo:[],
+            questionTypeList : getCodeList('QuestionType',this.callback), // 콤보박스 리스트
 
         };
     },
     mounted:function(){
-        this.getNoticeList();
+        this.getFaqList();
         this.getUserInfo();
     },
     methods:{
@@ -55,22 +57,23 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.getNoticeList();
+            this.cond.questionType = this.$refs.questionType.value;
+            this.getFaqList();
         },
         getUserInfo: function(){
             get("usrInfo","/user/my/info",{},this.callback);
         },
         // 목록 > 등록 클릭(화면 이동)
         onclickReg: function () {
-            location.href = "/board/notice/reg";
+            location.href = "/board/faq/reg";
         },
         // 목록 > 제목 클릭(상세보기)
-        onclickView: function (noticeSeq) {
-            location.href = "/board/notice/view?noticeSeq="+noticeSeq;
+        onclickView: function (faqSeq) {
+            location.href = "/board/faq/view?faqSeq="+faqSeq;
         },
-        getNoticeList:function () {
+        getFaqList:function () {
             get(TID.SEARCH,
-                "/board/notice/list",
+                "/board/faq/list",
                 this.cond,
                 this.callback);
         },
@@ -84,15 +87,22 @@ Vue.component('maincontents', {
                         this.userInfo = results.response;
                     } else {
                         console.log(results);
+                        //alertMsg(results.error.message);
                     }
+                    break;
+                case "QuestionType":
+                    this.questionTypeList = results.response;
+                    setTimeout(function() {
+                        loadSelect();
+                    },300);
                     break;
             }
         },
         searchCallback: function (results) {
             if (results.success) {
-                //console.log(results);
+                console.log(results);
                 this.makePageNavi(results.response.pageable, results.response.total);
-                this.noticeList = results.response.content;
+                this.faqList = results.response.content;
             } else {
                 //console.log(results);
                 alertMsg(results.error.message);
@@ -130,7 +140,7 @@ Vue.component('maincontents', {
             } else {
                 this.cond.page = page - 1;
                 this.pageInfo.curr = page;
-                this.getNoticeList();
+                this.getFaqList();
             }
         },
     }

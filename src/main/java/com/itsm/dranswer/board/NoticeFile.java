@@ -43,8 +43,8 @@ public class NoticeFile extends BaseEntity implements Serializable {
         this.filePath = noticeFileDto.getFilePath();
     }
 
-    public NoticeFile(long parseLong, FileUploadResponse.FileObject object) {
-        this.noticeSeq = parseLong;
+    public NoticeFile(long noticeSeq, FileUploadResponse.FileObject object) {
+        this.noticeSeq = noticeSeq;
         this.fileName = object.getOrgFileName();
         this.filePath = object.getKeyName();
     }

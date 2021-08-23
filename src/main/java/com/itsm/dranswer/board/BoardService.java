@@ -29,15 +29,24 @@ public class BoardService {
 
     private final FaqRepoSupport faqRepoSupport;
 
+    private final InquiryRepo inquiryRepo;
+
+    private final InquiryRepoSupport inquiryRepoSupport;
+
+    private final InquiryFileRepo inquiryFileRepo;
+
     private final StorageService storageService;
 
     @Autowired
-    public BoardService(NoticeRepo noticeRepo, NoticeRepoSupport noticeRepoSupport, NoticeFileRepo noticeFileRepo, FaqRepo faqRepo, FaqRepoSupport faqRepoSupport, StorageService storageService) {
+    public BoardService(NoticeRepo noticeRepo, NoticeRepoSupport noticeRepoSupport, NoticeFileRepo noticeFileRepo, FaqRepo faqRepo, FaqRepoSupport faqRepoSupport, InquiryRepo inquiryRepo, InquiryRepoSupport inquiryRepoSupport, InquiryFileRepo inquiryFileRepo, StorageService storageService) {
         this.noticeRepo = noticeRepo;
         this.noticeRepoSupport = noticeRepoSupport;
         this.noticeFileRepo = noticeFileRepo;
         this.faqRepo = faqRepo;
         this.faqRepoSupport = faqRepoSupport;
+        this.inquiryRepo = inquiryRepo;
+        this.inquiryRepoSupport = inquiryRepoSupport;
+        this.inquiryFileRepo = inquiryFileRepo;
         this.storageService = storageService;
     }
 
@@ -158,5 +167,77 @@ public class BoardService {
 
 
         return faq.convertDto();
+    }
+
+    public Page<InquiryDto> pageInquiries(String keyword, Pageable pageable) {
+        return inquiryRepoSupport.searchAll(keyword, pageable);
+    }
+
+    public InquiryDto inquiry(Long inquirySeq) {
+
+        return inquiryRepoSupport.findOne(inquirySeq);
+    }
+
+    public void deleteInquiry(Long inquirySeq) {
+        inquiryFileRepo.deleteByInquirySeq(inquirySeq);
+        inquiryRepo.deleteById(inquirySeq);
+    }
+
+    public InquiryDto saveInquiry(InquiryDto inquiryDto) {
+        Inquiry inquiry = null;
+
+        List<InquiryFileDto> inquiryFileDtos = inquiryDto.getInquiryFiles();
+
+        if(inquiryDto.getInquirySeq() == null){
+            inquiry = new Inquiry(inquiryDto);
+            inquiry = inquiryRepo.save(inquiry);
+
+            if(inquiry.getOrgInquirySeq() != null){
+
+            }
+
+        }else{
+            inquiry = inquiryRepo.findById(inquiryDto.getInquirySeq())
+                    .orElseThrow(() -> new NotFoundException("존재하지 않는 정보 입니다."));
+            inquiry.update(inquiryDto);
+
+            List<InquiryFile> inquiryFiles = inquiry.getInquiryFiles();
+            for(InquiryFile inquiryFile: inquiryFiles){
+
+                if(!inquiryFileDtos.stream().anyMatch(e->e.getFileSeq().equals(inquiryFile.getFileSeq()))){
+                    inquiryFileRepo.deleteById(inquiryFile.getFileSeq());
+                }
+            }
+        }
+        return inquiry.convertDto();
+    }
+
+    public InquiryDto saveInquiryFile(String sInquirySeq, List<MultipartFile> multipartFiles, LoginUserInfo loginUserInfo) throws InterruptedException {
+
+        Long inquirySeq = null;
+
+        try{
+            inquirySeq = Long.parseLong(sInquirySeq);
+        }catch (NumberFormatException e){
+            throw new NumberFormatException("문의하기 번호의 형식이 올바르지 않습니다.");
+        }
+
+        SimpleDateFormat fm = new SimpleDateFormat("yyyyMMdd");
+        String yyyyMMdd = fm.format(new Date());
+        String folderName = "inquiry/" + yyyyMMdd + "/" + inquirySeq + "/" + loginUserInfo.getUserSeq() + "/";
+
+        FileUploadResponse response = storageService.uploadBoardFile(folderName, multipartFiles);
+
+        for(FileUploadResponse.FileObject object : response.getListObject()){
+
+            InquiryFile inquiryFile = new InquiryFile(inquirySeq, object);
+            inquiryFileRepo.save(inquiryFile);
+
+        }
+
+        Inquiry inquiry = inquiryRepo.findById(inquirySeq).orElseThrow(()-> new NotFoundException("존재하지 않는 정보 입니다."));
+
+        return inquiry.convertDto();
+
     }
 }

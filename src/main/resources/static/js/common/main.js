@@ -64,6 +64,7 @@ Vue.component('maincontents', {
     mounted: function () {
         //this.loadHospital();
         this.loadOpenData();
+        this.loadNoticeData();
 
     },
     methods: {
@@ -125,16 +126,30 @@ Vue.component('maincontents', {
                     list.push(obj);
 
                 }
-
                 this.openDataList = list;
-
                 this.loadScroller(list);
-
-
             } else {
                 console.log(results);
             }
 
+        },
+        loadNoticeData: function () {
+            this.cond.size = 3;
+            get(TID.SEARCH,
+                "/board/notice/list",
+                this.cond,
+                this.noticeDataCallBack);
+        },
+        noticeDataCallBack: function (tid, results) {
+            if (results.success) {
+                this.noticeList = results.response.content;
+            } else {
+                console.log(results);
+            }
+        },
+        // 공지사항(상세보기)
+        onclickView: function (noticeSeq) {
+            location.href = "/board/notice/view?noticeSeq="+noticeSeq;
         },
         loadScroller: function (list) {
 
@@ -163,6 +178,5 @@ Vue.component('maincontents', {
         onclickLinkPage: function(url){
             window.open(url);
         }
-
     }
 });

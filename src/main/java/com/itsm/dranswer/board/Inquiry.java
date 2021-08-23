@@ -60,4 +60,20 @@ public class Inquiry extends BaseEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "inquiry")
     private List<InquiryFile> inquiryFiles = new ArrayList<>();
 
+    public Inquiry(InquiryDto inquiryDto) {
+        this.answerYn = IsYn.N;
+        this.orgInquirySeq = inquiryDto.getOrgInquirySeq();
+        this.update(inquiryDto);
+    }
+
+    public InquiryDto convertDto() {
+        return new InquiryDto(this);
+    }
+
+    public void update(InquiryDto inquiryDto) {
+        this.inquiryType = inquiryDto.getInquiryType();
+        this.title = inquiryDto.getTitle();
+        this.contents = inquiryDto.getContents();
+        this.publicYn = inquiryDto.getPublicYn();
+    }
 }

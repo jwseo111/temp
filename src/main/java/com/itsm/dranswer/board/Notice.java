@@ -41,10 +41,8 @@ public class Notice extends BaseEntity implements Serializable {
     private List<NoticeFile> noticeFiles = new ArrayList<>();
 
     public Notice(NoticeDto noticeDto) {
-        this.title = noticeDto.getTitle();
-        this.contents = noticeDto.getContents();
-        this.importantYn = noticeDto.getImportantYn();
         this.inqCount = 0;
+        this.update(noticeDto);
     }
 
     public void update(NoticeDto noticeDto) {

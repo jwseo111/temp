@@ -2,6 +2,7 @@ package com.itsm.dranswer.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itsm.dranswer.commons.BaseEntity;
+import com.itsm.dranswer.etc.FileUploadResponse;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,4 +36,10 @@ public class InquiryFile extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquirySeq", referencedColumnName = "inquirySeq", insertable = false, updatable = false)
     private Inquiry inquiry;
+
+    public InquiryFile(long inquirySeq, FileUploadResponse.FileObject object) {
+        this.inquirySeq = inquirySeq;
+        this.fileName = object.getOrgFileName();
+        this.filePath = object.getKeyName();
+    }
 }

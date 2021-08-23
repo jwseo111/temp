@@ -113,6 +113,53 @@ public class BoardRestCtrl {
         return success(boardService.saveFaq(request));
     }
 
+    @GetMapping(value = "/board/inquiry/list")
+    public ApiResult<Page<InquiryDto>> getInquiryList(
+            @RequestParam(required = false) String keyword,
+            Pageable pageable){
+
+        Page<InquiryDto> pageInquiries =
+                boardService.pageInquiries(keyword, pageable);
+
+        return success(pageInquiries);
+    }
+
+    @GetMapping(value = "/board/inquiry/get/{inquirySeq:.+(?<!\\.js)$}")
+    public ApiResult<InquiryDto> getInquiry(
+            @PathVariable Long inquirySeq){
+
+        return success(boardService.inquiry(inquirySeq));
+    }
+
+    @PostMapping(value = "/board/inquiry/delete/{inquirySeq:.+(?<!\\.js)$}")
+    public ApiResult<InquiryDto> deleteInquiry(
+            @PathVariable Long inquirySeq){
+
+        boardService.deleteInquiry(inquirySeq);
+
+        return success(null);
+    }
+
+    @PostMapping(path = "/board/inquiry/save")
+    public ApiResult<InquiryDto> saveInquiry(
+            @RequestBody
+                    InquiryDto request){
+
+        return success(boardService.saveInquiry(request));
+    }
+
+    @PostMapping(path = "/board/inquiry/file/upload")
+    public ApiResult<InquiryDto> inquiryFileUpload(
+            @LoginUser LoginUserInfo loginUserInfo,
+            MultipartHttpServletRequest request
+    ) throws InterruptedException {
+
+        String sInquirySeq = request.getParameter("inquirySeq");
+        List<MultipartFile> multipartFiles = request.getFiles("multipartFile");
+
+        return success(boardService.saveInquiryFile(sInquirySeq, multipartFiles, loginUserInfo));
+    }
+
     @Value("${ncp.laif.end-point}")
     private String endPoint;
     @Value("${ncp.laif.region-name}")
@@ -131,8 +178,8 @@ public class BoardRestCtrl {
 
         String bucketName = "dranswer-upload-files";
 
-        customObjectStorage.putBucketCORS(endPoint, regionName, laifServerAccessKey, laifServerSecretKey, bucketName);
-        customObjectStorage.getBucketCORS(endPoint, regionName, laifServerAccessKey, laifServerSecretKey, bucketName);
+//        customObjectStorage.putBucketCORS(endPoint, regionName, laifServerAccessKey, laifServerSecretKey, bucketName);
+//        customObjectStorage.getBucketCORS(endPoint, regionName, laifServerAccessKey, laifServerSecretKey, bucketName);
 
         return success("OK");
     }

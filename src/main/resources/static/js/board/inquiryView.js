@@ -62,7 +62,6 @@ Vue.component('maincontents', {
         },
         // 답변삭제
         onclickReplyDel: function () {
-            console.log("답변번호 : " + this.replyInfo.inquirySeq);//tmp
             confirmMsg("답변을 삭제하시겠습니까?", this.replyDelete);
         },
         replyDelete: function() {
@@ -73,6 +72,10 @@ Vue.component('maincontents', {
         },
         // 수정
         onclickMod: function () {
+            if(this.inquiry.answerYn == "Y") {
+                alertMsg("답변이 등록되어 수정할수 없습니다.");
+                return;
+            }
             confirmMsg("수정하시겠습니까?", this.mod);
         },
         mod: function() {
@@ -117,11 +120,9 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results);//tmp
                 this.inquiry      = results.response;
                 this.replyInfo      = results.response.children[0];
                 this.inquiry.answerYn = results.response.children.length>0?"Y":"N";
-
 
             } else {
                 alertMsg(results.error.message);

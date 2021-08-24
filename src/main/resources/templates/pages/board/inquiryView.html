@@ -70,7 +70,7 @@
                                 <label>첨부파일</label>
                             </span>
                         </ul>
-                        <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
+                        <ul class="join-cont-box" v-if="inquiry.inquiryFiles.length > 0" style="overflow:auto;height:100px;width:100%;background:#fff;">
                             <li v-for="(item, idx) in inquiry.inquiryFiles">
                                 <label><a href="#" v-on:click="onclickDownload(item)">{{item.fileName}}</a></label>
                             </li>
@@ -91,7 +91,7 @@
                                 <label>첨부파일</label>
                             </span>
                             </ul>
-                            <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
+                            <ul class="join-cont-box" v-if="replyInfo.inquiryFiles.length > 0" style="overflow:auto;height:100px;width:100%;background:#fff;">
                                 <li v-for="(item, idx) in replyInfo.inquiryFiles">
                                     <label><a href="#" v-on:click="onclickDownload(item)">{{item.fileName}}</a></label>
                                 </li>

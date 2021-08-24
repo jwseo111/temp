@@ -39,7 +39,7 @@ Vue.component('maincontents', {
                 total: 1
             },
             messages : "",
-            userInfo:{},
+            userInfo:[],
 
         };
     },

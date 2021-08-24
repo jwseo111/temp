@@ -179,7 +179,7 @@ Vue.component('maincontents', {
             }
         },
         fileSizeChk: function(file) {
-            let maxSize = maxFileSize * 1024 * 1024; // 5MB
+            let maxSize = this.maxFileSize * 1024 * 1024; // 5MB
             let fileSize = file.size;
 
             if(fileSize > maxSize) {

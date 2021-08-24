@@ -83,7 +83,7 @@
                     <li>
                         <span class="join-input-group w-744">
                             <label>첨부파일</label>
-                            <p v-for="(item, idx) in inquiry.inquiryFiles" >
+                            <p v-for="(item, idx) in inquiryFiles" >
                                 <a href="#" class="btn-s" v-on:click="onClickOrgFileDelete(item.fileSeq)">삭제</a>
                                 <input type="text" v-bind:value="item.fileName" class="mr-30 ml-30" style="width:80%;height:30px;display: inline-block;vertical-align:middle;" readonly>
                             </p>

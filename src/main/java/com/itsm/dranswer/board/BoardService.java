@@ -198,6 +198,14 @@ public class BoardService {
     }
 
     public void deleteInquiry(Long inquirySeq) {
+        Inquiry inquiry = inquiryRepo.findById(inquirySeq).orElseThrow(()->new NotFoundException("존재하지 않는 정보 입니다."));
+
+        List<Inquiry> children = inquiry.getChildren();
+        for(Inquiry child : children){
+            inquiryFileRepo.deleteByInquirySeq(child.getInquirySeq());
+        }
+
+        inquiryRepo.deleteAll(children);
         inquiryFileRepo.deleteByInquirySeq(inquirySeq);
         inquiryRepo.deleteById(inquirySeq);
     }

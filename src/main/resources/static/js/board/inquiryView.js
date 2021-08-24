@@ -23,7 +23,9 @@ Vue.component('maincontents', {
         return {
             inquirySeq : inquirySeq,
             userInfo : [],
+            isAdmin : false,
             inquiry : [], // 문의하기 상세
+            replyInfo : [], // 답변 상세
             messages : "",
         };
     },
@@ -52,20 +54,22 @@ Vue.component('maincontents', {
         },
         // 답변수정
         onclickReplyMod: function () {
-            confirmMsg("수정하시겠습니까?", this.replyModify);
+            confirmMsg("답변을 수정하시겠습니까?", this.reply);
         },
+        // 답변 등록/수정
         reply: function() {
             location.href = "/board/inquiry/reply?inquirySeq="+this.inquirySeq;
         },
         // 답변삭제
         onclickReplyDel: function () {
-            confirmMsg("삭제하시겠습니까?", this.replyDelete);
+            console.log("답변번호 : " + this.replyInfo.inquirySeq);//tmp
+            confirmMsg("답변을 삭제하시겠습니까?", this.replyDelete);
         },
         replyDelete: function() {
-            // post("replyDelete",
-            //     "/board/inquiry/delete/"+this.inquirySeq,
-            //     this.saveInfo,
-            //     this.callback);
+            post(TID.DELETE,
+                "/board/inquiry/delete/"+this.replyInfo.inquirySeq,
+                {},
+                this.callback);
         },
         // 수정
         onclickMod: function () {
@@ -93,6 +97,7 @@ Vue.component('maincontents', {
                 case "usrInfo":
                     if (results.success) {
                         this.userInfo = results.response;
+                        this.isAdmin = this.userInfo.userRole=="ADMIN"?true:false;
                     } else {
                         console.log(results);
                         //alertMsg(results.error.message);
@@ -107,12 +112,17 @@ Vue.component('maincontents', {
                     }
                     break;
 
+
             }
         },
         searchCallback: function (results) {
             if (results.success) {
                 console.log(results);//tmp
                 this.inquiry      = results.response;
+                this.replyInfo      = results.response.children[0];
+                this.inquiry.answerYn = results.response.children.length>0?"Y":"N";
+
+
             } else {
                 alertMsg(results.error.message);
             }

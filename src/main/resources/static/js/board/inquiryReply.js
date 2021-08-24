@@ -28,12 +28,15 @@ Vue.component('maincontents', {
             inquiry : [], // 문의하기 상세
             inquiryFiles : [],
             userInfo : [],
+            isAdmin : false,
             messages : "",
             replyInfo: {
+                inquirySeq : "",
                 orgInquirySeq : inquirySeq,
-                answerYn : "Y",
-                contents : "",
+                //answerYn : "Y",
+                contents : ""
             },
+            replyFiles :[],
             maxFileCnt : 5,
             maxFileSize : 5,
         };
@@ -65,16 +68,16 @@ Vue.component('maincontents', {
                 return false;
             }
         },
-        // // 신규 첨부파일 삭제
-        // onClickFileDelete: function (idx) {
-        //     document.getElementById("uploadFile"+idx).value = "";
-        //     document.getElementById("uploadText"+idx).value = "";
-        // },
-        // // 기존 첨부파일 삭제
-        // onClickOrgFileDelete: function (fileSeq) {
-        //     let idx = this.inquiryFiles.findIndex(function(key) {return  key.fileSeq === fileSeq});
-        //     this.inquiryFiles.splice(idx, 1);
-        // },
+        // 신규 첨부파일 삭제
+        onClickFileDelete: function (idx) {
+            document.getElementById("uploadFile"+idx).value = "";
+            document.getElementById("uploadText"+idx).value = "";
+        },
+        // 기존 첨부파일 삭제
+        onClickOrgFileDelete: function (fileSeq) {
+            let idx = this.replyInfo.inquiryFiles.findIndex(function(key) {return  key.fileSeq === fileSeq});
+            this.replyInfo.inquiryFiles.splice(idx, 1);
+        },
         // 취소 클릭(상세보기 이동)
         onclickCancel: function () {
             this.onclickView();
@@ -93,10 +96,6 @@ Vue.component('maincontents', {
             confirmMsg("저장하시겠습니까?",this.save);
         },
         save: function() {
-            console.log("원본 넘버 : " );
-            console.log(this.replyInfo.orgInquirySeq);//tmp
-            console.log("contents : " + this.replyInfo.contents);//tmp
-            console.log("answerYn : " + this.replyInfo.answerYn);//tmp
             post(TID.SAVE,
                 "/board/inquiry/save",
                 this.replyInfo,
@@ -110,9 +109,9 @@ Vue.component('maincontents', {
                 case "usrInfo":
                     if (results.success) {
                         this.userInfo = results.response;
+                        this.isAdmin = this.userInfo.userRole=="ADMIN"?true:false;
                     } else {
                         console.log(results);
-                        //alertMsg(results.error.message);
                     }
                     break;
                 case TID.SAVE:
@@ -122,6 +121,7 @@ Vue.component('maincontents', {
                 case TID.UPLOAD:
                     if (results.success) {
                         //console.log(results);
+                        this.inquirySeq = results.response.orgInquirySeq;//답변의 원문의사항을 조회한다.
                         alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
                     } else {
                         //console.log(results);
@@ -133,8 +133,13 @@ Vue.component('maincontents', {
         searchCallback: function (results) {
             if (results.success) {
                 console.log(results);
-                this.inquiry      = results.response;
-                this.inquiryFiles = results.response.inquiryFiles;
+                this.inquiry        = results.response;
+                this.inquiryFiles   = results.response.inquiryFiles;
+                this.inquiry.answerYn = results.response.children.length>0?"Y":"N";
+                if(results.response.children.length > 0) {
+                    this.replyInfo  = results.response.children[0];
+                    this.replyFiles = results.response.children[0].inquiryFiles;
+                }
 
             } else {
                 //console.log(results);
@@ -143,25 +148,25 @@ Vue.component('maincontents', {
         },
         saveCallback: function (results) {
             if (results.success) {
-                alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);//tmp
-                // // 저장 성공시 첨부파일이 있을 경우 첨부파일 등록 로직 추가
-                // const frm = new FormData();
-                // let cnt = document.getElementsByName("uploadFile").length;
-                // for(let i=1; i<cnt+1; i++) {
-                //     let file = document.getElementById("uploadFile"+i).files;
-                //     if(file[0]){ // 첨부된 파일 있음
-                //         frm.append("multipartFile", file[0]);
-                //     }
-                // }
-                //
-                // if(frm.getAll("multipartFile").length > 0) {
-                //     this.inquirySeq = results.response.inquirySeq;
-                //     frm.append("inquirySeq", this.inquirySeq);
-                //     fileUpload(TID.UPLOAD, "/board/inquiry/file/upload", frm, this.callback);
-                // } else {
-                //     //this.inquirySeq = results.response.inquirySeq;
-                //     alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
-                // }
+                // 저장 성공시 첨부파일이 있을 경우 첨부파일 등록 로직 추가
+                const frm = new FormData();
+                let cnt = document.getElementsByName("uploadFile").length;
+                for(let i=1; i<cnt+1; i++) {
+                    let file = document.getElementById("uploadFile"+i).files;
+                    if(file[0]){ // 첨부된 파일 있음
+                        frm.append("multipartFile", file[0]);
+                    }
+                }
+
+                if(frm.getAll("multipartFile").length > 0) {
+                    // 신규 첨부파일 있음
+                    this.replyInfo.inquirySeq = results.response.inquirySeq;
+                    frm.append("inquirySeq", this.replyInfo.inquirySeq);
+                    fileUpload(TID.UPLOAD, "/board/inquiry/file/upload", frm, this.callback);
+                } else {
+                    // 신규 첨부파일 없음
+                    alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
+                }
             } else {
                 //console.log(results);
                 alertMsg(results.error.message);
@@ -177,18 +182,11 @@ Vue.component('maincontents', {
                 return true;
             }
         },
-        // 검색 selectebox 이벤트
-        searchChange:function(data){
-            this.saveInfo.inquiryType = data;
-        }
+
     }
 });
 
-// 검색 selectebox 이벤트
-function selectChange(){
-    const data= document.querySelector("#inquiryType").value;
-    appMain.$refs.maincontents.searchChange(data);
-}
+
 function fileUpload(tid, uri, formData, callback){
 
     const headers = {

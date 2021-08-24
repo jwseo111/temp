@@ -159,13 +159,9 @@ Vue.component('maincontents', {
             if (results.success) {
                 console.log(results);
                 this.inquiry      = results.response;
+                this.saveInfo = this.inquiry;
                 this.saveInfo.inquiryType  = this.inquiry.inquiryType.name;
-                this.saveInfo.publicYn = this.inquiry.publicYn;
-                this.saveInfo.title = this.inquiry.title;
-                this.saveInfo.contents = this.inquiry.contents;
-                this.saveInfo.inquirySeq = this.inquiry.inquirySeq;
                 this.inquiryFiles = results.response.inquiryFiles;
-
             } else {
                 //console.log(results);
                 alertMsg(results.error.message);

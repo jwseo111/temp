@@ -64,12 +64,13 @@
                 <tr>
                     <td colspan="7" class="table-td-cont">
                         <textarea class="write-textarea" ref="contents" v-bind:value="inquiry.contents" readonly></textarea>
-                        <ul>
+                        <!-- 첨부파일 영역 -->
+                        <ul v-if="inquiry.inquiryFiles.length > 0">
                             <span class="join-input-group w-100">
                                 <label>첨부파일</label>
                             </span>
                         </ul>
-                        <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
+                        <ul class="join-cont-box" v-if="inquiry.inquiryFiles.length > 0" style="overflow:auto;height:100px;width:100%;background:#fff;">
                             <li v-for="(item, idx) in inquiry.inquiryFiles">
                                 <label><a href="#" v-on:click="onclickDownload(item)">{{item.fileName}}</a></label>
                             </li>
@@ -83,14 +84,34 @@
                 <tbody>
                 <tr>
                     <td colspan="7" class="table-td-cont">
-                        <textarea class="write-textarea" ref="contents" v-model="replyInfo.contents" placeholder="답변내용을 입력해주세요"></textarea>
+                        <textarea class="write-textarea"  ref="contents" v-model="replyInfo.contents" placeholder="답변내용을 입력해주세요"></textarea>
+                       <!-- 첨부파일 영역 -->
+                        <ul>
+                            <li>
+                            <span class="join-input-group w-744">
+                            <label>첨부파일</label>
+                            <p v-for="(item, idx) in replyFiles" >
+                                <a href="#" class="btn-s" v-on:click="onClickOrgFileDelete(item.fileSeq)">삭제</a>
+                                <input type="text" v-bind:value="item.fileName" class="mr-30 ml-30" style="width:80%;height:30px;display: inline-block;vertical-align:middle;" readonly>
+                            </p>
+                            <p v-for="idx in (maxFileCnt - replyFiles.length)" >
+                                <a href="#" class="btn-s" v-on:click="onClickFileDelete(idx)">삭제</a>
+                                <input type="file" v-bind:id="['uploadFile' + idx]" ref="['uploadFile' + idx]" name="uploadFile" style="display: none;" @change="onChange($event, idx)">
+                                <input type="text" v-bind:id="['uploadText' + idx]" class="mr-30 ml-30" style="width:80%;height:30px;display: inline-block;vertical-align:middle;" readonly>
+                                <a href="#" class="btn-s" v-on:click="document.getElementById('uploadFile' + idx).click();">파일찾기</a>
+                            </p>
+                        </span>
+                            </li>
+                        </ul>
+
+
                     </td>
                 </tr>
                 </tbody>
             </table>
 
 
-            <div v-if="userInfo.userRole === 'ADMIN'" class="btn-box a-r mt-80">
+            <div v-if="isAdmin" class="btn-box a-r mt-80">
                 <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickCancel">취소</a>
                 <a href="#" class="com-btn btn-w-208 ml-10" v-on:click="onclickSave">저장</a>
             </div>

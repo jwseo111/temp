@@ -30,6 +30,7 @@ public class InquiryRepoSupport extends QuerydslRepositorySupport {
                 .select(Projections.constructor(InquiryDto.class, inquiry, userInfo))
                 .from(inquiry)
                 .join(userInfo).on(inquiry.createdBy.eq(userInfo.userSeq))
+                .where(inquiry.orgInquirySeq.isNull())
                 .orderBy(inquiry.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());

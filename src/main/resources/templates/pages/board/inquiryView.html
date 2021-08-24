@@ -63,50 +63,64 @@
                 </tr>
                 <tr >
                     <td colspan="7" class="table-td-cont">
-<!--                        <div>{{inquiry.contents}}</div>-->
-                        문의내용 --> 첨부파일 {{inquiry.inquiryFiles.length}}
                         <textarea class="write-textarea" ref="contents" v-bind:value="inquiry.contents" readonly></textarea>
+                        <!-- 첨부파일 -->
+                        <ul v-if="inquiry.inquiryFiles.length > 0">
+                            <span class="join-input-group w-100">
+                                <label>첨부파일</label>
+                            </span>
+                        </ul>
+                        <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
+                            <li v-for="(item, idx) in inquiry.inquiryFiles">
+                                <label><a href="#" v-on:click="onclickDownload(item)">{{item.fileName}}</a></label>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
                 </tbody>
                 </table>
-            <div v-if="inquiry.inquiryFiles.length > 0">
-                <ul>
-                    <span class="join-input-group w-100">
-                        <label>첨부파일</label>
-                    </span>
-                </ul>
-                <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
-                    <li v-for="(item, idx) in inquiry.noticeFiles">
-                        <label><a href="#" v-on:click="onclickDownload(item)">{{item.fileName}}</a></label>
-                    </li>
-                </ul>
-            </div>
-            <table>
-                <tbody>
-                <tr v-if="inquiry.answerYn === 'Y'">
-                    <td colspan="7" class="table-td-cont">
-<!--                        <div style="padding:20px;border:1px solid #e9e9e9;background:#eee;"> </div>-->
-                        답변내용
-                        <textarea class="write-textarea" ref="contents" v-bind:value="inquiry.contents" readonly></textarea>
 
-                    </td>
-                </tr>
+            <table class="table-list"  v-if="inquiry.answerYn === 'Y'">
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="table-td-cont">
+                            <textarea class="write-textarea"  v-bind:value="replyInfo.contents" readonly></textarea>
+                            <!-- 첨부파일 -->
+                            <ul v-if="replyInfo.inquiryFiles.length > 0">
+                            <span class="join-input-group w-100">
+                                <label>첨부파일</label>
+                            </span>
+                            </ul>
+                            <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
+                                <li v-for="(item, idx) in replyInfo.inquiryFiles">
+                                    <label><a href="#" v-on:click="onclickDownload(item)">{{item.fileName}}</a></label>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
 
 
-            <div v-if="userInfo.userRole === 'ADMIN'" class="btn-box a-r mt-80">
-                <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
-                <a href="#" v-if="inquiry.answerYn === 'N'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyReg">답변등록</a>
-                <a href="#" v-if="inquiry.answerYn === 'Y'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyMod">답변수정</a>
-                <a href="#" v-if="inquiry.answerYn === 'Y'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyDel">답변삭제</a>
-            </div>
-            <div v-else class="btn-box a-r mt-80">
+<!--            <div v-if="userInfo.userRole === 'ADMIN'" class="btn-box a-r mt-80">-->
+<!--                <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>-->
+<!--                <a href="#" v-if="inquiry.answerYn === 'N'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyReg">답변등록</a>-->
+<!--                <a href="#" v-if="inquiry.answerYn === 'Y'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyMod">답변수정</a>-->
+<!--                <a href="#" v-if="inquiry.answerYn === 'Y'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyDel">답변삭제</a>-->
+<!--            </div>-->
+<!--            <div v-else class="btn-box a-r mt-80">-->
+<!--                <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>-->
+<!--                <a href="#" v-if="inquiry.createdBy === userInfo.userSeq" class="com-btn btn-w-208 ml-10" v-on:click="onclickMod">수정</a>-->
+<!--                <a href="#" v-if="inquiry.createdBy === userInfo.userSeq" class="com-btn btn-w-208 ml-10" v-on:click="onclickDel">삭제</a>-->
+<!--            </div>-->
+            <div class="btn-box a-r mt-80">
                 <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
                 <a href="#" v-if="inquiry.createdBy === userInfo.userSeq" class="com-btn btn-w-208 ml-10" v-on:click="onclickMod">수정</a>
                 <a href="#" v-if="inquiry.createdBy === userInfo.userSeq" class="com-btn btn-w-208 ml-10" v-on:click="onclickDel">삭제</a>
+                <a href="#" v-if="isAdmin && inquiry.answerYn === 'N'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyReg">답변등록</a>
+                <a href="#" v-if="isAdmin && inquiry.answerYn === 'Y'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyMod">답변수정</a>
+                <a href="#" v-if="isAdmin && inquiry.answerYn === 'Y'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyDel">답변삭제</a>
             </div>
 
 

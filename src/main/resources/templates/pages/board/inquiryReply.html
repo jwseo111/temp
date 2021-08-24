@@ -61,33 +61,29 @@
                     <td v-if="inquiry.createdDate === null" align="center">-</td>
                     <td v-else>{{inquiry.createdDate.substr(0,10)}}</td>
                 </tr>
-                <tr >
+                <tr>
                     <td colspan="7" class="table-td-cont">
-                        <!--                        <div>{{inquiry.contents}}</div>-->
-                        문의내용 --> 첨부파일 {{inquiry.inquiryFiles.length}}
                         <textarea class="write-textarea" ref="contents" v-bind:value="inquiry.contents" readonly></textarea>
+                        <ul>
+                            <span class="join-input-group w-100">
+                                <label>첨부파일</label>
+                            </span>
+                        </ul>
+                        <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
+                            <li v-for="(item, idx) in inquiry.inquiryFiles">
+                                <label><a href="#" v-on:click="onclickDownload(item)">{{item.fileName}}</a></label>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <div v-if="inquiry.inquiryFiles.length > 0">
-                <ul>
-                    <span class="join-input-group w-100">
-                        <label>첨부파일</label>
-                    </span>
-                </ul>
-                <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;">
-                    <li v-for="(item, idx) in inquiry.noticeFiles">
-                        <label><a href="#" v-on:click="onclickDownload(item)">{{item.fileName}}</a></label>
-                    </li>
-                </ul>
-            </div>
-            <table class="table-list mt-60">
+
+            <table class="table-list">
                 <tbody>
                 <tr>
                     <td colspan="7" class="table-td-cont">
-                        답변내용###{{replyInfo.orgInquirySeq}}
-                        <textarea class="write-textarea" ref="contents" v-model="inquiry.children.contents" placeholder="답변내용을 입력해주세요"></textarea>
+                        <textarea class="write-textarea" ref="contents" v-model="replyInfo.contents" placeholder="답변내용을 입력해주세요"></textarea>
                     </td>
                 </tr>
                 </tbody>

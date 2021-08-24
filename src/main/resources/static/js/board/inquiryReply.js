@@ -65,16 +65,16 @@ Vue.component('maincontents', {
                 return false;
             }
         },
-        // 신규 첨부파일 삭제
-        onClickFileDelete: function (idx) {
-            document.getElementById("uploadFile"+idx).value = "";
-            document.getElementById("uploadText"+idx).value = "";
-        },
-        // 기존 첨부파일 삭제
-        onClickOrgFileDelete: function (fileSeq) {
-            let idx = this.inquiryFiles.findIndex(function(key) {return  key.fileSeq === fileSeq});
-            this.inquiryFiles.splice(idx, 1);
-        },
+        // // 신규 첨부파일 삭제
+        // onClickFileDelete: function (idx) {
+        //     document.getElementById("uploadFile"+idx).value = "";
+        //     document.getElementById("uploadText"+idx).value = "";
+        // },
+        // // 기존 첨부파일 삭제
+        // onClickOrgFileDelete: function (fileSeq) {
+        //     let idx = this.inquiryFiles.findIndex(function(key) {return  key.fileSeq === fileSeq});
+        //     this.inquiryFiles.splice(idx, 1);
+        // },
         // 취소 클릭(상세보기 이동)
         onclickCancel: function () {
             this.onclickView();
@@ -95,7 +95,8 @@ Vue.component('maincontents', {
         save: function() {
             console.log("원본 넘버 : " );
             console.log(this.replyInfo.orgInquirySeq);//tmp
-            console.log(this.replyInfo.contents);//tmp
+            console.log("contents : " + this.replyInfo.contents);//tmp
+            console.log("answerYn : " + this.replyInfo.answerYn);//tmp
             post(TID.SAVE,
                 "/board/inquiry/save",
                 this.replyInfo,
@@ -114,12 +115,6 @@ Vue.component('maincontents', {
                         //alertMsg(results.error.message);
                     }
                     break;
-                // case "QuestionType":
-                //     this.inquiryTypeList = results.response;
-                //     setTimeout(function() {
-                //         loadSelect();
-                //     },300);
-                //     break;
                 case TID.SAVE:
                     //console.log(results);
                     this.saveCallback(results);
@@ -138,7 +133,7 @@ Vue.component('maincontents', {
         searchCallback: function (results) {
             if (results.success) {
                 console.log(results);
-                this.inquiry      = results.response;t
+                this.inquiry      = results.response;
                 this.inquiryFiles = results.response.inquiryFiles;
 
             } else {
@@ -148,24 +143,25 @@ Vue.component('maincontents', {
         },
         saveCallback: function (results) {
             if (results.success) {
-                // 저장 성공시 첨부파일이 있을 경우 첨부파일 등록 로직 추가
-                const frm = new FormData();
-                let cnt = document.getElementsByName("uploadFile").length;
-                for(let i=1; i<cnt+1; i++) {
-                    let file = document.getElementById("uploadFile"+i).files;
-                    if(file[0]){ // 첨부된 파일 있음
-                        frm.append("multipartFile", file[0]);
-                    }
-                }
-
-                if(frm.getAll("multipartFile").length > 0) {
-                    this.inquirySeq = results.response.inquirySeq;
-                    frm.append("inquirySeq", this.inquirySeq);
-                    fileUpload(TID.UPLOAD, "/board/inquiry/file/upload", frm, this.callback);
-                } else {
-                    //this.inquirySeq = results.response.inquirySeq;
-                    alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
-                }
+                alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);//tmp
+                // // 저장 성공시 첨부파일이 있을 경우 첨부파일 등록 로직 추가
+                // const frm = new FormData();
+                // let cnt = document.getElementsByName("uploadFile").length;
+                // for(let i=1; i<cnt+1; i++) {
+                //     let file = document.getElementById("uploadFile"+i).files;
+                //     if(file[0]){ // 첨부된 파일 있음
+                //         frm.append("multipartFile", file[0]);
+                //     }
+                // }
+                //
+                // if(frm.getAll("multipartFile").length > 0) {
+                //     this.inquirySeq = results.response.inquirySeq;
+                //     frm.append("inquirySeq", this.inquirySeq);
+                //     fileUpload(TID.UPLOAD, "/board/inquiry/file/upload", frm, this.callback);
+                // } else {
+                //     //this.inquirySeq = results.response.inquirySeq;
+                //     alertMsgRtn("정상적으로 저장되었습니다.",this.onclickView);
+                // }
             } else {
                 //console.log(results);
                 alertMsg(results.error.message);

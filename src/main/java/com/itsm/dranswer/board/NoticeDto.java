@@ -35,10 +35,10 @@ public class NoticeDto extends BaseEntity {
 
     public NoticeDto(Notice notice){
         copyProperties(notice, this);
-        setNoticeFiles(notice.getNoticeFiles());
+        addNoticeFiles(notice.getNoticeFiles());
     }
 
-    private void setNoticeFiles(List<NoticeFile> noticeFiles) {
+    private void addNoticeFiles(List<NoticeFile> noticeFiles) {
         this.noticeFiles = noticeFiles.stream().map(NoticeFileDto::new).collect(Collectors.toList());
     }
 

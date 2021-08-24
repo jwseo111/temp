@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -43,6 +44,11 @@ public class InquiryDto extends BaseEntity {
 
     public InquiryDto (Inquiry inquiry){
         copyProperties(inquiry, this);
+        addInquiryFiles(inquiry.getInquiryFiles());
+    }
+
+    private void addInquiryFiles(List<InquiryFile> inquiryFiles) {
+        this.inquiryFiles = inquiryFiles.stream().map(InquiryFileDto::new).collect(Collectors.toList());
     }
 
     public InquiryDto (Inquiry inquiry, UserInfo userInfo){

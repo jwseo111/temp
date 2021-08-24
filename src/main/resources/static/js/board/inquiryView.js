@@ -125,7 +125,7 @@ Vue.component('maincontents', {
                 this.inquiry.answerYn = results.response.children.length>0?"Y":"N";
 
             } else {
-                alertMsg(results.error.message);
+                alertMsgRtn(results.error.message, this.onclickList);
             }
         },
 

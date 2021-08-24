@@ -2,6 +2,8 @@ package com.itsm.dranswer.config;
 
 import lombok.*;
 
+import java.util.Arrays;
+
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -20,5 +22,9 @@ public class LoginUserInfo {
 
     public boolean checkCreateUser(Long makerId) {
         return this.userSeq.equals(makerId);
+    }
+
+    public boolean isAdmin(){
+        return Arrays.stream(roles).anyMatch(e -> "ROLE_ADMIN".equals(e));
     }
 }

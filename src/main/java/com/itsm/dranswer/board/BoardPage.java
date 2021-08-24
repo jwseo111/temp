@@ -11,7 +11,6 @@ package com.itsm.dranswer.board;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -39,22 +38,28 @@ public class BoardPage {
         return "pages/board/noticeReg";
     }
     // 문의하기 리스트
-    @GetMapping(value = "/board/qna/main")
-    public String qnaList() {
+    @GetMapping(value = "/board/inquiry/main")
+    public String inquiryList() {
 
-        return "pages/board/qnaList";
+        return "pages/board/inquiryList";
     }
     // 문의하기 상세
-    @GetMapping(value = "/board/qna/view")
-    public String qnaView() {
+    @GetMapping(value = "/board/inquiry/view")
+    public String inquiryView() {
 
-        return "pages/board/qnaView";
+        return "pages/board/inquiryView";
     }
     // 문의하기 등록
-    @GetMapping(value = "/board/qna/reg")
-    public String qnaReg() {
+    @GetMapping(value = "/board/inquiry/reg")
+    public String inquiryReg() {
 
-        return "pages/board/qnaReg";
+        return "pages/board/inquiryReg";
+    }
+    // 문의하기 답변 등록
+    @GetMapping(value = "board/inquiry/reply")
+    public String inquiryReply() {
+
+        return "pages/board/inquiryReply";
     }
     // FAQ 리스트
     @GetMapping(value = "/board/faq/main")

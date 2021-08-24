@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/board/inquiryReg.js}"></script>
+        <script>
+            const inquirySeq = "[[${param.inquirySeq}]]";
+        </script>
+    </th:block>
+
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="content" >
+            <div class="sub-title-box">
+                <h2>문의하기</h2>
+                <p>inquiry</p>
+                <hr>
+            </div>
+            <div class="join-cont-box" v-if="inquiryReg">
+                <h3>개인정보취급방침 동의</h3>
+                <label class="checkbox-container2">
+                    <input type="checkbox" id="agreeY" name="agree" value="Y" v-model="saveInfo.agree"><label for="agreeY"></label>
+                    <span class="checkmark2"></span>
+                </label>
+                <div class="term-iframe">
+                    <th:block th:insert="pages/user/private_policy.html"></th:block>
+                </div>
+            </div>
+
+            <div class="join-cont-box mt-60 clearfix">
+                <h3>문의내용</h3>
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>문의유형<span>*</span></label>
+                            <div class="custom-select"  style="width: 180px;">
+                                <select v-model="saveInfo.inquiryType" id="inquiryType" ref="inquiryType" onchange="selectChange()">
+                                    <option value="">문의내용선택</option>
+                                    <option v-for="option in inquiryTypeList" v-bind:value="option.name">{{option.desc}}</option>
+                                </select>
+                            </div>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group mr-40">
+                            <label>공개여부<span>*</span></label>
+                            <span class="radio-wrap join-radio bdr-b">
+                                <input type="radio" ref="publicY" id="publicY" v-model="saveInfo.publicYn" value="Y" checked/>
+                                <label for="publicY"><span></span>공개</label>
+                                <input type="radio" ref="publicN" id="publicN" v-model="saveInfo.publicYn" value="N"/>
+                                <label for="publicN"><span></span>비공개</label>
+                            </span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group">
+                            <label>제목<span>*</span></label>
+                            <input v-if="inquiryReg"  type="text" ref="title" v-model="saveInfo.title" placeholder="제목을 입력해주세요">
+                            <input v-else type="text" ref="title" v-model="saveInfo.title">
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>내용<span>*</span></label>
+                            <textarea class="write-textarea" ref="contents" v-model="saveInfo.contents" placeholder="내용을 입력해주세요"></textarea>
+                        </span>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li>
+                        <span class="join-input-group w-744">
+                            <label>첨부파일</label>
+                            <p v-for="(item, idx) in inquiry.inquiryFiles" >
+                                <a href="#" class="btn-s" v-on:click="onClickOrgFileDelete(item.fileSeq)">삭제</a>
+                                <input type="text" v-bind:value="item.fileName" class="mr-30 ml-30" style="width:80%;height:30px;display: inline-block;vertical-align:middle;" readonly>
+                            </p>
+                            <p v-for="idx in (maxFileCnt - inquiryFiles.length)" >
+                                <a href="#" class="btn-s" v-on:click="onClickFileDelete(idx)">삭제</a>
+                                <input type="file" v-bind:id="['uploadFile' + idx]" ref="['uploadFile' + idx]" name="uploadFile" style="display: none;" @change="onChange($event, idx)">
+                                <input type="text" v-bind:id="['uploadText' + idx]" class="mr-30 ml-30" style="width:80%;height:30px;display: inline-block;vertical-align:middle;" readonly>
+                                <a href="#" class="btn-s" v-on:click="document.getElementById('uploadFile' + idx).click();">파일찾기</a>
+                            </p>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn-box a-r mt-60">
+                <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCancel">취소</a>
+                <a href="#" class="com-btn btn-w-332 ml-10" v-on:click="onclickSave">저장</a>
+            </div>
+        </div>
+
+        </script>
+    </div>
+</html>

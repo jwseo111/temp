@@ -188,10 +188,11 @@ public class BoardService {
         }
 
         List<InquiryFile> inquiryFiles = inquiryFileRepo.findByInquirySeq(inquirySeq);
-
         List<InquiryFileDto>  inquiryFileDto = inquiryFiles.stream().map(InquiryFileDto::new).collect(Collectors.toList());
-
         inquiryDto.setInquiryFiles(inquiryFileDto);
+
+        List<Inquiry> children = inquiryRepo.findByOrgInquirySeqOrderByCreatedDateDesc(inquirySeq);
+        inquiryDto.setChildren(children.stream().map(InquiryDto::new).collect(Collectors.toList()));
 
         return inquiryDto;
     }

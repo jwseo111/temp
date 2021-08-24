@@ -126,9 +126,10 @@ public class BoardRestCtrl {
 
     @GetMapping(value = "/board/inquiry/get/{inquirySeq:.+(?<!\\.js)$}")
     public ApiResult<InquiryDto> getInquiry(
+            @LoginUser LoginUserInfo loginUserInfo,
             @PathVariable Long inquirySeq){
 
-        return success(boardService.inquiry(inquirySeq));
+        return success(boardService.inquiry(loginUserInfo, inquirySeq));
     }
 
     @PostMapping(value = "/board/inquiry/delete/{inquirySeq:.+(?<!\\.js)$}")

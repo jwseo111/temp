@@ -3,6 +3,8 @@ package com.itsm.dranswer.board;
 import com.itsm.dranswer.commons.BaseEntity;
 import lombok.*;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 @Setter
 @Getter
 @EqualsAndHashCode
@@ -19,4 +21,7 @@ public class InquiryFileDto extends BaseEntity {
 
     private String filePath;
 
+    public InquiryFileDto(InquiryFile inquiryFile) {
+        copyProperties(inquiryFile, this);
+    }
 }

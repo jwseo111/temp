@@ -4,6 +4,7 @@ import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.NotFoundException;
 import com.itsm.dranswer.etc.FileUploadResponse;
 import com.itsm.dranswer.storage.StorageService;
+import com.itsm.dranswer.users.IsYn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service("boardService")
@@ -173,9 +175,25 @@ public class BoardService {
         return inquiryRepoSupport.searchAll(keyword, pageable);
     }
 
-    public InquiryDto inquiry(Long inquirySeq) {
+    public InquiryDto inquiry(LoginUserInfo loginUserInfo, Long inquirySeq) {
 
-        return inquiryRepoSupport.findOne(inquirySeq);
+        InquiryDto inquiryDto = inquiryRepoSupport.findOne(inquirySeq);
+
+        boolean isAdmin = loginUserInfo.isAdmin();
+
+        if(inquiryDto.getPublicYn() == IsYn.N && !isAdmin){
+            if(inquiryDto.getCreatedBy() != loginUserInfo.getUserSeq()){
+                throw new IllegalArgumentException("열람하실 수 없는 글 입니다.");
+            }
+        }
+
+        List<InquiryFile> inquiryFiles = inquiryFileRepo.findByInquirySeq(inquirySeq);
+
+        List<InquiryFileDto>  inquiryFileDto = inquiryFiles.stream().map(InquiryFileDto::new).collect(Collectors.toList());
+
+        inquiryDto.setInquiryFiles(inquiryFileDto);
+
+        return inquiryDto;
     }
 
     public void deleteInquiry(Long inquirySeq) {

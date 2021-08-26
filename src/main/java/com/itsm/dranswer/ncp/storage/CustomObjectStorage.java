@@ -372,4 +372,32 @@ public class CustomObjectStorage {
         upload.waitForCompletion();
 
     }
+    public long getSize(String endPoint, String regionName,
+                           String accessKey, String secretKey, String bucketName) {
+
+        final AmazonS3 s3 = getS3(endPoint, regionName, accessKey, secretKey);
+
+
+        ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
+                .withBucketName(bucketName)
+                .withMaxKeys(300);
+
+        ObjectListing objectListing = s3.listObjects(listObjectsRequest);
+
+        long totSize = 0L;
+
+        while (true) {
+            for (S3ObjectSummary os : objectListing.getObjectSummaries()) {
+                totSize += os.getSize();
+            }
+
+            if (objectListing.isTruncated()) {
+                objectListing = s3.listNextBatchOfObjects(objectListing);
+            } else {
+                break;
+            }
+        }
+
+        return totSize;
+    }
 }

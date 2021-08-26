@@ -1,8 +1,11 @@
 package com.itsm.dranswer.storage;
 
+import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.etc.FileUploadResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -111,5 +114,22 @@ public class MyStorageRestCtrl {
         storageService.deleteObjects(requestObjectDtos, loginUserInfo);
 
         return success(true);
+    }
+
+    @GetMapping(path = "/storage/used/list")
+    public ApiResult<Page<ReqStorageInfoDto>> getStorageUsedList(
+            Integer agencySeq,
+            Disease diseaseCode,
+            Pageable pageable
+    ){
+
+        return success(storageService.getStorageUsedList(agencySeq, diseaseCode, pageable));
+    }
+
+    @GetMapping(path = "/storage/used/summary")
+    public ApiResult<List<StorageSummaryDto>> getStorageUsedSummary(
+    ){
+
+        return success(storageService.getStorageUsedSummary());
     }
 }

@@ -10,6 +10,7 @@ package com.itsm.dranswer.storage;
  */
 
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.CustomMailSender;
@@ -599,5 +600,42 @@ public class StorageService {
         }
 
         return new FileUploadResponse(fileCnt, fileSize, listObject);
+    }
+
+    public List<BucketInfoDto> bucketSize() {
+
+        List<BucketInfo> buckets = bucketInfoRepo.findAll();
+
+        for(BucketInfo bucketInfo : buckets){
+
+            try {
+                long size = customObjectStorage.getSize(endPoint, regionName, laifAccessKey, laifSecretKey, bucketInfo.getBucketName());
+                bucketInfo.setBucketSize(size);
+            }catch (AmazonS3Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
+        return buckets.stream().map(BucketInfoDto::new).collect(Collectors.toList());
+    }
+
+    public Page<ReqStorageInfoDto> getStorageUsedList(Integer agencySeq, Disease diseaseCode, Pageable pageable){
+
+        return reqStorageInfoRepoSupport.getUsedSize(agencySeq, diseaseCode, pageable);
+
+    }
+
+    public List<StorageSummaryDto> getStorageUsedSummary() {
+
+        List<StorageSummaryDto> list = reqStorageInfoRepoSupport.getUsedSummary();
+
+        for(Disease c: Disease.values()){
+            if(!list.stream().anyMatch(e->e.getDiseaseCode().equals(c))){
+                list.add(new StorageSummaryDto(c, 0L));
+            }
+        }
+
+        return list;
     }
 }

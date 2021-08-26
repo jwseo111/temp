@@ -24,10 +24,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    private QReqStorageInfo reqStorageInfo = QReqStorageInfo.reqStorageInfo;
+    private QBucketInfo bucketInfo = QBucketInfo.bucketInfo;
+    private QUserInfo userInfo = QUserInfo.userInfo;
+    private QAgencyInfo agencyInfo = QAgencyInfo.agencyInfo;
 
     public ReqStorageInfoRepoSupport(JPAQueryFactory jpaQueryFactory) {
         super(ReqStorageInfo.class);
@@ -35,10 +42,6 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
     }
 
     public Page<ReqStorageInfoDto> searchAll(ReqStorageStat reqStorageStat, String dataName, Disease diseaseCode, String agencyName, Long userSeq, Pageable pageable){
-
-        QReqStorageInfo reqStorageInfo = QReqStorageInfo.reqStorageInfo;
-        QUserInfo userInfo = QUserInfo.userInfo;
-        QAgencyInfo agencyInfo = QAgencyInfo.agencyInfo;
 
         JPAQuery<ReqStorageInfoDto> query  =jpaQueryFactory
                 .select(Projections.constructor(ReqStorageInfoDto.class, reqStorageInfo, userInfo, agencyInfo))
@@ -72,5 +75,45 @@ public class ReqStorageInfoRepoSupport extends QuerydslRepositorySupport {
         QueryResults<ReqStorageInfoDto> results = query.fetchResults();
 
         return new PageImpl<ReqStorageInfoDto>(results.getResults(), pageable, results.getTotal());
+    }
+
+    public Page<ReqStorageInfoDto> getUsedSize(Integer agencySeq, Disease diseaseCode, Pageable pageable){
+
+        JPAQuery<ReqStorageInfoDto> query  =jpaQueryFactory
+                .select(Projections.constructor(ReqStorageInfoDto.class, reqStorageInfo, userInfo, agencyInfo, bucketInfo))
+                .from(reqStorageInfo)
+                .innerJoin(reqStorageInfo.diseaseManagerUserInfo, userInfo)
+                .innerJoin(userInfo.agencyInfo(), agencyInfo)
+                .innerJoin(reqStorageInfo.bucketInfo, bucketInfo)
+                .where(reqStorageInfo.reqStorageStatCode.eq(ReqStorageStat.S_ACC))
+                .orderBy(reqStorageInfo.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        if(diseaseCode != null){
+            query = query.where(reqStorageInfo.diseaseCode.eq(diseaseCode));
+        }
+
+        if(agencySeq != null){
+            query = query.where(userInfo.agencySeq.eq(agencySeq));
+        }
+
+        QueryResults<ReqStorageInfoDto> results = query.fetchResults();
+
+        return new PageImpl<ReqStorageInfoDto>(results.getResults(), pageable, results.getTotal());
+    }
+
+    public List<StorageSummaryDto> getUsedSummary() {
+
+        JPAQuery<StorageSummaryDto> query = jpaQueryFactory
+                .select(Projections.constructor(StorageSummaryDto.class, reqStorageInfo.diseaseCode, bucketInfo.bucketSize.sum()))
+                .from(reqStorageInfo)
+                .innerJoin(reqStorageInfo.bucketInfo, bucketInfo)
+                .where(reqStorageInfo.reqStorageStatCode.eq(ReqStorageStat.S_ACC))
+                .groupBy(reqStorageInfo.diseaseCode);
+
+        QueryResults<StorageSummaryDto> results = query.fetchResults();
+
+        return results.getResults();
     }
 }

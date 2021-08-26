@@ -29,6 +29,9 @@ public class BucketInfo extends BaseEntity implements Serializable {
     @Column(columnDefinition = "bigint COMMENT '질병책임자회원번호'")
     private Long diseaseManagerUserSeq;
 
+    @Column(columnDefinition = "bigint COMMENT 'Bucket Size'")
+    private Long bucketSize;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diseaseManagerUserSeq", referencedColumnName = "userSeq", insertable = false, updatable = false)
     private UserInfo diseaseManagerUserInfo;
@@ -56,5 +59,9 @@ public class BucketInfo extends BaseEntity implements Serializable {
         return "dranswer2-"+agencySeq+"-"+
                 reqStorageInfo.getDiseaseCode().name().replaceAll("_", "-")+"-"+
                 reqStorageInfo.getDiseaseManagerUserSeq()+"-"+reqStorageInfo.getReqStorageId();
+    }
+
+    public void setBucketSize(long size) {
+        this.bucketSize = size;
     }
 }

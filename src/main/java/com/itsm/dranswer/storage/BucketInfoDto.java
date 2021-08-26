@@ -16,6 +16,8 @@ public class BucketInfoDto {
 
     private String bucketDesc;
 
+    private Long bucketSize;
+
     private Long diseaseManagerUserSeq;
 
     public BucketInfoDto(BucketInfo bucketInfo) {

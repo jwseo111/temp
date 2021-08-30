@@ -167,4 +167,10 @@ public class StoragePage {
 
         return "pages/storage/myUseView";
     }
+
+    // 서비스 > 질환데이터 적재현황
+    @GetMapping(value = "/service/store/status")
+    public String storageStatus() {
+        return "pages/storage/storageStatus";
+    }
 }

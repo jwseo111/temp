@@ -54,7 +54,7 @@ public class BoardService {
 
     public Page<NoticeDto> pageNotices(String keyword, Pageable pageable) {
         keyword = keyword==null?"":keyword;
-        Page<Notice> pageNotices = noticeRepo.findByTitleContainsOrderByCreatedDateDesc(keyword, pageable);
+        Page<Notice> pageNotices = noticeRepo.findByTitleContainsOrderByImportantYnDescCreatedDateDesc(keyword, pageable);
         return pageNotices.map(NoticeDto::new);
     }
 

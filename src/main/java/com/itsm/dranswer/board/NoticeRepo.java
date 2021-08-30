@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NoticeRepo extends JpaRepository<Notice, Long> {
     Page<Notice> findByTitleContainsOrderByCreatedDateDesc(String title, Pageable pageable);
+
+    Page<Notice> findByTitleContainsOrderByImportantYnDescCreatedDateDesc(String keyword, Pageable pageable);
 }

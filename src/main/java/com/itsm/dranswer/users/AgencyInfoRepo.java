@@ -20,5 +20,5 @@ public interface AgencyInfoRepo extends JpaRepository<AgencyInfo, Integer> {
 
     Page<AgencyInfo> findByAgencyTypeCodeAndAgencyNameContains(AgencyType agencyTypeCode, String agencyName, Pageable pageable);
 
-    Page<AgencyInfo> findByAgencyTypeCodeAndAgencyNameStartsWith(AgencyType agencyTypeCode, String agencyName, Pageable pageable);
+    Page<AgencyInfo> findByAgencyNameContains(String agencyName, Pageable pageable);
 }

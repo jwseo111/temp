@@ -19,9 +19,16 @@ public class AgencyService {
 
     public Page<AgencyInfoDto> getAgencyList(AgencyType agencyTypeCode, String agencyName, Pageable pageable){
 
-        Page<AgencyInfo> pageAgency = agencyInfoRepo.findByAgencyTypeCodeAndAgencyNameContains(agencyTypeCode, agencyName, pageable);
+        Page<AgencyInfo> pageAgency;
+
+        if(agencyTypeCode == null){
+            pageAgency = agencyInfoRepo.findByAgencyNameContains(agencyName, pageable);
+        }else{
+            pageAgency = agencyInfoRepo.findByAgencyTypeCodeAndAgencyNameContains(agencyTypeCode, agencyName, pageable);
+        }
 
         return pageAgency.map(AgencyInfoDto::new);
+
     }
 
 }

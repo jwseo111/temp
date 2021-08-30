@@ -556,7 +556,7 @@ a.btn-join{margin-top:50px;background:#fff;border:1px solid #13a1af;color:#13a1a
 /* //////////////// 질환데이터 적재현황 //////////////// */
 
 .ul-stack{width:100%;border-top:3px solid #222;border-right:1px solid #e8e8e8}
-.ul-stack li{position:relative;float:left;padding:30px 40px;width:25%;height:178px;border-bottom:1px solid #e8e8e8;border-left:1px solid #e8e8e8;}
+.ul-stack li{position:relative;float:left;padding:30px 40px;width:25%;height:178px;border-bottom:1px solid #e8e8e8;border-left:1px solid #e8e8e8;border-right:1px solid #e8e8e8;}
 .ul-stack li label{display:block;margin-top:40px;text-align:right}
 .ul-stack li:nth-child(4),.ul-stack li:nth-child(8),.ul-stack li:nth-child(12){border-right:1px solid #e8e8e8}
 .ul-stack .volume{font-size:1.6rem;font-family:'Roboto';font-weight:700}

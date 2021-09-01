@@ -60,7 +60,8 @@
                         <textarea class="write-textarea" ref="contents" v-bind:value="notice.contents" readonly></textarea>
                         <ul v-if="notice.noticeFiles.length > 0">
                             <span class="join-input-group w-100">
-                                <label>첨부파일</label>
+                                <label>첨부파일<a href="#" class="ml-10" style="color: #1a3f83;font-size: small;" v-on:click="onclickDownloadAll(notice.noticeFiles)">전체다운로드</a></label>
+<!--                                <label>첨부파일</label>-->
                             </span>
                         </ul>
                         <ul class="join-cont-box" style="overflow:auto;height:100px;width:100%;background:#fff;" v-if="notice.noticeFiles.length > 0">

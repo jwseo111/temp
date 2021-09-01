@@ -70,8 +70,8 @@
                         <!-- 첨부파일 -->
                         <ul v-if="inquiry.inquiryFiles.length > 0">
                             <span class="join-input-group w-100">
-<!--                                <label>첨부파일 <a href="#" v-on:click="onclickDownloadAll(inquiry.inquiryFiles)">전체다운로드</a></label>-->
-                                <label>첨부파일</label>
+                                <label>첨부파일<a href="#" class="ml-10" style="color: #1a3f83;font-size: small;" v-on:click="onclickDownloadAll(inquiry.inquiryFiles)">전체다운로드</a></label>
+<!--                                <label>첨부파일</label>-->
                             </span>
                         </ul>
                         <ul class="join-cont-box" v-if="inquiry.inquiryFiles.length > 0" style="overflow:auto;height:100px;width:100%;background:#fff;">
@@ -95,7 +95,8 @@
                             <!-- 첨부파일 -->
                             <ul v-if="replyInfo.inquiryFiles.length > 0">
                             <span class="join-input-group w-100">
-                                <label>첨부파일</label>
+<!--                                <label>첨부파일</label>-->
+                                <label>첨부파일<a href="#" class="ml-10" style="color: #1a3f83;font-size: small;" v-on:click="onclickDownloadAll(inquiry.inquiryFiles)">전체다운로드</a></label>
                             </span>
                             </ul>
                             <ul class="join-cont-box" v-if="replyInfo.inquiryFiles.length > 0" style="overflow:auto;height:100px;width:100%;background:#fff;">

@@ -407,8 +407,31 @@ function onclickDownload(file){
             link.click();
             document.body.removeChild(link);
         })
-}
-
+};
+function onclickDownloadAll(file){
+    const bucketAddress = "https://kr.object.ncloudstorage.com/dranswer-upload-files/";
+    //const fileName = file.fileName;
+    for(let i=0; i<file.length;i++) {
+        let fileName = file[i].fileName;
+        axios({
+            url: bucketAddress + file[i].filePath,
+            method: 'GET',
+            responseType: 'blob'
+        })
+            .then((response) => {
+                const url = window.URL
+                    .createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                // Start download
+                link.click();
+                // Clean up and remove the link
+                document.body.removeChild(link);
+            })
+    }
+};
 function fileSize(size){
 
     let rtn = "";

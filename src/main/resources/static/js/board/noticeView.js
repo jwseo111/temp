@@ -99,26 +99,26 @@ Vue.component('maincontents', {
                 alertMsg(results.error.message);
             }
         },
-        onclickDownload:function (file){
-            const bucketAdress = "https://kr.object.ncloudstorage.com/dranswer-upload-files/";
-            const fileName = file.fileName;
-
-            axios({
-                url: bucketAdress+file.filePath,
-                method: 'GET',
-                responseType: 'blob'
-            })
-                .then((response) => {
-                    const url = window.URL
-                        .createObjectURL(new Blob([response.data]));
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', fileName);
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                })
-        }
+        // onclickDownload:function (file){
+        //     const bucketAdress = "https://kr.object.ncloudstorage.com/dranswer-upload-files/";
+        //     const fileName = file.fileName;
+        //
+        //     axios({
+        //         url: bucketAdress+file.filePath,
+        //         method: 'GET',
+        //         responseType: 'blob'
+        //     })
+        //         .then((response) => {
+        //             const url = window.URL
+        //                 .createObjectURL(new Blob([response.data]));
+        //             const link = document.createElement('a');
+        //             link.href = url;
+        //             link.setAttribute('download', fileName);
+        //             document.body.appendChild(link);
+        //             link.click();
+        //             document.body.removeChild(link);
+        //         })
+        // }
 
     }
 });

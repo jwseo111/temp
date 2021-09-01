@@ -387,3 +387,39 @@ function openLoading(){
 function closeLoading(){
     fnClosePopup('loadingModal');
 }
+
+function onclickDownload(file){
+    const bucketAdress = "https://kr.object.ncloudstorage.com/dranswer-upload-files/";
+    const fileName = file.fileName;
+
+    axios({
+        url: bucketAdress+file.filePath,
+        method: 'GET',
+        responseType: 'blob'
+    })
+        .then((response) => {
+            const url = window.URL
+                .createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        })
+}
+
+function fileSize(size){
+
+    let rtn = "";
+    if(size < 1024) {
+        rtn = size + " byte";
+    } else if (size < 1024 * 1024) {
+        rtn = (size/1024).toFixed(2)+ " KB";
+    } else if (size < 1024 * 1024 * 1024) {
+        rtn = (size/(1024 * 1024)).toFixed(2) + " MB";
+    } else {
+        rtn = (size/(1024 * 1024 * 1024)).toFixed(2) + " GB";
+    }
+    return rtn;
+};

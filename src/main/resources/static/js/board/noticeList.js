@@ -25,7 +25,7 @@ Vue.component('maincontents', {
                 page: 0,
                 size: 5,
                 keyword: "",
-                sort: "importantYn"
+                sort: ""
             },
             noticeList: [],
             pageInfo: {
@@ -40,7 +40,6 @@ Vue.component('maincontents', {
             },
             messages : "",
             userInfo:[],
-
         };
     },
     mounted:function(){

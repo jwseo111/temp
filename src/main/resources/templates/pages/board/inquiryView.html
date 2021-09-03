@@ -63,11 +63,15 @@
                 </tr>
                 <tr >
                     <td colspan="7" class="table-td-cont">
+                        <span class="join-input-group w-100">
+                            <label>문의내용</label>
+                        </span>
                         <textarea class="write-textarea" ref="contents" v-bind:value="inquiry.contents" readonly></textarea>
                         <!-- 첨부파일 -->
                         <ul v-if="inquiry.inquiryFiles.length > 0">
                             <span class="join-input-group w-100">
-                                <label>첨부파일</label>
+                                <label>첨부파일<a href="#" class="ml-10" style="color: #1a3f83;font-size: small;" v-on:click="onclickDownloadAll(inquiry.inquiryFiles)">전체다운로드</a></label>
+<!--                                <label>첨부파일</label>-->
                             </span>
                         </ul>
                         <ul class="join-cont-box" v-if="inquiry.inquiryFiles.length > 0" style="overflow:auto;height:100px;width:100%;background:#fff;">
@@ -84,11 +88,15 @@
                 <tbody>
                     <tr>
                         <td colspan="7" class="table-td-cont">
+                            <span class="join-input-group w-100">
+                                <label>답변내용</label>
+                            </span>
                             <textarea class="write-textarea"  v-bind:value="replyInfo.contents" readonly></textarea>
                             <!-- 첨부파일 -->
                             <ul v-if="replyInfo.inquiryFiles.length > 0">
                             <span class="join-input-group w-100">
-                                <label>첨부파일</label>
+<!--                                <label>첨부파일</label>-->
+                                <label>첨부파일<a href="#" class="ml-10" style="color: #1a3f83;font-size: small;" v-on:click="onclickDownloadAll(inquiry.inquiryFiles)">전체다운로드</a></label>
                             </span>
                             </ul>
                             <ul class="join-cont-box" v-if="replyInfo.inquiryFiles.length > 0" style="overflow:auto;height:100px;width:100%;background:#fff;">
@@ -101,19 +109,6 @@
                 </tbody>
             </table>
 
-
-
-<!--            <div v-if="userInfo.userRole === 'ADMIN'" class="btn-box a-r mt-80">-->
-<!--                <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>-->
-<!--                <a href="#" v-if="inquiry.answerYn === 'N'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyReg">답변등록</a>-->
-<!--                <a href="#" v-if="inquiry.answerYn === 'Y'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyMod">답변수정</a>-->
-<!--                <a href="#" v-if="inquiry.answerYn === 'Y'" class="com-btn btn-w-208 ml-10" v-on:click="onclickReplyDel">답변삭제</a>-->
-<!--            </div>-->
-<!--            <div v-else class="btn-box a-r mt-80">-->
-<!--                <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>-->
-<!--                <a href="#" v-if="inquiry.createdBy === userInfo.userSeq" class="com-btn btn-w-208 ml-10" v-on:click="onclickMod">수정</a>-->
-<!--                <a href="#" v-if="inquiry.createdBy === userInfo.userSeq" class="com-btn btn-w-208 ml-10" v-on:click="onclickDel">삭제</a>-->
-<!--            </div>-->
             <div class="btn-box a-r mt-80">
                 <a href="#" class="com-btn btn-line-bl btn-w-208" v-on:click="onclickList">목록</a>
                 <a href="#" v-if="inquiry.createdBy === userInfo.userSeq" class="com-btn btn-w-208 ml-10" v-on:click="onclickMod">수정</a>

@@ -22,7 +22,7 @@ public class NoticeRepoSupport extends QuerydslRepositorySupport {
         NoticeDto noticeDto  = jpaQueryFactory
                 .select(Projections.constructor(NoticeDto.class, notice))
                 .from(notice).where(notice.noticeSeq.lt(noticeSeq))
-                .orderBy(notice.createdDate.desc()).fetchFirst();
+                .orderBy(notice.importantYn.desc(), notice.createdDate.desc()).fetchFirst();
 
 
         return noticeDto;
@@ -35,7 +35,7 @@ public class NoticeRepoSupport extends QuerydslRepositorySupport {
         NoticeDto noticeDto  = jpaQueryFactory
                 .select(Projections.constructor(NoticeDto.class, notice))
                 .from(notice).where(notice.noticeSeq.gt(noticeSeq))
-                .orderBy(notice.createdDate.asc()).fetchFirst();
+                .orderBy(notice.importantYn.desc(), notice.createdDate.asc()).fetchFirst();
 
         return noticeDto;
     }

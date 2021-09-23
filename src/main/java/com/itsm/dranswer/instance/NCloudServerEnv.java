@@ -64,4 +64,8 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nCloudServerEnv")
     private List<NCloudNetworkInterface> networkInterfaceList = new ArrayList<>();
 
+    public NCloudServerEnvDto convertDto() {
+
+        return new NCloudServerEnvDto(this);
+    }
 }

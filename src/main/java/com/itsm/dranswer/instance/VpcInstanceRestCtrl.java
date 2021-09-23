@@ -6,7 +6,10 @@ import com.itsm.dranswer.apis.vpc.request.GetServerImageProductListRequestDto;
 import com.itsm.dranswer.apis.vpc.request.GetServerProductListRequestDto;
 import com.itsm.dranswer.apis.vpc.request.GetVpcListRequestDto;
 import com.itsm.dranswer.apis.vpc.request.GetZoneListRequestDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.itsm.dranswer.utils.ApiUtils.ApiResult;
@@ -19,9 +22,12 @@ public class VpcInstanceRestCtrl {
 
     private final VpcApiService vpcApiService;
 
-    public VpcInstanceRestCtrl(VpcCommonService vpcCommonService, VpcApiService vpcApiService) {
+    private final EnvInstanceService envInstanceService;
+
+    public VpcInstanceRestCtrl(VpcCommonService vpcCommonService, VpcApiService vpcApiService, EnvInstanceService envInstanceService) {
         this.vpcCommonService = vpcCommonService;
         this.vpcApiService = vpcApiService;
+        this.envInstanceService = envInstanceService;
     }
 
     @GetMapping(value = "/my/management/instance/vpc/server/getRegionList")
@@ -60,6 +66,24 @@ public class VpcInstanceRestCtrl {
     ){
 
         return success(vpcApiService.getVpcList(requestDto));
+    }
+
+    @GetMapping(value = "/env/instance/getList")
+    public ApiResult<Page<ServerEnvDto>> getEnvList(
+            @RequestParam(required = false) ApproveStatus approveStatus,
+            @RequestParam(required = false) String keyword,
+            Pageable pageable
+    ){
+
+        return success(envInstanceService.getEnvInstanceList(approveStatus, keyword, pageable));
+    }
+
+    @GetMapping(value = "/env/instance/getDetail")
+    public ApiResult<?> getEnvDetail(
+            Long reqSeq
+    ){
+
+        return success(envInstanceService.getEnvInstance(reqSeq));
     }
 //
 //    @GetMapping(value = "/my/management/instance/classic/server/getLoginKeyList")

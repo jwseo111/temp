@@ -33,17 +33,17 @@ public class BaseEntity {
 
     @CreatedBy
     @Column(columnDefinition = "bigint COMMENT '생성회원번호'", updatable = false)
-    private Long createdBy;
+    protected Long createdBy;
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createdDate;
+    protected LocalDateTime createdDate;
 
     @LastModifiedBy
     @Column(columnDefinition = "bigint COMMENT '수정회원번호'")
-    private Long modifiedBy;
+    protected Long modifiedBy;
 
     @LastModifiedDate
     @Column
-    private LocalDateTime modifiedDate;
+    protected LocalDateTime modifiedDate;
 }

@@ -1,0 +1,37 @@
+package com.itsm.dranswer.instance;
+
+import com.itsm.dranswer.commons.BaseEntity;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Getter
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+public class NCloudNetworkInterface extends BaseEntity implements Serializable {
+
+    @Id
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @Column(columnDefinition = "varchar(36) COMMENT 'interfaceId'")
+    private String interfaceId;
+
+    @Column(columnDefinition = "int COMMENT '인터페이스 순서'")
+    private Integer networkInterfaceOrder;
+
+    @Column(columnDefinition = "varchar(36) COMMENT 'Acg No'")
+    private String accessControlGroupNo;
+
+    @Column(columnDefinition = "bigint COMMENT '신청번호'")
+    private Long reqSeq;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reqSeq", referencedColumnName = "reqSeq", insertable = false, updatable = false)
+    private NCloudServerEnv nCloudServerEnv;
+
+}

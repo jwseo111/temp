@@ -137,6 +137,8 @@ a.btn-s{width:84px;font-size:1.4rem;font-weight:400;letter-spacing:0}
 .mb-40{margin-bottom:40px !important}
 .mb-50{margin-bottom:50px !important}
 .mb-60{margin-bottom:60px !important}
+.mr-10{margin-right:10px !important}
+.mr-20{margin-right:20px !important}
 .mr-30{margin-right:30px !important}
 .mr-40{margin-right:40px !important}
 .ml-10{margin-left:10px !important}
@@ -180,6 +182,7 @@ a.btn-s{width:84px;font-size:1.4rem;font-weight:400;letter-spacing:0}
 .w-332{width:344px !important}
 .w-744{width:744px !important}
 .h-200{height:200px !important}
+.w-200{width:200px !important}
 
 /* text */
 .t-12{font-size:1.2rem !important}
@@ -209,6 +212,7 @@ a.btn-s{width:84px;font-size:1.4rem;font-weight:400;letter-spacing:0}
 .sub-title-box p{font-size:1.2rem;color:#222;letter-spacing: 0.5px;font-family:'Roboto';text-transform:uppercase}
 .sub-title-box hr{margin-top:50px;border:none;width:40px;height:1px;background:#000}
 .member-container h3{font-size:2.2rem;font-weight:700;color:#222}
+.popup-wrapper{width:100%;}
 
 /* 해더 푸터 */
 .header-wrapper{position:relative;width:100%;height:104px;border-bottom:1px solid #dedede}
@@ -515,6 +519,15 @@ a.btn-join{margin-top:50px;background:#fff;border:1px solid #13a1af;color:#13a1a
 .upload-btn-box a{display:inline-block;margin-right:34px;font-size:1.3rem;text-align:center}
 .upload-btn-box a img{display:block;margin:8px auto 0}
 
+/* //////////////// 학습환경설정 //////////////// */
+.env-box-r{float:left;padding:20px 20px;width:826px;height:550px;background:#f2f2f2}
+.env-box-r p{padding:4px 0;font-size:1.4rem;overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.env-box-r p label{color:#000;font-weight:500}
+.env-box-r-inner{margin-top:10px;padding:0 10px;width:747px;height:460px;overflow:auto;background:#fff}
+.env-box-r-inner::-webkit-scrollbar {width: 6px;}
+.env-box-r-inner::-webkit-scrollbar-thumb {background: #7f7f7f; border-radius: 3px;}
+.env-box-r-inner::-webkit-scrollbar-thumb:hover {background: #7f7f7f}
+.env-input-group{float:left;position: relative;padding:5px 0;width:580px;font-size:0}
 
 /* //////////////// 사용가이드 //////////////// */
 

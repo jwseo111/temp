@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css"></th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/instance/envInstanceView.js}"></script>
+        <script>
+            const reqSeq = "[[${param.reqSeq}]]";
+        </script>
+    </th:block>
+
+    <div class="member-container" layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="content" >
+            <div class="sub-title-box">
+                <h2>학습환경 사용신청</h2>
+<!--                <p>Application for storage of disease data</p>-->
+                <hr>
+            </div>
+
+            <div class="join-cont-box clearfix">
+                <h3>신청자 정보</h3>
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group mr-40">
+                            <label>신청자명</label>
+                            <input type="text" v-bind:value="userInfo.userName" readonly>
+                        </span>
+                        <span class="join-input-group">
+                            <label>기업명</label>
+                            <input type="text" v-bind:value="userInfo.agencyName" readonly>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group mr-40">
+                            <label>연락처</label>
+                            <input type="text" v-bind:value="userInfo.userPhoneNumber" readonly>
+                        </span>
+                        <span class="join-input-group">
+                            <label>이메일</label>
+                            <input type="text" v-bind:value="userInfo.userEmail" readonly>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="join-cont-box">
+                <h3>신청 정보</h3>
+                <span class="join-txt-caution">* 필수 입력 항목</span>
+                <ul class="com-ul">
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>운영체제<span>*</span></label>
+                            <span class="radio-wrap join-radio bdr-b">
+                                <input type="radio" id="radio1_op1" value="LNX64" name="save-op1" v-bind:checked="envInstanceInfo.osImageType.name === 'LNX64'"/>
+                                <label for="radio1_op1"><span></span>centos</label>
+                                <input type="radio" id="radio1_op2" value="UBS64" name="save-op1" v-bind:checked="envInstanceInfo.osImageType.name === 'UBS64'"/>
+                                <label for="radio1_op2"><span></span>ubuntu</label>
+                                <input type="radio" id="radio1_op2" value="WND64" name="save-op1" v-bind:checked="envInstanceInfo.osImageType.name === 'WND64'"/>
+                                <label for="radio1_op2"><span></span>windows</label>
+                            </span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>서버타입<span>*</span></label>
+                            <span class="radio-wrap join-radio bdr-b">
+                                <input type="radio" id="radio2_op1" value="HICPU" name="save-op2" v-bind:checked="envInstanceInfo.productType.name === 'HICPU'"/>
+                                <label for="radio2_op1"><span></span>Hight CPU</label>
+                                <input type="radio" id="radio2_op2" value="STAND" name="save-op2" v-bind:checked="envInstanceInfo.productType.name === 'STAND'"/>
+                                <label for="radio2_op2"><span></span>Standard</label>
+                                <input type="radio" id="radio2_op3" value="HIMEM" name="save-op2" v-bind:checked="envInstanceInfo.productType.name === 'HIMEM'"/>
+                                <label for="radio2_op3"><span></span>High-Memory</label>
+                                <input type="radio" id="radio2_op4" value="GPU" name="save-op2" v-bind:checked="envInstanceInfo.productType.name === 'GPU'"/>
+                                <label for="radio2_op4"><span></span>GPU</label>
+                                <input type="radio" id="radio2_op5" value="CPU" name="save-op2" v-bind:checked="envInstanceInfo.productType.name === 'CPU'"/>
+                                <label for="radio2_op5"><span></span>CPU Intensive</label>
+                            </span>
+                        </span>
+                    </li>
+                    <li class="w-100">
+                        <span class="join-input-group">
+                            <label>VPC<span>*</span></label>
+                            <div class="custom-select" >
+                                <select id="selected" v-model="selected">
+                                    <option value="">VPC를 선택하세요</option>
+                                    <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                </select>
+                            </div>
+                        </span>
+                        <span class="join-input-group">
+                            <label><span></span></label>
+                            <a href="javascript:void(0);" v-on:click="onclickPop('vpcModal');" class="com-btn btn-s" style="width: 150px;">VPC 생성</a>
+                        </span>
+                    </li>
+                    <li class="w-100 bdr-b pb-20">
+                        <span class="join-input-group">
+                            <label>Subnet<span>*</span></label>
+                            <div class="custom-select" >
+                                <select id="selected" v-model="selected">
+                                    <option value="">Subnet을 선택하세요</option>
+                                    <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                </select>
+                            </div>
+                        </span>
+                        <span class="join-input-group">
+                            <label><span></span></label>
+                            <a href="javascript:void(0);" v-on:click="onclickPop('subnetModal');" class="com-btn btn-s" style="width: 150px;">Subnet 생성</a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>스토리지<span>*</span></label>
+                            <span class="radio-wrap join-radio bdr-b">
+                                <input type="radio" id="radio3_op1" value="SSD" name="save-op3" v-bind:checked="envInstanceInfo.storageType === 'SSD'" />
+                                <label for="radio3_op1"><span></span>SSD</label>
+                                <input type="radio" id="radio3_op2" value="HDD" name="save-op3" v-bind:checked="envInstanceInfo.storageType === 'HDD'" />
+                                <label for="radio3_op2"><span></span>HDD</label>
+                            </span>
+                        </span>
+                    </li>
+                    <li class="bdr-b pb-20">
+                        <span class="join-input-group w-100">
+                            <label>서버 스펙<span>*</span></label>
+                                <div class="custom-select" >
+                                    <select id="selected" v-model="selected">
+                                        <option value="">서버 스펙을 선택하세요</option>
+                                        <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                    </select>
+                                </div>
+                        </span>
+                    </li>
+                    <li class="pb-20">
+                        <span class="join-input-group w-100">
+                            <label>Network Interface<span>*</span><span style="font-size: small;font-weight: normal">(최대 3개까지 추가 가능합니다)</span></label>
+                        </span>
+
+                        <span class="join-input-group mr-20 w-200">
+                            <label style="font-weight: normal;">디바이스</label>
+                            <input type="text"  style="width: 200px;" v-model="newNetworkInterface.device" value="eth" readonly >
+                        </span>
+                        <span class="join-input-group mr-20 w-200">
+                            <label style="font-weight: normal;">Network Interface</label>
+                            <div class="custom-select" style="width: 200px;">
+                                <select id="sInterface" ref="sInterface" v-model="newNetworkInterface.interface" style="width: 200px;">
+                                    <option value="">new interface</option>
+                                    <option v-for="option in interfaceList" v-bind:value="option.name">{{option.desc}}</option>
+                                </select>
+                            </div>
+                        </span>
+                        <span class="join-input-group mr-20 w-200">
+                            <label style="font-weight: normal;">Subnet</label>
+                            <div class="custom-select" style="width: 200px;">
+                                <select id="sSubnet" ref="sSubnet" v-model="newNetworkInterface.subnet" style="width: 200px;">
+                                    <option value="">Subnet</option>
+                                    <option v-for="option in subnetList" v-bind:value="option.name">{{option.desc}}</option>
+                                </select>
+                            </div>
+                        </span>
+                        <span class="join-input-group mr-20 w-332">
+                            <label style="font-weight: normal;">IP</label>
+                            <input type="text" style="width: 344px;" v-model="newNetworkInterface.ip" placeholder="미입력시 자동할당">
+                        </span>
+                        <span class="join-input-group" style="width: 150px;">
+                            <label><span></span></label>
+                            <a href="javascript:void(0);" v-on:click="onclickCertAdd();" class="com-btn btn-s" style="width: 150px;">추가</a>
+                        </span>
+                    </li>
+                    <!-- Netwoek Interface 추가영역 -->
+                    <div class="bdr-b pb-20">
+                        <li v-for="(item, idx) in networkInterfaceList">
+                            <span class="join-input-group mr-40 w-200">
+                                <label></label>
+                                <input type="text"  style="width: 200px;" v-bind:value="item.device" readonly >
+                            </span>
+                                <span class="join-input-group mr-40 w-200">
+                                <label></label>
+                                <input type="text"  style="width: 200px;" v-bind:value="item.interface" readonly >
+                            </span>
+                                <span class="join-input-group mr-40 w-200">
+                                <label></label>
+                                <input type="text"  style="width: 200px;" v-bind:value="item.subnet" readonly >
+                            </span>
+                                <span class="join-input-group mr-40 w-332">
+                                <label></label>
+                                <input type="text"  style="width: 344px;" v-bind:value="item.ip" readonly >
+                            </span>
+                                <span class="join-input-group w-84">
+                                <label></label>
+                                <a href="javascript:void(0);" v-on:click="onclickCertDel(idx);" class="com-btn btn-s" style="width: 84px;">삭제</a>
+                            </span>
+                        </li>
+                    </div>
+                    <!-- Network Interface 추가영역 끝-->
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>공인IP<span>*</span><span style="font-size: small;font-weight: normal">(서버 생성시 공인IP를 함께 생성하시려면 Subnet 타입은 Public Subnet이어야 합니다)</span></label>
+                            <span class="radio-wrap join-radio bdr-b">
+                                <input type="radio" id="radio4_op1" value="1" name="save-op4" />
+                                <label for="radio4_op1"><span></span>예</label>
+                                <input type="radio" id="radio4_op2" value="2" name="save-op4"  />
+                                <label for="radio4_op2"><span></span>아니오</label>
+                            </span>
+                        </span>
+                    </li>
+                    <li class="bdr-b pb-20">
+                        <span class="join-input-group w-100">
+                            <label>서버 설명</label>
+<!--                            <span class="radio-wrap join-radio">-->
+<!--                                <input class="w-100" type="text" ref="dataName" v-model="saveInfo.dataName" placeholder="서버 설명을 입력하세요">-->
+<!--                            </span>-->
+                            <input class="w-100" type="text" ref="dataName" v-model="envInstanceInfo.serverDescription" placeholder="서버 설명을 입력하세요">
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group w-100">
+                            <label>인증키 설정</label>
+                            <span class="radio-wrap join-radio">
+                                <input type="radio" id="radio5_op1" value="1" name="save-op5"  />
+                                <label for="radio5_op1"><span></span>예</label>
+                                <input type="radio" id="radio5_op2" value="2" name="save-op5" />
+                                <label for="radio5_op2"><span></span>아니오</label>
+                            </span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="join-input-group mr-30 w-84">
+                            <label style="font-weight: normal;">인증키 선택</label>
+                        </span>
+                        <span class="join-input-group">
+                            <div class="custom-select">
+                                <select id="selected" v-model="selected" style="width: 744px;">
+                                    <option value="">인증키를 선택하세요</option>
+                                    <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                </select>
+                            </div>
+                        </span>
+                    </li>
+                    <li class="bdr-b pb-20">
+                        <span class="join-input-group mr-30 w-84">
+                            <label style="font-weight: normal;">인증키 이름</label>
+                        </span>
+                        <span class="join-input-group">
+                            <input type="text" style="width:430px;" placeholder="최소 3글자, 최대 30자">
+                            <a href="javascript:void(0);" v-on:click="onclickCertSave();" class="com-btn btn-s" style="width: 150px;">인증키 생성 및 저장</a>
+                        </span>
+                    </li>
+                    <li class="bdr-b pb-20">
+                        <span class="join-input-group w-100">
+                            <label>사용 일수<span>*</span></label>
+                            <span class="join-input-group" style="width: 230px;">
+                                <input style="width:220px;" type="text" ref="usingDays" v-model="envInstanceInfo.usingDays" placeholder="사용 일수를 입력하세요">
+                            </span>
+                            <span class="join-input-group" style="width:50px;padding-top:15px;">
+                                <label style="font-weight: normal;">일</label>
+                            </span>
+
+                            <span class="radio-wrap join-radio" style="padding-top:10px;">
+                                <input type="radio" id="radio3_op1" value="1" name="save-op3" v-bind:checked="userInfo.diseaseMainYn === 'Y'" />
+                                <label for="radio3_op1"><span></span>무기한</label>
+                            </span>
+                        </span>
+
+                    </li>
+                </ul>
+            </div>
+
+            <div class="btn-box a-r mt-60">
+                <a href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCancel">목록</a>
+                <a href="#" class="com-btn btn-w-332 ml-10" v-on:click="onclickReqSave">신청</a>
+            </div>
+        </div>
+
+        </script>
+        <div th:insert="pages/instance/popVpc"></div>
+        <div th:insert="pages/instance/popSubnet"></div>
+        <div th:insert="pages/instance/popNetworkInterface"></div>
+<!--        <div th:insert="pages/instance/popAcl"></div>-->
+    </div>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div>
+    <script th:src="@{/js/instance/popSubnet.js}"></script>
+    <div id="popupwrapsubnet" >
+        <popupsubnet ref="popupsubnet"></popupsubnet>
+    </div>
+
+    <script type="text/x-template" id="popup-template-subnet" >
+        <div class="content" >
+            <div id="subnetModal" class="common-popup">
+                <div class="common-popup-content" style="width: 920px;">
+                    <h3>Subet 생성</h3>
+                    <div class="join-cont-box">
+                        <h4>신청 정보</h4>
+                        <span class="join-txt-caution">* 필수 입력 항목</span>
+                        <ul class="com-ul">
+                            <li class="bdr-b">
+                                <span class="join-input-group w-100">
+                                    <label>Subet 이름<span>*</span></label>
+                                    <input class="w-100" type="text" v-model="subnetName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
+                                </span>
+                            </li>
+                            <li class="bdr-b">
+                                <span class="join-input-group w-100">
+                                    <label>IP 주소 범위<span>*</span></label>
+                                    <input class="w-100" type="text" v-model="ipAddress" placeholder="VPC 주소 범위 이하로만 지정이 가능합니다">
+                                </span>
+                            </li>
+                            <li class="w-100 bdr-b">
+                                <span class="join-input-group">
+                                    <label>가용 Zone<span>*</span></label>
+                                    <div class="custom-select" >
+                                        <select id="selected" v-model="selected">
+                                            <option value="">가용 Zone을 선택하세요</option>
+                                            <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                        </select>
+                                    </div>
+                                </span>
+                            </li>
+                            <li class="w-100">
+                                <span class="join-input-group">
+                                    <label>Network ACL<span>*</span></label>
+                                    <div class="custom-select">
+                                        <select id="selected" v-model="selected" >
+                                            <option value="">Network ACL을 선택하세요</option>
+                                            <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                        </select>
+                                    </div>
+                                </span>
+                                <span class="join-input-group" style="width: 180px;">
+                                    <label><span></span></label>
+                                    <a href="javascript:void(0);" v-on:click="onclickPop('aclModal');" class="com-btn btn-s" style="width: 180px;">ACL 생성</a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-box a-r mt-60">
+                        <a href="#" class="com-btn btn-line-bl btn-w-208" onclick="fnClosePopup('subnetModal')">취소</a>
+                        <a href="#" class="com-btn btn-w-208 ml-10" v-on:click="onclickReqSave">생성</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </script>
+    <div th:insert="pages/instance/popAcl"></div>
+</div>
+</html>

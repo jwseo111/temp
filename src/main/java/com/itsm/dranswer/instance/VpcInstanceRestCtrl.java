@@ -66,10 +66,27 @@ public class VpcInstanceRestCtrl {
     @PostMapping(value = "/my/management/instance/vpc/createVpc")
     public ApiResult<?> createVpc(
             @RequestBody
-            CreateVpcRequestDto requestDto
+                    CreateVpcRequestDto requestDto
     ){
 
         return success(vpcApiService.createVpc(requestDto));
+    }
+
+    @GetMapping(value = "/my/management/instance/vpc/getSubnetList")
+    public ApiResult<?> getSubnetList(
+            GetSubnetListRequestDto requestDto
+    ){
+
+        return success(vpcApiService.getSubnetList(requestDto));
+    }
+
+    @PostMapping(value = "/my/management/instance/vpc/createSubnet")
+    public ApiResult<?> createSubnet(
+            @RequestBody
+                    CreateSubnetRequestDto requestDto
+    ){
+
+        return success(vpcApiService.createSubnet(requestDto));
     }
 
     @GetMapping(value = "/env/instance/getList")

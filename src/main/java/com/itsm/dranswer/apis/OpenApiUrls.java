@@ -12,6 +12,7 @@ public class OpenApiUrls {
     public static final String GET_VPC_DETAIL = VPC + "/getVpcDetail";
     public static final String GET_VPC_LIST = VPC + "/getVpcList";
     public static final String GET_NETWORK_ACL_LIST = VPC + "/getNetworkAclList";
+    public static final String GET_SUBNET_LIST = VPC + "/getSubnetList";
     public static final String CREATE_VPC_SUBNET = VPC + "/createSubnet";
     public static final String GET_SUBNET_DETAIL = VPC + "/getSubnetDetail";
 

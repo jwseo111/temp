@@ -2,15 +2,10 @@ package com.itsm.dranswer.instance;
 
 import com.itsm.dranswer.apis.vpc.VpcApiService;
 import com.itsm.dranswer.apis.vpc.VpcCommonService;
-import com.itsm.dranswer.apis.vpc.request.GetServerImageProductListRequestDto;
-import com.itsm.dranswer.apis.vpc.request.GetServerProductListRequestDto;
-import com.itsm.dranswer.apis.vpc.request.GetVpcListRequestDto;
-import com.itsm.dranswer.apis.vpc.request.GetZoneListRequestDto;
+import com.itsm.dranswer.apis.vpc.request.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.itsm.dranswer.utils.ApiUtils.ApiResult;
 import static com.itsm.dranswer.utils.ApiUtils.success;
@@ -60,12 +55,38 @@ public class VpcInstanceRestCtrl {
         return success(vpcCommonService.getServerProductList(requestDto));
     }
 
-    @GetMapping(value = "/my/management/instance/vpc/vpc/getVpcList")
-    public ApiResult<?> createServerInstances(
+    @GetMapping(value = "/my/management/instance/vpc/getVpcList")
+    public ApiResult<?> getVpcList(
             GetVpcListRequestDto requestDto
     ){
 
         return success(vpcApiService.getVpcList(requestDto));
+    }
+
+    @PostMapping(value = "/my/management/instance/vpc/createVpc")
+    public ApiResult<?> createVpc(
+            @RequestBody
+                    CreateVpcRequestDto requestDto
+    ){
+
+        return success(vpcApiService.createVpc(requestDto));
+    }
+
+    @GetMapping(value = "/my/management/instance/vpc/getSubnetList")
+    public ApiResult<?> getSubnetList(
+            GetSubnetListRequestDto requestDto
+    ){
+
+        return success(vpcApiService.getSubnetList(requestDto));
+    }
+
+    @PostMapping(value = "/my/management/instance/vpc/createSubnet")
+    public ApiResult<?> createSubnet(
+            @RequestBody
+                    CreateSubnetRequestDto requestDto
+    ){
+
+        return success(vpcApiService.createSubnet(requestDto));
     }
 
     @GetMapping(value = "/env/instance/getList")

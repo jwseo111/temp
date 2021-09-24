@@ -79,6 +79,16 @@ public class VpcApiService extends ApiService {
         return null;
     }
 
+    public GetSubnetListResponseDto getSubnetList(GetSubnetListRequestDto requestDto){
+
+        final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_SUBNET_LIST, requestDto);
+
+        return restTemplate.exchange(
+                openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)),
+                GetSubnetListResponseDto.class).getBody();
+
+    }
+
     public GetSubnetDetailResponseDto.SubnetInstanceDto getSubnetDetail(final GetSubnetDetailRequestDto requestDto) {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_SUBNET_DETAIL, requestDto);
 

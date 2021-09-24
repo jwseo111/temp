@@ -2,6 +2,7 @@ package com.itsm.dranswer.apis.vpc.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.itsm.dranswer.apis.ResponseError;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CreateVpcServerResponseDto {
+public class CreateVpcServerResponseDto  extends ResponseError {
     private CreateServerInstanceRawResponseDto createServerInstancesResponse;
     private Map responseError;
 

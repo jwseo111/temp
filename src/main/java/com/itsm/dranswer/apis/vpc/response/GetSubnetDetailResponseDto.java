@@ -2,6 +2,7 @@ package com.itsm.dranswer.apis.vpc.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.itsm.dranswer.apis.ResponseError;
 import com.itsm.dranswer.apis.classic.dto.CommonCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GetSubnetDetailResponseDto {
+public class GetSubnetDetailResponseDto  extends ResponseError {
     private GetSubnetDetailRawResponseDto getSubnetDetailResponse;
 
     @Data

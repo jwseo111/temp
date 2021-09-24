@@ -2,6 +2,7 @@ package com.itsm.dranswer.apis.vpc.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.itsm.dranswer.apis.ResponseError;
 import com.itsm.dranswer.apis.classic.dto.CommonCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,17 +10,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CreateNetworkInterfaceResponseDto {
+public class CreateNetworkInterfaceResponseDto  extends ResponseError {
 
     private CreateNetworkInterfaceRawResponseDto createNetworkInterfaceResponse;
-    private Map responseError;
 
     @Data
     @Builder

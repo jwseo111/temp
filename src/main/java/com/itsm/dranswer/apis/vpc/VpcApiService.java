@@ -3,6 +3,7 @@ package com.itsm.dranswer.apis.vpc;
 import com.itsm.dranswer.apis.ApiService;
 import com.itsm.dranswer.apis.OpenApiUrls;
 import com.itsm.dranswer.apis.OpenApiUtils;
+import com.itsm.dranswer.apis.ResponseError;
 import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.apis.vpc.response.*;
 import org.apache.commons.lang3.ObjectUtils;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Map;
 
 @Service
 public class VpcApiService extends ApiService {
@@ -32,6 +35,8 @@ public class VpcApiService extends ApiService {
 
         final CreateVpcResponseDto responseBody = response.getBody();
 
+        checkError(responseBody);
+
         if (ObjectUtils.isNotEmpty(responseBody.getCreateVpcResponse())) {
             if (!CollectionUtils.isEmpty(responseBody.getCreateVpcResponse().getVpcList())) {
                 return responseBody.getCreateVpcResponse().getVpcList().get(0);
@@ -39,6 +44,15 @@ public class VpcApiService extends ApiService {
         }
 
         return null;
+    }
+
+    public static void checkError (ResponseError responseError){
+
+        if(responseError.getResponseError() != null){
+            Map error = responseError.getResponseError();
+            String msg = "["+error.get("returnCode")+"]"+error.get("returnMessage");
+            throw new IllegalArgumentException(msg);
+        }
     }
 
     public GetVpcListResponseDto getVpcList(final GetVpcListRequestDto requestDto) {

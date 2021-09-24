@@ -2,6 +2,7 @@ package com.itsm.dranswer.apis.vpc.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.itsm.dranswer.apis.ResponseError;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GetZoneListResponseDto {
+public class GetZoneListResponseDto extends ResponseError {
     private ZoneListRawResponseDto getZoneListResponse;
 
     @Data

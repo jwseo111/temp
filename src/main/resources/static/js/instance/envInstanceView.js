@@ -29,9 +29,13 @@ Vue.component('maincontents', {
             envInstanceInfo:[],
             messages : "",
 
-            // diseaseCdList : getCodeList('Disease',this.callback),
             saveInfo: {
             },
+            vpcList: [], // VPC 콤보목록
+            vpcSelected:"", // VPC 콤보 선택
+
+            subnetList: [], // Subnet 콤보목록
+            subnetSelected:"", // Subnet 콤보 선택
 
             selected:"", // 선택된 콤보박스
             selectList:     getCodeList('ReqStorageStat',this.callback),//
@@ -51,13 +55,32 @@ Vue.component('maincontents', {
     },
     mounted:function(){
         this.getUserInfo();
+        this.getVpcList();
+        this.getSubnetList();
         this.getEnvInstanceView();
         this.newNetworkInterface.device = "eth" + this.networkInterfaceList.length;
+
     },
     methods:{
         getUserInfo: function(){
             get("usrInfo","/user/my/info",{},this.callback);
         },
+
+        // VPC 콤보 리스트 조회
+        getVpcList: function() {
+            get("vpcList",
+                "/my/management/instance/vpc/getVpcList",
+                {},
+                this.callback);
+        },
+        // Subnet 콤보 리스트 조회
+        getSubnetList: function() {
+            get("subnetList",
+                "/my/management/instance/vpc/getSubnetList",
+                {},
+                this.callback);
+        },
+
         // 신청화면에 출력될 데이타 조회
         getEnvInstanceView:function (){
             get(TID.SEARCH,
@@ -142,6 +165,28 @@ Vue.component('maincontents', {
                         //console.log(results);
                         alertMsg(results.error.message);
                     }
+
+                    break;
+                case "vpcList":
+                    console.log(results);
+                    if (results.success) {
+                        this.vpcList = results.response.getVpcListResponse.vpcList;
+                    } else {
+                        //console.log(results);
+                        alertMsg(results.error.message);
+                    }
+                    break;
+                case "subnetList":
+                    console.log(results);
+                    if (results.success) {
+                        this.subnetList = results.response.getSubnetListResponse.subnetList;
+                    } else {
+                        //console.log(results);
+                        alertMsg(results.error.message);
+                    }
+                    setTimeout(function() {
+                        loadSelect();
+                    },300);
                     break;
                 case TID.SEARCH:
                     this.searchCallback(results);
@@ -159,9 +204,6 @@ Vue.component('maincontents', {
                     // this.interfaceList = results.response;
                     // this.subnetList = results.response;
                     this.selectList = results.response;
-                    setTimeout(function() {
-                        loadSelect();
-                    },300);
                     break;
             }
         },
@@ -169,6 +211,7 @@ Vue.component('maincontents', {
             if (results.success) {
                 console.log(results);
                 this.envInstanceInfo   = results.response;
+
             } else {
                 //console.log(results);
                 alertMsg(results.error.message);

@@ -91,9 +91,9 @@
                         <span class="join-input-group">
                             <label>VPC<span>*</span></label>
                             <div class="custom-select" >
-                                <select id="selected" v-model="selected">
+                                <select id="vpcSelected" v-model="vpcSelected">
                                     <option value="">VPC를 선택하세요</option>
-                                    <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                    <option v-for="option in vpcList" v-bind:value="option.vpcNo">{{option.vpcName}}</option>
                                 </select>
                             </div>
                         </span>
@@ -106,9 +106,9 @@
                         <span class="join-input-group">
                             <label>Subnet<span>*</span></label>
                             <div class="custom-select" >
-                                <select id="selected" v-model="selected">
+                                <select id="subnetSelected" v-model="subnetSelected">
                                     <option value="">Subnet을 선택하세요</option>
-                                    <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                    <option v-for="option in subnetList" v-bind:value="option.subnetcNo">{{option.subnetName}}</option>
                                 </select>
                             </div>
                         </span>

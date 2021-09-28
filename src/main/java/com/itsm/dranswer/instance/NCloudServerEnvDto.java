@@ -3,6 +3,9 @@ package com.itsm.dranswer.instance;
 import com.itsm.dranswer.commons.BaseEntity;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @Setter
@@ -34,6 +37,8 @@ public class NCloudServerEnvDto extends BaseEntity {
     private String loginKeyName;
 
     private Integer usingDays;
+
+    private List<NCloudNetworkInterfaceDto> networkInterfaceList = new ArrayList<>();
 
     public NCloudServerEnvDto(NCloudServerEnv source) {
         copyProperties(source, this);

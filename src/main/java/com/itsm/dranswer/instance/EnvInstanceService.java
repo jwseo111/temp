@@ -30,4 +30,9 @@ public class EnvInstanceService {
 
         return nCloudServerEnv.convertDto();
     }
+
+    public ServerEnvDto reqCreateEnvironment(NCloudServerEnvDto requestDto) {
+
+        return null;
+    }
 }

@@ -15,6 +15,8 @@ import java.io.Serializable;
 @Entity
 public class NCloudNetworkInterface extends BaseEntity implements Serializable {
 
+    private static final long serialVersionUID = -2539913640482624932L;
+
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")

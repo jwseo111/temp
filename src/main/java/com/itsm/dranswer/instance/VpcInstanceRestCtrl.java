@@ -1,9 +1,6 @@
 package com.itsm.dranswer.instance;
 
-import com.itsm.dranswer.apis.vpc.AcgService;
-import com.itsm.dranswer.apis.vpc.VpcApiService;
-import com.itsm.dranswer.apis.vpc.VpcCommonService;
-import com.itsm.dranswer.apis.vpc.VpcNetworkInterfaceService;
+import com.itsm.dranswer.apis.vpc.*;
 import com.itsm.dranswer.apis.vpc.request.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +12,8 @@ import static com.itsm.dranswer.utils.ApiUtils.success;
 @RestController
 public class VpcInstanceRestCtrl {
 
+    private final LoginKeyService loginKeyService;
+
     private final VpcCommonService vpcCommonService;
 
     private final VpcApiService vpcApiService;
@@ -25,7 +24,8 @@ public class VpcInstanceRestCtrl {
 
     private final EnvInstanceService envInstanceService;
 
-    public VpcInstanceRestCtrl(VpcCommonService vpcCommonService, VpcApiService vpcApiService, VpcNetworkInterfaceService vpcNetworkInterfaceService, AcgService acgService, EnvInstanceService envInstanceService) {
+    public VpcInstanceRestCtrl(LoginKeyService loginKeyService, VpcCommonService vpcCommonService, VpcApiService vpcApiService, VpcNetworkInterfaceService vpcNetworkInterfaceService, AcgService acgService, EnvInstanceService envInstanceService) {
+        this.loginKeyService = loginKeyService;
         this.vpcCommonService = vpcCommonService;
         this.vpcApiService = vpcApiService;
         this.vpcNetworkInterfaceService = vpcNetworkInterfaceService;
@@ -204,10 +204,10 @@ public class VpcInstanceRestCtrl {
      * Acg 목록 조회
      * @methodName : getAcgList
      * @date : 2021-09-28 오후 4:30
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param requestDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -218,15 +218,15 @@ public class VpcInstanceRestCtrl {
 
         return success(acgService.getAccessControlGroupList(requestDto));
     }
-    
+
     /**
      * ACG 생성 및 룰 추가
      * @methodName : createAcgAndAddRule
      * @date : 2021-09-28 오후 4:31
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param requestDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -278,6 +278,19 @@ public class VpcInstanceRestCtrl {
         return success(vpcNetworkInterfaceService.createNetworkInterface(requestDto));
     }
 
+    /**
+     * 학습환경 신청 목록 조회
+     * @methodName : getEnvList
+     * @date : 2021-09-28 오후 4:31
+     * @author : xeroman.k
+     * @param approveStatus
+     * @param keyword
+     * @param pageable
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.instance.ServerEnvDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/env/instance/getList")
     public ApiResult<Page<ServerEnvDto>> getEnvList(
             @RequestParam(required = false) ApproveStatus approveStatus,
@@ -288,6 +301,17 @@ public class VpcInstanceRestCtrl {
         return success(envInstanceService.getEnvInstanceList(approveStatus, keyword, pageable));
     }
 
+    /**
+     * 학습환경 신청 상세 조회
+     * @methodName : getEnvDetail
+     * @date : 2021-09-28 오후 4:31
+     * @author : xeroman.k
+     * @param reqSeq
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/env/instance/getDetail")
     public ApiResult<?> getEnvDetail(
             Long reqSeq
@@ -296,31 +320,64 @@ public class VpcInstanceRestCtrl {
         return success(envInstanceService.getEnvInstance(reqSeq));
     }
 
+    /**
+     * 학습환경 신청
+     * @methodName : reqCreateEnvironment
+     * @date : 2021-09-28 오후 4:32
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @PostMapping(value = "/env/instance/vpc/reqCreateEnvironment")
     public ApiResult<?> reqCreateEnvironment(
             @RequestBody
                     NCloudServerEnvDto requestDto
     ){
 
-        return success(vpcApiService.reqCreateEnvironment(requestDto));
+        return success(envInstanceService.reqCreateEnvironment(requestDto));
     }
-//
-//    @GetMapping(value = "/my/management/instance/classic/server/getLoginKeyList")
-//    public ApiResult<?> getLoginKeyList(
-//            ReqGetLoginKeyList reqGetLoginKeyList
-//    ){
-//
-//        return success(serverApiService.getLoginKeyList(reqGetLoginKeyList));
-//    }
-//
-//    @GetMapping(value = "/my/management/instance/classic/server/createLoginKey")
-//    public ApiResult<?> createLoginKey(
-//            ReqCreateLoginKey reqCreateLoginKey
-//    ){
-//
-//        return success(serverApiService.createLoginKey(reqCreateLoginKey));
-//    }
-//
+
+    /**
+     * 로그인키 목록 조회
+     * @methodName : getLoginKeyList
+     * @date : 2021-09-28 오후 4:54
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @GetMapping(value = "/my/management/instance/server/getLoginKeyList")
+    public ApiResult<?> getLoginKeyList(
+            GetLoginKeyListRequestDto requestDto
+    ){
+
+        return success(loginKeyService.getLoginKeyList(requestDto));
+    }
+
+    /**
+     * 로그인키 생성
+     * @methodName : createLoginKey
+     * @date : 2021-09-28 오후 4:54
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @GetMapping(value = "/my/management/instance/server/createLoginKey")
+    public ApiResult<?> createLoginKey(
+            CreateLoginKeyRequestDto requestDto
+    ){
+
+        return success(loginKeyService.createLoginKey(requestDto));
+    }
+
 //    @GetMapping(value = "/my/management/instance/classic/server/createPublicIpInstance")
 //    public ApiResult<?> createPublicIpInstance(
 //            ReqCreatePublicIpInstance reqCreatePublicIpInstance

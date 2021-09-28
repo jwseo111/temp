@@ -24,8 +24,8 @@ public class NCloudNetworkInterface extends BaseEntity implements Serializable {
     @Column(columnDefinition = "int COMMENT '인터페이스 순서'")
     private Integer networkInterfaceOrder;
 
-    @Column(columnDefinition = "varchar(36) COMMENT 'Acg No'")
-    private String accessControlGroupNo;
+    @Column(columnDefinition = "varchar(36) COMMENT 'networkInterface No'")
+    private String networkInterfaceNo;
 
     @Column(columnDefinition = "bigint COMMENT '신청번호'")
     private Long reqSeq;

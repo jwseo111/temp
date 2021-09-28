@@ -19,7 +19,7 @@ public class GetNetworkInterfaceListRequestDto {
     private String subnetNo;
     private List<String> networkInterfaceNoList;
     private String networkInterfaceName;
-    private String networkInterfaceStatusCode;
+    private String networkInterfaceStatusCode = "NOTUSED";
     private String ip;
     private List<String> secondaryIpList;
     private String instanceNo;

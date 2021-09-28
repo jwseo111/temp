@@ -1,7 +1,9 @@
 package com.itsm.dranswer.instance;
 
+import com.itsm.dranswer.apis.vpc.AcgService;
 import com.itsm.dranswer.apis.vpc.VpcApiService;
 import com.itsm.dranswer.apis.vpc.VpcCommonService;
+import com.itsm.dranswer.apis.vpc.VpcNetworkInterfaceService;
 import com.itsm.dranswer.apis.vpc.request.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +19,17 @@ public class VpcInstanceRestCtrl {
 
     private final VpcApiService vpcApiService;
 
+    private final VpcNetworkInterfaceService vpcNetworkInterfaceService;
+
+    private final AcgService acgService;
+
     private final EnvInstanceService envInstanceService;
 
-    public VpcInstanceRestCtrl(VpcCommonService vpcCommonService, VpcApiService vpcApiService, EnvInstanceService envInstanceService) {
+    public VpcInstanceRestCtrl(VpcCommonService vpcCommonService, VpcApiService vpcApiService, VpcNetworkInterfaceService vpcNetworkInterfaceService, AcgService acgService, EnvInstanceService envInstanceService) {
         this.vpcCommonService = vpcCommonService;
         this.vpcApiService = vpcApiService;
+        this.vpcNetworkInterfaceService = vpcNetworkInterfaceService;
+        this.acgService = acgService;
         this.envInstanceService = envInstanceService;
     }
 
@@ -55,6 +63,17 @@ public class VpcInstanceRestCtrl {
         return success(vpcCommonService.getServerProductList(requestDto));
     }
 
+    /**
+     * VPC 목록 조회
+     * @methodName : getVpcList
+     * @date : 2021-09-28 오후 2:42
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/my/management/instance/vpc/getVpcList")
     public ApiResult<?> getVpcList(
             GetVpcListRequestDto requestDto
@@ -63,6 +82,17 @@ public class VpcInstanceRestCtrl {
         return success(vpcApiService.getVpcList(requestDto));
     }
 
+    /**
+     * VPC 생성
+     * @methodName : createVpc
+     * @date : 2021-09-28 오후 2:42
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @PostMapping(value = "/my/management/instance/vpc/createVpc")
     public ApiResult<?> createVpc(
             @RequestBody
@@ -72,6 +102,17 @@ public class VpcInstanceRestCtrl {
         return success(vpcApiService.createVpc(requestDto));
     }
 
+    /**
+     * 서브넷 목록 조회
+     * @methodName : getSubnetList
+     * @date : 2021-09-28 오후 2:42
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/my/management/instance/vpc/getSubnetList")
     public ApiResult<?> getSubnetList(
             GetSubnetListRequestDto requestDto
@@ -80,6 +121,17 @@ public class VpcInstanceRestCtrl {
         return success(vpcApiService.getSubnetList(requestDto));
     }
 
+    /**
+     * 서브넷 생성
+     * @methodName : createSubnet
+     * @date : 2021-09-28 오후 2:42
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @PostMapping(value = "/my/management/instance/vpc/createSubnet")
     public ApiResult<?> createSubnet(
             @RequestBody
@@ -87,6 +139,120 @@ public class VpcInstanceRestCtrl {
     ){
 
         return success(vpcApiService.createSubnet(requestDto));
+    }
+
+    /**
+     * ACL 목록 조회
+     * @methodName : getNetworkAclList
+     * @date : 2021-09-28 오후 2:41
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @GetMapping(value = "/my/management/instance/vpc/getNetworkAclList")
+    public ApiResult<?> getNetworkAclList(
+            GetNetworkAclListRequestDto requestDto
+    ){
+
+        return success(vpcNetworkInterfaceService.getNetworkAclList(requestDto));
+    }
+
+    /**
+     * ACL만 생성하기(팝업은 이 아래 함수 호출)
+     * @methodName : createNetworkAcl
+     * @date : 2021-09-28 오후 2:41
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/my/management/instance/vpc/createNetworkAcl")
+    public ApiResult<?> createNetworkAcl(
+            @RequestBody
+                    CreateNetworkAclRequestDto requestDto
+    ){
+
+        return success(vpcNetworkInterfaceService.createNetworkAcl(requestDto));
+    }
+
+    /**
+     * ACL 생성 및 룰 적용
+     * @methodName : createNetworkAclAndAddRule
+     * @date : 2021-09-28 오후 2:40
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/my/management/instance/vpc/createNetworkAclAndAddRule")
+    public ApiResult<?> createNetworkAclAndAddRule(
+            @RequestBody
+                    CreateNetworkAclAndAddRuleDto requestDto
+    ){
+
+        return success(vpcNetworkInterfaceService.createNetworkAclAndAddRule(requestDto));
+    }
+
+    @GetMapping(value = "/my/management/instance/vpc/getAcgList")
+    public ApiResult<?> getAcgList(
+            GetAccessControlGroupListRequestDto requestDto
+    ){
+
+        return success(acgService.getAccessControlGroupList(requestDto));
+    }
+    @PostMapping(value = "/my/management/instance/vpc/createAcgAndAddRule")
+    public ApiResult<?> createAcgAndAddRule(
+            @RequestBody
+                    CreateAcgAndAddRuleDto requestDto
+    ){
+
+        return success(acgService.createAcgAndAddRule(requestDto));
+    }
+
+    /**
+     * Network Interface 목록 조회
+     * @methodName : getNetworkInterfaceList
+     * @date : 2021-09-28 오후 3:04
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @GetMapping(value = "/my/management/instance/vpc/getNetworkInterfaceList")
+    public ApiResult<?> getNetworkInterfaceList(
+            GetNetworkInterfaceListRequestDto requestDto
+    ){
+
+        return success(vpcNetworkInterfaceService.getNetworkInterfaceList(requestDto));
+    }
+
+    /**
+     * Network Interface 생성
+     * @methodName : createNetworkAcl
+     * @date : 2021-09-28 오후 3:05
+     * @author : xeroman.k
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @PostMapping(value = "/my/management/instance/vpc/createNetworkInterface")
+    public ApiResult<?> createNetworkAcl(
+            @RequestBody
+                    CreateNetworkInterfaceRequestDto requestDto
+    ){
+
+        return success(vpcNetworkInterfaceService.createNetworkInterface(requestDto));
     }
 
     @GetMapping(value = "/env/instance/getList")
@@ -105,6 +271,15 @@ public class VpcInstanceRestCtrl {
     ){
 
         return success(envInstanceService.getEnvInstance(reqSeq));
+    }
+
+    @PostMapping(value = "/env/instance/vpc/reqCreateEnvironment")
+    public ApiResult<?> reqCreateEnvironment(
+            @RequestBody
+                    NCloudServerEnvDto requestDto
+    ){
+
+        return success(vpcApiService.reqCreateEnvironment(requestDto));
     }
 //
 //    @GetMapping(value = "/my/management/instance/classic/server/getLoginKeyList")

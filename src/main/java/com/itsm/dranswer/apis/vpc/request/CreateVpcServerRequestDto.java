@@ -36,6 +36,7 @@ public class CreateVpcServerRequestDto {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class NetworkInterface {
         private Integer networkInterfaceOrder;
+        private String networkInterfaceNo;
         private List<String> accessControlGroupNoList;
     }
 }

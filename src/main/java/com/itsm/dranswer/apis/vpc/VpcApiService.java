@@ -6,6 +6,8 @@ import com.itsm.dranswer.apis.OpenApiUtils;
 import com.itsm.dranswer.apis.ResponseError;
 import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.apis.vpc.response.*;
+import com.itsm.dranswer.instance.NCloudServerEnvDto;
+import com.itsm.dranswer.instance.ServerEnvDto;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -69,13 +71,6 @@ public class VpcApiService extends ApiService {
                 openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetVpcDetailResponseDto.class).getBody();
     }
 
-    public GetNetworkAclListResponseDto getNetworkAclList(final GetNetworkAclListRequestDto requestDto) {
-        final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_NETWORK_ACL_LIST, requestDto);
-
-        return restTemplate.exchange(
-                openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetNetworkAclListResponseDto.class).getBody();
-    }
-
     public CreateSubnetResponseDto.SubnetInstanceDto createSubnet(final CreateSubnetRequestDto requestDto) {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_VPC_SUBNET, requestDto);
 
@@ -115,6 +110,11 @@ public class VpcApiService extends ApiService {
                 return responseBody.getGetSubnetDetailResponse().getSubnetList().get(0);
             }
         }
+
+        return null;
+    }
+
+    public ServerEnvDto reqCreateEnvironment(NCloudServerEnvDto requestDto) {
 
         return null;
     }

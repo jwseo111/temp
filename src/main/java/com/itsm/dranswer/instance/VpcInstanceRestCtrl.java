@@ -200,6 +200,17 @@ public class VpcInstanceRestCtrl {
         return success(vpcNetworkInterfaceService.createNetworkAclAndAddRule(requestDto));
     }
 
+    /**
+     * Acg 목록 조회
+     * @methodName : getAcgList
+     * @date : 2021-09-28 오후 4:30
+     * @author : xeroman.k 
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/my/management/instance/vpc/getAcgList")
     public ApiResult<?> getAcgList(
             GetAccessControlGroupListRequestDto requestDto
@@ -207,6 +218,18 @@ public class VpcInstanceRestCtrl {
 
         return success(acgService.getAccessControlGroupList(requestDto));
     }
+    
+    /**
+     * ACG 생성 및 룰 추가
+     * @methodName : createAcgAndAddRule
+     * @date : 2021-09-28 오후 4:31
+     * @author : xeroman.k 
+     * @param requestDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws 
+     * @modifyed :
+     *
+    **/
     @PostMapping(value = "/my/management/instance/vpc/createAcgAndAddRule")
     public ApiResult<?> createAcgAndAddRule(
             @RequestBody

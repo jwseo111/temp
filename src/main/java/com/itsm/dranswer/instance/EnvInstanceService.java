@@ -33,6 +33,8 @@ public class EnvInstanceService {
 
     public ServerEnvDto reqCreateEnvironment(NCloudServerEnvDto requestDto) {
 
+        NCloudServerEnv nCloudServerEnv = new NCloudServerEnv(requestDto);
+
         return null;
     }
 }

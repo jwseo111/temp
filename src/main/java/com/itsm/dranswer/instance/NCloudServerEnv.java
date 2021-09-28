@@ -64,6 +64,27 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nCloudServerEnv")
     private List<NCloudNetworkInterface> networkInterfaceList = new ArrayList<>();
 
+    public NCloudServerEnv(NCloudServerEnvDto dto) {
+        super();
+
+        this.reqUserSeq = dto.getReqUserSeq();
+        this.osImageType = dto.getOsImageType();
+        this.productType = dto.getProductType();
+        this.storageType = dto.getStorageType();
+        this.productCode = dto.getProductCode();
+        this.associateWithPublicIp = dto.getAssociateWithPublicIp();
+        this.serverDescription = dto.getServerDescription();
+        this.approveStatus = ApproveStatus.REQUEST;
+        this.loginKeyName = dto.getLoginKeyName();
+        this.usingDays = dto.getUsingDays();
+
+        for(NCloudNetworkInterfaceDto nCloudNetworkInterfaceDto : dto.getNetworkInterfaceList()){
+            this.networkInterfaceList.add(new NCloudNetworkInterface(nCloudNetworkInterfaceDto));
+        }
+
+
+    }
+
     public NCloudServerEnvDto convertDto() {
 
         return new NCloudServerEnvDto(this);

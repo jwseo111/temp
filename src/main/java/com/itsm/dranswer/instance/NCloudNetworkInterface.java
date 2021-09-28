@@ -36,4 +36,10 @@ public class NCloudNetworkInterface extends BaseEntity implements Serializable {
     @JoinColumn(name = "reqSeq", referencedColumnName = "reqSeq", insertable = false, updatable = false)
     private NCloudServerEnv nCloudServerEnv;
 
+    public NCloudNetworkInterface (NCloudNetworkInterfaceDto dto){
+        super();
+
+        this.networkInterfaceOrder = dto.getNetworkInterfaceOrder();
+        this.networkInterfaceNo = dto.getNetworkInterfaceNo();
+    }
 }

@@ -378,22 +378,4 @@ public class VpcInstanceRestCtrl {
         return success(loginKeyService.createLoginKey(requestDto));
     }
 
-//    @GetMapping(value = "/my/management/instance/classic/server/createPublicIpInstance")
-//    public ApiResult<?> createPublicIpInstance(
-//            ReqCreatePublicIpInstance reqCreatePublicIpInstance
-//    ){
-//
-//        return success(serverApiService.createPublicIpInstance(reqCreatePublicIpInstance));
-//    }
-//
-//    @GetMapping(value = "/my/management/instance/classic/server/associatePublicIpWithServerInstance")
-//    public ApiResult<?> associatePublicIpWithServerInstance(
-//            ReqAssociatePublicIpWithServerInstance reqAssociatePublicIpWithServerInstance
-//    ){
-//
-//        return success(serverApiService.associatePublicIpWithServerInstance(reqAssociatePublicIpWithServerInstance));
-//    }
-
-
-
 }

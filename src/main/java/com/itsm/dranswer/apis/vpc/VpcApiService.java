@@ -6,8 +6,6 @@ import com.itsm.dranswer.apis.OpenApiUtils;
 import com.itsm.dranswer.apis.ResponseError;
 import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.apis.vpc.response.*;
-import com.itsm.dranswer.instance.NCloudServerEnvDto;
-import com.itsm.dranswer.instance.ServerEnvDto;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -110,11 +108,6 @@ public class VpcApiService extends ApiService {
                 return responseBody.getGetSubnetDetailResponse().getSubnetList().get(0);
             }
         }
-
-        return null;
-    }
-
-    public ServerEnvDto reqCreateEnvironment(NCloudServerEnvDto requestDto) {
 
         return null;
     }

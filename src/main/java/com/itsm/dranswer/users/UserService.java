@@ -12,6 +12,7 @@ package com.itsm.dranswer.users;
 import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -86,13 +87,13 @@ public class UserService {
     }
 
     /**
-     * 
+     *
      * @methodName : join
      * @date : 2021-06-23 오후 3:21
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param request
      * @return : com.itsm.dranswer.users.UserInfoDto
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -119,13 +120,13 @@ public class UserService {
     }
 
     /**
-     * 
+     *
      * @methodName : sendCertMail
      * @date : 2021-06-23 오후 3:21
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param certDto
      * @return : void
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -153,13 +154,13 @@ public class UserService {
     }
 
     /**
-     * 
+     *
      * @methodName : findByPhoneNumber
      * @date : 2021-06-23 오후 3:21
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userInfoDto
      * @return : java.util.List<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -180,18 +181,18 @@ public class UserService {
     }
 
     /**
-     * 
+     *
      * @methodName : changePassword
      * @date : 2021-06-23 오후 3:20
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userInfoDto
      * @return : com.itsm.dranswer.users.UserInfoDto
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
     public UserInfoDto changePassword(UserInfoDto userInfoDto) {
-        
+
         UserInfo userInfo = userInfoRepo.findByUserEmail(userInfoDto.getUserEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일 입니다."));
 
@@ -252,13 +253,13 @@ public class UserService {
     }
 
     /**
-     * 
+     *
      * @methodName : findUserInfo
      * @date : 2021-07-06 오전 11:00
-     * @author : xeroman.k 
+     * @author : xeroman.k
  * @param userSeq
      * @return : com.itsm.dranswer.users.UserInfo
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -268,15 +269,15 @@ public class UserService {
     }
 
     /**
-     * 
+     *
      * @methodName : getUserList
      * @date : 2021-07-06 오전 11:00
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param joinStat
      * @param userName
      * @param pageable
      * @return : org.springframework.data.domain.Page<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -286,13 +287,13 @@ public class UserService {
     }
 
     /**
-     * 
+     *
      * @methodName : acceptUser
      * @date : 2021-07-06 오후 1:07
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userInfoDto
      * @return : com.itsm.dranswer.users.UserInfoDto
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -392,5 +393,20 @@ public class UserService {
         }
         sendCertMail(certDto);
     }
+
+    @Cacheable(value = "getNCloudKeys", key = "#userSeq")
+    public NCloudKeyDto getNCloudKeys(Long userSeq){
+        return userInfoRepoSupport.searchForNCloudKey(userSeq);
+    }
+
+    public NCloudKeyDto getNCloudKey(Long userSeq){
+        if(userSeq==null) throw new NotFoundException("접속정보가 존재하지 않습니다");
+
+        NCloudKeyDto nCloudKeyDto = this.getNCloudKeys(userSeq);
+
+        return nCloudKeyDto;
+    }
+
+
 }
 

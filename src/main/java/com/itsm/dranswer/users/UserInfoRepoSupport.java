@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Repository
 public class UserInfoRepoSupport extends QuerydslRepositorySupport {
@@ -62,5 +64,14 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
         QueryResults<UserInfoDto> results = query.fetchResults();
 
         return results.getResults();
+    }
+
+    public NCloudKeyDto searchForNCloudKey(Long userSeq) {
+
+        return Optional.ofNullable( jpaQueryFactory
+                .select(Projections.constructor(NCloudKeyDto.class, userInfo))
+                .from(userInfo)
+                .where(userInfo.userSeq.eq(userSeq)).fetchOne()).orElseThrow(() -> new NoSuchElementException("네이버클라우드 인증정보가 존재하지 않습니다."));
+
     }
 }

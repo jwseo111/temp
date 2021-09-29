@@ -10,7 +10,7 @@ import com.itsm.dranswer.apis.vpc.response.GetRegionListResponseDto;
 import com.itsm.dranswer.apis.vpc.response.GetServerImageProductListResponseDto;
 import com.itsm.dranswer.apis.vpc.response.GetServerProductListResponseDto;
 import com.itsm.dranswer.apis.vpc.response.GetZoneListResponseDto;
-import org.springframework.beans.factory.annotation.Value;
+import com.itsm.dranswer.users.NCloudKeyDto;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -21,30 +21,34 @@ import java.util.stream.Collectors;
 @Service
 public class VpcCommonService extends ApiService {
 
-    private final String openApiHost = apiServerHost;
+    public GetRegionListResponseDto getRegionList(NCloudKeyDto nCloudKeyDto) {
 
-    @Value("${ncp.laif.access-key}")
-    private String laifAccessKey;
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
 
-    @Value("${ncp.laif.secret-key}")
-    private String laifSecretKey;
-
-    public GetRegionListResponseDto getRegionList() {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_VPC_REGION_LIST);
 
-        return restTemplate.exchange(openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetRegionListResponseDto.class).getBody();
+        return restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetRegionListResponseDto.class).getBody();
     }
 
-    public GetZoneListResponseDto getZoneList(final GetZoneListRequestDto requestDto) {
+    public GetZoneListResponseDto getZoneList(final GetZoneListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_VPC_ZONE_LIST, requestDto);
 
-        return restTemplate.exchange(openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetZoneListResponseDto.class).getBody();
+        return restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetZoneListResponseDto.class).getBody();
     }
 
-    public GetServerImageProductListResponseDto getServerImageProductList(final GetServerImageProductListRequestDto requestDto) {
+    public GetServerImageProductListResponseDto getServerImageProductList(final GetServerImageProductListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_VPC_SERVER_IMAGE_PRODUCT_LIST, requestDto);
 
-        GetServerImageProductListResponseDto getServerImageProductListResponseDto = restTemplate.exchange(openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetServerImageProductListResponseDto.class).getBody();
+        GetServerImageProductListResponseDto getServerImageProductListResponseDto = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetServerImageProductListResponseDto.class).getBody();
 
         getServerImageProductListResponseDto.getGetServerImageProductListResponse().setProductList(
                 getServerImageProductListResponseDto.getGetServerImageProductListResponse().getProductList().stream().filter( e -> e.getProductDescription().indexOf("with") < 0 ).collect(Collectors.toList()));
@@ -52,10 +56,14 @@ public class VpcCommonService extends ApiService {
         return getServerImageProductListResponseDto;
     }
 
-    public GetServerProductListResponseDto getServerProductList(final GetServerProductListRequestDto requestDto) {
+    public GetServerProductListResponseDto getServerProductList(final GetServerProductListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_VPC_SERVER_PRODUCT_LIST, requestDto);
 
-        GetServerProductListResponseDto getServerProductListResponseDto = restTemplate.exchange(openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetServerProductListResponseDto.class).getBody();
+        GetServerProductListResponseDto getServerProductListResponseDto = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetServerProductListResponseDto.class).getBody();
 
         List<GetServerProductListResponseDto.ProductDto> plist = getServerProductListResponseDto.getGetServerProductListResponse().getProductList();
 

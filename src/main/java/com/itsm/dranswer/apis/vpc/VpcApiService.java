@@ -6,8 +6,8 @@ import com.itsm.dranswer.apis.OpenApiUtils;
 import com.itsm.dranswer.apis.ResponseError;
 import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.apis.vpc.response.*;
+import com.itsm.dranswer.users.NCloudKeyDto;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +19,15 @@ import java.util.Map;
 @Service
 public class VpcApiService extends ApiService {
 
-    private final String openApiHost = apiServerHost;
+    public CreateVpcResponseDto.VpcInstanceDto createVpc(final CreateVpcRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
-    @Value("${ncp.laif.access-key}")
-    private String laifAccessKey;
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
 
-    @Value("${ncp.laif.secret-key}")
-    private String laifSecretKey;
-
-    public CreateVpcResponseDto.VpcInstanceDto createVpc(final CreateVpcRequestDto requestDto) {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_VPC, requestDto);
 
         final ResponseEntity<CreateVpcResponseDto> response = restTemplate.exchange(
-                openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), CreateVpcResponseDto.class);
+                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateVpcResponseDto.class);
 
         final CreateVpcResponseDto responseBody = response.getBody();
 
@@ -55,25 +51,37 @@ public class VpcApiService extends ApiService {
         }
     }
 
-    public GetVpcListResponseDto getVpcList(final GetVpcListRequestDto requestDto) {
+    public GetVpcListResponseDto getVpcList(final GetVpcListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_VPC_LIST, requestDto);
 
         return restTemplate.exchange(
-                openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetVpcListResponseDto.class).getBody();
+                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetVpcListResponseDto.class).getBody();
     }
 
-    public GetVpcDetailResponseDto getVpcDetail(final GetVpcDetailRequestDto requestDto) {
+    public GetVpcDetailResponseDto getVpcDetail(final GetVpcDetailRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_VPC_DETAIL, requestDto);
 
         return restTemplate.exchange(
-                openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetVpcDetailResponseDto.class).getBody();
+                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetVpcDetailResponseDto.class).getBody();
     }
 
-    public CreateSubnetResponseDto.SubnetInstanceDto createSubnet(final CreateSubnetRequestDto requestDto) {
+    public CreateSubnetResponseDto.SubnetInstanceDto createSubnet(final CreateSubnetRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_VPC_SUBNET, requestDto);
 
         final ResponseEntity<CreateSubnetResponseDto> response = restTemplate.exchange(
-                openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), CreateSubnetResponseDto.class);
+                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateSubnetResponseDto.class);
 
         final CreateSubnetResponseDto responseBody = response.getBody();
 
@@ -86,20 +94,28 @@ public class VpcApiService extends ApiService {
         return null;
     }
 
-    public GetSubnetListResponseDto getSubnetList(GetSubnetListRequestDto requestDto){
+    public GetSubnetListResponseDto getSubnetList(GetSubnetListRequestDto requestDto, NCloudKeyDto nCloudKeyDto){
+
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_SUBNET_LIST, requestDto);
 
         return restTemplate.exchange(
-                openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)),
+                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 GetSubnetListResponseDto.class).getBody();
 
     }
 
-    public GetSubnetDetailResponseDto.SubnetInstanceDto getSubnetDetail(final GetSubnetDetailRequestDto requestDto) {
+    public GetSubnetDetailResponseDto.SubnetInstanceDto getSubnetDetail(final GetSubnetDetailRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_SUBNET_DETAIL, requestDto);
 
-        final ResponseEntity<GetSubnetDetailResponseDto> response = restTemplate.exchange(openApiHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, laifAccessKey, laifSecretKey)), GetSubnetDetailResponseDto.class);
+        final ResponseEntity<GetSubnetDetailResponseDto> response = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetSubnetDetailResponseDto.class);
 
         final GetSubnetDetailResponseDto responseBody = response.getBody();
 

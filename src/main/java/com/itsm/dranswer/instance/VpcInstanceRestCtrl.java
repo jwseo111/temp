@@ -2,6 +2,10 @@ package com.itsm.dranswer.instance;
 
 import com.itsm.dranswer.apis.vpc.*;
 import com.itsm.dranswer.apis.vpc.request.*;
+import com.itsm.dranswer.config.LoginUser;
+import com.itsm.dranswer.config.LoginUserInfo;
+import com.itsm.dranswer.users.NCloudKeyDto;
+import com.itsm.dranswer.users.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -24,43 +28,55 @@ public class VpcInstanceRestCtrl {
 
     private final EnvInstanceService envInstanceService;
 
-    public VpcInstanceRestCtrl(LoginKeyService loginKeyService, VpcCommonService vpcCommonService, VpcApiService vpcApiService, VpcNetworkInterfaceService vpcNetworkInterfaceService, AcgService acgService, EnvInstanceService envInstanceService) {
+    private final UserService userService;
+
+    public VpcInstanceRestCtrl(LoginKeyService loginKeyService, VpcCommonService vpcCommonService, VpcApiService vpcApiService, VpcNetworkInterfaceService vpcNetworkInterfaceService, AcgService acgService, EnvInstanceService envInstanceService, UserService userService) {
         this.loginKeyService = loginKeyService;
         this.vpcCommonService = vpcCommonService;
         this.vpcApiService = vpcApiService;
         this.vpcNetworkInterfaceService = vpcNetworkInterfaceService;
         this.acgService = acgService;
         this.envInstanceService = envInstanceService;
+        this.userService = userService;
+    }
+
+    private NCloudKeyDto getNCloudKey(LoginUserInfo loginUserInfo){
+        if(loginUserInfo==null) throw new IllegalArgumentException("접속정보가 존재하지 않습니다.");
+        return userService.getNCloudKey(loginUserInfo.getUserSeq());
     }
 
     @GetMapping(value = "/my/management/instance/vpc/server/getRegionList")
     public ApiResult<?> getRegionList(
-    ){
+            @LoginUser LoginUserInfo loginUserInfo
+            ){
 
-        return success(vpcCommonService.getRegionList());
+        return success(vpcCommonService.getRegionList(getNCloudKey(loginUserInfo)));
     }
 
     @GetMapping(value = "/my/management/instance/vpc/server/getZoneList")
     public ApiResult<?> getZoneList(GetZoneListRequestDto requestDto
+                                    , @LoginUser LoginUserInfo loginUserInfo
                                       ){
 
-        return success(vpcCommonService.getZoneList(requestDto));
+        return success(vpcCommonService.getZoneList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     @GetMapping(value = "/my/management/instance/vpc/server/getServerImageProductList")
     public ApiResult<?> getServerImageProductList(
             GetServerImageProductListRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcCommonService.getServerImageProductList(requestDto));
+        return success(vpcCommonService.getServerImageProductList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     @GetMapping(value = "/my/management/instance/vpc/server/getServerProductList")
     public ApiResult<?> getServerProductList(
             GetServerProductListRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcCommonService.getServerProductList(requestDto));
+        return success(vpcCommonService.getServerProductList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -77,9 +93,10 @@ public class VpcInstanceRestCtrl {
     @GetMapping(value = "/my/management/instance/vpc/getVpcList")
     public ApiResult<?> getVpcList(
             GetVpcListRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcApiService.getVpcList(requestDto));
+        return success(vpcApiService.getVpcList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -97,9 +114,10 @@ public class VpcInstanceRestCtrl {
     public ApiResult<?> createVpc(
             @RequestBody
                     CreateVpcRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcApiService.createVpc(requestDto));
+        return success(vpcApiService.createVpc(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -116,9 +134,10 @@ public class VpcInstanceRestCtrl {
     @GetMapping(value = "/my/management/instance/vpc/getSubnetList")
     public ApiResult<?> getSubnetList(
             GetSubnetListRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcApiService.getSubnetList(requestDto));
+        return success(vpcApiService.getSubnetList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -136,9 +155,10 @@ public class VpcInstanceRestCtrl {
     public ApiResult<?> createSubnet(
             @RequestBody
                     CreateSubnetRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcApiService.createSubnet(requestDto));
+        return success(vpcApiService.createSubnet(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -155,9 +175,10 @@ public class VpcInstanceRestCtrl {
     @GetMapping(value = "/my/management/instance/vpc/getNetworkAclList")
     public ApiResult<?> getNetworkAclList(
             GetNetworkAclListRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcNetworkInterfaceService.getNetworkAclList(requestDto));
+        return success(vpcNetworkInterfaceService.getNetworkAclList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -175,9 +196,10 @@ public class VpcInstanceRestCtrl {
     public ApiResult<?> createNetworkAcl(
             @RequestBody
                     CreateNetworkAclRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcNetworkInterfaceService.createNetworkAcl(requestDto));
+        return success(vpcNetworkInterfaceService.createNetworkAcl(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -195,9 +217,10 @@ public class VpcInstanceRestCtrl {
     public ApiResult<?> createNetworkAclAndAddRule(
             @RequestBody
                     CreateNetworkAclAndAddRuleDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcNetworkInterfaceService.createNetworkAclAndAddRule(requestDto));
+        return success(vpcNetworkInterfaceService.createNetworkAclAndAddRule(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -214,9 +237,10 @@ public class VpcInstanceRestCtrl {
     @GetMapping(value = "/my/management/instance/vpc/getAcgList")
     public ApiResult<?> getAcgList(
             GetAccessControlGroupListRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(acgService.getAccessControlGroupList(requestDto));
+        return success(acgService.getAccessControlGroupList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -234,9 +258,10 @@ public class VpcInstanceRestCtrl {
     public ApiResult<?> createAcgAndAddRule(
             @RequestBody
                     CreateAcgAndAddRuleDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(acgService.createAcgAndAddRule(requestDto));
+        return success(acgService.createAcgAndAddRule(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -253,9 +278,10 @@ public class VpcInstanceRestCtrl {
     @GetMapping(value = "/my/management/instance/vpc/getNetworkInterfaceList")
     public ApiResult<?> getNetworkInterfaceList(
             GetNetworkInterfaceListRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcNetworkInterfaceService.getNetworkInterfaceList(requestDto));
+        return success(vpcNetworkInterfaceService.getNetworkInterfaceList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -273,9 +299,10 @@ public class VpcInstanceRestCtrl {
     public ApiResult<?> createNetworkAcl(
             @RequestBody
                     CreateNetworkInterfaceRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(vpcNetworkInterfaceService.createNetworkInterface(requestDto));
+        return success(vpcNetworkInterfaceService.createNetworkInterface(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -296,6 +323,7 @@ public class VpcInstanceRestCtrl {
             @RequestParam(required = false) ApproveStatus approveStatus,
             @RequestParam(required = false) String keyword,
             Pageable pageable
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
         return success(envInstanceService.getEnvInstanceList(approveStatus, keyword, pageable));
@@ -315,6 +343,7 @@ public class VpcInstanceRestCtrl {
     @GetMapping(value = "/env/instance/getDetail")
     public ApiResult<?> getEnvDetail(
             Long reqSeq
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
         return success(envInstanceService.getEnvInstance(reqSeq));
@@ -335,6 +364,7 @@ public class VpcInstanceRestCtrl {
     public ApiResult<?> reqCreateEnvironment(
             @RequestBody
                     NCloudServerEnvDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
         return success(envInstanceService.reqCreateEnvironment(requestDto));
@@ -354,9 +384,10 @@ public class VpcInstanceRestCtrl {
     @GetMapping(value = "/my/management/instance/server/getLoginKeyList")
     public ApiResult<?> getLoginKeyList(
             GetLoginKeyListRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(loginKeyService.getLoginKeyList(requestDto));
+        return success(loginKeyService.getLoginKeyList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
     /**
@@ -373,9 +404,10 @@ public class VpcInstanceRestCtrl {
     @GetMapping(value = "/my/management/instance/server/createLoginKey")
     public ApiResult<?> createLoginKey(
             CreateLoginKeyRequestDto requestDto
+            , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(loginKeyService.createLoginKey(requestDto));
+        return success(loginKeyService.createLoginKey(requestDto, getNCloudKey(loginUserInfo)));
     }
 
 }

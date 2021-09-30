@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetLoginKeyListRequestDto {
-    private String keyName = "";
-    private Integer pageSize = 100;
+    private String keyName;
 }

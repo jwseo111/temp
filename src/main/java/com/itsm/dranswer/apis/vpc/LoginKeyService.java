@@ -33,7 +33,7 @@ public class LoginKeyService extends ApiService {
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
         String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
 
-        final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_LOGIN_KEY, requestDto);
+        final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_LOGIN_KEY_LIST, requestDto);
 
         final GetLoginKeyListResponseDto responseDto = restTemplate.exchange(
                 apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetLoginKeyListResponseDto.class).getBody();;

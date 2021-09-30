@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 @Data
@@ -22,7 +21,6 @@ import java.util.Map;
 public class GetLoginKeyListResponseDto  extends ResponseError {
 
     private GetLoginKeyListResponse.GetLoginKeyListRawResponse getLoginKeyListResponse;
-    private Map responseError;
 
     @Data
     @Builder

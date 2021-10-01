@@ -57,6 +57,8 @@ public class StorageService {
 
     private final CustomMailSender customMailSender;
 
+    private final UseStorageInfoRepo useStorageInfoRepo;
+
     @Value("${ncp.laif.end-point}")
     private String endPoint;
     @Value("${ncp.laif.region-name}")
@@ -71,7 +73,7 @@ public class StorageService {
     private String laifServerSecretKey;
 
     @Autowired
-    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, OpenStorageInfoRepoSupport openStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo, CustomMailSender customMailSender) {
+    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, OpenStorageInfoRepoSupport openStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo, CustomMailSender customMailSender, UseStorageInfoRepo useStorageInfoRepo) {
         this.userService = userService;
         this.reqStorageInfoRepo = reqStorageInfoRepo;
         this.openStorageInfoRepo = openStorageInfoRepo;
@@ -80,6 +82,7 @@ public class StorageService {
         this.customObjectStorage = customObjectStorage;
         this.bucketInfoRepo = bucketInfoRepo;
         this.customMailSender = customMailSender;
+        this.useStorageInfoRepo = useStorageInfoRepo;
     }
 
     /**
@@ -101,13 +104,13 @@ public class StorageService {
     }
 
     /**
-     * 
+     *
      * @methodName : saveReqStorageInfo
      * @date : 2021-06-25 오전 10:47
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param reqStorageInfo
      * @return : com.itsm.dranswer.storage.ReqStorageInfo
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -168,13 +171,13 @@ public class StorageService {
     }
 
     /**
-     * 
+     *
      * @methodName : getReqStorageInfo
      * @date : 2021-06-25 오후 3:42
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param reqStorageId
      * @return : com.itsm.dranswer.storage.ReqStorageInfo
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -184,14 +187,14 @@ public class StorageService {
     }
 
     /**
-     * 
+     *
      * @methodName : cancelReqStorageInfo
      * @date : 2021-06-25 오후 3:53
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @param reqStorageId
      * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -203,17 +206,17 @@ public class StorageService {
 
         return new ReqStorageInfoDto(reqStorageInfo);
     }
-    
+
     /**
-     * 
+     *
      * @methodName : deleteReqStorageInfo
      * @date : 2021-06-29 오후 4:33
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @param reqStorageId
      * @param reqStorageInfoDto
      * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -277,13 +280,13 @@ public class StorageService {
     }
 
     /**
-     * 
+     *
      * @methodName : deleteReqStorageInfo
      * @date : 2021-07-08 오전 10:46
-     * @author : xeroman.k 
+     * @author : xeroman.k
  * @param reqStorageId
      * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -363,6 +366,10 @@ public class StorageService {
         }
 
         return openStorageInfoRepoSupport.searchAll(openStorageStatCode, dataName, inqUserSeq, pageable);
+    }
+
+    public Page<OpenStorageInfoDto> getOpenStorageListForUse(Disease disease, String keyword, Pageable pageable) {
+        return openStorageInfoRepoSupport.searchForUse(disease, keyword, pageable);
     }
 
     public OpenStorageInfoDto openStorage(OpenStorageInfoDto openStorageInfoDto) {
@@ -637,5 +644,14 @@ public class StorageService {
         }
 
         return list;
+    }
+
+    public UseStorageInfoDto reqUseStorage(LoginUserInfo loginUserInfo, UseStorageInfoDto reqUseStorageInfoDto) {
+
+        UseStorageInfo useStorageInfo = new UseStorageInfo(reqUseStorageInfoDto, loginUserInfo.getUserSeq());
+        useStorageInfo = useStorageInfoRepo.save(useStorageInfo);
+
+        return useStorageInfo.convertDto();
+
     }
 }

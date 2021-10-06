@@ -13,4 +13,12 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseError {
     protected Map responseError;
+
+    public void checkError (){
+
+        if(responseError != null){
+            String msg = "["+responseError.get("returnCode")+"]"+responseError.get("returnMessage");
+            throw new IllegalArgumentException(msg);
+        }
+    }
 }

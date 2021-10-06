@@ -42,10 +42,12 @@ public class AcgService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_ACG_LIST, requestDto);
 
-        return restTemplate.exchange(apiServerHost + uri, HttpMethod.GET,
+        GetAccessControlGroupListResponseDto responseDto = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET,
                 new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 GetAccessControlGroupListResponseDto.class).getBody();
 
+        responseDto.checkError();
+        return responseDto;
     }
 
     public GetAccessControlGroupDetailResponseDto.AcgInstanceDto getAccessControlGroupDetail(GetAccessControlGroupDetailRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
@@ -85,9 +87,11 @@ public class AcgService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.ADD_ACG_INBOUND_RULE, requestDto);
 
-        return restTemplate.exchange(
+        AddAcgInboundRuleResponseDto responseDto = restTemplate.exchange(
                 apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 AddAcgInboundRuleResponseDto.class).getBody();
+        responseDto.checkError();
+        return responseDto;
     }
 
     public AddAcgOutboundRuleResponseDto addAcgOutboundRule(final AddAcgRuleRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
@@ -97,9 +101,11 @@ public class AcgService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.ADD_ACG_OUTBOUND_RULE, requestDto);
 
-        return restTemplate.exchange(
+        AddAcgOutboundRuleResponseDto responseDto = restTemplate.exchange(
                 apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 AddAcgOutboundRuleResponseDto.class).getBody();
+        responseDto.checkError();
+        return responseDto;
     }
 
     public RemoveAcgInboundRuleResponseDto removeAcgInboundRule(final RemoveAcgRuleRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {

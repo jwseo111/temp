@@ -3,7 +3,6 @@ package com.itsm.dranswer.apis.vpc;
 import com.itsm.dranswer.apis.ApiService;
 import com.itsm.dranswer.apis.OpenApiUrls;
 import com.itsm.dranswer.apis.OpenApiUtils;
-import com.itsm.dranswer.apis.ResponseError;
 import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.apis.vpc.response.*;
 import com.itsm.dranswer.users.NCloudKeyDto;
@@ -13,8 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
-import java.util.Map;
 
 @Service
 public class VpcApiService extends ApiService {
@@ -31,7 +28,7 @@ public class VpcApiService extends ApiService {
 
         final CreateVpcResponseDto responseBody = response.getBody();
 
-        checkError(responseBody);
+        responseBody.checkError();
 
         if (ObjectUtils.isNotEmpty(responseBody.getCreateVpcResponse())) {
             if (!CollectionUtils.isEmpty(responseBody.getCreateVpcResponse().getVpcList())) {
@@ -42,15 +39,6 @@ public class VpcApiService extends ApiService {
         return null;
     }
 
-    public static void checkError (ResponseError responseError){
-
-        if(responseError.getResponseError() != null){
-            Map error = responseError.getResponseError();
-            String msg = "["+error.get("returnCode")+"]"+error.get("returnMessage");
-            throw new IllegalArgumentException(msg);
-        }
-    }
-
     public GetVpcListResponseDto getVpcList(final GetVpcListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -58,8 +46,12 @@ public class VpcApiService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_VPC_LIST, requestDto);
 
-        return restTemplate.exchange(
+        GetVpcListResponseDto responseDto = restTemplate.exchange(
                 apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetVpcListResponseDto.class).getBody();
+
+        responseDto.checkError();
+
+        return responseDto;
     }
 
     public GetVpcDetailResponseDto getVpcDetail(final GetVpcDetailRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
@@ -85,6 +77,8 @@ public class VpcApiService extends ApiService {
 
         final CreateSubnetResponseDto responseBody = response.getBody();
 
+        responseBody.checkError();
+
         if (ObjectUtils.isNotEmpty(responseBody.getCreateSubnetResponse())) {
             if (!CollectionUtils.isEmpty(responseBody.getCreateSubnetResponse().getSubnetList())) {
                 return responseBody.getCreateSubnetResponse().getSubnetList().get(0);
@@ -102,9 +96,12 @@ public class VpcApiService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_SUBNET_LIST, requestDto);
 
-        return restTemplate.exchange(
+        GetSubnetListResponseDto responseDto = restTemplate.exchange(
                 apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 GetSubnetListResponseDto.class).getBody();
+
+        responseDto.checkError();
+        return responseDto;
 
     }
 

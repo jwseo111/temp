@@ -1,7 +1,10 @@
 package com.itsm.dranswer.storage;
 
 import com.itsm.dranswer.commons.BaseEntity;
+import com.itsm.dranswer.users.AgencyInfo;
+import com.itsm.dranswer.users.AgencyInfoDto;
 import com.itsm.dranswer.users.UserInfo;
+import com.itsm.dranswer.users.UserInfoDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -30,7 +33,11 @@ public class UseStorageInfoDto extends BaseEntity {
 
     private Long reqUserSeq;
 
-    private UserInfo reqUserInfo;
+    private OpenStorageInfoDto openStorageInfo;
+
+    private UserInfoDto hUserInfo;
+
+    private AgencyInfoDto agencyInfo;
 
     protected LocalDateTime acceptDate;
 
@@ -39,5 +46,14 @@ public class UseStorageInfoDto extends BaseEntity {
     public UseStorageInfoDto(UseStorageInfo source) {
 
         copyProperties(source, this);
+    }
+
+    public UseStorageInfoDto(UseStorageInfo source, OpenStorageInfo openStorageInfo, UserInfo hUserInfo, AgencyInfo agencyInfo) {
+
+        copyProperties(source, this);
+
+        this.openStorageInfo = new OpenStorageInfoDto(openStorageInfo);
+        this.hUserInfo = new UserInfoDto(hUserInfo);
+        this.agencyInfo = new AgencyInfoDto(agencyInfo);
     }
 }

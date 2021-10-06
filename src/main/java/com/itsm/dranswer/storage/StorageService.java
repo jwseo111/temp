@@ -15,6 +15,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
+import com.itsm.dranswer.errors.NotFoundException;
 import com.itsm.dranswer.etc.FileUploadResponse;
 import com.itsm.dranswer.etc.FileUploadResponse.FileObject;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
@@ -44,20 +45,17 @@ public class StorageService {
     private final UserService userService;
 
     private final ReqStorageInfoRepo reqStorageInfoRepo;
-
-    private final OpenStorageInfoRepo openStorageInfoRepo;
-
     private final ReqStorageInfoRepoSupport reqStorageInfoRepoSupport;
 
+    private final OpenStorageInfoRepo openStorageInfoRepo;
     private final OpenStorageInfoRepoSupport openStorageInfoRepoSupport;
 
-    private final CustomObjectStorage customObjectStorage;
-
-    private final BucketInfoRepo bucketInfoRepo;
-
-    private final CustomMailSender customMailSender;
-
     private final UseStorageInfoRepo useStorageInfoRepo;
+    private final UseStorageInfoRepoSupport useStorageInfoRepoSupport;
+
+    private final CustomObjectStorage customObjectStorage;
+    private final BucketInfoRepo bucketInfoRepo;
+    private final CustomMailSender customMailSender;
 
     @Value("${ncp.laif.end-point}")
     private String endPoint;
@@ -73,7 +71,7 @@ public class StorageService {
     private String laifServerSecretKey;
 
     @Autowired
-    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, OpenStorageInfoRepoSupport openStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo, CustomMailSender customMailSender, UseStorageInfoRepo useStorageInfoRepo) {
+    public StorageService(UserService userService, ReqStorageInfoRepo reqStorageInfoRepo, OpenStorageInfoRepo openStorageInfoRepo, ReqStorageInfoRepoSupport reqStorageInfoRepoSupport, OpenStorageInfoRepoSupport openStorageInfoRepoSupport, CustomObjectStorage customObjectStorage, BucketInfoRepo bucketInfoRepo, CustomMailSender customMailSender, UseStorageInfoRepo useStorageInfoRepo, UseStorageInfoRepoSupport useStorageInfoRepoSupport) {
         this.userService = userService;
         this.reqStorageInfoRepo = reqStorageInfoRepo;
         this.openStorageInfoRepo = openStorageInfoRepo;
@@ -83,6 +81,7 @@ public class StorageService {
         this.bucketInfoRepo = bucketInfoRepo;
         this.customMailSender = customMailSender;
         this.useStorageInfoRepo = useStorageInfoRepo;
+        this.useStorageInfoRepoSupport = useStorageInfoRepoSupport;
     }
 
     /**
@@ -653,5 +652,58 @@ public class StorageService {
 
         return useStorageInfo.convertDto();
 
+    }
+
+    public Page<UseStorageInfoDto> getUseStorageList(UseStorageStat useStorageStat, String dataName, Long userSeq, Pageable pageable) {
+
+        return useStorageInfoRepoSupport.searchMyList(useStorageStat, dataName, userSeq, pageable);
+    }
+
+    private UseStorageInfo getUseStorageInfo(String useStorageId){
+        return useStorageInfoRepo.findById(useStorageId).orElseThrow(() ->
+                new NotFoundException("존재하지 않는 정보 입니다.")
+        );
+    }
+
+    public UseStorageInfoDto getUseStorage(String useStorageId) {
+
+        UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
+
+        UseStorageInfoDto useStorageInfoDto = new UseStorageInfoDto(useStorageInfo,
+                useStorageInfo.getOpenStorageInfo(), useStorageInfo.getOpenStorageInfo().getDiseaseManagerUserInfo(),
+                useStorageInfo.getOpenStorageInfo().getDiseaseManagerUserInfo().getAgencyInfo());
+
+        return useStorageInfoDto;
+
+    }
+
+    public UseStorageInfoDto cancelUseStorage(String useStorageId, String cancelMsg, LoginUserInfo loginUserInfo) {
+        UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
+        useStorageInfo.checkUser(loginUserInfo.getUserSeq());
+        useStorageInfo.reqCancel(cancelMsg);
+
+        return useStorageInfo.convertDto();
+    }
+
+    public UseStorageInfoDto rejectUseStorage(String useStorageId, String rejectMsg) {
+        UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
+
+        useStorageInfo.reject(rejectMsg);
+
+        return useStorageInfo.convertDto();
+    }
+
+    public UseStorageInfoDto approveUseStorage(String useStorageId) {
+        UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
+        useStorageInfo.approve();
+
+        return useStorageInfo.convertDto();
+    }
+
+    public UseStorageInfoDto deleteUseStorage(String useStorageId) {
+        UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
+        useStorageInfo.delete();
+
+        return useStorageInfo.convertDto();
     }
 }

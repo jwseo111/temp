@@ -70,4 +70,30 @@ public class UseStorageInfo extends BaseEntity implements Serializable {
     public UseStorageInfoDto convertDto() {
         return new UseStorageInfoDto(this);
     }
+
+    public void reqCancel(String cancelMsg) {
+        this.cancelReason = cancelMsg;
+        this.useStorageStatCode = UseStorageStat.U_CCL;
+    }
+
+    public void reject(String rejectMsg) {
+        this.rejectReason = rejectMsg;
+        this.useStorageStatCode = UseStorageStat.U_REJ;
+    }
+
+    public void approve() {
+        this.acceptDate = LocalDateTime.now();
+        this.endDate = LocalDateTime.now().plusDays(this.usingDays);
+        this.useStorageStatCode = UseStorageStat.U_ACC;
+    }
+
+    public void delete() {
+        this.useStorageStatCode = UseStorageStat.D_ACC;
+    }
+
+    public void checkUser(Long userSeq) {
+        if(userSeq != this.reqUserSeq){
+            throw new IllegalArgumentException("현재 사용자와 정보 소유자가 일치하지 않습니다.");
+        }
+    }
 }

@@ -21,7 +21,7 @@ public class NCloudServerEnvRepoSupport extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public Page<ServerEnvDto> searchAll(ApproveStatus approveStatus, String keyword, Pageable pageable){
+    public Page<ServerEnvDto> searchAll(ApproveStatus approveStatus, String keyword, Long userSeq, Pageable pageable){
 
         QNCloudServerEnv nCloudServerEnv = QNCloudServerEnv.nCloudServerEnv;
         QUserInfo userInfo = QUserInfo.userInfo;
@@ -33,6 +33,10 @@ public class NCloudServerEnvRepoSupport extends QuerydslRepositorySupport {
                 .orderBy(nCloudServerEnv.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
+
+        if(userSeq != null){
+            query = query.where(nCloudServerEnv.reqUserSeq.eq(userSeq));
+        }
 
         if(approveStatus != null){
             query = query.where(nCloudServerEnv.approveStatus.eq(approveStatus));

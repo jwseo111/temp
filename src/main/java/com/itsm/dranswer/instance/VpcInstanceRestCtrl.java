@@ -8,6 +8,7 @@ import com.itsm.dranswer.users.NCloudKeyDto;
 import com.itsm.dranswer.users.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import static com.itsm.dranswer.utils.ApiUtils.ApiResult;
@@ -45,6 +46,7 @@ public class VpcInstanceRestCtrl {
         return userService.getNCloudKey(loginUserInfo.getUserSeq());
     }
 
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/server/getRegionList")
     public ApiResult<?> getRegionList(
             @LoginUser LoginUserInfo loginUserInfo
@@ -53,6 +55,7 @@ public class VpcInstanceRestCtrl {
         return success(vpcCommonService.getRegionList(getNCloudKey(loginUserInfo)));
     }
 
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/server/getZoneList")
     public ApiResult<?> getZoneList(GetZoneListRequestDto requestDto
                                     , @LoginUser LoginUserInfo loginUserInfo
@@ -61,6 +64,7 @@ public class VpcInstanceRestCtrl {
         return success(vpcCommonService.getZoneList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/server/getServerImageProductList")
     public ApiResult<?> getServerImageProductList(
             GetServerImageProductListRequestDto requestDto
@@ -70,6 +74,7 @@ public class VpcInstanceRestCtrl {
         return success(vpcCommonService.getServerImageProductList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/server/getServerProductList")
     public ApiResult<?> getServerProductList(
             GetServerProductListRequestDto requestDto
@@ -90,6 +95,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/getVpcList")
     public ApiResult<?> getVpcList(
             GetVpcListRequestDto requestDto
@@ -110,6 +116,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/my/management/instance/vpc/createVpc")
     public ApiResult<?> createVpc(
             @RequestBody
@@ -131,6 +138,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/getSubnetList")
     public ApiResult<?> getSubnetList(
             GetSubnetListRequestDto requestDto
@@ -151,6 +159,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/my/management/instance/vpc/createSubnet")
     public ApiResult<?> createSubnet(
             @RequestBody
@@ -172,6 +181,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/getNetworkAclList")
     public ApiResult<?> getNetworkAclList(
             GetNetworkAclListRequestDto requestDto
@@ -192,6 +202,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/my/management/instance/vpc/createNetworkAcl")
     public ApiResult<?> createNetworkAcl(
             @RequestBody
@@ -213,6 +224,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/my/management/instance/vpc/createNetworkAclAndAddRule")
     public ApiResult<?> createNetworkAclAndAddRule(
             @RequestBody
@@ -234,6 +246,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/getAcgList")
     public ApiResult<?> getAcgList(
             GetAccessControlGroupListRequestDto requestDto
@@ -254,6 +267,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/my/management/instance/vpc/createAcgAndAddRule")
     public ApiResult<?> createAcgAndAddRule(
             @RequestBody
@@ -275,6 +289,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/getNetworkInterfaceList")
     public ApiResult<?> getNetworkInterfaceList(
             GetNetworkInterfaceListRequestDto requestDto
@@ -295,6 +310,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/my/management/instance/vpc/createNetworkInterface")
     public ApiResult<?> createNetworkAcl(
             @RequestBody
@@ -326,7 +342,19 @@ public class VpcInstanceRestCtrl {
             , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(envInstanceService.getEnvInstanceList(approveStatus, keyword, pageable));
+        return success(envInstanceService.getEnvInstanceList(approveStatus, keyword, null, pageable));
+    }
+
+    @Secured(value = {"ROLE_USER"})
+    @GetMapping(value = "/my/management/env/instance/getList")
+    public ApiResult<Page<ServerEnvDto>> getMyEnvList(
+            @RequestParam(required = false) ApproveStatus approveStatus,
+            @RequestParam(required = false) String keyword,
+            Pageable pageable
+            , @LoginUser LoginUserInfo loginUserInfo
+    ){
+
+        return success(envInstanceService.getEnvInstanceList(approveStatus, keyword, loginUserInfo.getUserSeq(), pageable));
     }
 
     /**
@@ -340,6 +368,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping(value = "/env/instance/getDetail")
     public ApiResult<?> getEnvDetail(
             Long reqSeq
@@ -360,6 +389,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/env/instance/vpc/reqCreateEnvironment")
     public ApiResult<?> reqCreateEnvironment(
             @RequestBody
@@ -381,6 +411,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/server/getLoginKeyList")
     public ApiResult<?> getLoginKeyList(
             GetLoginKeyListRequestDto requestDto
@@ -401,6 +432,7 @@ public class VpcInstanceRestCtrl {
      * @modifyed :
      *
     **/
+    @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/server/createLoginKey")
     public ApiResult<?> createLoginKey(
             CreateLoginKeyRequestDto requestDto

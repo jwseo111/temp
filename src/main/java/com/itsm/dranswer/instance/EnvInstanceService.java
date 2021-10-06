@@ -19,9 +19,9 @@ public class EnvInstanceService {
         this.nCloudServerEnvRepoSupport = nCloudServerEnvRepoSupport;
     }
 
-    public Page<ServerEnvDto> getEnvInstanceList(ApproveStatus approveStatus, String keyword, Pageable pageable) {
+    public Page<ServerEnvDto> getEnvInstanceList(ApproveStatus approveStatus, String keyword, Long userSeq, Pageable pageable) {
 
-        return nCloudServerEnvRepoSupport.searchAll(approveStatus, keyword, pageable);
+        return nCloudServerEnvRepoSupport.searchAll(approveStatus, keyword, userSeq, pageable);
 
     }
 

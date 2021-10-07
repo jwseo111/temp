@@ -18,6 +18,6 @@ public class CreateSubnetRequestDto {
     private String subnetName;
     private String subnet;
     private String networkAclNo;
-    private String subnetTypeCode; // PUBLIC | PRIVATE
+    private String subnetTypeCode = "PUBLIC"; // PUBLIC | PRIVATE
     private String usageTypeCode;  // GEN
 }

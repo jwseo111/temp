@@ -16,7 +16,7 @@ import java.util.List;
 public class GetNetworkInterfaceListRequestDto {
 
     private String regionCode;
-    private String subnetNo;
+    private String subnetName;
     private List<String> networkInterfaceNoList;
     private String networkInterfaceName;
     private String networkInterfaceStatusCode = "NOTUSED";

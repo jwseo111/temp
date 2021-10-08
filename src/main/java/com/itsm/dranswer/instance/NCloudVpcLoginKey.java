@@ -22,8 +22,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class NCloudVpcLoginKey extends BaseEntity implements Serializable  {
-
 
     private static final long serialVersionUID = -6098692582599128272L;
 

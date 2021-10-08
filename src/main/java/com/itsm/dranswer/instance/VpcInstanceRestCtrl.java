@@ -509,7 +509,7 @@ public class VpcInstanceRestCtrl {
             , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(loginKeyService.createLoginKey(requestDto, getNCloudKey(loginUserInfo)));
+        return success(loginKeyService.createLoginKey(requestDto, getNCloudKey(loginUserInfo), loginUserInfo.getUserSeq()));
     }
 
 }

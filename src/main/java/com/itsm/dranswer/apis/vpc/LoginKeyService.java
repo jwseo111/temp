@@ -16,6 +16,8 @@ import com.itsm.dranswer.apis.vpc.request.CreateLoginKeyRequestDto;
 import com.itsm.dranswer.apis.vpc.request.GetLoginKeyListRequestDto;
 import com.itsm.dranswer.apis.vpc.response.CreateLoginKeyResponseDto;
 import com.itsm.dranswer.apis.vpc.response.GetLoginKeyListResponseDto;
+import com.itsm.dranswer.instance.NCloudVpcLoginKey;
+import com.itsm.dranswer.instance.NCloudVpcLoginKeyRepo;
 import com.itsm.dranswer.users.NCloudKeyDto;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -24,6 +26,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginKeyService extends ApiService {
 
+    private final NCloudVpcLoginKeyRepo nCloudVpcLoginKeyRepo;
+
+    public LoginKeyService(NCloudVpcLoginKeyRepo nCloudVpcLoginKeyRepo) {
+        this.nCloudVpcLoginKeyRepo = nCloudVpcLoginKeyRepo;
+    }
+
     /**
      *
      * @methodName : createLoginKey
@@ -31,12 +39,14 @@ public class LoginKeyService extends ApiService {
      * @author : xeroman.k
      * @param requestDto
      * @param nCloudKeyDto
+     * @param userSeq
      * @return : com.itsm.dranswer.apis.vpc.response.CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto
      * @throws
      * @modifyed :
      *
     **/
-    public CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto createLoginKey(CreateLoginKeyRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+    public CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto createLoginKey(CreateLoginKeyRequestDto requestDto, NCloudKeyDto nCloudKeyDto,
+                                                                                 Long userSeq) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
         String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
@@ -46,7 +56,15 @@ public class LoginKeyService extends ApiService {
         final CreateLoginKeyResponseDto responseDto = restTemplate.exchange(
                 apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateLoginKeyResponseDto.class).getBody();;
 
-        return responseDto.getCreateLoginKeyResponse();
+
+        responseDto.checkError();
+
+        CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto createLoginKeyResponseDto = responseDto.getCreateLoginKeyResponse();
+
+        NCloudVpcLoginKey nCloudVpcLoginKey = new NCloudVpcLoginKey(requestDto.getKeyName(), userSeq, createLoginKeyResponseDto.getPrivateKey());
+        nCloudVpcLoginKeyRepo.save(nCloudVpcLoginKey);
+
+        return createLoginKeyResponseDto;
     }
 
     /**

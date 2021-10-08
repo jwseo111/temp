@@ -1,5 +1,14 @@
 package com.itsm.dranswer.storage;
 
+/*
+ * @package : com.itsm.dranswer.storage
+ * @name : UseStorageRestCtrl.java
+ * @date : 2021-10-08 오후 2:31
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
@@ -22,6 +31,19 @@ public class UseStorageRestCtrl {
         this.storageService = storageService;
     }
 
+    /**
+     *
+     * @methodName : getUseStorageList
+     * @date : 2021-10-08 오후 2:32
+     * @author : xeroman.k
+     * @param disease
+     * @param keyword
+     * @param pageable
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.storage.OpenStorageInfoDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/storage/use/list")
     public ApiResult<Page<OpenStorageInfoDto>> getUseStorageList(
             Disease disease, String keyword, Pageable pageable){
@@ -32,6 +54,18 @@ public class UseStorageRestCtrl {
         return success(pageOpenStorages);
     }
 
+    /**
+     *
+     * @methodName : reqUseStorage
+     * @date : 2021-10-08 오후 2:32
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param reqUseStorageInfoDto
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.UseStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/storage/use/req")
     public ApiResult<UseStorageInfoDto> reqUseStorage(
@@ -44,6 +78,20 @@ public class UseStorageRestCtrl {
         return success(useStorageInfoDto);
     }
 
+    /**
+     *
+     * @methodName : getMyUseStorageList
+     * @date : 2021-10-08 오후 2:32
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param useStorageStat
+     * @param dataName
+     * @param pageable
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.storage.UseStorageInfoDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/storage/use/list")
     public ApiResult<Page<UseStorageInfoDto>> getMyUseStorageList(
@@ -58,6 +106,19 @@ public class UseStorageRestCtrl {
         return success(useStorageInfoDtos);
     }
 
+    /**
+     *
+     * @methodName : getUseStorageList
+     * @date : 2021-10-08 오후 2:32
+     * @author : xeroman.k
+     * @param useStorageStat
+     * @param dataName
+     * @param pageable
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.storage.UseStorageInfoDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping(value = "/management/storage/use/list")
     public ApiResult<Page<UseStorageInfoDto>> getUseStorageList(
@@ -71,6 +132,17 @@ public class UseStorageRestCtrl {
         return success(useStorageInfoDtos);
     }
 
+    /**
+     *
+     * @methodName : getMyUseStorageInfo
+     * @date : 2021-10-08 오후 2:32
+     * @author : xeroman.k
+     * @param useStorageId
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.UseStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER", "ROLE_MANAGER", "ROLE_ADMIN"})
     @GetMapping(value = "/my/management/storage/use/{useStorageId:.+(?<!\\.js)$}")
     public ApiResult<UseStorageInfoDto> getMyUseStorageInfo(
@@ -82,6 +154,19 @@ public class UseStorageRestCtrl {
         return success(useStorageInfoDto);
     }
 
+    /**
+     *
+     * @methodName : cancelUseStorageInfo
+     * @date : 2021-10-08 오후 2:32
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param useStorageInfoDto
+     * @param useStorageId
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.UseStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/my/management/storage/use/cancel/{useStorageId:.+(?<!\\.js)$}")
     public ApiResult<UseStorageInfoDto> cancelUseStorageInfo(
@@ -95,6 +180,19 @@ public class UseStorageRestCtrl {
         return success(useStorageInfo);
     }
 
+    /**
+     *
+     * @methodName : rejectUseStorageInfo
+     * @date : 2021-10-08 오후 2:32
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param useStorageInfoDto
+     * @param useStorageId
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.UseStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/storage/use/reject/{useStorageId:.+(?<!\\.js)$}")
     public ApiResult<UseStorageInfoDto> rejectUseStorageInfo(
@@ -108,6 +206,17 @@ public class UseStorageRestCtrl {
         return success(useStorageInfo);
     }
 
+    /**
+     *
+     * @methodName : approveUseStorageInfo
+     * @date : 2021-10-08 오후 2:32
+     * @author : xeroman.k
+     * @param useStorageId
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.UseStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/storage/use/approve/{useStorageId:.+(?<!\\.js)$}")
     public ApiResult<UseStorageInfoDto> approveUseStorageInfo(
@@ -119,6 +228,17 @@ public class UseStorageRestCtrl {
         return success(useStorageInfo);
     }
 
+    /**
+     *
+     * @methodName : deleteUseStorageInfo
+     * @date : 2021-10-08 오후 2:46
+     * @author : xeroman.k
+ * @param useStorageId
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.UseStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/storage/use/delete/{useStorageId:.+(?<!\\.js)$}")
     public ApiResult<UseStorageInfoDto> deleteUseStorageInfo(

@@ -1,5 +1,14 @@
 package com.itsm.dranswer.commons;
 
+/*
+ * @package : com.itsm.dranswer.commons
+ * @name : Disease.java
+ * @date : 2021-10-08 오후 1:48
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.JsonNode;

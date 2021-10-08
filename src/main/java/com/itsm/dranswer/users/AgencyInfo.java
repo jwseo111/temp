@@ -1,5 +1,14 @@
 package com.itsm.dranswer.users;
 
+/*
+ * @package : com.itsm.dranswer.users
+ * @name : AgencyInfo.java
+ * @date : 2021-10-08 오후 2:46
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itsm.dranswer.commons.BaseEntity;
 import lombok.*;

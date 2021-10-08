@@ -1,5 +1,14 @@
 package com.itsm.dranswer.users;
 
+/*
+ * @package : com.itsm.dranswer.users
+ * @name : UserInfoRepoSupport.java
+ * @date : 2021-10-08 오후 2:48
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;

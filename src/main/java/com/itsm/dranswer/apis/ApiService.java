@@ -1,5 +1,14 @@
 package com.itsm.dranswer.apis;
 
+/*
+ * @package : com.itsm.dranswer.apis
+ * @name : ApiService.java
+ * @date : 2021-10-08 오후 1:10
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +28,21 @@ public class ApiService {
     @Autowired
     protected RestTemplate restTemplate;
 
+    /**
+     * make NCloud api signature
+     * @methodName : makeSignature
+     * @date : 2021-10-08 오후 1:10
+     * @author : xeroman.k
+     * @param timestamp
+     * @param method
+     * @param url
+     * @param accessKey
+     * @param secretKey
+     * @return : java.lang.String
+     * @throws
+     * @modifyed :
+     *
+    **/
     private String makeSignature(String timestamp, String method, String url, String accessKey, String secretKey) throws Exception {
         String space = " ";					// one space
         String newLine = "\n";					// new line
@@ -43,6 +67,20 @@ public class ApiService {
         return encodeBase64String;
     }
 
+    /**
+     * make NCloud api Header
+     * @methodName : getNcloudUserApiHeader
+     * @date : 2021-10-08 오후 1:11
+     * @author : xeroman.k
+     * @param method
+     * @param url
+     * @param accessKey
+     * @param secretKey
+     * @return : org.springframework.http.HttpHeaders
+     * @throws
+     * @modifyed :
+     *
+    **/
     protected HttpHeaders getNcloudUserApiHeader(HttpMethod method, String url, String accessKey, String secretKey) {
         try {
             MediaType mediaType = new MediaType("application", "json", Charset.forName("UTF-8"));

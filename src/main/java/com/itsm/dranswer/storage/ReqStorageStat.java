@@ -1,5 +1,14 @@
 package com.itsm.dranswer.storage;
 
+/*
+ * @package : com.itsm.dranswer.storage
+ * @name : ReqStorageStat.java
+ * @date : 2021-10-08 오후 2:15
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

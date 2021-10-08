@@ -1,5 +1,14 @@
 package com.itsm.dranswer.apis.vpc;
 
+/*
+ * @package : com.itsm.dranswer.apis.vpc
+ * @name : LoginKeyService.java
+ * @date : 2021-10-08 오전 11:07
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.apis.ApiService;
 import com.itsm.dranswer.apis.OpenApiUrls;
 import com.itsm.dranswer.apis.OpenApiUtils;
@@ -15,6 +24,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginKeyService extends ApiService {
 
+    /**
+     *
+     * @methodName : createLoginKey
+     * @date : 2021-10-08 오전 11:04
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto createLoginKey(CreateLoginKeyRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -28,6 +49,18 @@ public class LoginKeyService extends ApiService {
         return responseDto.getCreateLoginKeyResponse();
     }
 
+    /**
+     *
+     * @methodName : getLoginKeyList
+     * @date : 2021-10-08 오전 11:04
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetLoginKeyListResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public GetLoginKeyListResponseDto getLoginKeyList(GetLoginKeyListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();

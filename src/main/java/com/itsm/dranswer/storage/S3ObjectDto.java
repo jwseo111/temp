@@ -1,5 +1,14 @@
 package com.itsm.dranswer.storage;
 
+/*
+ * @package : com.itsm.dranswer.storage
+ * @name : S3ObjectDto.java
+ * @date : 2021-10-08 오후 2:15
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import lombok.*;
 

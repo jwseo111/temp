@@ -1,8 +1,6 @@
 package com.itsm.dranswer.apis;
 
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
+//@Configuration
 public class ObjectMapperConfig {
 //    @Bean
 //    public static ObjectMapper objectMapper() {

@@ -50,6 +50,18 @@ public class UserService {
         this.customMailSender = customMailSender;
     }
 
+    /**
+     *
+     * @methodName : login
+     * @date : 2021-10-08 오후 2:47
+     * @author : xeroman.k
+     * @param email
+     * @param password
+     * @return : com.itsm.dranswer.users.UserInfo
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Transactional
     public UserInfo login(String email, String password) {
 
@@ -60,6 +72,17 @@ public class UserService {
         return userInfo;
     }
 
+    /**
+     *
+     * @methodName : findByEmailAndCheck
+     * @date : 2021-10-08 오후 2:47
+     * @author : xeroman.k
+     * @param email
+     * @return : com.itsm.dranswer.users.UserInfo
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Transactional
     public UserInfo findByEmailAndCheck(String email){
         UserInfo userInfo = findByEmail(email)
@@ -141,6 +164,17 @@ public class UserService {
 
         customMailSender.sendMail(template, subject, to, ctx);
     }
+    /**
+     *
+     * @methodName : sendCertMailForFindPw
+     * @date : 2021-10-08 오후 2:47
+     * @author : xeroman.k
+     * @param certDto
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void sendCertMailForFindPw(CertDto certDto) throws MessagingException, IOException {
 
         String template = "mail/pwdCert";
@@ -174,6 +208,17 @@ public class UserService {
 
     }
 
+    /**
+     *
+     * @methodName : checkUserList
+     * @date : 2021-10-08 오후 2:47
+     * @author : xeroman.k
+     * @param userInfos
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     private void checkUserList(List<UserInfo> userInfos){
         if(userInfos.size() == 0){
             throw new IllegalArgumentException("회원정보가 존재하지 않습니다.");
@@ -226,6 +271,17 @@ public class UserService {
 
     }
 
+    /**
+     *
+     * @methodName : getReqStorageUserInfo
+     * @date : 2021-10-08 오후 2:47
+     * @author : xeroman.k
+     * @param userSeq
+     * @return : com.itsm.dranswer.users.ReqUserDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public ReqUserDto getReqStorageUserInfo(Long userSeq) {
 
         UserInfo userInfo = findUserInfo(userSeq);
@@ -307,6 +363,17 @@ public class UserService {
         return new UserInfoDto(userInfo, userInfo.getAgencyInfo());
     }
 
+    /**
+     *
+     * @methodName : sendAcceptMail
+     * @date : 2021-10-08 오후 2:47
+     * @author : xeroman.k
+     * @param userInfo
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void sendAcceptMail(UserInfo userInfo) {
 
         String template = "mail/joinAccept";
@@ -324,6 +391,17 @@ public class UserService {
         }
     }
 
+    /**
+     *
+     * @methodName : changeMyInfo
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param userInfoDto
+     * @return : com.itsm.dranswer.users.UserInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UserInfoDto changeMyInfo(UserInfoDto userInfoDto) {
         UserInfo userInfo = this.findUserInfo(userInfoDto.getUserSeq());
         userInfo.changeMyInfo(userInfoDto);
@@ -331,6 +409,17 @@ public class UserService {
         return userInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : changeMyPw
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param userInfoDto
+     * @return : com.itsm.dranswer.users.UserInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UserInfoDto changeMyPw(UserInfoDto userInfoDto) {
         UserInfo userInfo = this.findUserInfo(userInfoDto.getUserSeq());
         userInfo.changeMyPw(userInfoDto, passwordEncoder);
@@ -338,6 +427,17 @@ public class UserService {
         return userInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : getUserDetailInfo
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param userSeq
+     * @return : com.itsm.dranswer.users.UserInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UserInfoDto getUserDetailInfo(Long userSeq){
         UserInfo userInfo = this.findUserInfo(userSeq);
 
@@ -350,18 +450,52 @@ public class UserService {
 
     }
 
+    /**
+     *
+     * @methodName : getMyUploader
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param userSeq
+     * @return : java.util.List<com.itsm.dranswer.users.UserInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public List<UserInfoDto> getMyUploader(Long userSeq) {
 
         return userInfoRepoSupport.getUploaderList(userSeq);
 
     }
 
+    /**
+     *
+     * @methodName : getOnlyMyUploader
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param userSeq
+     * @return : java.util.List<com.itsm.dranswer.users.UserInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public List<UserInfoDto> getOnlyMyUploader(Long userSeq) {
 
         return userInfoRepo.findByParentUserSeqOrderByUserName(userSeq).stream().map(UserInfoDto::new).collect(Collectors.toList());
 
     }
 
+    /**
+     *
+     * @methodName : saveMyUploader
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param userSeq
+     * @param uploaders
+     * @return : java.util.List<com.itsm.dranswer.users.UserInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public List<UserInfoDto> saveMyUploader(Long userSeq, List<UserInfoDto> uploaders){
 
         for(UserInfoDto userInfoDto : uploaders){
@@ -372,6 +506,17 @@ public class UserService {
         return getMyUploader(userSeq);
     }
 
+    /**
+     *
+     * @methodName : initMyManager
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param userSeq
+     * @return : com.itsm.dranswer.users.UserInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UserInfoDto initMyManager(Long userSeq) {
         UserInfo userInfo = this.findUserInfo(userSeq);
         userInfo.matchParent(null);
@@ -379,6 +524,17 @@ public class UserService {
         return userInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : checkMailAndSendCertMailForFindPw
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param certDto
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void checkMailAndSendCertMailForFindPw(CertDto certDto) throws MessagingException, IOException {
 
         findByEmailAndCheck(certDto.getUserEmail());
@@ -386,6 +542,17 @@ public class UserService {
 
     }
 
+    /**
+     *
+     * @methodName : checkMailAndSendCertMailForSignup
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param certDto
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void checkMailAndSendCertMailForSignup(CertDto certDto) throws MessagingException, IOException {
         UserInfo userInfo = findByEmail(certDto.getUserEmail()).orElse(null);
         if(userInfo != null){
@@ -394,11 +561,33 @@ public class UserService {
         sendCertMail(certDto);
     }
 
+    /**
+     *
+     * @methodName : getNCloudKeys
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+     * @param userSeq
+     * @return : com.itsm.dranswer.users.NCloudKeyDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Cacheable(value = "getNCloudKeys", key = "#userSeq")
     public NCloudKeyDto getNCloudKeys(Long userSeq){
         return userInfoRepoSupport.searchForNCloudKey(userSeq);
     }
 
+    /**
+     *
+     * @methodName : getNCloudKey
+     * @date : 2021-10-08 오후 2:48
+     * @author : xeroman.k
+ * @param userSeq
+     * @return : com.itsm.dranswer.users.NCloudKeyDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public NCloudKeyDto getNCloudKey(Long userSeq){
         if(userSeq==null) throw new NotFoundException("접속정보가 존재하지 않습니다");
 

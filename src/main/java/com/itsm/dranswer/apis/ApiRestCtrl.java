@@ -1,5 +1,14 @@
 package com.itsm.dranswer.apis;
 
+/*
+ * @package : com.itsm.dranswer.apis
+ * @name : ApiRestCtrl.java
+ * @date : 2021-10-08 오후 1:10
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.storage.ReqStorageInfoDto;
 import com.itsm.dranswer.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +29,17 @@ public class ApiRestCtrl {
         this.storageService = storageService;
     }
 
+    /**
+     * 벌크 업로드 용 저장신청정보 조회
+     * @methodName : uploadBulk
+     * @date : 2021-10-08 오후 1:10
+     * @author : xeroman.k
+     * @param reqStorageId
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.ReqStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/apis/upload/bulk/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<ReqStorageInfoDto> uploadBulk(
             @PathVariable String reqStorageId) {

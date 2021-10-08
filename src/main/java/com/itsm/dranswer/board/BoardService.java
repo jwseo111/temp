@@ -1,5 +1,14 @@
 package com.itsm.dranswer.board;
 
+/*
+ * @package : com.itsm.dranswer.board
+ * @name : BoardService.java
+ * @date : 2021-10-08 오후 1:43
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.NotFoundException;
 import com.itsm.dranswer.etc.FileUploadResponse;
@@ -52,12 +61,35 @@ public class BoardService {
         this.storageService = storageService;
     }
 
+    /**
+     * 공지사항 페이지 조회
+     * @methodName : pageNotices
+     * @date : 2021-10-08 오후 1:44
+     * @author : xeroman.k
+     * @param keyword
+     * @param pageable
+     * @return : org.springframework.data.domain.Page<com.itsm.dranswer.board.NoticeDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public Page<NoticeDto> pageNotices(String keyword, Pageable pageable) {
         keyword = keyword==null?"":keyword;
         Page<Notice> pageNotices = noticeRepo.findByTitleContainsOrderByImportantYnDescCreatedDateDesc(keyword, pageable);
         return pageNotices.map(NoticeDto::new);
     }
 
+    /**
+     * 공지사항 저장
+     * @methodName : saveNotice
+     * @date : 2021-10-08 오후 1:44
+     * @author : xeroman.k
+     * @param noticeDto
+     * @return : com.itsm.dranswer.board.NoticeDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public NoticeDto saveNotice(NoticeDto noticeDto) {
 
         Notice notice = null;
@@ -83,6 +115,17 @@ public class BoardService {
         return notice.convertDto();
     }
 
+    /**
+     * 공지사항 상세 조회
+     * @methodName : notice
+     * @date : 2021-10-08 오후 1:44
+     * @author : xeroman.k
+     * @param noticeSeq
+     * @return : com.itsm.dranswer.board.NoticeDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public NoticeDto notice(Long noticeSeq) {
 
         Notice notice = noticeRepo.findById(noticeSeq)
@@ -101,11 +144,35 @@ public class BoardService {
 
     }
 
+    /**
+     * 공지사항 삭제
+     * @methodName : deleteNotice
+     * @date : 2021-10-08 오후 1:44
+     * @author : xeroman.k
+     * @param noticeSeq
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void deleteNotice(Long noticeSeq) {
         noticeFileRepo.deleteByNoticeSeq(noticeSeq);
         noticeRepo.deleteById(noticeSeq);
     }
 
+    /**
+     * 공지사항 파일 저장
+     * @methodName : saveNoticeFile
+     * @date : 2021-10-08 오후 1:44
+     * @author : xeroman.k
+     * @param sNoticeSeq
+     * @param multipartFiles
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.board.NoticeDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public NoticeDto saveNoticeFile(String sNoticeSeq, List<MultipartFile> multipartFiles, LoginUserInfo loginUserInfo)
             throws InterruptedException {
 
@@ -135,11 +202,35 @@ public class BoardService {
         return notice.convertDto();
     }
 
+    /**
+     * 자주묻는질문 페이지 조회
+     * @methodName : pageFaqs
+     * @date : 2021-10-08 오후 1:44
+     * @author : xeroman.k
+     * @param questionType
+     * @param keyword
+     * @param pageable
+     * @return : org.springframework.data.domain.Page<com.itsm.dranswer.board.FaqDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public Page<FaqDto> pageFaqs(QuestionType questionType, String keyword, Pageable pageable) {
 
         return faqRepoSupport.searchAll(questionType, keyword, pageable);
     }
 
+    /**
+     * 자주묻는질문 상세조회
+     * @methodName : faq
+     * @date : 2021-10-08 오후 1:44
+     * @author : xeroman.k
+     * @param faqSeq
+     * @return : com.itsm.dranswer.board.FaqDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public FaqDto faq(Long faqSeq) {
 
         FaqDto faqDto = faqRepo.findById(faqSeq).orElseThrow(()->new NotFoundException("존재하지 않는 정보 입니다")).convertDto();
@@ -152,10 +243,32 @@ public class BoardService {
         return faqDto;
     }
 
+    /**
+     * 자주묻는질문 삭제
+     * @methodName : deleteFaq
+     * @date : 2021-10-08 오후 1:45
+     * @author : xeroman.k
+     * @param faqSeq
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void deleteFaq(Long faqSeq) {
         faqRepo.deleteById(faqSeq);
     }
 
+    /**
+     * 자주묻는질문 저장
+     * @methodName : saveFaq
+     * @date : 2021-10-08 오후 1:45
+     * @author : xeroman.k
+     * @param faqDto
+     * @return : com.itsm.dranswer.board.FaqDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public FaqDto saveFaq(FaqDto faqDto) {
 
         Faq faq = null;
@@ -171,10 +284,34 @@ public class BoardService {
         return faq.convertDto();
     }
 
+    /**
+     * 질문과답변 페이지 조회
+     * @methodName : pageInquiries
+     * @date : 2021-10-08 오후 1:45
+     * @author : xeroman.k
+     * @param keyword
+     * @param pageable
+     * @return : org.springframework.data.domain.Page<com.itsm.dranswer.board.InquiryDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public Page<InquiryDto> pageInquiries(String keyword, Pageable pageable) {
         return inquiryRepoSupport.searchAll(keyword, pageable);
     }
 
+    /**
+     * 질문과답변 상세조회
+     * @methodName : inquiry
+     * @date : 2021-10-08 오후 1:45
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param inquirySeq
+     * @return : com.itsm.dranswer.board.InquiryDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public InquiryDto inquiry(LoginUserInfo loginUserInfo, Long inquirySeq) {
 
         InquiryDto inquiryDto = inquiryRepoSupport.findOne(inquirySeq);
@@ -197,6 +334,17 @@ public class BoardService {
         return inquiryDto;
     }
 
+    /**
+     * 질문과답변 삭제
+     * @methodName : deleteInquiry
+     * @date : 2021-10-08 오후 1:45
+     * @author : xeroman.k
+     * @param inquirySeq
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void deleteInquiry(Long inquirySeq) {
         Inquiry inquiry = inquiryRepo.findById(inquirySeq).orElseThrow(()->new NotFoundException("존재하지 않는 정보 입니다."));
 
@@ -210,6 +358,17 @@ public class BoardService {
         inquiryRepo.deleteById(inquirySeq);
     }
 
+    /**
+     * 질문과답변 저장
+     * @methodName : saveInquiry
+     * @date : 2021-10-08 오후 1:45
+     * @author : xeroman.k
+     * @param inquiryDto
+     * @return : com.itsm.dranswer.board.InquiryDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public InquiryDto saveInquiry(InquiryDto inquiryDto) {
         Inquiry inquiry = null;
 
@@ -239,6 +398,19 @@ public class BoardService {
         return inquiry.convertDto();
     }
 
+    /**
+     * 질문과답변 파일 저장
+     * @methodName : saveInquiryFile
+     * @date : 2021-10-08 오후 1:46
+     * @author : xeroman.k
+     * @param sInquirySeq
+     * @param multipartFiles
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.board.InquiryDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public InquiryDto saveInquiryFile(String sInquirySeq, List<MultipartFile> multipartFiles, LoginUserInfo loginUserInfo) throws InterruptedException {
 
         Long inquirySeq = null;

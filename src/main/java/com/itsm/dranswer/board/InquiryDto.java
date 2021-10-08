@@ -1,5 +1,14 @@
 package com.itsm.dranswer.board;
 
+/*
+ * @package : com.itsm.dranswer.board
+ * @name : InquiryDto.java
+ * @date : 2021-10-08 오후 1:47
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.commons.BaseEntity;
 import com.itsm.dranswer.users.IsYn;
 import com.itsm.dranswer.users.UserInfo;

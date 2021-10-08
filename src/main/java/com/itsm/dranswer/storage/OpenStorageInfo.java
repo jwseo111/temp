@@ -1,5 +1,14 @@
 package com.itsm.dranswer.storage;
 
+/*
+ * @package : com.itsm.dranswer.storage
+ * @name : OpenStorageInfo.java
+ * @date : 2021-10-08 오후 2:14
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.commons.BaseEntity;
 import com.itsm.dranswer.users.UserInfo;
 import lombok.*;
@@ -15,7 +24,7 @@ import java.io.Serializable;
 @Builder
 @Entity
 public class OpenStorageInfo extends BaseEntity implements Serializable {
-    
+
     private static final long serialVersionUID = -269264650312946559L;
 
     @Id

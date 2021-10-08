@@ -2,13 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-
 <div>
-
     <script th:src="@{/js/instance/popNetworkInterface.js}"></script>
-
     <div id="popupwrapif" >
-        <popupcontentsif ref="popupcontentsif"></popupcontentsif>
+        <popupif ref="popupif"></popupif>
     </div>
 
     <script type="text/x-template" id="popup-templateif" >
@@ -18,7 +15,6 @@
                 <div class="common-popup-content">
                     <h3>Network Interface 생성</h3>
                     <hr>
-
                 <div class="join-cont-box">
                     <h4>신청자 정보</h4>
                     <span class="join-txt-caution">* 필수 입력 항목</span>
@@ -26,60 +22,79 @@
                         <li class="bdr-b">
                             <span class="join-input-group w-100">
                                 <label>Network Interface 이름<span>*</span></label>
-                                <input class="w-100" type="text" v-model="interfaceName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
+                                <input class="w-100" type="text" v-model="saveInfo.networkInterfaceName" @keyup="onKeyupNetworkName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
                             </span>
+                            <label style="margin-top:0px;">
+                                <span v-show="networkNameChk1" class="join-txt-red" style="font-size: 1.3rem;">최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.</span>
+                                <span v-show="networkNameChk2" class="join-txt-red" style="font-size: 1.3rem;">소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.</span>
+                                <span v-show="networkNameChk3" class="join-txt-red" style="font-size: 1.3rem;">영어 또는 숫자로 끝나야 합니다.</span>
+                            </label>
                         </li>
                         <li class="bdr-b">
                             <span class="join-input-group w-100">
                                 <label>VPC<span>*</span></label>
-                                <div class="custom-select w-100" >
-                                    <select id="selected" v-model="selected">
-                                        <option value="">VPC를 선택하세요</option>
-                                        <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
-                                    </select>
-                                </div>
+                                <input class="w-100" type="text" v-model="saveInfo.vpcNo" readonly>
+                                <input class="w-100" type="text" v-model="vpcName" readonly>
                             </span>
                         </li>
                         <li class="bdr-b">
                             <span class="join-input-group w-100">
                                 <label>Subnet<span>*</span></label>
-                                <div class="custom-select w-100" >
-                                    <select id="selected" v-model="selected">
-                                        <option value="">Subnet을 선택하세요</option>
-                                        <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
-                                    </select>
-                                </div>
+                                <input class="w-100" type="text" v-model="saveInfo.subnetNo" readonly>
+                                <input class="w-100" type="text" v-model="subnetName" readonly>
                             </span>
                         </li>
                         <li class="bdr-b">
                             <span class="join-input-group w-100">
                                 <label>Primary IP<span>*</span></label>
-                                <span class="radio-wrap join-radio">
-                                    <input type="radio" id="radio3_op1" value="1" name="save-op3" checked />
-                                    <label for="radio3_op1"><span></span>자동할당</label>
-                                    <input type="radio" id="radio3_op2" value="2" name="save-op3"  />
-                                    <label for="radio3_op2"><span></span>직접입력</label>
+                                <span class="radio-wrap join-radio" style="width: 350px;">
+                                    <input type="radio" id="ipSelect_op1" value="1" name="ipSelect" v-model="ipSelect" checked />
+                                    <label for="ipSelect_op1"><span></span>자동할당</label>
+                                    <input type="radio" id="ipSelect_op2" value="2" name="ipSelect" v-model="ipSelect" />
+                                    <label for="ipSelect_op2"><span></span>직접입력</label>
                                 </span>
-                                <span class="join-input-group" style="width: 230px;">
-                                <input style="width:250px;" type="text" ref="dataName"   placeholder="IP 주소를 입력해 주세요">
+                                <span class="join-input-group w-100">
+                                <input v-show="ipSelect == 2" class="w-100" type="text" ref="ip" v-model="saveInfo.ip"  @keyup="onKeyupIp" placeholder="IP 주소를 입력해 주세요">
+                                <label style="margin-top:0px;">
+                                    <span v-show="ipSelect == 2 && ipChk1" class="join-txt-red" style="font-size: 1.3rem;">잘못된 형식입니다.</span>
+                                </label>
                             </span>
                             </span>
                         </li>
-                        <li class="bdr-b">
-                            <span class="join-input-group w-100">
+                        <li class="w-100">
+                            <span class="join-input-group" style="width: 390px;">
                                 <label>ACG<span>*</span> <span class="join-txt-red" style="font-size: 1.4rem;">최대 3개까지 선택 가능합니다</span></label>
-                                <div class="custom-select w-100" >
-                                    <select id="selected" v-model="selected">
+                                <div class="custom-select" name="accessControlGroupDiv" style="width: 390px;">
+                                    <select id="accessControlGroupNo" ref="accessControlGroupNo" onchange="acgChange(id)">
                                         <option value="">ACG를 선택하세요</option>
-                                        <option v-for="select in selectList" v-bind:value="select.name">{{select.desc}}</option>
+                                        <option v-for="option in accessControlGroupCbList" v-bind:value="option.accessControlGroupNo">{{option.accessControlGroupName}}</option>
                                     </select>
                                 </div>
                             </span>
+                            <span class="join-input-group" style="width: 150px;">
+                                <label><span></span></label>
+                                <a href="javascript:void(0);" v-on:click="onclickPop('acgModal');" class="com-btn btn-s" style="width: 150px;">ACG 생성</a>
+                            </span>
                         </li>
+                        <!-- ACG 추가영역 -->
+                        <div class="bdr-b pb-20">
+                            <li v-for="(item, idx) in accessControlGroupList">
+                                <span class="env-input-group mr-10" style="width: 380px;">
+                                    <label></label>
+                                    <input type="hidden"  style="width: 200px;" v-bind:value="item.accessControlGroupNo"  readonly >
+                                    <input type="text"  style="width: 400px;" v-bind:value="item.accessControlGroupName"  readonly >
+                                </span>
+                                <span class="env-input-group" style="width: 150px;">
+                                    <label></label>
+                                    <a href="javascript:void(0);" v-on:click="onclickAcgDel(idx);" class="com-btn btn-s" style="width: 150px;">삭제</a>
+                                </span>
+                            </li>
+                        </div>
+                        <!-- ACG 추가영역 끝-->
                         <li>
                             <span class="join-input-group w-100">
                                 <label>메모</label>
-                                <input class="w-100" type="text" v-model="memo" placeholder="메모를 입력하세요">
+                                <input class="w-100" type="text" v-model="saveInfo.networkInterfaceDescription" placeholder="메모를 입력하세요">
                             </span>
                         </li>
                     </ul>
@@ -87,7 +102,7 @@
 
                     <div class="btn-box a-r mt-60">
                         <a href="#" class="com-btn btn-line-bl btn-w-208" onclick="fnClosePopup('networkInterfaceModal')">취소</a>
-                        <a href="#" class="com-btn btn-w-208 ml-10" v-on:click="onclickReqSave">생성</a>
+                        <a href="#" class="com-btn btn-w-208" v-on:click="onclickCreateSave">생성</a>
                     </div>
                 </div>
 

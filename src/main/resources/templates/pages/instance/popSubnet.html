@@ -19,22 +19,37 @@
                             <li class="bdr-b">
                                 <span class="join-input-group w-100">
                                     <label>Subet 이름<span>*</span></label>
-                                    <input class="w-100" type="text" ref="subnetName" v-model="saveInfo.subnetName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
+                                    <input class="w-100" type="text" ref="subnetName" v-model="saveInfo.subnetName" @keyup="onKeyupName"  placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
+                                    <label style="margin-top:0px;">
+                                        <span v-show="nameChk1" class="join-txt-red" style="font-size: 1.3rem;">최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.</span>
+                                        <span v-show="nameChk2" class="join-txt-red" style="font-size: 1.3rem;">소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.</span>
+                                        <span v-show="nameChk3" class="join-txt-red" style="font-size: 1.3rem;">영어 또는 숫자로 끝나야 합니다.</span>
+                                    </label>
+                                </span>
+                            </li>
+                            <li class="w-100 bdr-b">
+                                <span class="join-input-group w-100">
+                                    <label>VPC<span>*</span></label>
+                                    <input class="w-100" type="hidden" ref="vpcNo"   v-model="saveInfo.vpcNo" readonly>
+                                    <input class="w-100" type="text"   ref="vpcDecs" v-model="vpcDecs" readonly>
                                 </span>
                             </li>
                             <li class="bdr-b">
                                 <span class="join-input-group w-100">
                                     <label>IP 주소 범위<span>*</span></label>
-                                    <input class="w-100" type="text" ref="ipv4CidrBlock" v-model="saveInfo.ipv4CidrBlock" placeholder="VPC 주소 범위 이하로만 지정이 가능합니다">
+                                    <input class="w-100" type="text" ref="subnet" v-model="saveInfo.subnet" @keyup="onKeyupIp" placeholder="VPC 주소 범위 이하로만 지정이 가능합니다">
+                                    <label style="margin-top:0px;">
+                                        <span v-show="ipChk1" class="join-txt-red" style="font-size: 1.3rem;">잘못된 형식입니다.</span>
+                                    </label>
                                 </span>
                             </li>
                             <li class="w-100 bdr-b">
-                                <span class="join-input-group">
+                                <span class="join-input-group w-100">
                                     <label>가용 Zone<span>*</span></label>
-                                    <div class="custom-select" >
-                                        <select id="zoneCode" ref="zoneCode" v-model="saveInfo.zoneCode" onchange="selectChange()">
+                                    <div class="custom-select w-100" >
+                                        <select id="zoneCode" ref="zoneCode" v-model="saveInfo.zoneCode">
                                             <option value="">가용 Zone을 선택하세요</option>
-                                            <option v-for="option in zoneList" v-bind:value="option.zoneCode">{{option.zoneName}}</option>
+                                            <option v-for="option in zoneCbList" v-bind:value="option.zoneCode">{{option.zoneName}}</option>
                                         </select>
                                     </div>
                                 </span>
@@ -43,9 +58,9 @@
                                 <span class="join-input-group">
                                     <label>Network ACL<span>*</span></label>
                                     <div class="custom-select">
-                                        <select id="selected" v-model="selected" >
+                                        <select id="networkAclNo" v-model="saveInfo.networkAclNo" ref="networkAclNo">
                                             <option value="">Network ACL을 선택하세요</option>
-                                            <option v-for="option in zoneList" v-bind:value="option.zoneCode">{{option.zoneName}}</option>
+                                            <option v-for="option in aclCbList" v-bind:value="option.networkAclNo">{{option.networkAclName}}</option>
                                         </select>
                                     </div>
                                 </span>
@@ -59,7 +74,7 @@
 
                     <div class="btn-box a-r mt-60">
                         <a href="#" class="com-btn btn-line-bl btn-w-208" onclick="fnClosePopup('subnetModal')">취소</a>
-                        <a href="#" class="com-btn btn-w-208 ml-10" v-on:click="onclickCreateSave">생성</a>
+                        <a href="#" class="com-btn btn-w-208" v-on:click="onclickCreateSave">생성</a>
                     </div>
                 </div>
 

@@ -17,42 +17,235 @@ Vue.component('popupacl', {
     template: "#popup-template-acl",
     data: function () {
         return {
-            aclName:"",
-            ipAddress:"",
-            memo:"",
-            selected:"", // 선택된 콤보박스
-            selectList:     getCodeList('ReqStorageStat',this.callback),//
+            networkAclName:"",
+            // ipAddress:"",
+            // memo:"",
+            // selected:"", // 선택된 콤보박스
+            // selectList:     getCodeList('ReqStorageStat',this.callback),//
+            selected :"",
             inboundList:[],
             outboundList:[],
             inbound:{
-                order:"", // 우선순위
-                protocol:"", // 프로토콜
-                source:"", // 접근소스
-                port:"", // 포트,
-                access:"", //허용여부
-                memo:"" // 메모
+                networkAclNo:"",
+                priority:"", // 우선순위 order required > unique no
+                protocolTypeCode:"", // 프로토콜 protocol required > TCP or UDP or ICMP
+                ipBlock:"", // 접근소스 source
+                portRange:"", // 포트, port
+                ruleActionCode:"", //허용여부 access required > ALLOW or DROP
+                networkAclRuleDescription:"" // 메모 memo
             },
             outbound:{
-                order:"", // 우선순위
-                protocol:"", // 프로토콜
-                target:"", // 목적지
-                port:"", // 포트,
-                access:"", //허용여부
-                memo:"" // 메모
+                networkAclNo:"",
+                priority:"", // 우선순위 order
+                protocolTypeCode:"", // 프로토콜 protocol
+                ipBlock:"", // 목적지 target
+                portRange:"", // 포트, port
+                ruleActionCode:"", //허용여부 access
+                networkAclRuleDescription:"" // 메모 memo
             },
+            protocolTypeCodeList:[
+                {name:"TCP", desc:"TCP"},
+                {name:"UDP", desc:"UDP"},
+                {name:"ICMP", desc:"ICMP"}
+            ],
+            ruleActionCodeList:[
+                {name:"ALLOW", desc:"허용"},
+                {name:"DROP", desc:"차단"}
+            ],
+            saveInfo:{
+                vpcNo:"",
+                networkAclName:"", // ACL 이름
+                networkAclDescription:"", // 메모
+            },
+
+            nameChk1 : false, // 최소 3글자 이상, 최대 30자까지만 입력이 가능합니다
+            nameChk2 : false, // 소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.
+            nameChk3 : false, // 영어 또는 숫자로 끝나야 합니다.
+            namePass : false,
+
+            message :{
+                inPriority:"",
+                inIpBlock:"",
+                inPortRange:"",
+
+                outPriority:"",
+                outIpBlock:"",
+                outPortRange:"",
+            },
+            inPass : false,
+            outPass : false,
+
+            pass :{
+                inPriority : false,
+                inIpBlock : false,
+                inPortRange:false,
+
+                outPriority : false,
+                outIpBlock : false,
+                outPortRange:false,
+            },
+
         };
     },
     mounted: function () {
 
     },
     methods: {
-        // Inbound추가 클릭
+        onload: function() {
+            let vpcList = appMain.$refs.maincontents.vpcList;
+            let vpcNo = this.saveInfo.vpcNo;
+            let idx = vpcList.findIndex(function(key) {return key.vpcNo === vpcNo});
+            this.saveInfo.vpcName =  vpcList[idx].vpcName;
+        },
+        onKeyupName:function (e){
+            let str = e.target.value;
+            let ll = str.length;
+            let exp1 = /[a-z0-9]/; // 영문 또는 숫자 체크
+            let exp2 = /^[a-z]{1}[a-z0-9-]+$/; // 첫문자는 소문자, 소문자, 숫자, 하이픈 허용
+            if(str.length < 3 || str.length > 30){
+                this.nameChk1 = true;
+                this.nameChk2 = false;
+                this.nameChk3 = false;
+                this.namePass = false;
+            } else if(!exp2.test(str)) { // 소문자, 숫자, 특수문자(-)만 허용
+                this.nameChk1 = false;
+                this.nameChk2 = true;
+                this.nameChk3 = false;
+                this.namePass = false;
+            } else if(!exp1.test(str[ll-1])) { // 마지막 문자는 소문자 or 숫자
+                this.nameChk1 = false;
+                this.nameChk2 = false;
+                this.nameChk3 = true;
+                this.namePass = false;
+            } else {
+                this.nameChk1 = false;
+                this.nameChk2 = false;
+                this.nameChk3 = false;
+                this.namePass = true;
+            }
+        },
+        onKeyupInput:function (e) {
+            let id = e.target.id;
+            let str = e.target.value;
+            let ll = str.length;
+            let expIp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(?:[0-9]|[1-2][0-9]|3[0-2]|[01]?)$/;
+            let expPort ="";// /^[1-9]{1}[0-9-]+$/;
+
+console.log("id : " + id + " : " + str);//tmp
+            if(id == "inPriority" || id == "outPriority") { // 우선순위 체크
+                if(str > 199) {
+                    this.message[id] = "199를 초과할수 없습니다.";
+                    this.pass[id]= false;
+                } else {
+                    this.message[id] = "";
+                    this.pass[id] = true;
+                }
+            } else if(id == "inIpBlock" || id == "outIpBlock") { // 접근소스, 목적지 체크
+                if(!expIp.test(str)) {
+                    this.message[id] = "잘못된 형식입니다.";
+                    this.pass[id]= false;
+                } else {
+                    this.message[id] = "";
+                    this.pass[id] = true;
+                }
+                //CIDR prefix 크기는 7 보다 크거나 같아야하며, 최대값은 32입니다.###
+            } else if(id == "inPortRang" || id == "outPortRang") { //  포트 체크
+
+            }
+
+        },
+        // Inbound / Outbound 탭 클릭
+        onChangeTab: function(tab) {
+
+            if ( tab == "IN"){
+                document.getElementById('inbound').style.display = "block";
+                document.getElementById('outbound').style.display = "none";
+            } else {
+                document.getElementById('inbound').style.display = "none";
+                document.getElementById('outbound').style.display = "block";
+            }
+        },
+        // Inbound 추가 이벤트
         onclickInboundAdd: function (){
-            this.inbound.protocol = this.$refs.sInProtocol.value;
-            this.inbound.access = this.$refs.sInAccess.value;
-            this.inboundList.push(this.inbound);
+            let param =[
+                {value:this.inbound.priority,   title:"우선순위",   ref:this.$refs.inPriority},
+                {value:this.$refs.sInProtocol,  title:"프로토콜",   ref:this.$refs.sInProtocol},
+                {value:this.inbound.ipBlock,    title:"접근소스",   ref:this.$refs.inIpBlock},
+                {value:this.inbound.portRange,   title:"포트",      ref:this.$refs.inPortRange},
+                {value:this.$refs.sInRuleAction,title:"허용여부",   ref:this.$refs.sInRuleAction},
+            ];
+
+            if(!isValid(param)) return false;
+
+            if(this.pass.inPriority && this.pass.inIpBlock) {
+            } else {
+                alertMsg("입력 값을 확인하세요.");
+                return;
+            }
+
+            let ruleAction = this.$refs.sInRuleAction.value;
+            let idx = this.ruleActionCodeList.findIndex(function (key) {
+                return key.name === ruleAction
+            })
+
+            let obj = {};
+            obj.priority = this.inbound.priority;
+            obj.protocolType = this.$refs.sInProtocol.value;
+            obj.protocolTypeCode = this.$refs.sInProtocol.value;
+            obj.ipBlock = this.inbound.ipBlock;
+            obj.portRange = this.inbound.portRange;
+            obj.ruleAction = this.ruleActionCodeList[idx].desc;
+            obj.ruleActionCode = this.$refs.sInRuleAction.value;
+            obj.networkAclRuleDescription = this.inbound.networkAclRuleDescription;
+
+            this.inboundList.push(obj);
             this.inbound = {}; // inbound 입력란 초기화
         },
+        // Inbound 삭제  이벤트
+        onclickInboundDel : function(idx) {
+            this.inboundList.splice(idx, 1);
+        },
+        // Outbound 추가 이벤트
+        onclickOutboundAdd: function (){
+            let param =[
+                {value:this.outbound.priority,   title:"우선순위", ref:this.$refs.outPriority},
+                {value:this.$refs.sOutProtocol,  title:"프로토콜", ref:this.$refs.sOutnProtocol},
+                {value:this.outbound.ipBlock,    title:"목적지",   ref:this.$refs.outIpBlock},
+                {value:this.outbound.portRange,  title:"포트",     ref:this.$refs.outPortRange},
+                {value:this.$refs.sOutRuleAction,title:"허용여부", ref:this.$refs.sOutRuleAction},
+            ];
+
+            if(!isValid(param)) return false;
+console.log("## : " + this.pass.outPriority);//tmp
+            console.log("## : " + this.pass.outIpBlock);//tmp
+            if(this.pass.outPriority && this.pass.outIpBlock) {
+            } else {
+                alertMsg("입력 값을 확인하세요.");
+                return;
+            }
+            let ruleAction = this.$refs.sOutRuleAction.value;
+            let idx = this.ruleActionCodeList.findIndex(function (key) {
+                return key.name === ruleAction
+            })
+
+            let obj = {};
+            obj.priority = this.outbound.priority;
+            obj.protocolTypeCode = this.$refs.sOutnProtocol.value;
+            obj.protocolType = this.$refs.sOutnProtocol.value;
+            obj.ipBlock = this.outbound.ipBlock;
+            obj.portRange = this.outbound.portRange;
+            obj.ruleActionCode = this.$refs.sOutRuleAction.value;
+            obj.ruleAction = this.ruleActionCodeList[idx].desc;
+            obj.networkAclRuleDescription = this.outbound.networkAclRuleDescription;
+
+            this.outboundList.push(obj);
+            this.outbound = {}; // outbound 입력란 초기화
+        },
+        // Outbound 삭제 이벤트
+        onclickOutboundDel : function(idx) {
+            this.outboundList.splice(idx, 1);
+        },
+
         onclickCancel: function() {
 
         },
@@ -61,59 +254,30 @@ Vue.component('popupacl', {
             console.log("VPC 생성 클릭");//tmp
             console.log("VPC 이름 : " +  this.vpcName);//tmp
 
+            if(!this.namePass){
+                alertMsg("Network ACL 이름을 확인하세요.",this.$refs.networkAclName);
+                return false;
+            }
+
         },
         callback: function (tid, results) {
             switch (tid) {
-                case "ReqStorageStat":
-                    //console.log(results.response);
-                    // this.interfaceList = results.response;
-                    // this.subnetList = results.response;
-                    this.selectList = results.response;
-
+                case TID.SAVE:
+                    console.log(results);
+                    this.saveCallback(results);
                     break;
             }
         },
-        searchCallback: function (tid,results) {
+        saveCallback: function (results) {
+            console.log(results);
             if (results.success) {
-                this.makePageNavi(results.response.pageable, results.response.total);
-                this.agencyList = results.response.content;
+              //  appMain.$refs.maincontents.getSubnetList();
+                alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
             } else {
                 console.log(results);
+                alertMsg(results.error.message);
             }
         },
-        // makePageNavi: function (pageable, total) {
-        //     let max = Math.ceil(total / pageable.size);
-        //     max = max == 0 ? 1 : max;
-        //     const curr = pageable.page + 1;
-        //
-        //     const first = Math.ceil(curr / 5) * 5 - 4;
-        //     let last = first + 4;
-        //     last = last>max?max:last;
-        //     let prev = first - 1;
-        //     prev = prev<1?1:prev;
-        //     let next = last + 1;
-        //     next = next>max?max:next;
-        //
-        //     this.pageInfo.first = first;
-        //     this.pageInfo.max = max;
-        //     this.pageInfo.curr = curr;
-        //     this.pageInfo.last = last;
-        //     this.pageInfo.prev = prev;
-        //     this.pageInfo.next = next;
-        //
-        //     this.pageInfo.pages = new Array();
-        //     for (let i=first; i<=last; i++){
-        //         this.pageInfo.pages.push(i);
-        //     }
-        // },
-        // onclickPage : function (page){
-        //     this.cond.page = page - 1;
-        //     this.getAgencyList();
-        // },
-        // selectAgency : function (agency){
-        //     callbackPopupAgency(agency);
-        //     fnClosePopup('networkInterfaceModal');
-        // },
 
     }
 });

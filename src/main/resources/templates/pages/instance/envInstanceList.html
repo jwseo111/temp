@@ -31,18 +31,10 @@
                 <div class="list-search-wrap a-r mt-80">
                     <label>Search</label>
                     <div class="custom-select search-select" style="width: 150px;">
-                        <select id="selected" v-model="selected">
+                        <select id="approveStatus" v-model="cond.approveStatus" ref="approveStatus">
                             <option value="">전체</option>
-                            <option v-for="select in approveStatusList" v-bind:value="select.name">{{select.desc}}</option>
+                            <option v-for="option in approveStatusCdList" v-bind:value="option.name">{{option.desc}}</option>
                         </select>
-
-<!--                        <select ref="approveStatus" v-model="cond.approveStatus" >-->
-<!--                            <option value="">전체</option>-->
-<!--                            <option v-for="option in approveStatusList" v-bind:value="option.name">-->
-<!--                                {{option.desc}}-->
-<!--                            </option>-->
-<!--                        </select>-->
-
                     </div>
 
                     <input type="text" v-model="cond.keyword" @keyup="onKeyup" placeholder="서버설명을 입력하세요">
@@ -82,8 +74,6 @@
                     <tbody v-else-if="envInstanceList.length > 0">
                     <tr v-for="(item, idx) in envInstanceList">
                         <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqSeq)">{{item.reqSeq}}</a></td>
-<!--                        <td>{{pageInfo.total - ((pageInfo.curr-1)*cond.size) -idx}}</td>-->
-<!--                        <td>{{item.reqSeq}}</td>-->
                         <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqSeq)">{{item.serverDescription}}</a></td>
                         <td>{{item.osImageType.name}}</td>
                         <td>{{item.productType.desc}}</td>

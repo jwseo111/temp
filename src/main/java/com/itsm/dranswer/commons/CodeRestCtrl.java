@@ -15,6 +15,9 @@ import com.itsm.dranswer.users.AgencyType;
 import com.itsm.dranswer.users.IsYn;
 import com.itsm.dranswer.users.JoinStat;
 import com.itsm.dranswer.board.QuestionType;
+import com.itsm.dranswer.instance.ApproveStatus;
+import com.itsm.dranswer.instance.ProductType;
+import com.itsm.dranswer.instance.OsImageType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,6 +69,15 @@ public class CodeRestCtrl {
                 break;
             case "QuestionType":
                 codes = QuestionType.codes();
+                break;
+            case "ApproveStatus":
+                codes = ApproveStatus.codes();
+                break;
+            case "ProductType":
+                codes = ProductType.codes();
+                break;
+            case "OsImageType":
+                codes = OsImageType.codes();
                 break;
         }
 

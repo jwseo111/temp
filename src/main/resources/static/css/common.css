@@ -314,6 +314,7 @@ a.btn-s{width:84px;font-size:1.4rem;font-weight:400;letter-spacing:0}
 .join-input-group{float:left;position: relative;padding:10px 0;width:580px;font-size:0}
 .join-input-group label{display:block;margin-top:10px;font-size:1.6rem;color:#222;font-weight:700;line-height:4rem}
 .join-input-group label > span{margin-left:2px;font-size:2rem;color:#ff0000}
+.join-input-group .guide{margin-left:0px;font-size:1.2rem;color: #7F7F7F;font-weight: normal;line-height: 2rem}
 .join-input-group > input{width:580px}
 .join-input-group .input-full{width:100%}
 .join-input-group .join-radio{display:block;height:72px;padding-top:0;font-size:1.8rem}

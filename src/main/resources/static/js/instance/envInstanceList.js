@@ -25,14 +25,11 @@ Vue.component('maincontents', {
             cond: {
                 page: 0,
                 size: 5,
-                // openDataName: "",
-                //openStorageStatCode: "O_ACC", // 공개신청 승인 데이타만 출력한다.
                 approveStatus:"", // 학습서버 처리상태
                 keyword:"",//검색어
                 sort: ""
             },
-            // approveStatusList: getCodeList('ApproveStatus',this.callback),// 학습서버 처리상태 콤보박스
-            approveStatusList:getCodeList('ReqStorageStat',this.callback),//
+            approveStatusCdList:getCodeList('ApproveStatus',this.callback),// 콤보 리스트
             envInstanceList: [],
             pageInfo: {
                 curr : 1,
@@ -44,10 +41,7 @@ Vue.component('maincontents', {
                 pages: [1],
                 total: 1
             },
-            messages : "",
-            selected:"", // 선택된 콤보박스
-            // searchVal : "", // 입력된 검색어
-
+            
         };
     },
     mounted:function(){
@@ -62,6 +56,7 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
+            this.cond.approveStatus = this.$refs.approveStatus.value;//처리상태
             this.getEnvInstanceList();
         },
 
@@ -71,7 +66,7 @@ Vue.component('maincontents', {
         },
         // 신청 버튼 클릭(화면 이동)
         onclickReq: function (reqSeq) {
-            // location.href = "/env/instance/req";
+              location.href = "/env/instance/req";
         },
         // 목록 조회
         getEnvInstanceList:function () {
@@ -85,19 +80,13 @@ Vue.component('maincontents', {
                 case TID.SEARCH:
                     this.searchCallback(results);
                     break;
-                case "ReqStorageStat":
-                    //console.log(results.response);
-                    this.approveStatusList = results.response;
+                case "ApproveStatus":
+                    console.log(results.response);
+                    this.approveStatusCdList = results.response;
                     setTimeout(function() {
                         loadSelect();
                     },300);
                     break;
-                // case "ApproveStatus":
-                //     this.approveStatusList = results.response;
-                //     setTimeout(function() {
-                //         loadSelect();
-                //     },300);
-                //     break;
                 case "usrInfo":
                     if (results.success) {
                         let userRole = results.response.userRole;
@@ -163,19 +152,6 @@ Vue.component('maincontents', {
                 this.getOpenStorageList();
             }
         },
-        // // 검색 selectebox 이벤트
-        // searchChange:function(data){
-        //     this.selected = data;
-        //     this.searchVal = "";
-        //
-        //     this.cond.agencyName = this.searchVal ;
-        //     this.cond.openDataName = this.searchVal ;
-        // }
     }
 });
 
-// 검색 selectebox 이벤트
-function selectChange(){
-    const data= document.querySelector("#selected").value;
-    appMain.$refs.maincontents.searchChange(data);
-}

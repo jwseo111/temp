@@ -446,3 +446,121 @@ function fileSize(size){
     }
     return rtn;
 };
+
+
+
+// select box 새로 그린다.
+function reloadSelect(targetObj, list) {
+    console.log(targetObj.selectId + "의 select box를 새로 그립니다.");//tmp
+    let x, i, j, l, ll, selElmnt, tempElmnt, a, b, c;
+
+    x = document.getElementsByName(targetObj.selectDiv);
+    l = x.length;
+
+    for (i = 0; i < l; i++) {
+        tempElmnt = x[i].getElementsByTagName("select")[0];
+        // 기존 select box에 이벤트를 확인한다.
+        let onChangeVal = tempElmnt.getAttribute("onchange");
+        // 자식노드 삭제
+        while(x[i].hasChildNodes()) {
+            x[i].removeChild(x[i].firstChild);
+        }
+
+        selElmnt = document.createElement("select");
+        selElmnt.setAttribute("id",targetObj.selectId);
+        // 기존 onchange 이벤트가 있는지 확인한다.
+        if(!isNull(onChangeVal)) {
+            selElmnt.setAttribute("onchange", onChangeVal);
+        }
+
+        let firstOpt = document.createElement("option");
+        firstOpt.value = tempElmnt[0].value;
+        firstOpt.innerHTML = tempElmnt.options[0].innerHTML;
+
+        selElmnt.appendChild(firstOpt);
+
+        // list만큼 option 생성.
+        for(let m=0; m < list.length; m++) {
+            let opt = document.createElement("option");
+            opt.value = eval('list[m].'+targetObj.optionValue);
+            if(targetObj.selectDiv == "subnetDiv") { // Subnet select box
+                opt.innerHTML = list[m].subnetName + " | "+ list[m].subnet + " | " + list[m].subnetType.codeName;
+            } else {
+                opt.innerHTML = eval('list[m].'+targetObj.optionName);
+            }
+            selElmnt.appendChild(opt);
+        }
+        x[i].appendChild(selElmnt);
+
+        let ev ="";
+        if(!isNull(selElmnt.onchange )){
+            ev = selElmnt.onchange;
+        }
+
+        ll = selElmnt.length;
+        a = document.createElement("DIV");
+        a.setAttribute("class", "select-selected");
+        a.innerHTML = selElmnt.options[0].innerHTML;
+        x[i].appendChild(a);
+        b = document.createElement("DIV");
+        b.setAttribute("class", "select-items select-hide");
+        for (j = 0; j < ll; j++) {
+            c = document.createElement("DIV");
+            c.setAttribute("data-value", selElmnt.options[j].value);
+            c.innerHTML = selElmnt.options[j].innerHTML;
+            c.addEventListener("click", function (e) {
+                var y, i, k, s, h, sl, yl, dv;
+                s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                sl = s.length;
+                h = this.parentNode.previousSibling;
+                for (i = 0; i < sl; i++) {
+                    if (s.options[i].innerHTML == this.innerHTML) {
+                        s.selectedIndex = i;
+                        s.setAttribute("data-value", this.getAttribute("data-value"));
+                        h.innerHTML = this.innerHTML;
+                        y = this.parentNode.getElementsByClassName("same-as-selected");
+                        yl = y.length;
+                        for (k = 0; k < yl; k++) {
+                            y[k].removeAttribute("class");
+                        }
+                        this.setAttribute("class", "same-as-selected");
+
+                        break;
+                    }
+                }
+                h.click();
+            });
+            if(!isNull(ev)){
+                c.addEventListener("click", ev);
+            }
+            b.appendChild(c);
+        }
+        x[i].appendChild(b);
+        a.addEventListener("click", function (e) {
+            e.stopPropagation();
+            closeAllSelect(this);
+            this.nextSibling.classList.toggle("select-hide");
+            this.classList.toggle("select-arrow-active");
+        });
+    }
+    function closeAllSelect(elmnt) {
+        var x, y, i, xl, yl, arrNo = [];
+        x = document.getElementsByClassName("select-items");
+        y = document.getElementsByClassName("select-selected");
+        xl = x.length;
+        yl = y.length;
+        for (i = 0; i < yl; i++) {
+            if (elmnt == y[i]) {
+                arrNo.push(i)
+            } else {
+                y[i].classList.remove("select-arrow-active");
+            }
+        }
+        for (i = 0; i < xl; i++) {
+            if (arrNo.indexOf(i)) {
+                x[i].classList.add("select-hide");
+            }
+        }
+    }
+    document.addEventListener("click", closeAllSelect);
+};

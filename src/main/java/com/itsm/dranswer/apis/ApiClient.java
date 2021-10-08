@@ -1,5 +1,14 @@
 package com.itsm.dranswer.apis;
 
+/*
+ * @package : com.itsm.dranswer.apis
+ * @name : ApiClient.java
+ * @date : 2021-10-08 오후 1:09
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -18,6 +27,17 @@ public class ApiClient {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     *
+     * @methodName : requestGetWithString
+     * @date : 2021-10-08 오후 1:09
+     * @author : xeroman.k
+     * @param reqUrl
+     * @return : java.lang.String
+     * @throws
+     * @modifyed :
+     *
+    **/
     public String requestGetWithString(String reqUrl) throws IOException, ParseException, IllegalAccessException {
         HttpURLConnection conn = null;
         JSONObject responseJson = null;
@@ -34,6 +54,17 @@ public class ApiClient {
 
     }
 
+    /**
+     *
+     * @methodName : isSuccess
+     * @date : 2021-10-08 오후 1:09
+     * @author : xeroman.k
+     * @param responseCode
+     * @return : boolean
+     * @throws
+     * @modifyed :
+     *
+    **/
     private boolean isSuccess(int responseCode){
         if (responseCode == 200 ) {
             return true;
@@ -41,6 +72,17 @@ public class ApiClient {
         return false;
     }
 
+    /**
+     *
+     * @methodName : getConnection
+     * @date : 2021-10-08 오후 1:09
+     * @author : xeroman.k
+     * @param reqUrl
+     * @return : java.net.HttpURLConnection
+     * @throws
+     * @modifyed :
+     *
+    **/
     private HttpURLConnection getConnection(String reqUrl) throws IOException {
         HttpURLConnection conn = null;
 
@@ -62,6 +104,17 @@ public class ApiClient {
         return conn;
     }
 
+    /**
+     *
+     * @methodName : getResponse
+     * @date : 2021-10-08 오후 1:09
+     * @author : xeroman.k
+     * @param is
+     * @return : java.lang.String
+     * @throws
+     * @modifyed :
+     *
+    **/
     private String getResponse(InputStream is) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -78,6 +131,17 @@ public class ApiClient {
         return sb.toString();
     }
 
+    /**
+     *
+     * @methodName : convertJson
+     * @date : 2021-10-08 오후 1:23
+     * @author : xeroman.k
+ * @param jsonString
+     * @return : org.json.simple.JSONObject
+     * @throws
+     * @modifyed :
+     *
+    **/
     private JSONObject convertJson(String jsonString) throws ParseException {
 
         JSONParser parser = new JSONParser();

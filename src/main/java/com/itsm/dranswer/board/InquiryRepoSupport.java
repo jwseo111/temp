@@ -1,5 +1,14 @@
 package com.itsm.dranswer.board;
 
+/*
+ * @package : com.itsm.dranswer.board
+ * @name : InquiryRepoSupport.java
+ * @date : 2021-10-08 오후 1:47
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.users.QUserInfo;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;

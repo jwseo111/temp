@@ -1,5 +1,14 @@
 package com.itsm.dranswer.etc;
 
+/*
+ * @package : com.itsm.dranswer.etc
+ * @name : FileUploadCtrl.java
+ * @date : 2021-10-08 오후 1:49
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import org.apache.commons.io.FileUtils;
@@ -36,10 +45,10 @@ public class FileUploadCtrl {
 
         final String endPoint = "https://kr.object.ncloudstorage.com";
         final String regionName = "kr-standard";
-        String accessKey = "KCbWL7rOSXloPrSx7RLF";
-        String secretKey = "2HC4LpXz6CiPWBWG0FeDmYAulQzgVxHtWcjmiWgq";
+        String accessKey = "";
+        String secretKey = "";
 
-        String bucketName = "bucket-xeroman-test-01";
+        String bucketName = "";
         String folderName = "";
 
         File tempDir = new File("/drAnswer/test");

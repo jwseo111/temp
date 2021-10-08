@@ -1,12 +1,21 @@
 package com.itsm.dranswer.board;
 
+/*
+ * @package : com.itsm.dranswer.board
+ * @name : BoardRestCtrl.java
+ * @date : 2021-10-08 오후 1:23
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.ncp.storage.CustomObjectStorage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -29,6 +38,18 @@ public class BoardRestCtrl {
         this.customObjectStorage = customObjectStorage;
     }
 
+    /**
+     * 공지사항 목록 조회
+     * @methodName : getNoticeList
+     * @date : 2021-10-08 오후 1:39
+     * @author : xeroman.k
+     * @param keyword
+     * @param pageable
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.board.NoticeDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/board/notice/list")
     public ApiResult<Page<NoticeDto>> getNoticeList(
             @RequestParam(required = false) String keyword,
@@ -40,6 +61,17 @@ public class BoardRestCtrl {
         return success(pageNotices);
     }
 
+    /**
+     * 공지사항 상세 조회
+     * @methodName : getNotice
+     * @date : 2021-10-08 오후 1:39
+     * @author : xeroman.k
+     * @param noticeSeq
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.NoticeDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/board/notice/get/{noticeSeq:.+(?<!\\.js)$}")
     public ApiResult<NoticeDto> getNotice(
             @PathVariable Long noticeSeq){
@@ -47,6 +79,18 @@ public class BoardRestCtrl {
         return success(boardService.notice(noticeSeq));
     }
 
+    /**
+     * 공지사항 삭제
+     * @methodName : deleteNotice
+     * @date : 2021-10-08 오후 1:39
+     * @author : xeroman.k
+     * @param noticeSeq
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.NoticeDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/board/notice/delete/{noticeSeq:.+(?<!\\.js)$}")
     public ApiResult<NoticeDto> deleteNotice(
             @PathVariable Long noticeSeq){
@@ -56,6 +100,18 @@ public class BoardRestCtrl {
         return success(null);
     }
 
+    /**
+     * 공지사항 저장
+     * @methodName : saveNotice
+     * @date : 2021-10-08 오후 1:39
+     * @author : xeroman.k
+     * @param request
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.NoticeDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(path = "/board/notice/save")
     public ApiResult<NoticeDto> saveNotice(
             @RequestBody
@@ -64,6 +120,18 @@ public class BoardRestCtrl {
         return success(boardService.saveNotice(request));
     }
 
+    /**
+     * 공지사항 파일 업로드
+     * @methodName : noticeFileUpload
+     * @date : 2021-10-08 오후 1:39
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param request
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.NoticeDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @PostMapping(path = "/board/notice/file/upload")
     public ApiResult<NoticeDto> noticeFileUpload(
             @LoginUser LoginUserInfo loginUserInfo,
@@ -76,7 +144,19 @@ public class BoardRestCtrl {
         return success(boardService.saveNoticeFile(sNoticeSeq, multipartFiles, loginUserInfo));
     }
 
-
+    /**
+     * 자주묻는질문 목록 조회
+     * @methodName : getFaqList
+     * @date : 2021-10-08 오후 1:39
+     * @author : xeroman.k
+     * @param questionType
+     * @param keyword
+     * @param pageable
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.board.FaqDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/board/faq/list")
     public ApiResult<Page<FaqDto>> getFaqList(
             @RequestParam(required = false) QuestionType questionType,
@@ -89,6 +169,17 @@ public class BoardRestCtrl {
         return success(pageFaqs);
     }
 
+    /**
+     * 자주묻는질문 상세 조회
+     * @methodName : getFaq
+     * @date : 2021-10-08 오후 1:40
+     * @author : xeroman.k
+     * @param faqSeq
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.FaqDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/board/faq/get/{faqSeq:.+(?<!\\.js)$}")
     public ApiResult<FaqDto> getFaq(
             @PathVariable Long faqSeq){
@@ -96,6 +187,18 @@ public class BoardRestCtrl {
         return success(boardService.faq(faqSeq));
     }
 
+    /**
+     * 자주묻는질문 삭제
+     * @methodName : deleteFaq
+     * @date : 2021-10-08 오후 1:40
+     * @author : xeroman.k
+     * @param faqSeq
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.FaqDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/board/faq/delete/{faqSeq:.+(?<!\\.js)$}")
     public ApiResult<FaqDto> deleteFaq(
             @PathVariable Long faqSeq){
@@ -105,6 +208,18 @@ public class BoardRestCtrl {
         return success(null);
     }
 
+    /**
+     * 자주묻는질문 저장
+     * @methodName : saveFaq
+     * @date : 2021-10-08 오후 1:40
+     * @author : xeroman.k
+     * @param request
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.FaqDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
+    @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(path = "/board/faq/save")
     public ApiResult<FaqDto> saveFaq(
             @RequestBody
@@ -113,6 +228,18 @@ public class BoardRestCtrl {
         return success(boardService.saveFaq(request));
     }
 
+    /**
+     * 질문과답변 목록 조회
+     * @methodName : getInquiryList
+     * @date : 2021-10-08 오후 1:41
+     * @author : xeroman.k
+     * @param keyword
+     * @param pageable
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.board.InquiryDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/board/inquiry/list")
     public ApiResult<Page<InquiryDto>> getInquiryList(
             @RequestParam(required = false) String keyword,
@@ -124,6 +251,18 @@ public class BoardRestCtrl {
         return success(pageInquiries);
     }
 
+    /**
+     * 질문과답변 상세 조회
+     * @methodName : getInquiry
+     * @date : 2021-10-08 오후 1:42
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param inquirySeq
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.InquiryDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/board/inquiry/get/{inquirySeq:.+(?<!\\.js)$}")
     public ApiResult<InquiryDto> getInquiry(
             @LoginUser LoginUserInfo loginUserInfo,
@@ -132,6 +271,17 @@ public class BoardRestCtrl {
         return success(boardService.inquiry(loginUserInfo, inquirySeq));
     }
 
+    /**
+     * 질문과답변 삭제
+     * @methodName : deleteInquiry
+     * @date : 2021-10-08 오후 1:42
+     * @author : xeroman.k
+     * @param inquirySeq
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.InquiryDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @PostMapping(value = "/board/inquiry/delete/{inquirySeq:.+(?<!\\.js)$}")
     public ApiResult<InquiryDto> deleteInquiry(
             @PathVariable Long inquirySeq){
@@ -141,6 +291,17 @@ public class BoardRestCtrl {
         return success(null);
     }
 
+    /**
+     * 질문과답변 저장
+     * @methodName : saveInquiry
+     * @date : 2021-10-08 오후 1:42
+     * @author : xeroman.k
+     * @param request
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.InquiryDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @PostMapping(path = "/board/inquiry/save")
     public ApiResult<InquiryDto> saveInquiry(
             @RequestBody
@@ -149,6 +310,18 @@ public class BoardRestCtrl {
         return success(boardService.saveInquiry(request));
     }
 
+    /**
+     * 질문과답변 파일 업로드
+     * @methodName : inquiryFileUpload
+     * @date : 2021-10-08 오후 1:43
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param request
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.board.InquiryDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @PostMapping(path = "/board/inquiry/file/upload")
     public ApiResult<InquiryDto> inquiryFileUpload(
             @LoginUser LoginUserInfo loginUserInfo,
@@ -161,27 +334,4 @@ public class BoardRestCtrl {
         return success(boardService.saveInquiryFile(sInquirySeq, multipartFiles, loginUserInfo));
     }
 
-    @Value("${ncp.laif.end-point}")
-    private String endPoint;
-    @Value("${ncp.laif.region-name}")
-    private String regionName;
-    @Value("${ncp.laif.access-key}")
-    private String laifAccessKey;
-    @Value("${ncp.laif.secret-key}")
-    private String laifSecretKey;
-    @Value("${ncp.laif.server-access-key}")
-    private String laifServerAccessKey;
-    @Value("${ncp.laif.server-secret-key}")
-    private String laifServerSecretKey;
-
-    @GetMapping(path = "/board/test")
-    public ApiResult<String> test(){
-
-        String bucketName = "dranswer-upload-files";
-
-//        customObjectStorage.putBucketCORS(endPoint, regionName, laifServerAccessKey, laifServerSecretKey, bucketName);
-//        customObjectStorage.getBucketCORS(endPoint, regionName, laifServerAccessKey, laifServerSecretKey, bucketName);
-
-        return success("OK");
-    }
 }

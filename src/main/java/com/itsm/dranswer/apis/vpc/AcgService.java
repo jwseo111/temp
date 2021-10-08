@@ -1,5 +1,14 @@
 package com.itsm.dranswer.apis.vpc;
 
+/*
+ * @package : com.itsm.dranswer.apis.vpc
+ * @name : AcgService.java
+ * @date : 2021-10-08 오전 11:07
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.apis.ApiService;
 import com.itsm.dranswer.apis.OpenApiUrls;
 import com.itsm.dranswer.apis.OpenApiUtils;
@@ -16,6 +25,18 @@ import org.springframework.util.CollectionUtils;
 @Service
 public class AcgService extends ApiService {
 
+    /**
+     * create vpc acg
+     * @methodName : createAccessControlGroup
+     * @date : 2021-10-08 오전 11:08
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.CreateAccessControlGroupResponseDto.AcgInstanceDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public CreateAccessControlGroupResponseDto.AcgInstanceDto createAccessControlGroup(CreateAccessControlGroupRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -35,6 +56,18 @@ public class AcgService extends ApiService {
         return null;
     }
 
+    /**
+     * get vpc acg list
+     * @methodName : getAccessControlGroupList
+     * @date : 2021-10-08 오전 11:08
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetAccessControlGroupListResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public GetAccessControlGroupListResponseDto getAccessControlGroupList(GetAccessControlGroupListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -50,6 +83,18 @@ public class AcgService extends ApiService {
         return responseDto;
     }
 
+    /**
+     * get vpc acg detail
+     * @methodName : getAccessControlGroupDetail
+     * @date : 2021-10-08 오전 11:08
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetAccessControlGroupDetailResponseDto.AcgInstanceDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public GetAccessControlGroupDetailResponseDto.AcgInstanceDto getAccessControlGroupDetail(GetAccessControlGroupDetailRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -68,6 +113,18 @@ public class AcgService extends ApiService {
         return null;
     }
 
+    /**
+     * get vpc acl rule list
+     * @methodName : getAcgRuleList
+     * @date : 2021-10-08 오전 11:08
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetAcgRuleListResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public GetAcgRuleListResponseDto getAcgRuleList(final GetAcgRuleListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -80,6 +137,18 @@ public class AcgService extends ApiService {
                 GetAcgRuleListResponseDto.class).getBody();
     }
 
+    /**
+     * add vpc acg inbound rule
+     * @methodName : addAcgInboundRule
+     * @date : 2021-10-08 오전 11:09
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.AddAcgInboundRuleResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public AddAcgInboundRuleResponseDto addAcgInboundRule(final AddAcgRuleRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -94,6 +163,18 @@ public class AcgService extends ApiService {
         return responseDto;
     }
 
+    /**
+     * add vpc acg outbound rule
+     * @methodName : addAcgOutboundRule
+     * @date : 2021-10-08 오전 11:09
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.AddAcgOutboundRuleResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public AddAcgOutboundRuleResponseDto addAcgOutboundRule(final AddAcgRuleRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -108,6 +189,18 @@ public class AcgService extends ApiService {
         return responseDto;
     }
 
+    /**
+     * remove vpc acg inbound rule
+     * @methodName : removeAcgInboundRule
+     * @date : 2021-10-08 오전 11:09
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.RemoveAcgInboundRuleResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public RemoveAcgInboundRuleResponseDto removeAcgInboundRule(final RemoveAcgRuleRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -120,6 +213,18 @@ public class AcgService extends ApiService {
                 RemoveAcgInboundRuleResponseDto.class).getBody();
     }
 
+    /**
+     * remove vpc acg inbound rule
+     * @methodName : removeAcgOutboundRule
+     * @date : 2021-10-08 오전 11:09
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.RemoveAcgOutboundRuleResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public RemoveAcgOutboundRuleResponseDto removeAcgOutboundRule(final RemoveAcgRuleRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -132,6 +237,18 @@ public class AcgService extends ApiService {
                 RemoveAcgOutboundRuleResponseDto.class).getBody();
     }
 
+    /**
+     * create vpc acg & rule
+     * @methodName : createAcgAndAddRule
+     * @date : 2021-10-08 오전 11:09
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.CreateAccessControlGroupResponseDto.AcgInstanceDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public CreateAccessControlGroupResponseDto.AcgInstanceDto createAcgAndAddRule(CreateAcgAndAddRuleDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         CreateAccessControlGroupRequestDto createAccessControlGroupRequestDto = requestDto.getCreateAccessControlGroupRequestDto();

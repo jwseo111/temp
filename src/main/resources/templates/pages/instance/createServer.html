@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/common/common.js}"></script>
+    <script th:src="@{/js/instance/createServer.js}"></script>
+</th:block>
+
+<div layout:fragment="contents">
+
+    <div id="maincontentswrap">
+        <maincontents ref="maincontents"></maincontents>
+    </div>
+
+    <script type="text/x-template" id="main-template">
+        <div>
+
+            <div style="min-height: 800px; display: flex; justify-content: center;">
+                <div style="width: 800px; ">
+                    <div style="display: flex; height: 150px;">
+                        <div style="width: 150px; padding: 10px 15px; border: 1px solid #0d0d0d; display: flex; align-items: center;">
+                            OS
+                        </div>
+                        <div style="width: 650px; padding: 10px 15px; border: 1px solid #0d0d0d; border-left: none; display: flex; align-items: center;">
+                            <div>
+
+                                <div v-for="(server, idx) in serverOsType">
+                                    <label>
+                                        <input type="radio" :value="server.productCode" v-on:change="getServerSpec"
+                                               name="serverOsType" v-model="cond.serverImageProductCode"> <span>{{server.desc}} &nbsp;</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; height: 150px;">
+                        <div style="width: 150px; padding: 10px 15px; border: 1px solid #0d0d0d; display: flex; align-items: center;">
+                            Server Type
+                        </div>
+                        <div style="width: 650px; padding: 10px 15px; border: 1px solid #0d0d0d; border-left: none; display: flex; align-items: center;">
+                            <div>
+                                <div v-for="(p, idx) in serverProductType" style="display: inline-block;">
+                                    <label>
+                                        <input type="radio" :value="p.code" v-on:change="getServerSpec"
+                                               name="serverProductType" v-model="cond.productType"> <span>{{p.codeName}} &nbsp;</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; height: 150px;">
+                        <div style="width: 150px; padding: 10px 15px; border: 1px solid #0d0d0d; display: flex; align-items: center;">
+                            Storage Type
+                        </div>
+                        <div style="width: 650px; padding: 10px 15px; border: 1px solid #0d0d0d; border-left: none; display: flex; align-items: center;">
+                            <div>
+                                <div v-for="(p, idx) in storageType" style="display: inline-block;">
+                                    <label>
+                                        <input type="radio" :value="p.code" v-on:change="getServerSpec"
+                                               name="storageType" v-model="cond.storageType"> <span>{{p.codeName}} &nbsp;</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; height: 150px;">
+                        <div style="width: 150px; padding: 10px 15px; border: 1px solid #0d0d0d; display: flex; align-items: center;">
+                            Memory Size
+                        </div>
+                        <div style="width: 650px; padding: 10px 15px; border: 1px solid #0d0d0d; border-left: none; display: flex; align-items: center;">
+                            <div>
+                                <div v-for="(p, idx) in memorySize" style="display: inline-block;">
+                                    <label>
+                                        <input type="radio" :value="p.code" v-on:change="getServerSpec" name="memory"
+                                               v-model="cond.memorySize"> <span>{{p.codeName}} &nbsp;</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; height: 150px;">
+                        <div style="width: 150px; padding: 10px 15px; border: 1px solid #0d0d0d; display: flex; align-items: center;">
+                            Server Spec.
+                        </div>
+                        <div style="width: 650px; padding: 10px 15px; border: 1px solid #0d0d0d; border-left: none; display: flex; align-items: center;">
+                            <div>
+                                <select v-model="cond.serverProductCode">
+                                    <option v-for="(s, idx) in specs" :value="s.productCode">{{s.productDescription}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; height: 150px;">
+                        <div style="width: 150px; padding: 10px 15px; border: 1px solid #0d0d0d; display: flex; align-items: center;">
+                            요금제
+                        </div>
+                        <div style="width: 650px; padding: 10px 15px; border: 1px solid #0d0d0d; border-left: none; display: flex; align-items: center;">
+                            <div>
+                                <div v-for="(p, idx) in feeSystemTypeCode" style="display: inline-block;">
+                                    <label>
+                                        <input type="radio" :value="p.code" name="feeSystemTypeCode"
+                                               v-model="cond.feeSystemTypeCode"> <span>{{p.codeName}} &nbsp;</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; height: 150px;">
+                        <div style="width: 150px; padding: 10px 15px; border: 1px solid #0d0d0d; display: flex; align-items: center;">
+                            서버명
+                        </div>
+                        <div style="width: 650px; padding: 10px 15px; border: 1px solid #0d0d0d; border-left: none; display: flex; align-items: center;">
+                            <div>
+                                <input type="text" v-model="cond.serverName" name="serverName">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; height: 150px;">
+                        <div style="width: 150px; padding: 10px 15px; border: 1px solid #0d0d0d; display: flex; align-items: center;">
+                            서버설명
+                        </div>
+                        <div style="width: 650px; padding: 10px 15px; border: 1px solid #0d0d0d; border-left: none; display: flex; align-items: center;">
+                            <div>
+                                <textarea type="text" v-model="cond.serverDescription"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button type="button" v-on:click="request">신청</button>
+            </div>
+        </div>
+    </script>
+
+</div>
+</html>

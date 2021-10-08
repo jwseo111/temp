@@ -136,14 +136,14 @@ public class ReqStorageRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : cancelReqStorage
      * @date : 2021-06-25 오후 3:09
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @param reqStorageId
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.ReqStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -180,13 +180,13 @@ public class ReqStorageRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : approveReqStorage
      * @date : 2021-06-28 오전 11:28
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param reqStorageId
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.ReqStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -197,15 +197,15 @@ public class ReqStorageRestCtrl {
 
         return success(storageService.approveReqStorageInfo(reqStorageId, bucketInfoDto));
     }
-    
+
     /**
-     * 
+     *
      * @methodName : deleteReqStorage
      * @date : 2021-07-08 오전 10:46
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param reqStorageId
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.ReqStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -218,14 +218,14 @@ public class ReqStorageRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : rejectReqStorage
      * @date : 2021-07-08 오전 10:46
-     * @author : xeroman.k 
- * @param reqStorageId
- * @param reqStorageInfoDto
+     * @author : xeroman.k
+     * @param reqStorageId
+     * @param reqStorageInfoDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.ReqStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/

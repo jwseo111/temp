@@ -1,5 +1,14 @@
 package com.itsm.dranswer.apis;
 
+/*
+ * @package : com.itsm.dranswer.apis
+ * @name : OpenApiUtils.java
+ * @date : 2021-10-08 오후 1:19
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -15,12 +24,35 @@ import java.util.Map;
 
 public class OpenApiUtils {
 
+    /**
+     * not exists parameter object
+     * @methodName : getOpenApiUrl
+     * @date : 2021-10-08 오후 1:20
+     * @author : xeroman.k 
+     * @param uri
+     * @return : java.lang.String
+     * @throws 
+     * @modifyed :
+     *
+    **/
     public static String getOpenApiUrl(String uri) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
 
         return uriBuilder.toUriString() + "?responseFormatType=json";
     }
 
+    /**
+     * exists parameter object
+     * @methodName : getOpenApiUrl
+     * @date : 2021-10-08 오후 1:20
+     * @author : xeroman.k 
+     * @param uri
+     * @param requestDto
+     * @return : java.lang.String
+     * @throws 
+     * @modifyed :
+     *
+    **/
     public static String getOpenApiUrl(String uri, Object requestDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
 
@@ -45,6 +77,19 @@ public class OpenApiUtils {
         return objectMapper;
     }
 
+    /**
+     * uri와 parameter object를 query string 형태로 변환하기 위한 작업
+     * @methodName : uriAndParamMerge
+     * @date : 2021-10-08 오후 1:21
+     * @author : xeroman.k 
+     * @param uriBuilder
+     * @param keyPrefix
+     * @param getParameters
+     * @return : org.springframework.web.util.UriComponentsBuilder
+     * @throws 
+     * @modifyed :
+     *
+    **/
     private static UriComponentsBuilder uriAndParamMerge(UriComponentsBuilder uriBuilder, String keyPrefix, final Object getParameters) {
         final Map<String, Object> map = objectMapper().convertValue(getParameters, new TypeReference<HashMap>() {
         });

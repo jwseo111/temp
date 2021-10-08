@@ -1,5 +1,14 @@
 package com.itsm.dranswer.apis;
 
+/*
+ * @package : com.itsm.dranswer.apis
+ * @name : OpenApiUrls.java
+ * @date : 2021-10-08 오후 1:23
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

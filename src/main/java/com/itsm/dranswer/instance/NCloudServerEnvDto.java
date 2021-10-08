@@ -1,6 +1,17 @@
 package com.itsm.dranswer.instance;
 
+/*
+ * @package : com.itsm.dranswer.instance
+ * @name : NCloudServerEnvDto.java
+ * @date : 2021-10-08 오후 1:53
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
+import com.itsm.dranswer.apis.vpc.response.GetServerProductListResponseDto;
 import com.itsm.dranswer.commons.BaseEntity;
+import com.itsm.dranswer.storage.UseStorageInfoDto;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -28,6 +39,8 @@ public class NCloudServerEnvDto extends BaseEntity {
 
     private String productCode;
 
+    private GetServerProductListResponseDto product;
+
     private Boolean associateWithPublicIp;
 
     private String serverDescription;
@@ -37,6 +50,10 @@ public class NCloudServerEnvDto extends BaseEntity {
     private String loginKeyName;
 
     private Integer usingDays;
+
+    private String useStorageId;
+
+    private UseStorageInfoDto useStorageInfo;
 
     private List<NCloudNetworkInterfaceDto> networkInterfaceList = new ArrayList<>();
 

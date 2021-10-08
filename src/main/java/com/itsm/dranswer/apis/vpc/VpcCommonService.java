@@ -1,5 +1,14 @@
 package com.itsm.dranswer.apis.vpc;
 
+/*
+ * @package : com.itsm.dranswer.apis.vpc
+ * @name : VpcCommonService.java
+ * @date : 2021-10-08 오전 10:31
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.apis.ApiService;
 import com.itsm.dranswer.apis.OpenApiUrls;
 import com.itsm.dranswer.apis.OpenApiUtils;
@@ -21,6 +30,17 @@ import java.util.stream.Collectors;
 @Service
 public class VpcCommonService extends ApiService {
 
+    /**
+     *
+     * @methodName : getRegionList
+     * @date : 2021-10-08 오전 10:32
+     * @author : xeroman.k
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetRegionListResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public GetRegionListResponseDto getRegionList(NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -35,6 +55,18 @@ public class VpcCommonService extends ApiService {
         return responseDto;
     }
 
+    /**
+     *
+     * @methodName : getZoneList
+     * @date : 2021-10-08 오전 10:32
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetZoneListResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public GetZoneListResponseDto getZoneList(final GetZoneListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -49,6 +81,18 @@ public class VpcCommonService extends ApiService {
         return responseDto;
     }
 
+    /**
+     * get vpc os image list
+     * @methodName : getServerImageProductList
+     * @date : 2021-10-08 오전 10:34
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetServerImageProductListResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public GetServerImageProductListResponseDto getServerImageProductList(final GetServerImageProductListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
@@ -66,6 +110,18 @@ public class VpcCommonService extends ApiService {
         return getServerImageProductListResponseDto;
     }
 
+    /**
+     * get vpc server product list
+     * @methodName : getServerProductList
+     * @date : 2021-10-08 오전 10:51
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetServerProductListResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public GetServerProductListResponseDto getServerProductList(final GetServerProductListRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
 
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();

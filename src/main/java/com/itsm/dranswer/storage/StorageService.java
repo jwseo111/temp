@@ -309,6 +309,18 @@ public class StorageService {
         return reqStorageInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : rejectReqStorageInfo
+     * @date : 2021-10-08 오후 2:15
+     * @author : xeroman.k
+     * @param reqStorageId
+     * @param reqStorageInfoDto
+     * @return : com.itsm.dranswer.storage.ReqStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public ReqStorageInfoDto rejectReqStorageInfo(String reqStorageId, ReqStorageInfoDto reqStorageInfoDto) throws MessagingException, IOException {
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         reqStorageInfo.reject(reqStorageInfoDto.getRejectReason());
@@ -338,23 +350,83 @@ public class StorageService {
         return reqStorageInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : makeBucketInfo
+     * @date : 2021-10-08 오후 2:29
+     * @author : xeroman.k
+     * @param reqStorageInfo
+     * @param bucketInfoDto
+     * @return : com.itsm.dranswer.storage.BucketInfo
+     * @throws
+     * @modifyed :
+     *
+    **/
     public BucketInfo makeBucketInfo(ReqStorageInfo reqStorageInfo, BucketInfoDto bucketInfoDto){
         System.out.println("");
         return bucketInfoRepo.save(new BucketInfo(reqStorageInfo, bucketInfoDto));
     }
 
+    /**
+     *
+     * @methodName : makeBucket
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param bucketName
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void makeBucket(String bucketName){
         customObjectStorage.makeBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName);
     }
 
+    /**
+     *
+     * @methodName : setBucketACL
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param bucketName
+     * @param ncpObjStorageId
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void setBucketACL(String bucketName, String ncpObjStorageId){
         customObjectStorage.setBucketACL(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName, ncpObjStorageId);
     }
 
+    /**
+     *
+     * @methodName : deleteBucket
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param bucketName
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void deleteBucket(String bucketName){
         customObjectStorage.deleteBucket(endPoint, regionName, laifAccessKey, laifSecretKey, bucketName);
     }
 
+    /**
+     *
+     * @methodName : getOpenStorageList
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param openStorageStatCode
+     * @param dataName
+     * @param userSeq
+     * @param pageable
+     * @return : org.springframework.data.domain.Page<com.itsm.dranswer.storage.OpenStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public Page<OpenStorageInfoDto> getOpenStorageList(OpenStorageStat openStorageStatCode, String dataName, Long userSeq, Pageable pageable) {
 
         Long inqUserSeq = null;
@@ -367,19 +439,65 @@ public class StorageService {
         return openStorageInfoRepoSupport.searchAll(openStorageStatCode, dataName, inqUserSeq, pageable);
     }
 
+    /**
+     *
+     * @methodName : getOpenStorageListForUse
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param disease
+     * @param keyword
+     * @param pageable
+     * @return : org.springframework.data.domain.Page<com.itsm.dranswer.storage.OpenStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public Page<OpenStorageInfoDto> getOpenStorageListForUse(Disease disease, String keyword, Pageable pageable) {
         return openStorageInfoRepoSupport.searchForUse(disease, keyword, pageable);
     }
 
+    /**
+     *
+     * @methodName : openStorage
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param openStorageInfoDto
+     * @return : com.itsm.dranswer.storage.OpenStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public OpenStorageInfoDto openStorage(OpenStorageInfoDto openStorageInfoDto) {
         OpenStorageInfo openStorageInfo = new OpenStorageInfo(openStorageInfoDto);
         return saveOpenStorageInfo(openStorageInfo).convertDto();
     }
 
+    /**
+     *
+     * @methodName : saveOpenStorageInfo
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param openStorageInfo
+     * @return : com.itsm.dranswer.storage.OpenStorageInfo
+     * @throws
+     * @modifyed :
+     *
+    **/
     public OpenStorageInfo saveOpenStorageInfo(OpenStorageInfo openStorageInfo){
         return openStorageInfoRepo.save(openStorageInfo);
     }
 
+    /**
+     *
+     * @methodName : getOpenStorage
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param openStorageId
+     * @return : com.itsm.dranswer.storage.OpenStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public OpenStorageInfoDto getOpenStorage(String openStorageId) {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         ReqStorageInfo reqStorageInfo = openStorageInfo.getReqStorageInfo();
@@ -392,11 +510,35 @@ public class StorageService {
         return openStorageInfoDto;
     }
 
+    /**
+     *
+     * @methodName : getOpenStorageInfo
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param openStorageId
+     * @return : com.itsm.dranswer.storage.OpenStorageInfo
+     * @throws
+     * @modifyed :
+     *
+    **/
     private OpenStorageInfo getOpenStorageInfo(String openStorageId) {
         return openStorageInfoRepo.findById(openStorageId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공개정보 ID 입니다."));
     }
 
+    /**
+     *
+     * @methodName : cancelOpenStorageInfo
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param openStorageId
+     * @param openStorageInfoDto
+     * @return : com.itsm.dranswer.storage.OpenStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public OpenStorageInfoDto cancelOpenStorageInfo(LoginUserInfo loginUserInfo, String openStorageId, OpenStorageInfoDto openStorageInfoDto) {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         checkMaker(loginUserInfo, openStorageInfo.getCreatedBy());
@@ -406,6 +548,17 @@ public class StorageService {
         return openStorageInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : approveOpenStorageInfo
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param openStorageId
+     * @return : com.itsm.dranswer.storage.OpenStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public OpenStorageInfoDto approveOpenStorageInfo(String openStorageId) throws MessagingException, IOException {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         openStorageInfo.approve();
@@ -437,6 +590,18 @@ public class StorageService {
         return openStorageInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : rejectOpenStorageInfo
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param openStorageId
+     * @param openStorageInfoDto
+     * @return : com.itsm.dranswer.storage.OpenStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public OpenStorageInfoDto rejectOpenStorageInfo(String openStorageId, OpenStorageInfoDto openStorageInfoDto) throws MessagingException, IOException {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         openStorageInfo.reject(openStorageInfoDto.getRejectReason());
@@ -466,6 +631,17 @@ public class StorageService {
         return openStorageInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : getMyStorageBucketList
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @return : java.util.List<com.itsm.dranswer.storage.ReqStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public List<ReqStorageInfoDto> getMyStorageBucketList(LoginUserInfo loginUserInfo) {
 
         UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo.getUserSeq());
@@ -483,6 +659,19 @@ public class StorageService {
         return reqStorageInfos.stream().map(ReqStorageInfoDto::new).collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @methodName : getObjectList
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param bucketName
+     * @param folderName
+     * @return : java.util.List<com.itsm.dranswer.storage.S3ObjectDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public List<S3ObjectDto> getObjectList(LoginUserInfo loginUserInfo, String bucketName, String folderName) {
 
         UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo.getUserSeq());
@@ -497,6 +686,20 @@ public class StorageService {
         return customObjectStorage.getObjectList(endPoint, regionName, accessKey, secretKey, bucketName, folderName);
     }
 
+    /**
+     *
+     * @methodName : uploadFile
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param bucketName
+     * @param folderName
+     * @param multipartFiles
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.etc.FileUploadResponse
+     * @throws
+     * @modifyed :
+     *
+    **/
     public FileUploadResponse uploadFile(String bucketName, String folderName, List<MultipartFile> multipartFiles, LoginUserInfo loginUserInfo) throws InterruptedException {
         int fileCnt = 0;
         long fileSize = 0L;
@@ -539,6 +742,19 @@ public class StorageService {
         return new FileUploadResponse(fileCnt, fileSize, listObject);
     }
 
+    /**
+     *
+     * @methodName : deleteObject
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param bucketName
+     * @param objectName
+     * @param loginUserInfo
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void deleteObject(String bucketName, String objectName, LoginUserInfo loginUserInfo){
 
         UserInfoDto userInfoDto = userService.getOriginUser(loginUserInfo.getUserSeq());
@@ -552,6 +768,18 @@ public class StorageService {
 
     }
 
+    /**
+     *
+     * @methodName : deleteObjects
+     * @date : 2021-10-08 오후 2:30
+     * @author : xeroman.k
+     * @param requestObjectDtos
+     * @param loginUserInfo
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
     public void deleteObjects(List<RequestObjectDto> requestObjectDtos, LoginUserInfo loginUserInfo) {
 
         for(RequestObjectDto requestObjectDto : requestObjectDtos){
@@ -559,6 +787,17 @@ public class StorageService {
         }
     }
 
+    /**
+     *
+     * @methodName : getReqStorageAuthList
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param reqStorageId
+     * @return : java.util.List<com.itsm.dranswer.users.UserInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public List<UserInfoDto> getReqStorageAuthList(String reqStorageId) {
         ReqStorageInfoDto reqStorageInfoDto = this.getReqStorage(reqStorageId);
         if(reqStorageInfoDto.getDiseaseManagerUserSeq() == null){
@@ -569,6 +808,18 @@ public class StorageService {
         return listUserInfoDto;
     }
 
+    /**
+     *
+     * @methodName : uploadBoardFile
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param folderName
+     * @param multipartFiles
+     * @return : com.itsm.dranswer.etc.FileUploadResponse
+     * @throws
+     * @modifyed :
+     *
+    **/
     public FileUploadResponse uploadBoardFile(String folderName, List<MultipartFile> multipartFiles) throws InterruptedException {
         int fileCnt = 0;
         long fileSize = 0L;
@@ -608,6 +859,16 @@ public class StorageService {
         return new FileUploadResponse(fileCnt, fileSize, listObject);
     }
 
+    /**
+     *
+     * @methodName : bucketSize
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @return : java.util.List<com.itsm.dranswer.storage.BucketInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public List<BucketInfoDto> bucketSize() {
 
         List<BucketInfo> buckets = bucketInfoRepo.findAll();
@@ -626,12 +887,35 @@ public class StorageService {
         return buckets.stream().map(BucketInfoDto::new).collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @methodName : getStorageUsedList
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param agencySeq
+     * @param diseaseCode
+     * @param pageable
+     * @return : org.springframework.data.domain.Page<com.itsm.dranswer.storage.ReqStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public Page<ReqStorageInfoDto> getStorageUsedList(Integer agencySeq, Disease diseaseCode, Pageable pageable){
 
         return reqStorageInfoRepoSupport.getUsedSize(agencySeq, diseaseCode, pageable);
 
     }
 
+    /**
+     *
+     * @methodName : getStorageUsedSummary
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @return : java.util.List<com.itsm.dranswer.storage.StorageSummaryDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public List<StorageSummaryDto> getStorageUsedSummary() {
 
         List<StorageSummaryDto> list = reqStorageInfoRepoSupport.getUsedSummary();
@@ -645,6 +929,18 @@ public class StorageService {
         return list;
     }
 
+    /**
+     *
+     * @methodName : reqUseStorage
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @param reqUseStorageInfoDto
+     * @return : com.itsm.dranswer.storage.UseStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UseStorageInfoDto reqUseStorage(LoginUserInfo loginUserInfo, UseStorageInfoDto reqUseStorageInfoDto) {
 
         UseStorageInfo useStorageInfo = new UseStorageInfo(reqUseStorageInfoDto, loginUserInfo.getUserSeq());
@@ -654,17 +950,53 @@ public class StorageService {
 
     }
 
+    /**
+     *
+     * @methodName : getUseStorageList
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param useStorageStat
+     * @param dataName
+     * @param userSeq
+     * @param pageable
+     * @return : org.springframework.data.domain.Page<com.itsm.dranswer.storage.UseStorageInfoDto>
+     * @throws
+     * @modifyed :
+     *
+    **/
     public Page<UseStorageInfoDto> getUseStorageList(UseStorageStat useStorageStat, String dataName, Long userSeq, Pageable pageable) {
 
         return useStorageInfoRepoSupport.searchMyList(useStorageStat, dataName, userSeq, pageable);
     }
 
+    /**
+     *
+     * @methodName : getUseStorageInfo
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param useStorageId
+     * @return : com.itsm.dranswer.storage.UseStorageInfo
+     * @throws
+     * @modifyed :
+     *
+    **/
     private UseStorageInfo getUseStorageInfo(String useStorageId){
         return useStorageInfoRepo.findById(useStorageId).orElseThrow(() ->
                 new NotFoundException("존재하지 않는 정보 입니다.")
         );
     }
 
+    /**
+     *
+     * @methodName : getUseStorage
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param useStorageId
+     * @return : com.itsm.dranswer.storage.UseStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UseStorageInfoDto getUseStorage(String useStorageId) {
 
         UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
@@ -677,6 +1009,19 @@ public class StorageService {
 
     }
 
+    /**
+     *
+     * @methodName : cancelUseStorage
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param useStorageId
+     * @param cancelMsg
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.storage.UseStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UseStorageInfoDto cancelUseStorage(String useStorageId, String cancelMsg, LoginUserInfo loginUserInfo) {
         UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
         useStorageInfo.checkUser(loginUserInfo.getUserSeq());
@@ -685,6 +1030,18 @@ public class StorageService {
         return useStorageInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : rejectUseStorage
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param useStorageId
+     * @param rejectMsg
+     * @return : com.itsm.dranswer.storage.UseStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UseStorageInfoDto rejectUseStorage(String useStorageId, String rejectMsg) {
         UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
 
@@ -693,6 +1050,17 @@ public class StorageService {
         return useStorageInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : approveUseStorage
+     * @date : 2021-10-08 오후 2:31
+     * @author : xeroman.k
+     * @param useStorageId
+     * @return : com.itsm.dranswer.storage.UseStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UseStorageInfoDto approveUseStorage(String useStorageId) {
         UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
         useStorageInfo.approve();
@@ -700,6 +1068,17 @@ public class StorageService {
         return useStorageInfo.convertDto();
     }
 
+    /**
+     *
+     * @methodName : deleteUseStorage
+     * @date : 2021-10-08 오후 2:46
+     * @author : xeroman.k
+ * @param useStorageId
+     * @return : com.itsm.dranswer.storage.UseStorageInfoDto
+     * @throws
+     * @modifyed :
+     *
+    **/
     public UseStorageInfoDto deleteUseStorage(String useStorageId) {
         UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
         useStorageInfo.delete();

@@ -1,5 +1,14 @@
 package com.itsm.dranswer.instance;
 
+/*
+ * @package : com.itsm.dranswer.instance
+ * @name : VpcInstanceRestCtrl.java
+ * @date : 2021-10-08 오후 1:53
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.apis.vpc.*;
 import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.config.LoginUser;
@@ -46,6 +55,17 @@ public class VpcInstanceRestCtrl {
         return userService.getNCloudKey(loginUserInfo.getUserSeq());
     }
 
+    /**
+     * 리전 목록 조회
+     * @methodName : getRegionList
+     * @date : 2021-10-08 오후 1:53
+     * @author : xeroman.k
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/server/getRegionList")
     public ApiResult<?> getRegionList(
@@ -55,6 +75,18 @@ public class VpcInstanceRestCtrl {
         return success(vpcCommonService.getRegionList(getNCloudKey(loginUserInfo)));
     }
 
+    /**
+     * 존 목록 조회
+     * @methodName : getZoneList
+     * @date : 2021-10-08 오후 1:53
+     * @author : xeroman.k
+     * @param requestDto
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/server/getZoneList")
     public ApiResult<?> getZoneList(GetZoneListRequestDto requestDto
@@ -64,6 +96,18 @@ public class VpcInstanceRestCtrl {
         return success(vpcCommonService.getZoneList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
+    /**
+     * 서버OS이미지목록 조회
+     * @methodName : getServerImageProductList
+     * @date : 2021-10-08 오후 1:53
+     * @author : xeroman.k
+     * @param requestDto
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/server/getServerImageProductList")
     public ApiResult<?> getServerImageProductList(
@@ -74,6 +118,18 @@ public class VpcInstanceRestCtrl {
         return success(vpcCommonService.getServerImageProductList(requestDto, getNCloudKey(loginUserInfo)));
     }
 
+    /**
+     * 서버 상품 조회
+     * @methodName : getServerProductList
+     * @date : 2021-10-08 오후 1:54
+     * @author : xeroman.k
+     * @param requestDto
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<?>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/instance/vpc/server/getServerProductList")
     public ApiResult<?> getServerProductList(
@@ -345,6 +401,20 @@ public class VpcInstanceRestCtrl {
         return success(envInstanceService.getEnvInstanceList(approveStatus, keyword, null, pageable));
     }
 
+    /**
+     * MyPage 학습환경신청목록 조회
+     * @methodName : getMyEnvList
+     * @date : 2021-10-08 오후 1:54
+     * @author : xeroman.k
+     * @param approveStatus
+     * @param keyword
+     * @param pageable
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.instance.ServerEnvDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @Secured(value = {"ROLE_USER"})
     @GetMapping(value = "/my/management/env/instance/getList")
     public ApiResult<Page<ServerEnvDto>> getMyEnvList(
@@ -439,7 +509,7 @@ public class VpcInstanceRestCtrl {
             , @LoginUser LoginUserInfo loginUserInfo
     ){
 
-        return success(loginKeyService.createLoginKey(requestDto, getNCloudKey(loginUserInfo)));
+        return success(loginKeyService.createLoginKey(requestDto, getNCloudKey(loginUserInfo), loginUserInfo.getUserSeq()));
     }
 
 }

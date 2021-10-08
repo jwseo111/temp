@@ -1,5 +1,14 @@
 package com.itsm.dranswer.users;
 
+/*
+ * @package : com.itsm.dranswer.users
+ * @name : AgencyType.java
+ * @date : 2021-10-08 오후 2:47
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 

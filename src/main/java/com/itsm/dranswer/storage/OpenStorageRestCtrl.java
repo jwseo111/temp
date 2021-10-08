@@ -1,5 +1,14 @@
 package com.itsm.dranswer.storage;
 
+/*
+ * @package : com.itsm.dranswer.storage
+ * @name : OpenStorageRestCtrl.java
+ * @date : 2021-10-08 오후 2:14
+ * @author : xeroman.k
+ * @version : 1.0.0
+ * @modifyed :
+ */
+
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +37,12 @@ public class OpenStorageRestCtrl {
      * 데이터 공개 신청 목록
      * @methodName : getOpenStorageList
      * @date : 2021-07-06 오후 5:08
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param openStorageStatCode
      * @param openDataName
      * @param pageable
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.storage.OpenStorageInfoDto>>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -53,10 +62,10 @@ public class OpenStorageRestCtrl {
      * 데이터 공개 신청
      * @methodName : openStorage
      * @date : 2021-07-06 오후 5:08
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param openStorageInfoDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.OpenStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -71,13 +80,13 @@ public class OpenStorageRestCtrl {
      * 마이페이지 > 스토리지공개신청목록
      * @methodName : getMyOpenStorageList
      * @date : 2021-07-06 오후 5:08
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @param openStorageStatCode
      * @param openDataName
      * @param pageable
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.storage.OpenStorageInfoDto>>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -98,10 +107,10 @@ public class OpenStorageRestCtrl {
      * 마이페이지 > 스토리지공개신청목록 > 상세
      * @methodName : getMyOpenStorageInfo
      * @date : 2021-07-06 오후 5:08
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param openStorageId
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.OpenStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -120,12 +129,12 @@ public class OpenStorageRestCtrl {
      * 공개취소신청
      * @methodName : cancelOpenStorage
      * @date : 2021-07-06 오후 5:08
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @param openStorageId
      * @param openStorageInfoDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.OpenStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -143,10 +152,10 @@ public class OpenStorageRestCtrl {
      * 승인처리 (공개승인 or 취소승인)
      * @methodName : approveOpenStorage
      * @date : 2021-07-06 오후 5:09
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param openStorageId
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.OpenStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -162,14 +171,14 @@ public class OpenStorageRestCtrl {
     }
 
     /**
-     * 
+     * 공개신청 승인거절
      * @methodName : rejectOpenStorage
      * @date : 2021-07-08 오전 10:32
-     * @author : xeroman.k 
- * @param openStorageId
- * @param openStorageInfoDto
+     * @author : xeroman.k
+     * @param openStorageId
+     * @param openStorageInfoDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.storage.OpenStorageInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/

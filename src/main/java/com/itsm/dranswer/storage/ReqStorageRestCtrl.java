@@ -125,6 +125,17 @@ public class ReqStorageRestCtrl {
         return success(reqStorageInfoDto);
     }
 
+    /**
+     *
+     * @methodName : getReqStorageAuthList
+     * @date : 2021-10-12 오전 11:18
+     * @author : xeroman.k
+     * @param reqStorageId
+     * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<java.util.List<com.itsm.dranswer.users.UserInfoDto>>
+     * @throws
+     * @modifyed :
+     *
+    **/
     @GetMapping(value = "/storage/req/auth/list/{reqStorageId:.+(?<!\\.js)$}")
     public ApiResult<List<UserInfoDto>> getReqStorageAuthList(
             @PathVariable String reqStorageId){

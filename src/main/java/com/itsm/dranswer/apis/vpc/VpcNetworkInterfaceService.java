@@ -279,8 +279,16 @@ public class VpcNetworkInterfaceService extends ApiService {
         addNetworkAclInboundRuleRequestDto.setNetworkAclNo(rtn.getNetworkAclNo());
         addNetworkAclOutboundRuleRequestDto.setNetworkAclNo(rtn.getNetworkAclNo());
 
-        this.addNetworkAclInboundRule(addNetworkAclInboundRuleRequestDto, nCloudKeyDto);
-        this.addNetworkAclOutboundRule(addNetworkAclOutboundRuleRequestDto, nCloudKeyDto);
+        AddNetworkAclInboundRuleResponseDto addNetworkAclInboundRuleResponseDto = this.addNetworkAclInboundRule(addNetworkAclInboundRuleRequestDto, nCloudKeyDto);
+        AddNetworkAclOutboundRuleResponseDto addNetworkAclOutboundRuleResponseDto = this.addNetworkAclOutboundRule(addNetworkAclOutboundRuleRequestDto, nCloudKeyDto);
+
+        if(addNetworkAclInboundRuleResponseDto.getResponseError() != null){
+            rtn.setMakeInBoundError(true);
+        }
+
+        if(addNetworkAclOutboundRuleResponseDto.getResponseError() != null){
+            rtn.setMakeInBoundError(true);
+        }
 
         return rtn;
     }

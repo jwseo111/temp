@@ -12,6 +12,7 @@ package com.itsm.dranswer.apis.vpc.response;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.itsm.dranswer.apis.ResponseError;
+import com.itsm.dranswer.apis.classic.dto.CommonCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,6 +45,30 @@ public class GetVpcServerDetailResponseDto extends ResponseError {
     public static class ServerInstanceDto {
         private String serverInstanceNo;
         private String serverName;
+        private String serverDescription;
+        private Integer cpuCount;
+        private Long memorySize;
+        private CommonCode platformType;
+        private String loginKeyName;
+        private String publicIpInstanceNo;
+        private String publicIp;
+        private CommonCode serverInstanceStatus;
+        private CommonCode serverInstanceOperation;
         private String serverInstanceStatusName;
+        private String serverImageProductCode;
+        private String serverProductCode;
+        private Boolean isProtectServerTermination;
+        private String zoneCode;
+        private String regionCode;
+        private String vpcNo;
+        private String subnetNo;
+        private List<String> networkInterfaceNoList;
+        private String initScriptNo;
+        private CommonCode serverInstanceType;
+        private CommonCode baseBlockStorageDiskType;
+        private CommonCode baseBlockStorageDiskDetailType;
+        private String placementGroupNo;
+        private String placementGroupName;
+        private String memberServerImageInstanceNo;
     }
 }

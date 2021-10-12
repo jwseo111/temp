@@ -72,6 +72,11 @@ public class OpenApiUrls {
     public static final String REMOVE_ACG_INBOUND_RULE = VPC_SERVER + "/removeAccessControlGroupInboundRule";
     public static final String REMOVE_ACG_OUTBOUND_RULE = VPC_SERVER + "/removeAccessControlGroupOutboundRule";
 
+
+    // PUBLIC IP
+    public static final String DELETE_PUBLIC_IP_INSTANCE = VPC_SERVER + "/deletePublicIpInstance";
+    public static final String DISASSOCIATE_PUBLIC_IP_INSTANCE = VPC_SERVER + "/disassociatePublicIpFromServerInstance";
+
     // NAS
     private static final String VPC_NAS = "/vnas/v2";
     public static final String GET_NAS_LIST = VPC_NAS + "/getNasVolumeInstanceList";
@@ -79,4 +84,5 @@ public class OpenApiUrls {
     public static final String CREATE_NAS = VPC_NAS + "/createNasVolumeInstance";
     public static final String DELETE_NAS = VPC_NAS + "/deleteNasVolumeInstances";
     public static final String CHANGE_NAS_VOLUME_SIZE = VPC_NAS + "/changeNasVolumeSize";
+
 }

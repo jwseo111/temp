@@ -31,6 +31,12 @@ public class NCloudServerEnvDto extends BaseEntity {
 
     private Long reqUserSeq;
 
+    private String serverInstanceNo;
+
+    private String vpcNo;
+
+    private String subnetNo;
+
     private OsImageType osImageType;
 
     private ProductType productType;

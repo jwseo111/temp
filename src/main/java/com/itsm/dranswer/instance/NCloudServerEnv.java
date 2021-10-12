@@ -37,9 +37,18 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @Column(columnDefinition = "bigint COMMENT '신청회원번호'")
     private Long reqUserSeq;
 
+    @Column(columnDefinition = "varchar(36) COMMENT 'Server Instance No.'")
+    private String serverInstanceNo;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reqUserSeq", referencedColumnName = "userSeq", insertable = false, updatable = false)
     private UserInfo reqUserInfo;
+
+    @Column(columnDefinition = "varchar(36) COMMENT 'VPC NO'")
+    private String vpcNo;
+
+    @Column(columnDefinition = "varchar(36) COMMENT 'SUBNET NO'")
+    private String subnetNo;
 
     @Column(columnDefinition = "varchar(36) COMMENT '운영체제'")
     @Enumerated(EnumType.STRING)
@@ -84,6 +93,8 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     public NCloudServerEnv(NCloudServerEnvDto dto) {
         super();
 
+        this.vpcNo = dto.getVpcNo();
+        this.subnetNo = dto.getSubnetNo();
         this.reqUserSeq = dto.getReqUserSeq();
         this.osImageType = dto.getOsImageType();
         this.productType = dto.getProductType();
@@ -99,11 +110,27 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
             this.networkInterfaceList.add(new NCloudNetworkInterface(nCloudNetworkInterfaceDto));
         }
 
-
     }
 
     public NCloudServerEnvDto convertDto() {
 
         return new NCloudServerEnvDto(this);
+    }
+
+    public void accept() {
+        this.approveStatus = ApproveStatus.ACCEPT;
+    }
+
+    public void created(String serverInstanceNo) {
+        this.serverInstanceNo = serverInstanceNo;
+        this.approveStatus = ApproveStatus.CREATED;
+    }
+
+    public void end() {
+        this.approveStatus = ApproveStatus.END;
+    }
+
+    public void reject() {
+        this.approveStatus = ApproveStatus.REJECT;
     }
 }

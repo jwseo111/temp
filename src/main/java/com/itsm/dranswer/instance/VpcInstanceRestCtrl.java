@@ -11,6 +11,7 @@ package com.itsm.dranswer.instance;
 
 import com.itsm.dranswer.apis.vpc.*;
 import com.itsm.dranswer.apis.vpc.request.*;
+import com.itsm.dranswer.apis.vpc.response.CreateVpcServerResponseDto;
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.NCloudKeyDto;
@@ -510,6 +511,38 @@ public class VpcInstanceRestCtrl {
     ){
 
         return success(loginKeyService.createLoginKey(requestDto, getNCloudKey(loginUserInfo), loginUserInfo.getUserSeq()));
+    }
+
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping(value = "/management/instance/environment/approve/{reqSeq:.+(?<!\\.js)$}")
+    public ApiResult<NCloudServerEnvDto> approveEnvironment(
+            @PathVariable Long reqSeq) {
+
+        return success(envInstanceService.approveEnvironment(reqSeq));
+    }
+
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping(value = "/management/instance/environment/create/{reqSeq:.+(?<!\\.js)$}")
+    public ApiResult<CreateVpcServerResponseDto.ServerInstanceDto> createEnvironment(
+            @PathVariable Long reqSeq) {
+
+        return success(envInstanceService.createEnvironment(reqSeq));
+    }
+
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping(value = "/management/instance/environment/end/{reqSeq:.+(?<!\\.js)$}")
+    public ApiResult<NCloudServerEnvDto> endEnvironment(
+            @PathVariable Long reqSeq) {
+
+        return success(envInstanceService.endEnvironment(reqSeq));
+    }
+
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping(value = "/management/instance/environment/reject/{reqSeq:.+(?<!\\.js)$}")
+    public ApiResult<NCloudServerEnvDto> rejectEnvironment(
+            @PathVariable Long reqSeq) {
+
+        return success(envInstanceService.rejectEnvironment(reqSeq));
     }
 
 }

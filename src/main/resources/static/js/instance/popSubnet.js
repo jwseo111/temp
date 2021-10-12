@@ -44,7 +44,7 @@ Vue.component('popupsubnet', {
     mounted: function () {
 
         this.getZoneCbList(); // 가용 ZONE 콤보 조회
-        this.getAclCbList(); // ACL 콤보 조회
+        //this.getAclCbList(); // ACL 콤보 조회
     },
     methods: {
         onload: function() {
@@ -56,7 +56,7 @@ Vue.component('popupsubnet', {
             // 초기화
             this.saveInfo.subnetName = "";
             this.saveInfo.subnet = "";
-
+            this.getAclCbList();
         },
         onKeyupName:function (e){
             let str = e.target.value;
@@ -102,7 +102,7 @@ Vue.component('popupsubnet', {
         },
         onclickPop: function (popId) {
             console.log("생성 팝업 : " + popId);//tmp
-            appPopAcl.$refs.popupacl.$data.saveInfo.vpcNo = this.$refs.vpcNo.value;
+            appPopAcl.$refs.popupacl.$data.saveInfo.createNetworkAclRequestDto.vpcNo = this.$refs.vpcNo.value;
             appPopAcl.$refs.popupacl.onload();
 
             document.getElementById(popId).style.display = "block";
@@ -118,9 +118,11 @@ Vue.component('popupsubnet', {
         },
         // ACL 콤보 리스트 조회
         getAclCbList: function() {
+            let cond = {vpcNo : ""};
+            cond.vpcNo = this.saveInfo.vpcNo;
             get("aclCbList",
                 "/my/management/instance/vpc/getNetworkAclList",
-                {},
+                cond,
                 this.callback);
         },
 
@@ -185,6 +187,14 @@ Vue.component('popupsubnet', {
                         //console.log(results);
                         alertMsg(results.error.message);
                     }
+                    // subnet 선택에 따라 acl selectbox 재구성
+                    let obj = {
+                        selectDiv:"aclDiv",
+                        selectId:"networkAclNo",
+                        optionValue:"networkAclNo",
+                        optionName:"networkAclName",
+                    };
+                    reloadSelect(obj, this.aclCbList);
                     break;
                 case TID.SAVE:
                     console.log(results);

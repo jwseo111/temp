@@ -25,7 +25,7 @@
                             <li class="bdr-b">
                                 <span class="join-input-group w-100">
                                     <label>Network ACL 이름<span>*</span></label>
-                                    <input class="w-100" type="text" v-model="networkAclName" ref="networkAclName" @keyup="onKeyupName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
+                                    <input class="w-100" type="text" v-model="saveInfo.createNetworkAclRequestDto.networkAclName" ref="networkAclName" @keyup="onKeyupName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
                                     <label style="margin-top:0px;">
                                         <span v-show="nameChk1" class="join-txt-red" style="font-size: 1.3rem;">최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.</span>
                                         <span v-show="nameChk2" class="join-txt-red" style="font-size: 1.3rem;">소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.</span>
@@ -36,8 +36,8 @@
                             <li class="w-100 bdr-b">
                                 <span class="join-input-group">
                                     <label>VPC<span>*</span></label>
-                                    <input class="w-100" type="hidden" ref="vpcNo"   v-model="saveInfo.vpcNo" readonly>
-                                    <input class="w-100" type="text"   ref="vpcName" v-model="saveInfo.vpcName" readonly>
+                                    <input class="w-100" type="hidden" ref="vpcNo"   v-model="saveInfo.createNetworkAclRequestDto.vpcNo" readonly>
+                                    <input class="w-100" type="text"   ref="vpcName" v-model="vpcName" readonly>
                                 </span>
                             </li>
                             <li class="bdr-b">
@@ -237,7 +237,7 @@
                             <li>
                                 <span class="join-input-group w-100">
                                     <label>메모</label>
-                                    <input class="w-100" type="text" v-model="saveInfo.networkAclDescription" placeholder="메모를 입력하세요">
+                                    <input class="w-100" type="text" v-model="saveInfo.createNetworkAclRequestDto.networkAclDescription" placeholder="메모를 입력하세요">
                                 </span>
                             </li>
 

@@ -506,6 +506,8 @@ Vue.component('maincontents', {
                 case "loginKeyCreate":
                     console.log(results);
                     if (results.success) {
+                        // 인증키 생성 후 다운로드 실행
+                        textDownload(results.response.keyName+".pem", results.response.privateKey);
                         let targetObj = {
                             selectDiv:"loginKeyDiv",
                             selectId:"loginKey",

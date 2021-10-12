@@ -17,30 +17,28 @@ Vue.component('popupacl', {
     template: "#popup-template-acl",
     data: function () {
         return {
-            networkAclName:"",
-            // ipAddress:"",
-            // memo:"",
-            // selected:"", // 선택된 콤보박스
-            // selectList:     getCodeList('ReqStorageStat',this.callback),//
-            selected :"",
             inboundList:[],
             outboundList:[],
             inbound:{
                 networkAclNo:"",
                 priority:"", // 우선순위 order required > unique no
                 protocolTypeCode:"", // 프로토콜 protocol required > TCP or UDP or ICMP
+                protocolType:{code:"", codeName:""},
                 ipBlock:"", // 접근소스 source
                 portRange:"", // 포트, port
                 ruleActionCode:"", //허용여부 access required > ALLOW or DROP
+                ruleAction:{code:"", codeName:""},
                 networkAclRuleDescription:"" // 메모 memo
             },
             outbound:{
                 networkAclNo:"",
                 priority:"", // 우선순위 order
                 protocolTypeCode:"", // 프로토콜 protocol
+                protocolType:{code:"", codeName:""}, // 프로토콜 protocol
                 ipBlock:"", // 목적지 target
                 portRange:"", // 포트, port
                 ruleActionCode:"", //허용여부 access
+                ruleAction:{code:"", codeName:""},
                 networkAclRuleDescription:"" // 메모 memo
             },
             protocolTypeCodeList:[
@@ -52,10 +50,19 @@ Vue.component('popupacl', {
                 {name:"ALLOW", desc:"허용"},
                 {name:"DROP", desc:"차단"}
             ],
+            vpcName:"",
             saveInfo:{
-                vpcNo:"",
-                networkAclName:"", // ACL 이름
-                networkAclDescription:"", // 메모
+                createNetworkAclRequestDto:{
+                    vpcNo:"",
+                    networkAclName:"", // ACL 이름
+                    networkAclDescription:"", // 메모
+                     },
+                addNetworkAclInboundRuleRequestDto:{
+                    networkAclRuleList:[],
+                }, // inbound List
+                addNetworkAclOutboundRuleRequestDto:{
+                    networkAclRuleList:[],
+                }, // outbound List
             },
 
             nameChk1 : false, // 최소 3글자 이상, 최대 30자까지만 입력이 가능합니다
@@ -72,8 +79,6 @@ Vue.component('popupacl', {
                 outIpBlock:"",
                 outPortRange:"",
             },
-            inPass : false,
-            outPass : false,
 
             pass :{
                 inPriority : false,
@@ -84,7 +89,6 @@ Vue.component('popupacl', {
                 outIpBlock : false,
                 outPortRange:false,
             },
-
         };
     },
     mounted: function () {
@@ -93,9 +97,9 @@ Vue.component('popupacl', {
     methods: {
         onload: function() {
             let vpcList = appMain.$refs.maincontents.vpcList;
-            let vpcNo = this.saveInfo.vpcNo;
+            let vpcNo = this.saveInfo.createNetworkAclRequestDto.vpcNo;
             let idx = vpcList.findIndex(function(key) {return key.vpcNo === vpcNo});
-            this.saveInfo.vpcName =  vpcList[idx].vpcName;
+            this.vpcName =  vpcList[idx].vpcName;
         },
         onKeyupName:function (e){
             let str = e.target.value;
@@ -128,15 +132,18 @@ Vue.component('popupacl', {
             let id = e.target.id;
             let str = e.target.value;
             let ll = str.length;
+            let expPriority = /^[0-9]/; // 우선순위 숫자만
             let expIp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(?:[0-9]|[1-2][0-9]|3[0-2]|[01]?)$/;
-            let expPort ="";// /^[1-9]{1}[0-9-]+$/;
-
-console.log("id : " + id + " : " + str);//tmp
+            // let expPort = /^[1-9]{1}[0-9-]+$/;
+            let expPort = /^[0-9-]+$/; // 포트 범위
             if(id == "inPriority" || id == "outPriority") { // 우선순위 체크
                 if(str > 199) {
                     this.message[id] = "199를 초과할수 없습니다.";
                     this.pass[id]= false;
-                } else {
+                }  else if(!expPriority.test(str)) { // 잘못된 형식입니다.
+                    this.message[id] = "잘못된 형식입니다.";
+                    this.pass[id]= false;
+                }  else {
                     this.message[id] = "";
                     this.pass[id] = true;
                 }
@@ -190,11 +197,17 @@ console.log("id : " + id + " : " + str);//tmp
 
             let obj = {};
             obj.priority = this.inbound.priority;
-            obj.protocolType = this.$refs.sInProtocol.value;
+            obj.protocolType = {
+                code: this.$refs.sInProtocol.value,
+                codeName : this.$refs.sInProtocol.value
+            };
             obj.protocolTypeCode = this.$refs.sInProtocol.value;
             obj.ipBlock = this.inbound.ipBlock;
             obj.portRange = this.inbound.portRange;
-            obj.ruleAction = this.ruleActionCodeList[idx].desc;
+            obj.ruleAction = {
+                code: this.ruleActionCodeList[idx].name,
+                codeName : this.ruleActionCodeList[idx].desc
+            };
             obj.ruleActionCode = this.$refs.sInRuleAction.value;
             obj.networkAclRuleDescription = this.inbound.networkAclRuleDescription;
 
@@ -209,15 +222,14 @@ console.log("id : " + id + " : " + str);//tmp
         onclickOutboundAdd: function (){
             let param =[
                 {value:this.outbound.priority,   title:"우선순위", ref:this.$refs.outPriority},
-                {value:this.$refs.sOutProtocol,  title:"프로토콜", ref:this.$refs.sOutnProtocol},
+                {value:this.$refs.sOutProtocol,  title:"프로토콜", ref:this.$refs.sOutProtocol},
                 {value:this.outbound.ipBlock,    title:"목적지",   ref:this.$refs.outIpBlock},
                 {value:this.outbound.portRange,  title:"포트",     ref:this.$refs.outPortRange},
                 {value:this.$refs.sOutRuleAction,title:"허용여부", ref:this.$refs.sOutRuleAction},
             ];
 
             if(!isValid(param)) return false;
-console.log("## : " + this.pass.outPriority);//tmp
-            console.log("## : " + this.pass.outIpBlock);//tmp
+
             if(this.pass.outPriority && this.pass.outIpBlock) {
             } else {
                 alertMsg("입력 값을 확인하세요.");
@@ -230,12 +242,18 @@ console.log("## : " + this.pass.outPriority);//tmp
 
             let obj = {};
             obj.priority = this.outbound.priority;
-            obj.protocolTypeCode = this.$refs.sOutnProtocol.value;
-            obj.protocolType = this.$refs.sOutnProtocol.value;
+            obj.protocolTypeCode = this.$refs.sOutProtocol.value;
+            obj.protocolType = {
+                code: this.$refs.sOutProtocol.value,
+                codeName : this.$refs.sOutProtocol.value
+            };
             obj.ipBlock = this.outbound.ipBlock;
             obj.portRange = this.outbound.portRange;
             obj.ruleActionCode = this.$refs.sOutRuleAction.value;
-            obj.ruleAction = this.ruleActionCodeList[idx].desc;
+            obj.ruleAction = {
+                code: this.ruleActionCodeList[idx].name,
+                codeName : this.ruleActionCodeList[idx].desc
+            };
             obj.networkAclRuleDescription = this.outbound.networkAclRuleDescription;
 
             this.outboundList.push(obj);
@@ -251,15 +269,26 @@ console.log("## : " + this.pass.outPriority);//tmp
         },
 
         onclickReqSave: function() {
-            console.log("VPC 생성 클릭");//tmp
-            console.log("VPC 이름 : " +  this.vpcName);//tmp
+            this.saveInfo.addNetworkAclInboundRuleRequestDto.networkAclRuleList = [];
+            this.saveInfo.addNetworkAclOutboundRuleRequestDto.networkAclRuleList = [];
+            this.saveInfo.addNetworkAclInboundRuleRequestDto.networkAclRuleList = this.inboundList;
+            this.saveInfo.addNetworkAclOutboundRuleRequestDto.networkAclRuleList = this.outboundList;
 
             if(!this.namePass){
                 alertMsg("Network ACL 이름을 확인하세요.",this.$refs.networkAclName);
                 return false;
             }
-
+console.log("생성하기 : " + JSON.stringify(this.saveInfo));//tmp
+            confirmMsg("생성하시겠습니까?",this.save);
         },
+        // ACL 생성 및 RULE 등록
+        save : function() {
+            post(TID.SAVE,
+                "/my/management/instance/vpc/createNetworkAclAndAddRule",
+                this.saveInfo,
+                this.callback);
+        },
+
         callback: function (tid, results) {
             switch (tid) {
                 case TID.SAVE:
@@ -271,8 +300,9 @@ console.log("## : " + this.pass.outPriority);//tmp
         saveCallback: function (results) {
             console.log(results);
             if (results.success) {
-              //  appMain.$refs.maincontents.getSubnetList();
+                appPopSubet.$refs.popupsubnet.getAclCbList();
                 alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
+
             } else {
                 console.log(results);
                 alertMsg(results.error.message);

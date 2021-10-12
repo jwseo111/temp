@@ -57,7 +57,7 @@
                             <li class="w-100">
                                 <span class="join-input-group">
                                     <label>Network ACL<span>*</span></label>
-                                    <div class="custom-select">
+                                    <div class="custom-select" name="aclDiv">
                                         <select id="networkAclNo" v-model="saveInfo.networkAclNo" ref="networkAclNo">
                                             <option value="">Network ACL을 선택하세요</option>
                                             <option v-for="option in aclCbList" v-bind:value="option.networkAclNo">{{option.networkAclName}}</option>

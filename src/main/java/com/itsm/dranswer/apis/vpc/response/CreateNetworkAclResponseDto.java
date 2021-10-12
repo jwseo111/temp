@@ -49,5 +49,8 @@ public class CreateNetworkAclResponseDto extends ResponseError {
         private CommonCode networkAclStatus;
         private String networkAclDescription;
         private Boolean isDefault;
+
+        private Boolean makeInBoundError = false;
+        private Boolean makeOutBoundError = false;
     }
 }

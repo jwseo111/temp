@@ -11,12 +11,15 @@ package com.itsm.dranswer.apis.vpc.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.itsm.dranswer.instance.NCloudNetworkInterface;
+import com.itsm.dranswer.instance.NCloudServerEnv;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -38,6 +41,17 @@ public class CreateVpcServerRequestDto {
     private Boolean associateWithPublicIp;
     private List<NetworkInterface> networkInterfaceList;
 
+    public CreateVpcServerRequestDto(NCloudServerEnv nCloudServerEnv) {
+        this.vpcNo = nCloudServerEnv.getVpcNo();
+        this.subnetNo = nCloudServerEnv.getSubnetNo();
+        this.serverImageProductCode = nCloudServerEnv.getOsImageType().getProductCode();
+        this.serverProductCode = nCloudServerEnv.getProductCode();
+        this.serverDescription = nCloudServerEnv.getServerDescription();
+        this.loginKeyName = nCloudServerEnv.getLoginKeyName();
+        this.associateWithPublicIp = nCloudServerEnv.getAssociateWithPublicIp();
+        this.networkInterfaceList = nCloudServerEnv.getNetworkInterfaceList().stream().map(e -> new NetworkInterface(e)).collect(Collectors.toList());
+    }
+
     @Data
     @Builder
     @AllArgsConstructor
@@ -47,5 +61,10 @@ public class CreateVpcServerRequestDto {
         private Integer networkInterfaceOrder;
         private String networkInterfaceNo;
         private List<String> accessControlGroupNoList;
+
+        public NetworkInterface(NCloudNetworkInterface nCloudNetworkInterface){
+            this.networkInterfaceOrder = nCloudNetworkInterface.getNetworkInterfaceOrder();
+            this.networkInterfaceNo = nCloudNetworkInterface.getNetworkInterfaceNo();
+        }
     }
 }

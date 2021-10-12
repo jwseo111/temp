@@ -12,13 +12,11 @@ package com.itsm.dranswer.apis.vpc;
 import com.itsm.dranswer.apis.ApiService;
 import com.itsm.dranswer.apis.OpenApiUrls;
 import com.itsm.dranswer.apis.OpenApiUtils;
-import com.itsm.dranswer.apis.vpc.request.CreateVpcServerRequestDto;
-import com.itsm.dranswer.apis.vpc.request.GetVpcServerDetailRequestDto;
-import com.itsm.dranswer.apis.vpc.request.GetVpcServerListRequestDto;
-import com.itsm.dranswer.apis.vpc.request.OperateVpcServersRequestDto;
+import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.apis.vpc.response.CreateVpcServerResponseDto;
 import com.itsm.dranswer.apis.vpc.response.GetVpcServerDetailResponseDto;
 import com.itsm.dranswer.apis.vpc.response.GetVpcServerListResponse;
+import com.itsm.dranswer.apis.vpc.response.VpcPublicIpInstanceResponseDto;
 import com.itsm.dranswer.users.NCloudKeyDto;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpEntity;
@@ -219,5 +217,68 @@ public class VpcServerService extends ApiService {
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed reboot vpc servers");
         }
+    }
+
+    /**
+     * 공인 IP 해제(From Server)
+     * @methodName : disassociatePublicIpFromServerInstance
+     * @date : 2021-10-12 오후 4:27
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.VpcPublicIpInstanceResponseDto.PublicIpInstanceDto
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public VpcPublicIpInstanceResponseDto.PublicIpInstanceDto disassociatePublicIpFromServerInstance(final OperateVpcPublicIpRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        return requestPublicIpInstance(OpenApiUrls.DISASSOCIATE_PUBLIC_IP_INSTANCE, requestDto, nCloudKeyDto);
+
+    }
+
+    /**
+     * 공인 IP 삭제
+     * @methodName : deletePublicIpInstance
+     * @date : 2021-10-12 오후 4:27
+     * @author : xeroman.k
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.VpcPublicIpInstanceResponseDto.PublicIpInstanceDto
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public VpcPublicIpInstanceResponseDto.PublicIpInstanceDto deletePublicIpInstance(final OperateVpcPublicIpRequestDto requestDto, NCloudKeyDto nCloudKeyDto) {
+
+        return requestPublicIpInstance(OpenApiUrls.DELETE_PUBLIC_IP_INSTANCE, requestDto, nCloudKeyDto);
+
+    }
+
+    /**
+     *
+     * @methodName : requestPublicIpInstance
+     * @date : 2021-10-12 오후 4:27
+     * @author : xeroman.k
+     * @param reqUri
+     * @param requestDto
+     * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.VpcPublicIpInstanceResponseDto.PublicIpInstanceDto
+     * @throws
+     * @modifyed :
+     *
+    **/
+    private VpcPublicIpInstanceResponseDto.PublicIpInstanceDto requestPublicIpInstance(String reqUri, final OperateVpcPublicIpRequestDto requestDto, NCloudKeyDto nCloudKeyDto){
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
+        final String uri = OpenApiUtils.getOpenApiUrl(reqUri, requestDto);
+
+        final ResponseEntity<VpcPublicIpInstanceResponseDto> response = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), VpcPublicIpInstanceResponseDto.class);
+
+        VpcPublicIpInstanceResponseDto vpcPublicIpInstanceResponseDto = response.getBody();
+        vpcPublicIpInstanceResponseDto.checkError();
+
+        return vpcPublicIpInstanceResponseDto.getDisassociatePublicIpFromServerInstanceResponse().getPublicIpInstanceList().get(0);
     }
 }

@@ -26,11 +26,6 @@
                                 <span class="join-input-group w-100">
                                     <label>Network ACL 이름<span>*</span></label>
                                     <input class="w-100" type="text" v-model="saveInfo.createNetworkAclRequestDto.networkAclName" ref="networkAclName" @keyup="onKeyupName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
-<!--                                    <label style="margin-top:0px;">-->
-<!--                                        <span v-show="nameChk1" class="join-txt-red" style="font-size: 1.3rem;">최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.</span>-->
-<!--                                        <span v-show="nameChk2" class="join-txt-red" style="font-size: 1.3rem;">소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.</span>-->
-<!--                                        <span v-show="nameChk3" class="join-txt-red" style="font-size: 1.3rem;">영어 또는 숫자로 끝나야 합니다.</span>-->
-<!--                                    </label>-->
                                      <label style="margin-top:0px;">
                                         <span  class="join-txt-red" style="font-size: 1.3rem;">{{message.networkAclName}}</span>
                                     </label>

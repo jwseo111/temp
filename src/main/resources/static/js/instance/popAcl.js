@@ -24,12 +24,10 @@ Vue.component('popupacl', {
                 priority:"", // 우선순위 order required > unique no
                 protocolTypeCode:"", // 프로토콜 protocol required > TCP or UDP or ICMP
                 protocolTypeName:"",
-                //protocolType:{code:"", codeName:""},
                 ipBlock:"", // 접근소스 source
                 portRange:"", // 포트, port
                 ruleActionCode:"", //허용여부 access required > ALLOW or DROP
                 ruleActionName:"",
-                //ruleAction:{code:"", codeName:""},
                 networkAclRuleDescription:"" // 메모 memo
             },
             outbound:{
@@ -37,12 +35,10 @@ Vue.component('popupacl', {
                 priority:"", // 우선순위 order
                 protocolTypeCode:"", // 프로토콜 protocol
                 protocolTypeName:"",
-                //protocolType:{code:"", codeName:""}, // 프로토콜 protocol
                 ipBlock:"", // 목적지 target
                 portRange:"", // 포트, port
                 ruleActionCode:"", //허용여부 access
                 ruleActionName:"",
-                //ruleAction:{code:"", codeName:""},
                 networkAclRuleDescription:"" // 메모 memo
             },
             protocolTypeCodeList:[
@@ -70,11 +66,6 @@ Vue.component('popupacl', {
                     networkAclRuleList:[],
                 }, // outbound List
             },
-
-            nameChk1 : false, // 최소 3글자 이상, 최대 30자까지만 입력이 가능합니다
-            nameChk2 : false, // 소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.
-            nameChk3 : false, // 영어 또는 숫자로 끝나야 합니다.
-            namePass : false,
 
             message :{
                 networkAclName:"",
@@ -105,7 +96,6 @@ Vue.component('popupacl', {
     methods: {
         onload: function(vpcNo) {
             let vpcList = appMain.$refs.maincontents.vpcList;
-            console.log("vpcNo : " + vpcNo);//tmp
             //let vpcNo = this.saveInfo.createNetworkAclRequestDto.vpcNo;
             this.saveInfo.createNetworkAclRequestDto.vpcNo = vpcNo;
             let idx = vpcList.findIndex(function(key) {return key.vpcNo === vpcNo});
@@ -117,30 +107,15 @@ Vue.component('popupacl', {
             let exp1 = /[a-z0-9]/; // 영문 또는 숫자 체크
             let exp2 = /^[a-z]{1}[a-z0-9-]+$/; // 첫문자는 소문자, 소문자, 숫자, 하이픈 허용
             if(str.length < 3 || str.length > 30){
-                // this.nameChk1 = true;
-                // this.nameChk2 = false;
-                // this.nameChk3 = false;
                 this.pass.networkAclName = false;
                 this.message.networkAclName = "최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.";
             } else if(!exp2.test(str)) { // 소문자, 숫자, 특수문자(-)만 허용
-                // this.nameChk1 = false;
-                // this.nameChk2 = true;
-                // this.nameChk3 = false;
-                // this.namePass = false;
                 this.pass.networkAclName = false;
                 this.message.networkAclName = "소문자, 숫자,\"-\"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.";
             } else if(!exp1.test(str[ll-1])) { // 마지막 문자는 소문자 or 숫자
-                // this.nameChk1 = false;
-                // this.nameChk2 = false;
-                // this.nameChk3 = true;
-                // this.namePass = false;
                 this.pass.networkAclName = false;
                 this.message.networkAclName = "영어 또는 숫자로 끝나야 합니다.";
             } else {
-                // this.nameChk1 = false;
-                // this.nameChk2 = false;
-                // this.nameChk3 = false;
-                // this.namePass = true;
                 this.pass.networkAclName = true;
                 this.message.networkAclName = "";
             }
@@ -173,8 +148,9 @@ Vue.component('popupacl', {
                     this.pass[id] = true;
                 }
                 //CIDR prefix 크기는 7 보다 크거나 같아야하며, 최대값은 32입니다.###
-            } else if(id == "inPortRang" || id == "outPortRang") { //  포트 체크
-
+            } else if(id == "inPortRange" || id == "outPortRange") { //  포트 체크
+                this.message[id] = "";
+                this.pass[id] = true;
             }
 
         },

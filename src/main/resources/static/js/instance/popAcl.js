@@ -23,22 +23,26 @@ Vue.component('popupacl', {
                 networkAclNo:"",
                 priority:"", // 우선순위 order required > unique no
                 protocolTypeCode:"", // 프로토콜 protocol required > TCP or UDP or ICMP
-                protocolType:{code:"", codeName:""},
+                protocolTypeName:"",
+                //protocolType:{code:"", codeName:""},
                 ipBlock:"", // 접근소스 source
                 portRange:"", // 포트, port
                 ruleActionCode:"", //허용여부 access required > ALLOW or DROP
-                ruleAction:{code:"", codeName:""},
+                ruleActionName:"",
+                //ruleAction:{code:"", codeName:""},
                 networkAclRuleDescription:"" // 메모 memo
             },
             outbound:{
                 networkAclNo:"",
                 priority:"", // 우선순위 order
                 protocolTypeCode:"", // 프로토콜 protocol
-                protocolType:{code:"", codeName:""}, // 프로토콜 protocol
+                protocolTypeName:"",
+                //protocolType:{code:"", codeName:""}, // 프로토콜 protocol
                 ipBlock:"", // 목적지 target
                 portRange:"", // 포트, port
                 ruleActionCode:"", //허용여부 access
-                ruleAction:{code:"", codeName:""},
+                ruleActionName:"",
+                //ruleAction:{code:"", codeName:""},
                 networkAclRuleDescription:"" // 메모 memo
             },
             protocolTypeCodeList:[
@@ -58,9 +62,11 @@ Vue.component('popupacl', {
                     networkAclDescription:"", // 메모
                      },
                 addNetworkAclInboundRuleRequestDto:{
+                    networkAclNo:"",
                     networkAclRuleList:[],
                 }, // inbound List
                 addNetworkAclOutboundRuleRequestDto:{
+                    networkAclNo:"",
                     networkAclRuleList:[],
                 }, // outbound List
             },
@@ -71,6 +77,7 @@ Vue.component('popupacl', {
             namePass : false,
 
             message :{
+                networkAclName:"",
                 inPriority:"",
                 inIpBlock:"",
                 inPortRange:"",
@@ -81,6 +88,7 @@ Vue.component('popupacl', {
             },
 
             pass :{
+                networkAclName:false,
                 inPriority : false,
                 inIpBlock : false,
                 inPortRange:false,
@@ -95,9 +103,11 @@ Vue.component('popupacl', {
 
     },
     methods: {
-        onload: function() {
+        onload: function(vpcNo) {
             let vpcList = appMain.$refs.maincontents.vpcList;
-            let vpcNo = this.saveInfo.createNetworkAclRequestDto.vpcNo;
+            console.log("vpcNo : " + vpcNo);//tmp
+            //let vpcNo = this.saveInfo.createNetworkAclRequestDto.vpcNo;
+            this.saveInfo.createNetworkAclRequestDto.vpcNo = vpcNo;
             let idx = vpcList.findIndex(function(key) {return key.vpcNo === vpcNo});
             this.vpcName =  vpcList[idx].vpcName;
         },
@@ -107,25 +117,32 @@ Vue.component('popupacl', {
             let exp1 = /[a-z0-9]/; // 영문 또는 숫자 체크
             let exp2 = /^[a-z]{1}[a-z0-9-]+$/; // 첫문자는 소문자, 소문자, 숫자, 하이픈 허용
             if(str.length < 3 || str.length > 30){
-                this.nameChk1 = true;
-                this.nameChk2 = false;
-                this.nameChk3 = false;
-                this.namePass = false;
+                // this.nameChk1 = true;
+                // this.nameChk2 = false;
+                // this.nameChk3 = false;
+                this.pass.networkAclName = false;
+                this.message.networkAclName = "최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.";
             } else if(!exp2.test(str)) { // 소문자, 숫자, 특수문자(-)만 허용
-                this.nameChk1 = false;
-                this.nameChk2 = true;
-                this.nameChk3 = false;
-                this.namePass = false;
+                // this.nameChk1 = false;
+                // this.nameChk2 = true;
+                // this.nameChk3 = false;
+                // this.namePass = false;
+                this.pass.networkAclName = false;
+                this.message.networkAclName = "소문자, 숫자,\"-\"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.";
             } else if(!exp1.test(str[ll-1])) { // 마지막 문자는 소문자 or 숫자
-                this.nameChk1 = false;
-                this.nameChk2 = false;
-                this.nameChk3 = true;
-                this.namePass = false;
+                // this.nameChk1 = false;
+                // this.nameChk2 = false;
+                // this.nameChk3 = true;
+                // this.namePass = false;
+                this.pass.networkAclName = false;
+                this.message.networkAclName = "영어 또는 숫자로 끝나야 합니다.";
             } else {
-                this.nameChk1 = false;
-                this.nameChk2 = false;
-                this.nameChk3 = false;
-                this.namePass = true;
+                // this.nameChk1 = false;
+                // this.nameChk2 = false;
+                // this.nameChk3 = false;
+                // this.namePass = true;
+                this.pass.networkAclName = true;
+                this.message.networkAclName = "";
             }
         },
         onKeyupInput:function (e) {
@@ -197,18 +214,12 @@ Vue.component('popupacl', {
 
             let obj = {};
             obj.priority = this.inbound.priority;
-            obj.protocolType = {
-                code: this.$refs.sInProtocol.value,
-                codeName : this.$refs.sInProtocol.value
-            };
             obj.protocolTypeCode = this.$refs.sInProtocol.value;
+            obj.protocolTypeName = this.$refs.sInProtocol.value;
             obj.ipBlock = this.inbound.ipBlock;
             obj.portRange = this.inbound.portRange;
-            obj.ruleAction = {
-                code: this.ruleActionCodeList[idx].name,
-                codeName : this.ruleActionCodeList[idx].desc
-            };
             obj.ruleActionCode = this.$refs.sInRuleAction.value;
+            obj.ruleActionName = this.ruleActionCodeList[idx].desc;
             obj.networkAclRuleDescription = this.inbound.networkAclRuleDescription;
 
             this.inboundList.push(obj);
@@ -235,25 +246,20 @@ Vue.component('popupacl', {
                 alertMsg("입력 값을 확인하세요.");
                 return;
             }
-            let ruleAction = this.$refs.sOutRuleAction.value;
-            let idx = this.ruleActionCodeList.findIndex(function (key) {
-                return key.name === ruleAction
-            })
+            // let ruleAction = this.$refs.sOutRuleAction.value;
+            // let idx = this.ruleActionCodeList.findIndex(function (key) {
+            //     return key.name === ruleAction
+            // })
 
             let obj = {};
+            obj.networkAclNo="";
             obj.priority = this.outbound.priority;
             obj.protocolTypeCode = this.$refs.sOutProtocol.value;
-            obj.protocolType = {
-                code: this.$refs.sOutProtocol.value,
-                codeName : this.$refs.sOutProtocol.value
-            };
+            obj.protocolTypeName = this.$refs.sOutProtocol.value;
             obj.ipBlock = this.outbound.ipBlock;
             obj.portRange = this.outbound.portRange;
             obj.ruleActionCode = this.$refs.sOutRuleAction.value;
-            obj.ruleAction = {
-                code: this.ruleActionCodeList[idx].name,
-                codeName : this.ruleActionCodeList[idx].desc
-            };
+            obj.ruleActionName = this.ruleActionCodeList[idx].desc;
             obj.networkAclRuleDescription = this.outbound.networkAclRuleDescription;
 
             this.outboundList.push(obj);
@@ -274,7 +280,7 @@ Vue.component('popupacl', {
             this.saveInfo.addNetworkAclInboundRuleRequestDto.networkAclRuleList = this.inboundList;
             this.saveInfo.addNetworkAclOutboundRuleRequestDto.networkAclRuleList = this.outboundList;
 
-            if(!this.namePass){
+            if(!this.pass.networkAclName){
                 alertMsg("Network ACL 이름을 확인하세요.",this.$refs.networkAclName);
                 return false;
             }
@@ -298,10 +304,24 @@ console.log("생성하기 : " + JSON.stringify(this.saveInfo));//tmp
             }
         },
         saveCallback: function (results) {
-            console.log(results);
+            //console.log(results);
             if (results.success) {
+                console.log("## : " + result.response.makeInBoundError);//tmp
+                console.log("## : " + result.response.makeOutBoundError);//tmp
                 appPopSubet.$refs.popupsubnet.getAclCbList();
-                alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
+                if(!result.response.makeInBoundError || !result.response.makeOutBoundError) {
+                    alertMsgRtn("정상적으로 생성되었습니다.\nACL 규칙 설정 실패. ", fnClosePopup('aclModal'));
+                } else {
+                    alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
+                }
+                // if(!result.response.makeInBoundError) {
+                //     alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
+                // } else if(!result.response.makeOutBoundError) {
+                //     alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
+                // } else {
+                //     alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
+                // }
+
 
             } else {
                 console.log(results);

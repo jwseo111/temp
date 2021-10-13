@@ -25,12 +25,9 @@ Vue.component('popupsubnet', {
                 zoneCode:"", // 가용ZONE
                 networkAclNo:"",
             },
-            // zoneSelected:"", // 선택된 콤보박스
             vpcList: [], // VPC 콤보 리스트
             vpcDecs:"",
-            // zoneCode:"",
             zoneCbList: [], // 가용Zone 콤보 리스트
-            // networkAclNo:"",
             aclCbList: [], // ACL 콤보 리스트
             nameChk1 : false, // 최소 3글자 이상, 최대 30자까지만 입력이 가능합니다
             nameChk2 : false, // 소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.
@@ -89,7 +86,6 @@ Vue.component('popupsubnet', {
 
             let str = e.target.value;
             let ll = str.length;
-
             let exp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(?:[0-9]|[1-2][0-9]|3[0-2]|[01]?)$/;
 
             if(!exp.test(str)) {                // 잘못된 형식입니다.
@@ -102,8 +98,8 @@ Vue.component('popupsubnet', {
         },
         onclickPop: function (popId) {
             console.log("생성 팝업 : " + popId);//tmp
-            appPopAcl.$refs.popupacl.$data.saveInfo.createNetworkAclRequestDto.vpcNo = this.$refs.vpcNo.value;
-            appPopAcl.$refs.popupacl.onload();
+            //appPopAcl.$refs.popupacl.$data.saveInfo.createNetworkAclRequestDto.vpcNo = this.$refs.vpcNo.value;
+            appPopAcl.$refs.popupacl.onload(this.$refs.vpcNo.value);
 
             document.getElementById(popId).style.display = "block";
             document.documentElement.style.overflowX = 'hidden';

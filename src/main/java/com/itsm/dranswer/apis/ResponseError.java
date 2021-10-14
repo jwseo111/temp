@@ -23,11 +23,17 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseError {
     protected Map responseError;
+    protected Map error;
 
     public void checkError (){
 
         if(responseError != null){
             String msg = "["+responseError.get("returnCode")+"]"+responseError.get("returnMessage");
+            throw new IllegalArgumentException(msg);
+        }
+
+        if(error != null){
+            String msg = "["+error.get("message")+"]"+error.get("details");
             throw new IllegalArgumentException(msg);
         }
     }

@@ -193,7 +193,7 @@ public class UseStorageRestCtrl {
      * @modifyed :
      *
     **/
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_MANAGER"})
     @PostMapping(value = "/management/storage/use/reject/{useStorageId:.+(?<!\\.js)$}")
     public ApiResult<UseStorageInfoDto> rejectUseStorageInfo(
             @LoginUser LoginUserInfo loginUserInfo,
@@ -217,7 +217,7 @@ public class UseStorageRestCtrl {
      * @modifyed :
      *
     **/
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_MANAGER"})
     @PostMapping(value = "/management/storage/use/approve/{useStorageId:.+(?<!\\.js)$}")
     public ApiResult<UseStorageInfoDto> approveUseStorageInfo(
             @PathVariable String useStorageId){

@@ -51,4 +51,12 @@ public class NCloudNetworkInterface extends BaseEntity implements Serializable {
         this.networkInterfaceOrder = dto.getNetworkInterfaceOrder();
         this.networkInterfaceNo = dto.getNetworkInterfaceNo();
     }
+
+    public NCloudNetworkInterface(NCloudNetworkInterfaceDto dto, NCloudServerEnv nCloudServerEnv) {
+        super();
+
+        this.networkInterfaceOrder = dto.getNetworkInterfaceOrder();
+        this.networkInterfaceNo = dto.getNetworkInterfaceNo();
+        this.nCloudServerEnv = nCloudServerEnv;
+    }
 }

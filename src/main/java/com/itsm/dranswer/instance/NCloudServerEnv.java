@@ -107,9 +107,13 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         this.usingDays = dto.getUsingDays();
 
         for(NCloudNetworkInterfaceDto nCloudNetworkInterfaceDto : dto.getNetworkInterfaceList()){
-            this.networkInterfaceList.add(new NCloudNetworkInterface(nCloudNetworkInterfaceDto));
+            addNetworkInterfaceList(new NCloudNetworkInterface(nCloudNetworkInterfaceDto, this));
         }
 
+    }
+
+    public void addNetworkInterfaceList(NCloudNetworkInterface nCloudNetworkInterface){
+        this.networkInterfaceList.add(nCloudNetworkInterface);
     }
 
     public NCloudServerEnvDto convertDto() {

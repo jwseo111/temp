@@ -186,7 +186,6 @@ Vue.component('maincontents', {
         },
         // 팝업 open
         onclickPop: function (popId) {
-            console.log("생성 팝업 : " + popId);//tmp
             // VPC 3개 이상일 경우, return
             if (popId == "vpcModal") {
                 if (this.vpcList.length == 3) {
@@ -289,12 +288,10 @@ Vue.component('maincontents', {
         },
         // Network Interface 추가된 리스트 삭제
         networkInterfaceAllDel:function (){
-            console.log("networkInterfaceAllDel=================");//tmp
             this.networkInterfaceList = [];
         },
         // NetworkInterface 삭제 클릭
         onclickIFDel: function (idx){
-            console.log("onclickIFDel=======================");//tmp
             this.networkInterfaceList.splice(idx,1); // 선택 행 삭제
         },
         // 인증키 설정
@@ -355,7 +352,6 @@ Vue.component('maincontents', {
         saveCreateEnvironment:function () {
             this.saveInfo.networkInterfaceList = this.networkInterfaceList;
             console.log("### : " + JSON.stringify(this.saveInfo));//tmp
-            console.log("### : " + this.saveInfo.networkInterfaceList.length);//tmp
 
             let param = [
                 {value:this.saveInfo.osImageType, title:"운영체제 ", ref:this.$refs.osImageType},
@@ -402,7 +398,6 @@ Vue.component('maincontents', {
 
                     break;
                 case "vpcList":
-                    console.log("vpcList============");//tmp
                     console.log(results);
                     if (results.success) {
                         if(!isNull(results.response.getVpcListResponse)) {
@@ -449,9 +444,7 @@ Vue.component('maincontents', {
                     }
                     break;
                 case "serverProductList":
-                    console.log("ServerProductList =========");//tmp
                     console.log(results);
-
                     if (results.success) {
                         if(!isNull(results.response.getServerProductListResponse)) {
                             this.serverProductList = results.response.getServerProductListResponse.productList;
@@ -470,14 +463,12 @@ Vue.component('maincontents', {
                     reloadSelect(targetObj, this.serverProductList);
                     break;
                 case "networkInterfaceCbList":
-                    console.log("networkInterfaceCbList =========");//tmp
                     console.log(results);
                     if (results.success) {
                         if(!isNull(results.response.getNetworkInterfaceListResponse)) {
                             this.networkInterfaceCbList = results.response.getNetworkInterfaceListResponse.networkInterfaceList;
 
                             this.networkInterfaceCbListReload(popupId);
-                            console.log("popupId : " + popupId);//tmp
                             if(!isNull(popupId)){
 
                             }
@@ -488,7 +479,6 @@ Vue.component('maincontents', {
                     }
                     break;
                 case "loginKeyList":
-                    console.log("loginKeyList =========");//tmp
                     console.log(results);
                     if (results.success) {
                         if(!isNull(results.response.getLoginKeyListResponse)) {
@@ -528,7 +518,6 @@ Vue.component('maincontents', {
                     this.saveCallback(results);
                     break;
                 case "ProductType":
-                    console.log("ProductType--------------");//tmp
                     console.log(results.response);
                     if (results.success) {
                         this.productTypeCdList = results.response;
@@ -538,7 +527,6 @@ Vue.component('maincontents', {
                     }
                     break;
                 case "OsImageType":
-                    console.log("OsImageType--------------");//tmp
                     console.log(results.response);
                     if (results.success) {
                         this.osImageTypeCdList = results.response;
@@ -635,8 +623,6 @@ Vue.component('maincontents', {
         },
         // VPC 생성 후 팝업 닫힐때 vpc list 재조회
         vpcCbListReload:function(){
-            console.log("vpcCbListReload");//tmp
-
             let targetObj = {
                 selectDiv:"vpcDiv",
                 selectId:"vpcNo",
@@ -649,7 +635,6 @@ Vue.component('maincontents', {
         },
         // networkInterfaceCbList list 재조회
         networkInterfaceCbListReload:function(popupId){
-            console.log("networkInterfaceCbListReload");//tmp
             let obj = {
                 selectDiv:"networkInterfaceDiv",
                 selectId:"networkInterfaceNo",
@@ -664,20 +649,6 @@ Vue.component('maincontents', {
                 fnClosePopup(popupId);
             }
         },
-        // // networkInterface 생성 후 팝업 닫힐때 networkInterfaceCbList list 재조회
-        // networkInterfacePopClose:function(){
-        //     console.log("networkInterfaceCbListReload---> popup close");//tmp
-        //
-        //     let obj = {
-        //         selectDiv:"networkInterfaceDiv",
-        //         selectId:"networkInterfaceNo",
-        //         optionValue:"networkInterfaceNo",
-        //         optionName:"networkInterfaceName",
-        //     };
-        //     // VPC select box 리로드
-        //     reloadSelect(obj, this.networkInterfaceCbList);
-        //     fnClosePopup('networkInterfaceModal');
-        // },
 
     }
 });
@@ -685,13 +656,9 @@ Vue.component('maincontents', {
 // selectebox 이벤트
 function selectedChange(id){
     const data = document.querySelector('#'+id).value;
-    console.log("### id : " + id);//tmp
-    console.log("### data : " + data);//tmp
     // 선택된 값이 있는 경우 수행한다.
     // if(!isNull(data)){
     if(id == "networkInterfaceNo") { // networkInterface 콤보 변경
-        console.log("selectNetworkIFChange 콤보 변경 vpcNo : " + document.querySelector('#vpcNo').value);//tmp
-        console.log("selectNetworkIFChange 콤보 변경 subnetNo : " + document.querySelector('#subnetNo').value);//tmp
         if(isNull(document.querySelector('#vpcNo').value)) {
             alertMsg("VPC를 선택해주세요.");
             appMain.$refs.maincontents.networkInterfaceCbListReload();
@@ -706,5 +673,4 @@ function selectedChange(id){
     } else {
         appMain.$refs.maincontents.searchChange(id, data);
     }
-    // }
 };

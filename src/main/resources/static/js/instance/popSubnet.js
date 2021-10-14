@@ -26,16 +26,17 @@ Vue.component('popupsubnet', {
                 networkAclNo:"",
             },
             vpcList: [], // VPC 콤보 리스트
-            vpcDecs:"",
+            vpcDesc:"",
             zoneCbList: [], // 가용Zone 콤보 리스트
             aclCbList: [], // ACL 콤보 리스트
-            nameChk1 : false, // 최소 3글자 이상, 최대 30자까지만 입력이 가능합니다
-            nameChk2 : false, // 소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.
-            nameChk3 : false, // 영어 또는 숫자로 끝나야 합니다.
-            namePass : false,
-
-            ipChk1: false, // 잘못된 형식입니다.
-            ipPass : true,
+            message:{
+                subnetName : "",
+                subnet:"",// IP 허용범위
+            },
+            pass :{
+                subnetName : "",
+                subnet:"",// IP 허용범위
+            },
         };
     },
     mounted: function () {
@@ -48,7 +49,7 @@ Vue.component('popupsubnet', {
             let vpcList = appMain.$refs.maincontents.vpcList;
             let vpcNo = this.saveInfo.vpcNo;
             let idx = vpcList.findIndex(function(key) {return key.vpcNo === vpcNo});
-            this.vpcDecs=  vpcList[idx].vpcName +"("+vpcList[idx].ipv4CidrBlock+")";
+            this.vpcDesc=  vpcList[idx].vpcName +"("+vpcList[idx].ipv4CidrBlock+")";
 
             // 초기화
             this.saveInfo.subnetName = "";
@@ -60,26 +61,18 @@ Vue.component('popupsubnet', {
             let ll = str.length;
             let exp1 = /[a-z0-9]/; // 영문 또는 숫자 체크
             let exp2 = /^[a-z]{1}[a-z0-9-]+$/; // 첫문자는 소문자, 소문자, 숫자, 하이픈 허용
-            if(str.length < 3 || str.length > 30){
-                this.nameChk1 = true;
-                this.nameChk2 = false;
-                this.nameChk3 = false;
-                this.namePass = false;
-            } else if(!exp2.test(str)) { // 소문자, 숫자, 특수문자(-)만 허용
-                this.nameChk1 = false;
-                this.nameChk2 = true;
-                this.nameChk3 = false;
-                this.namePass = false;
-            } else if(!exp1.test(str[ll-1])) { // 마지막 문자는 소문자 or 숫자
-                this.nameChk1 = false;
-                this.nameChk2 = false;
-                this.nameChk3 = true;
-                this.namePass = false;
+            if(str.length < 3 || str.length > 30){ // 최소 3글자 이상, 최대 30자까지만 입력이 가능합니다
+                this.pass.subnetName = false;
+                this.message.subnetName = "최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.";
+            } else if(!exp2.test(str)) { // 소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.
+                this.pass.subnetName = false;
+                this.message.subnetName = "소문자, 숫자,\"-\"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.";
+            } else if(!exp1.test(str[ll-1])) { // 영어 또는 숫자로 끝나야 합니다.
+                this.pass.subnetName = false;
+                this.message.subnetName = "영어 또는 숫자로 끝나야 합니다.";
             } else {
-                this.nameChk1 = false;
-                this.nameChk2 = false;
-                this.nameChk3 = false;
-                this.namePass = true;
+                this.pass.subnetName = true;
+                this.message.subnetName = "";
             }
         },
         onKeyupIp:function (e){
@@ -97,7 +90,6 @@ Vue.component('popupsubnet', {
             }
         },
         onclickPop: function (popId) {
-            console.log("생성 팝업 : " + popId);//tmp
             //appPopAcl.$refs.popupacl.$data.saveInfo.createNetworkAclRequestDto.vpcNo = this.$refs.vpcNo.value;
             appPopAcl.$refs.popupacl.onload(this.$refs.vpcNo.value);
 
@@ -123,19 +115,19 @@ Vue.component('popupsubnet', {
         },
 
         onclickCreateSave: function() {
-            console.log("subnet 생성 클릭");//tmp
+
             let param = [
                 {value:this.saveInfo.subnetName, title:"Subnet 이름 ", ref:this.$refs.subnetName},
                 {value:this.saveInfo.subnet,     title:"IP 주소 범위 ", ref:this.$refs.subnet},
             ];
             if(!isValid(param)) return false;
 
-            if(!this.namePass){
+            if(!this.pass.subnetName){
                 alertMsg("Subnet 이름을 확인하세요.",this.$refs.subnetName);
                 return false;
             }
 
-            if(!this.ipPass){
+            if(!this.pass.subnet){
                 alertMsg("IP 주소 범위를 확인하세요.",this.$refs.subnet);
                 return false;
             }
@@ -210,14 +202,6 @@ Vue.component('popupsubnet', {
             }
         },
 
-    }        // // 검색 selectebox 이벤트
-    // searchChange:function(data){
-    //     this.saveInfo.zoneCode = data;
-    // }
+    }
 });
 
-// // 검색 selectebox 이벤트
-// function selectChange(){
-//     const data= document.querySelector("#zoneCode").value;
-//     appPopSubet.$refs.popupsubnet.searchChange(data);
-// }

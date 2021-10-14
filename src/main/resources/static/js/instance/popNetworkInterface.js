@@ -19,12 +19,8 @@ Vue.component('popupif', {
     data: function () {
         return {
             networkInterface: [],
-            messages: "",
-
             interfaceName:"new interface",
             bReload : false, // 재조회 여부
-            // selected:"", // 선택된 콤보박스
-            // selectList:     getCodeList('ReqStorageStat',this.callback),//
             accessControlGroupNo:"", // 선택된 Acg
             accessControlGroupCbList:[], // 콤보박스 acg list
             accessControlGroupList:[], // 추가할 acg list
@@ -37,18 +33,21 @@ Vue.component('popupif', {
                 networkInterfaceDescription:"", // 메모
             },
             vpcName:"",
+            vpcDesc:"",
             subnetName:"",
             ipSelect:"",
-            networkNameChk1 : false, // 최소 3글자 이상, 최대 30자까지만 입력이 가능합니다
-            networkNameChk2 : false, // 소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.
-            networkNameChk3 : false, // 영어 또는 숫자로 끝나야 합니다.
-            networkNamePass : false,
-            ipChk1: false, // 잘못된 형식입니다.
-            ipPass : true,
+            message :{
+                networkInterfaceName : "",
+                ip:"",
+            },
+            pass : {
+                networkInterfaceName:false,
+                ip:false
+            },
         };
     },
     mounted: function () {
-        this.getAcgList();
+        //this.getAcgList();
     },
     methods: {
         onload: function() {
@@ -60,6 +59,7 @@ Vue.component('popupif', {
 
             let vpcIdx = vpcList.findIndex(function(key) {return key.vpcNo === vpcNo});
             this.vpcName =  vpcList[vpcIdx].vpcName;
+            this.vpcDesc =  vpcList[vpcIdx].vpcName + "(" + vpcList[vpcIdx].ipv4CidrBlock +")";
 
             let subnetIdx = subnetList.findIndex(function(key) {return key.subnetNo === subnetNo});
             this.subnetName =  subnetList[subnetIdx].subnetName;
@@ -80,38 +80,30 @@ Vue.component('popupif', {
             let exp1 = /[a-z0-9]/; // 영문 또는 숫자 체크
             let exp2 = /^[a-z]{1}[a-z0-9-]+$/; // 첫문자는 소문자, 소문자, 숫자, 하이픈 허용
 
-            if(str.length < 3 || str.length > 30){
-                this.networkNameChk1 = true;
-                this.networkNameChk2 = false;
-                this.networkNameChk3 = false;
-                this.networkNamePass = false;
-            } else if(!exp2.test(str)) { // 소문자, 숫자, 특수문자(-)만 허용
-                this.networkNameChk1 = false;
-                this.networkNameChk2 = true;
-                this.networkNameChk3 = false;
-                this.networkNamePass = false;
-            } else if(!exp1.test(str[ll-1])) { // 마지막 문자는 소문자 or 숫자
-                this.networkNameChk1 = false;
-                this.networkNameChk2 = false;
-                this.networkNameChk3 = true;
-                this.networkNamePass = false;
+            if(str.length < 3 || str.length > 30){ // 최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.
+                this.pass.networkInterfaceName = false;
+                this.message.networkInterfaceName = "최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.";
+            } else if(!exp2.test(str)) { // 소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.
+                this.pass.networkInterfaceName = false;
+                this.message.networkInterfaceName = "소문자, 숫자,\"-\"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.";
+            } else if(!exp1.test(str[ll-1])) { //영어 또는 숫자로 끝나야 합니다.
+                this.pass.networkInterfaceName = false;
+                this.message.networkInterfaceName = "영어 또는 숫자로 끝나야 합니다.";
             } else {
-                this.networkNameChk1 = false;
-                this.networkNameChk2 = false;
-                this.networkNameChk3 = false;
-                this.networkNamePass = true;
+                this.pass.networkInterfaceName = true;
+                this.message.networkInterfaceName = "";
             }
         },
         onKeyupIp:function (e){
             let str = e.target.value;
             let exp = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
-            if(!exp.test(str)) {                // 잘못된 형식입니다.
-                this.ipChk1 = true;
-                this.ipPass = false;
+            if(this.ipSelect == "2" && !exp.test(str)) {                // 잘못된 형식입니다.
+                this.pass.ip = false;
+                this.message.ip = "잘못된 형식입니다.";
             } else {
-                this.ipChk1 = false;
-                this.ipPass = true;
+                this.pass.ip = true;
+                this.message.ip = "";
             }
         },
         // ACG 목록 조회
@@ -128,13 +120,8 @@ Vue.component('popupif', {
         },
         // 팝업 open
         onclickPop: function (popId) {
-            console.log("생성 팝업 : " + popId);//tmp
-            // VPC 3개 이상일 경우, return
-            if (popId == "acgModal") {
-
-                appPopVpc.$refs.popupvpc.onload();
-            }
-
+            // appPopAcg.$refs.popupacg.$data.saveInfo.createAccessControlGroupRequestDto.vpcNo = this.$refs.vpcNo.value;
+            appPopAcg.$refs.popupacg.onload(this.$refs.vpcNo.value);
             document.getElementById(popId).style.display = "block";
             document.documentElement.style.overflowX = 'hidden';
             document.documentElement.style.overflowY = 'hidden';
@@ -157,28 +144,32 @@ Vue.component('popupif', {
             ];
             if(!isValid(param)) return false;
 
-            if(!this.networkNamePass){
+            if(this.ipSelect == "2") {
+                if(isNull(this.saveInfo.ip)) {
+                    this.pass.ip = false;
+                }
+            } else if(this.ipSelect == "1") {
+                this.saveInfo.ip = "";
+                this.pass.ip = true;
+                this.message.ip = "";
+            } else {
+                alertMsg("Primary IP는 필수 입니다.");
+                return;
+            }
+
+            if(!this.pass.networkInterfaceName){
                 alertMsg("Network Interface 이름을 확인하세요.",this.$refs.networkInterfaceName);
-                return false;
+                return;
             }
 
-            if(!this.ipPass){
+            if(!this.pass.ip){
                 alertMsg("IP 주소를 확인하세요.",this.$refs.ip);
-                return false;
+                return;
             }
-
-             if(this.ipSelect == "2") {
-               if(isNull(this.saveInfo.ip) && this.ipPass) {
-                   alertMsg("Primary IP는 필수 입니다.");
-                   return;
-               }
-             } else {
-                 this.saveInfo.ip = "";
-             }
 
             if(this.saveInfo.accessControlGroupNoList.length == 0) {
                 alertMsg("ACG는 1개 이상이어야 합니다.");
-                return false;
+                return;
             }
             confirmMsg("생성하시겠습니까?",this.createNetwork);
         },
@@ -201,16 +192,24 @@ Vue.component('popupif', {
                         alertMsg(results.error.message);
                     }
 
-                    // vpc 선택에 따라 acg selectbox 재구성
-                    if(this.bReload){
-                        let obj = {
-                            selectDiv:"accessControlGroupDiv",
-                            selectId:"accessControlGroupNo",
-                            optionValue:"accessControlGroupNo",
-                            optionName:"accessControlGroupName",
-                        };
-                        reloadSelect(obj, this.accessControlGroupCbList);
-                    }
+                    let obj = {
+                        selectDiv:"accessControlGroupDiv",
+                        selectId:"accessControlGroupNo",
+                        optionValue:"accessControlGroupNo",
+                        optionName:"accessControlGroupName",
+                    };
+                    reloadSelect(obj, this.accessControlGroupCbList);
+
+                    // // vpc 선택에 따라 acg selectbox 재구성
+                    // if(this.bReload){
+                    //     let obj = {
+                    //         selectDiv:"accessControlGroupDiv",
+                    //         selectId:"accessControlGroupNo",
+                    //         optionValue:"accessControlGroupNo",
+                    //         optionName:"accessControlGroupName",
+                    //     };
+                    //     reloadSelect(obj, this.accessControlGroupCbList);
+                    // }
                     break;
                 case TID.SAVE:
                     console.log(results);

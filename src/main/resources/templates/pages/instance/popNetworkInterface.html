@@ -24,23 +24,26 @@
                                 <label>Network Interface 이름<span>*</span></label>
                                 <input class="w-100" type="text" v-model="saveInfo.networkInterfaceName" @keyup="onKeyupNetworkName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
                             </span>
+<!--                            <label style="margin-top:0px;">-->
+<!--                                <span v-show="networkNameChk1" class="join-txt-red" style="font-size: 1.3rem;">최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.</span>-->
+<!--                                <span v-show="networkNameChk2" class="join-txt-red" style="font-size: 1.3rem;">소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.</span>-->
+<!--                                <span v-show="networkNameChk3" class="join-txt-red" style="font-size: 1.3rem;">영어 또는 숫자로 끝나야 합니다.</span>-->
+<!--                            </label>-->
                             <label style="margin-top:0px;">
-                                <span v-show="networkNameChk1" class="join-txt-red" style="font-size: 1.3rem;">최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.</span>
-                                <span v-show="networkNameChk2" class="join-txt-red" style="font-size: 1.3rem;">소문자, 숫자,"-"의 특수문자만 허용하며 알파벳 문자로 시작해야 합니다.</span>
-                                <span v-show="networkNameChk3" class="join-txt-red" style="font-size: 1.3rem;">영어 또는 숫자로 끝나야 합니다.</span>
+                                <span  class="join-txt-red" style="font-size: 1.3rem;">{{message.networkInterfaceName}}</span>
                             </label>
                         </li>
                         <li class="bdr-b">
                             <span class="join-input-group w-100">
                                 <label>VPC<span>*</span></label>
-                                <input class="w-100" type="text" v-model="saveInfo.vpcNo" readonly>
-                                <input class="w-100" type="text" v-model="vpcName" readonly>
+                                <input class="w-100" type="hidden" v-model="saveInfo.vpcNo" ref="vpcNo" readonly>
+                                <input class="w-100" type="text" v-model="vpcDesc" readonly>
                             </span>
                         </li>
                         <li class="bdr-b">
                             <span class="join-input-group w-100">
                                 <label>Subnet<span>*</span></label>
-                                <input class="w-100" type="text" v-model="saveInfo.subnetNo" readonly>
+                                <input class="w-100" type="hidden" v-model="saveInfo.subnetNo" readonly>
                                 <input class="w-100" type="text" v-model="subnetName" readonly>
                             </span>
                         </li>
@@ -55,8 +58,11 @@
                                 </span>
                                 <span class="join-input-group w-100">
                                 <input v-show="ipSelect == 2" class="w-100" type="text" ref="ip" v-model="saveInfo.ip"  @keyup="onKeyupIp" placeholder="IP 주소를 입력해 주세요">
-                                <label style="margin-top:0px;">
-                                    <span v-show="ipSelect == 2 && ipChk1" class="join-txt-red" style="font-size: 1.3rem;">잘못된 형식입니다.</span>
+<!--                                <label style="margin-top:0px;">-->
+<!--                                    <span v-show="ipSelect == 2 && ipChk1" class="join-txt-red" style="font-size: 1.3rem;">잘못된 형식입니다.</span>-->
+<!--                                </label>-->
+                               <label v-show="ipSelect == 2" style="margin-top:0px;">
+                                    <span  class="join-txt-red" style="font-size: 1.3rem;">{{message.ip}}</span>
                                 </label>
                             </span>
                             </span>
@@ -73,7 +79,7 @@
                             </span>
                             <span class="join-input-group" style="width: 150px;">
                                 <label><span></span></label>
-                                <a href="javascript:void(0);" v-on:click="onclickPop('acgModal');" class="com-btn btn-s" style="width: 150px;">ACG 생성</a>
+                                <a href="javascript:void(0);" v-on:click="onclickPop('acgModal')" class="com-btn btn-s" style="width: 150px;">ACG 생성</a>
                             </span>
                         </li>
                         <!-- ACG 추가영역 -->
@@ -99,19 +105,14 @@
                         </li>
                     </ul>
                 </div>
-
                     <div class="btn-box a-r mt-60">
                         <a href="#" class="com-btn btn-line-bl btn-w-208" onclick="fnClosePopup('networkInterfaceModal')">취소</a>
                         <a href="#" class="com-btn btn-w-208" v-on:click="onclickCreateSave">생성</a>
                     </div>
                 </div>
-
             </div>
-
-
         </div>
     </script>
-
-
+    <div th:insert="pages/instance/popAcg"></div>
 </div>
 </html>

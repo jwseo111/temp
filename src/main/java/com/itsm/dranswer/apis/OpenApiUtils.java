@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -28,10 +29,10 @@ public class OpenApiUtils {
      * not exists parameter object
      * @methodName : getOpenApiUrl
      * @date : 2021-10-08 오후 1:20
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param uri
      * @return : java.lang.String
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -45,24 +46,42 @@ public class OpenApiUtils {
      * exists parameter object
      * @methodName : getOpenApiUrl
      * @date : 2021-10-08 오후 1:20
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param uri
      * @param requestDto
      * @return : java.lang.String
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
     public static String getOpenApiUrl(String uri, Object requestDto) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
 
-        String convert = uriAndParamMerge(uriBuilder, "", requestDto).toUriString();
+        UriComponentsBuilder builder = uriAndParamMerge(uriBuilder, "", requestDto);
+        builder.replaceQueryParam("responseFormatType", "json");
 
-        if(convert.equals(uri)){
-            return convert + "?responseFormatType=json";
-        }
+        String convert = builder.toUriString();
 
-        return uriAndParamMerge(uriBuilder, "", requestDto).toUriString() + "&responseFormatType=json";
+        return convert;
+    }
+
+    /**
+     * 
+     * @methodName : getOpenApiURI
+     * @date : 2021-10-14 오후 2:40
+     * @author : xeroman.k 
+     * @param serverHost
+     * @param uri
+     * @return : java.net.URI
+     * @throws 
+     * @modifyed :
+     * getOpenApiUrl 에서 uri를 자동으로 encoding을 하고, 그걸 바탕으로 signature를 생성
+     * restTeample의 sxchange는 uri string을 던지면 기본적으로 encoding을 진행하기에
+     * 인코딩된 uri를 또 다시 인코딩하는 현상이 발생하여
+     * 재 인코딩을 방지하고자 URI로 exchange를 시도
+    **/
+    public static URI getOpenApiURI(String serverHost, String uri){
+        return UriComponentsBuilder.fromUriString(serverHost + uri).build(true).toUri();
     }
 
     private static ObjectMapper objectMapper() {
@@ -81,12 +100,12 @@ public class OpenApiUtils {
      * uri와 parameter object를 query string 형태로 변환하기 위한 작업
      * @methodName : uriAndParamMerge
      * @date : 2021-10-08 오후 1:21
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param uriBuilder
      * @param keyPrefix
      * @param getParameters
      * @return : org.springframework.web.util.UriComponentsBuilder
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/

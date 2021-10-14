@@ -47,7 +47,9 @@ public class VpcServerService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_SERVER_INSTANCE_LIST, requestDto);
 
-        return restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetVpcServerListResponse.class).getBody();
+        return restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetVpcServerListResponse.class).getBody();
     }
 
     /**
@@ -69,7 +71,9 @@ public class VpcServerService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_SERVER_INSTANCE_DETAIL, requestDto);
 
-        final ResponseEntity<GetVpcServerDetailResponseDto> response = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetVpcServerDetailResponseDto.class);
+        final ResponseEntity<GetVpcServerDetailResponseDto> response = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetVpcServerDetailResponseDto.class);
 
         final GetVpcServerDetailResponseDto responseBody = response.getBody();
 
@@ -102,7 +106,9 @@ public class VpcServerService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_VPC_SERVER_INSTANCES, requestDto);
 
-        final ResponseEntity<CreateVpcServerResponseDto> responseEntity = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateVpcServerResponseDto.class);
+        final ResponseEntity<CreateVpcServerResponseDto> responseEntity = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateVpcServerResponseDto.class);
 
         if(!responseEntity.getStatusCode().is2xxSuccessful()){
             if(ObjectUtils.isNotEmpty(responseEntity.getBody()) && ObjectUtils.isNotEmpty(responseEntity.getBody().getResponseError())) {
@@ -134,7 +140,9 @@ public class VpcServerService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.STOP_VPC_SERVER_INSTANCES, requestDto);
 
-        final ResponseEntity<String> response = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed stop vpc servers");
@@ -160,7 +168,9 @@ public class VpcServerService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.TERMINATE_VPC_SERVER_INSTANCES, requestDto);
 
-        final ResponseEntity<String> response = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed terminate vpc servers");
@@ -186,7 +196,9 @@ public class VpcServerService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.START_VPC_SERVER_INSTANCES, requestDto);
 
-        final ResponseEntity<String> response = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed start vpc servers");
@@ -212,7 +224,9 @@ public class VpcServerService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.REBOOT_VPC_SERVER_INSTANCES, requestDto);
 
-        final ResponseEntity<String> response = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class);
+        final ResponseEntity<String> response = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("Failed reboot vpc servers");
@@ -274,7 +288,9 @@ public class VpcServerService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(reqUri, requestDto);
 
-        final ResponseEntity<VpcPublicIpInstanceResponseDto> response = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), VpcPublicIpInstanceResponseDto.class);
+        final ResponseEntity<VpcPublicIpInstanceResponseDto> response = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), VpcPublicIpInstanceResponseDto.class);
 
         VpcPublicIpInstanceResponseDto vpcPublicIpInstanceResponseDto = response.getBody();
         vpcPublicIpInstanceResponseDto.checkError();

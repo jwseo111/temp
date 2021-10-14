@@ -19,6 +19,7 @@ import com.itsm.dranswer.users.NCloudKeyDto;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -45,7 +46,8 @@ public class VpcNetworkInterfaceService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_VPC_NETWORK_INTERFACE, requestDto);
 
         CreateNetworkInterfaceResponseDto responseDto = restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateNetworkInterfaceResponseDto.class).getBody();
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateNetworkInterfaceResponseDto.class).getBody();
 
         responseDto.checkError();
         return responseDto;
@@ -71,7 +73,8 @@ public class VpcNetworkInterfaceService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_VPC_NETWORK_INTERFACE_LIST, requestDto);
 
         GetNetworkInterfaceListResponseDto responseDto = restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetNetworkInterfaceListResponseDto.class).getBody();
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetNetworkInterfaceListResponseDto.class).getBody();
 
         responseDto.checkError();
         return responseDto;
@@ -97,7 +100,8 @@ public class VpcNetworkInterfaceService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_NETWORK_ACL_LIST, requestDto);
 
         GetNetworkAclListResponseDto responseDto = restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetNetworkAclListResponseDto.class).getBody();
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetNetworkAclListResponseDto.class).getBody();
 
         responseDto.checkError();
         return responseDto;
@@ -122,8 +126,11 @@ public class VpcNetworkInterfaceService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_NETWORK_ACL, requestDto);
 
-        CreateNetworkAclResponseDto responseDto = restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateNetworkAclResponseDto.class).getBody();
+        ResponseEntity<CreateNetworkAclResponseDto> responseEntity = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateNetworkAclResponseDto.class);
+
+        CreateNetworkAclResponseDto responseDto = responseEntity.getBody();
 
         responseDto.checkError();
 
@@ -156,7 +163,8 @@ public class VpcNetworkInterfaceService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_NETWORK_ACL_RULE_LIST, requestDto);
 
         return restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 GetNetworkAclRuleListResponseDto.class).getBody();
     }
 
@@ -179,9 +187,14 @@ public class VpcNetworkInterfaceService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.ADD_NETWORK_ACL_INBOUND_RULE, requestDto);
 
-        return restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
-                AddNetworkAclInboundRuleResponseDto.class).getBody();
+        ResponseEntity<AddNetworkAclInboundRuleResponseDto> responseEntity = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                AddNetworkAclInboundRuleResponseDto.class);
+
+        AddNetworkAclInboundRuleResponseDto addNetworkAclInboundRuleResponseDto = responseEntity.getBody();
+
+        return addNetworkAclInboundRuleResponseDto;
     }
 
     /**
@@ -204,7 +217,8 @@ public class VpcNetworkInterfaceService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.ADD_NETWORK_ACL_OUTBOUND_RULE, requestDto);
 
         return restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 AddNetworkAclOutboundRuleResponseDto.class).getBody();
     }
 
@@ -228,7 +242,8 @@ public class VpcNetworkInterfaceService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.REMOVE_NETWORK_ACL_INBOUND_RULE, requestDto);
 
         return restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 RemoveNetworkAclInboundRuleResponseDto.class).getBody();
     }
 
@@ -252,7 +267,8 @@ public class VpcNetworkInterfaceService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.REMOVE_NETWORK_ACL_OUTBOUND_RULE, requestDto);
 
         return restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 RemoveNetworkAclOutboundRuleResponseDto.class).getBody();
     }
 

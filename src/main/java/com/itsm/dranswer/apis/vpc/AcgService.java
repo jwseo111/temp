@@ -44,7 +44,9 @@ public class AcgService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_ACG, requestDto);
 
-        final CreateAccessControlGroupResponseDto responseDto = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET,
+        final CreateAccessControlGroupResponseDto responseDto = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET,
                 new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateAccessControlGroupResponseDto.class).getBody();
 
         if (ObjectUtils.isNotEmpty(responseDto.getCreateAccessControlGroupResponse())) {
@@ -75,7 +77,9 @@ public class AcgService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_ACG_LIST, requestDto);
 
-        GetAccessControlGroupListResponseDto responseDto = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET,
+        GetAccessControlGroupListResponseDto responseDto = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET,
                 new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 GetAccessControlGroupListResponseDto.class).getBody();
 
@@ -102,7 +106,9 @@ public class AcgService extends ApiService {
 
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_ACG_DETAIL, requestDto);
 
-        final GetAccessControlGroupDetailResponseDto responseDto = restTemplate.exchange(apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetAccessControlGroupDetailResponseDto.class).getBody();
+        final GetAccessControlGroupDetailResponseDto responseDto = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetAccessControlGroupDetailResponseDto.class).getBody();
 
         if (ObjectUtils.isNotEmpty(responseDto.getGetAccessControlGroupDetailResponse())) {
             if (!CollectionUtils.isEmpty(responseDto.getGetAccessControlGroupDetailResponse().getAccessControlGroupList())) {
@@ -133,7 +139,8 @@ public class AcgService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_ACG_RULE_LIST, requestDto);
 
         return restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 GetAcgRuleListResponseDto.class).getBody();
     }
 
@@ -157,7 +164,8 @@ public class AcgService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.ADD_ACG_INBOUND_RULE, requestDto);
 
         AddAcgInboundRuleResponseDto responseDto = restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 AddAcgInboundRuleResponseDto.class).getBody();
         responseDto.checkError();
         return responseDto;
@@ -183,7 +191,8 @@ public class AcgService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.ADD_ACG_OUTBOUND_RULE, requestDto);
 
         AddAcgOutboundRuleResponseDto responseDto = restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 AddAcgOutboundRuleResponseDto.class).getBody();
         responseDto.checkError();
         return responseDto;
@@ -209,7 +218,8 @@ public class AcgService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.REMOVE_ACG_INBOUND_RULE, requestDto);
 
         return restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 RemoveAcgInboundRuleResponseDto.class).getBody();
     }
 
@@ -233,7 +243,8 @@ public class AcgService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.REMOVE_ACG_OUTBOUND_RULE, requestDto);
 
         return restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)),
                 RemoveAcgOutboundRuleResponseDto.class).getBody();
     }
 

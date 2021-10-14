@@ -54,7 +54,8 @@ public class LoginKeyService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.CREATE_LOGIN_KEY, requestDto);
 
         final CreateLoginKeyResponseDto responseDto = restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateLoginKeyResponseDto.class).getBody();;
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateLoginKeyResponseDto.class).getBody();;
 
 
         responseDto.checkError();
@@ -87,7 +88,8 @@ public class LoginKeyService extends ApiService {
         final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_LOGIN_KEY_LIST, requestDto);
 
         final GetLoginKeyListResponseDto responseDto = restTemplate.exchange(
-                apiServerHost + uri, HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetLoginKeyListResponseDto.class).getBody();;
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetLoginKeyListResponseDto.class).getBody();;
 
         return responseDto;
     }

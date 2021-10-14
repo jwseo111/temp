@@ -26,11 +26,8 @@ Vue.component('maincontents', {
             cond: {
                 // reqSeq: reqSeq
             },
-            // condSubnet : {
-            //         vpcNo: ""
-            // },
             serverProductCond: {
-//                productCode: {},
+               // productType: {name:"", desc:""},
             },
             //ProductType:{name:"STAND", desc:"Standard"},
             bReload : false,
@@ -38,7 +35,6 @@ Vue.component('maincontents', {
             envInstanceInfo:[],
             messages : "",
             osImageTypeCdList: getCodeList("OsImageType", this.callback), // 운영체제
-            // productType: getCodeList("ProductType", this.callback), // 서버타입 selectbox list
             productTypeCdList: getCodeList("ProductType", this.callback), // 서버타입 selectbox list
             serverProductList :[], // 서버스펙 selectbox list
             loginKey:"", //인증키 selectbox
@@ -47,8 +43,7 @@ Vue.component('maincontents', {
             saveInfo: {
                 vpcNo:"",
                 subnetNo:"",
-
-                osImage:"", // 운영체제
+                //osImage:"", // 운영체제
                 osImageType:"", // 운영체제
                 productType: "", // 서버타입
                 storageType: "", //스토리지(SSD/HDD)
@@ -153,7 +148,7 @@ Vue.component('maincontents', {
         },
         // ServerProductList 리스트 조회(서버 스펙)
         getServerProductList: function () {
-            // this.serverProductCond.serverImageProductCode = "SW.VSVR.OS.WND64.WND.SVR2016EN.B100";
+            console.log("서버스펙 조회 : " + JSON.stringify(this.serverProductCond));//tmp
             get("serverProductList",
                 "/my/management/instance/vpc/server/getServerProductList",
                 this.serverProductCond,
@@ -187,7 +182,7 @@ Vue.component('maincontents', {
         // 팝업 open
         onclickPop: function (popId) {
             // VPC 3개 이상일 경우, return
-            if (popId == "vpcModal") {
+            if (popId === "vpcModal") {
                 if (this.vpcList.length == 3) {
                     alertMsg("VPC는 계정당 최대 3개까지만 생성할 수 있습니다.");
                     return;
@@ -195,7 +190,7 @@ Vue.component('maincontents', {
                 appPopVpc.$refs.popupvpc.onload();
             }
             // subnet 생성 버튼 클릭시, VPC 콤보 미선택시 return
-            if (popId == "subnetModal") {
+            if (popId === "subnetModal") {
                 if (!this.$refs.vpcNo.value) {
                     alertMsg("Subnet 생성 시 VPC를 선택하세요.");
                     return;
@@ -222,12 +217,13 @@ Vue.component('maincontents', {
         // 서버타입 변경
         onChangeProduct: function (name) {
             console.log("서버타입 변경 name: " + name);
+            this.serverProductCond.productType  = name;
             this.getServerProductList();
         },
         // NetworkInterface 추가 버튼 이벤트
         onclickIFAdd: function () {
             let cnt = this.networkInterfaceList.length;
-            if (cnt == 3) {
+            if (cnt === 3) {
                 alertMsg("Network Interface는 최대 3개까지 추가 가능합니다.");
                 return;
             }
@@ -276,8 +272,6 @@ Vue.component('maincontents', {
 
             this.newNetworkInterface = {
                 networkInterfaceOrder:"",
-                // interface:"",
-                // subnet:"",
                 subnetNo:"",
                 subnetName:"",
                 ip:"",
@@ -296,8 +290,6 @@ Vue.component('maincontents', {
         },
         // 인증키 설정
         onChangeKey : function(val) {
-            console.log("인증키 설정 변경");
-            console.log(val);
             if(val == "Y") {// 보유하고 있는 인증키 이용
                 document.getElementById("loginKeyY").style.display="block";
                 document.getElementById("loginKeyN").style.display="none";
@@ -374,8 +366,7 @@ Vue.component('maincontents', {
             ];
             if(!isValid(param)) return false;
 
-
-
+console.log("신청  : " + JSON.stringify(this.saveInfo));//tmp
             confirmMsg("신청하시겠습니까?",this.createEnvironment);
         },
         createEnvironment: function() {
@@ -517,7 +508,7 @@ Vue.component('maincontents', {
                     //console.log(results);
                     this.saveCallback(results);
                     break;
-                case "ProductType":
+                case "ProductType": // 서버스펙
                     console.log(results.response);
                     if (results.success) {
                         this.productTypeCdList = results.response;
@@ -526,7 +517,7 @@ Vue.component('maincontents', {
                         alertMsg(results.error.message);
                     }
                     break;
-                case "OsImageType":
+                case "OsImageType": // 운영체제
                     console.log(results.response);
                     if (results.success) {
                         this.osImageTypeCdList = results.response;

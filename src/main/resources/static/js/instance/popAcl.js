@@ -96,10 +96,14 @@ Vue.component('popupacl', {
     methods: {
         onload: function(vpcNo) {
             let vpcList = appMain.$refs.maincontents.vpcList;
-            //let vpcNo = this.saveInfo.createNetworkAclRequestDto.vpcNo;
             this.saveInfo.createNetworkAclRequestDto.vpcNo = vpcNo;
             let idx = vpcList.findIndex(function(key) {return key.vpcNo === vpcNo});
             this.vpcName =  vpcList[idx].vpcName;
+
+            this.inboundList=[];
+            this.outboundList=[];
+            this.saveInfo.createNetworkAclRequestDto.networkAclName = ""; // ACL 이름
+            this.saveInfo.createNetworkAclRequestDto.networkAclDescription = ""; // 메모
         },
         onKeyupName:function (e){
             let str = e.target.value;
@@ -152,7 +156,6 @@ Vue.component('popupacl', {
                 this.message[id] = "";
                 this.pass[id] = true;
             }
-
         },
         // Inbound / Outbound 탭 클릭
         onChangeTab: function(tab) {
@@ -160,9 +163,13 @@ Vue.component('popupacl', {
             if ( tab == "IN"){
                 document.getElementById('inbound').style.display = "block";
                 document.getElementById('outbound').style.display = "none";
+                document.getElementById("aInbound").style.backgroundColor = "#7F7F7F";
+                document.getElementById("aOutbound").style.backgroundColor = "#f2f2f2";
             } else {
                 document.getElementById('inbound').style.display = "none";
                 document.getElementById('outbound').style.display = "block";
+                document.getElementById("aInbound").style.backgroundColor = "#f2f2f2";
+                document.getElementById("aOutbound").style.backgroundColor = "#7F7F7F";
             }
         },
         // Inbound 추가 이벤트
@@ -222,10 +229,6 @@ Vue.component('popupacl', {
                 alertMsg("입력 값을 확인하세요.");
                 return;
             }
-            // let ruleAction = this.$refs.sOutRuleAction.value;
-            // let idx = this.ruleActionCodeList.findIndex(function (key) {
-            //     return key.name === ruleAction
-            // })
 
             let obj = {};
             obj.networkAclNo="";
@@ -282,22 +285,15 @@ console.log("생성하기 : " + JSON.stringify(this.saveInfo));//tmp
         saveCallback: function (results) {
             //console.log(results);
             if (results.success) {
-                console.log("## : " + result.response.makeInBoundError);//tmp
-                console.log("## : " + result.response.makeOutBoundError);//tmp
+                console.log("## : " + results.response.makeInBoundError);//tmp
+                console.log("## : " + results.response.makeOutBoundError);//tmp
                 appPopSubet.$refs.popupsubnet.getAclCbList();
-                if(!result.response.makeInBoundError || !result.response.makeOutBoundError) {
+                // inbound or outbound rule 설정 에러 발생.--> 마이페이지 관리화면에서 수정
+                if(!results.response.makeInBoundError || !results.response.makeOutBoundError) {
                     alertMsgRtn("정상적으로 생성되었습니다.\nACL 규칙 설정 실패. ", fnClosePopup('aclModal'));
                 } else {
                     alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
                 }
-                // if(!result.response.makeInBoundError) {
-                //     alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
-                // } else if(!result.response.makeOutBoundError) {
-                //     alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
-                // } else {
-                //     alertMsgRtn("정상적으로 생성되었습니다.", fnClosePopup('aclModal'));
-                // }
-
 
             } else {
                 console.log(results);

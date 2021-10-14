@@ -156,7 +156,7 @@ public class VpcCommonService extends ApiService {
         }
 
         if(requestDto.getProductType() != null){
-            plist = plist.stream().filter(e -> requestDto.getProductType().equals(e.getProductType().getCode())).collect(Collectors.toList());
+            plist = plist.stream().filter(e -> requestDto.getProductType().getName().equals(e.getProductType().getCode())).collect(Collectors.toList());
         }
 
         if(requestDto.getStorageType().equals("SSD")){

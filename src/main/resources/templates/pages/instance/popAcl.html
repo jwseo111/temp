@@ -26,7 +26,7 @@
                                 <span class="join-input-group w-100">
                                     <label>Network ACL 이름<span>*</span></label>
                                     <input class="w-100" type="text" v-model="saveInfo.createNetworkAclRequestDto.networkAclName" ref="networkAclName" @keyup="onKeyupName" placeholder="최소 3글자, 최대 30자, 알파벳 문자로 시작해야 하며, 소문자, 숫자, 특수문자(-)만 입력 가능합니다">
-                                     <label style="margin-top:0px;">
+                                     <label style="margin-top:0px;" v-show="message.networkAclName">
                                         <span  class="join-txt-red" style="font-size: 1.3rem;">{{message.networkAclName}}</span>
                                     </label>
                                 </span>
@@ -46,7 +46,7 @@
                             <!-- 규칙설정 Inbound 탭//-->
                             <li>
                                 <div class="env-box-r w-100">
-                                    <p><label style="width: 50px;"><a href="javascript:;" @click="onChangeTab('IN')">Inbound</a> | <a href="javascript:;" @click="onChangeTab('OUT')">Outbound</a></label></p>
+                                    <p><label style="width: 50px;"><a href="javascript:;" @click="onChangeTab('IN')" id="aInbound" style="background-color: #7F7F7F;">&nbsp;&nbsp;Inbound&nbsp;&nbsp;</a> | <a href="javascript:;" @click="onChangeTab('OUT')" id="aOutbound">&nbsp;&nbsp;Outbound&nbsp;&nbsp;</a></label></p>
                                     <!-- Inbound 탭 -->
                                     <div class="env-box-r-inner w-100" id="inbound" style="display: block;">
                                         <li>
@@ -108,7 +108,7 @@
                                             <span class="env-input-group mr-10" style="width: 150px;">
                                                 <label></label>
                                                 <input type="text"  style="width: 150px;" v-bind:value="item.protocolTypeName" readonly >
-                                                <input type="text"  style="width: 150px;" v-bind:value="item.protocolTypeCode" readonly >
+                                                <input type="hidden"  style="width: 150px;" v-bind:value="item.protocolTypeCode" readonly >
                                             </span>
                                             <span class="env-input-group mr-10 w-200">
                                                 <label></label>
@@ -121,7 +121,7 @@
                                             <span class="env-input-group mr-10" style="width: 150px;">
                                                 <label></label>
                                                 <input type="text"  style="width: 150px;" v-bind:value="item.ruleActionName" readonly >
-                                                <input type="text"  style="width: 150px;" v-bind:value="item.ruleActionCode" readonly >
+                                                <input type="hidden"  style="width: 150px;" v-bind:value="item.ruleActionCode" readonly >
                                             </span>
                                             <span class="env-input-group mr-10" style="width: 200px;">
                                                 <label></label>
@@ -202,7 +202,7 @@
                                             <span class="env-input-group mr-10" style="width: 150px;">
                                                 <label></label>
                                                 <input type="text"  style="width: 150px;" v-bind:value="item.protocolTypeName" readonly >
-                                                <input type="text"  style="width: 150px;" v-bind:value="item.protocolTypeCode" readonly >
+                                                <input type="hidden"  style="width: 150px;" v-bind:value="item.protocolTypeCode" readonly >
                                             </span>
                                             <span class="env-input-group mr-10 w-200">
                                                 <label></label>
@@ -215,7 +215,7 @@
                                             <span class="env-input-group mr-10" style="width: 150px;">
                                                 <label></label>
                                                 <input type="text"  style="width: 150px;" v-bind:value="item.ruleActionName" readonly >
-                                                <input type="text"  style="width: 150px;" v-bind:value="item.ruleActionCode" readonly >
+                                                <input type="hidden"  style="width: 150px;" v-bind:value="item.ruleActionCode" readonly >
                                             </span>
                                             <span class="env-input-group mr-10" style="width: 200px;">
                                                 <label></label>

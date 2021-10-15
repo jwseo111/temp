@@ -10,6 +10,7 @@ package com.itsm.dranswer.storage;
  */
 
 import com.itsm.dranswer.commons.BaseEntity;
+import com.itsm.dranswer.instance.NCloudServerEnv;
 import com.itsm.dranswer.users.UserInfo;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -66,6 +67,13 @@ public class UseStorageInfo extends BaseEntity implements Serializable {
 
     @Column(columnDefinition = "datetime COMMENT '종료일시'")
     protected LocalDateTime endDate;
+
+    @Column(columnDefinition = "bigint COMMENT '신청번호'")
+    private Long reqSeq;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reqSeq", referencedColumnName = "reqSeq", insertable = false, updatable = false)
+    private NCloudServerEnv nCloudServerEnv;
 
     public UseStorageInfo(UseStorageInfoDto reqUseStorageInfoDto, Long userSeq) {
         super();

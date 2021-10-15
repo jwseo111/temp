@@ -80,12 +80,8 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @Column(columnDefinition = "int COMMENT '사용일수 0이면 무기한'")
     private Integer usingDays;
 
-    @Column(columnDefinition = "varchar(36) COMMENT '사용신청Id'")
-    private String useStorageId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "useStorageId", referencedColumnName = "useStorageId", insertable = false, updatable = false)
-    private UseStorageInfo useStorageInfo;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "nCloudServerEnv")
+    private List<UseStorageInfo> useStorageInfoList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nCloudServerEnv")
     private List<NCloudNetworkInterface> networkInterfaceList = new ArrayList<>();
@@ -118,7 +114,7 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
 
     public NCloudServerEnvDto convertDto() {
 
-        return new NCloudServerEnvDto(this);
+        return new NCloudServerEnvDto(this, false);
     }
 
     public void accept() {

@@ -98,9 +98,7 @@ public class EnvInstanceService {
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
 
         NCloudServerEnvDto nCloudServerEnvDto = nCloudServerEnv.convertDto();
-        if(nCloudServerEnv.getUseStorageId() != null){
-            nCloudServerEnvDto.setUseStorageInfo(nCloudServerEnv.getUseStorageInfo().convertDto());
-        }
+        nCloudServerEnvDto.addChildren(nCloudServerEnv);
 
         GetServerProductListRequestDto requestDto = new GetServerProductListRequestDto();
         requestDto.setServerImageProductCode(nCloudServerEnv.getOsImageType().getProductCode());

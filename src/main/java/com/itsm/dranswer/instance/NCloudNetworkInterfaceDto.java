@@ -12,6 +12,8 @@ package com.itsm.dranswer.instance;
 import com.itsm.dranswer.commons.BaseEntity;
 import lombok.*;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 @Setter
 @Getter
 @EqualsAndHashCode
@@ -27,5 +29,9 @@ public class NCloudNetworkInterfaceDto extends BaseEntity {
     private String networkInterfaceNo;
 
     private Long reqSeq;
+
+    public NCloudNetworkInterfaceDto ( NCloudNetworkInterface source){
+        copyProperties(source, this);
+    }
 
 }

@@ -16,6 +16,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -57,13 +58,20 @@ public class NCloudServerEnvDto extends BaseEntity {
 
     private Integer usingDays;
 
-    private String useStorageId;
-
-    private UseStorageInfoDto useStorageInfo;
+    private List<UseStorageInfoDto> useStorageInfoList = new ArrayList<>();
 
     private List<NCloudNetworkInterfaceDto> networkInterfaceList = new ArrayList<>();
 
-    public NCloudServerEnvDto(NCloudServerEnv source) {
+    public NCloudServerEnvDto(NCloudServerEnv source, Boolean addChildren) {
         copyProperties(source, this);
+
+        if(addChildren){
+            addChildren(source);
+        }
+    }
+
+    public void addChildren(NCloudServerEnv nCloudServerEnv) {
+        this.useStorageInfoList = nCloudServerEnv.getUseStorageInfoList().stream().map(e -> new UseStorageInfoDto(e)).collect(Collectors.toList());
+        this.networkInterfaceList = nCloudServerEnv.getNetworkInterfaceList().stream().map(e -> new NCloudNetworkInterfaceDto(e)).collect(Collectors.toList());
     }
 }

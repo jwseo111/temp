@@ -82,11 +82,11 @@ Vue.component('popupsubnet', {
             let exp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\/(?:[0-9]|[1-2][0-9]|3[0-2]|[01]?)$/;
 
             if(!exp.test(str)) {                // 잘못된 형식입니다.
-                this.ipChk1 = true;
-                this.ipPass = false;
+                this.pass.subnet = false;
+                this.message.subnet = "잘못된 형식입니다.";
             } else {
-                this.ipChk1 = false;
-                this.ipPass = true;
+                this.pass.subnet = true;
+                this.message.subnet = "";
             }
         },
         onclickPop: function (popId) {

@@ -135,7 +135,7 @@ public class VpcNetworkInterfaceService extends ApiService {
         responseDto.checkError();
 
         if (ObjectUtils.isNotEmpty(responseDto.getCreateNetworkAclResponse())) {
-            if (CollectionUtils.isEmpty(responseDto.getCreateNetworkAclResponse().getNetworkAclList())) {
+            if (!CollectionUtils.isEmpty(responseDto.getCreateNetworkAclResponse().getNetworkAclList())) {
                 return responseDto.getCreateNetworkAclResponse().getNetworkAclList().get(0);
             }
         }

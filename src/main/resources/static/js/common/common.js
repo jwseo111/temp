@@ -447,11 +447,8 @@ function fileSize(size){
     return rtn;
 };
 
-
-
 // select box 새로 그린다.
 function reloadSelect(targetObj, list) {
-    console.log(targetObj.selectId + "의 select box를 새로 그립니다.");//tmp
     let x, i, j, l, ll, selElmnt, tempElmnt, a, b, c;
 
     x = document.getElementsByName(targetObj.selectDiv);
@@ -459,7 +456,7 @@ function reloadSelect(targetObj, list) {
 
     for (i = 0; i < l; i++) {
         tempElmnt = x[i].getElementsByTagName("select")[0];
-        // 기존 select box에 이벤트를 확인한다.
+        // 기존 select box 이벤트를 확인한다.
         let onChangeVal = tempElmnt.getAttribute("onchange");
         // 자식노드 삭제
         while(x[i].hasChildNodes()) {
@@ -485,6 +482,8 @@ function reloadSelect(targetObj, list) {
             opt.value = eval('list[m].'+targetObj.optionValue);
             if(targetObj.selectDiv == "subnetDiv") { // Subnet select box
                 opt.innerHTML = list[m].subnetName + " | "+ list[m].subnet + " | " + list[m].subnetType.codeName;
+            } else if(targetObj.selectDiv == "serverProductDiv") { // 서버스펙
+                opt.innerHTML = list[m].productDescription + " | "+ list[m].productType.codeName;
             } else {
                 opt.innerHTML = eval('list[m].'+targetObj.optionName);
             }

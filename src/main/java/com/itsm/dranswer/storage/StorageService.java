@@ -1003,7 +1003,8 @@ public class StorageService {
 
         UseStorageInfoDto useStorageInfoDto = new UseStorageInfoDto(useStorageInfo,
                 useStorageInfo.getOpenStorageInfo(), useStorageInfo.getOpenStorageInfo().getDiseaseManagerUserInfo(),
-                useStorageInfo.getOpenStorageInfo().getDiseaseManagerUserInfo().getAgencyInfo());
+                useStorageInfo.getOpenStorageInfo().getDiseaseManagerUserInfo().getAgencyInfo(),
+                useStorageInfo.getReqUserInfo(), useStorageInfo.getReqUserInfo().getAgencyInfo());
 
         return useStorageInfoDto;
 

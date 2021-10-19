@@ -32,6 +32,7 @@ public class UseStorageInfoRepoSupport extends QuerydslRepositorySupport {
     private QOpenStorageInfo openStorageInfo = QOpenStorageInfo.openStorageInfo;
     private QReqStorageInfo reqStorageInfo = QReqStorageInfo.reqStorageInfo;
     private QAgencyInfo agencyInfo = QAgencyInfo.agencyInfo;
+    private QAgencyInfo cAgencyInfo = QAgencyInfo.agencyInfo;
 
     public UseStorageInfoRepoSupport(JPAQueryFactory jpaQueryFactory) {
         super(UseStorageInfo.class);
@@ -41,9 +42,11 @@ public class UseStorageInfoRepoSupport extends QuerydslRepositorySupport {
     public Page<UseStorageInfoDto> searchMyList(UseStorageStat useStorageStat, String keyword, Long reqUserSeq, Long managerUserSeq, Pageable pageable) {
 
         JPAQuery<UseStorageInfoDto> query = jpaQueryFactory
-                .select(Projections.constructor(UseStorageInfoDto.class, useStorageInfo, openStorageInfo, hUserInfo, agencyInfo))
+                .select(Projections.constructor(UseStorageInfoDto.class, useStorageInfo, openStorageInfo, hUserInfo, agencyInfo, cUserInfo, cAgencyInfo))
                 .from(useStorageInfo)
                 .innerJoin(useStorageInfo.openStorageInfo, openStorageInfo)
+                .innerJoin(useStorageInfo.reqUserInfo, cUserInfo)
+                .innerJoin(cUserInfo.agencyInfo(), cAgencyInfo)
                 .innerJoin(openStorageInfo.diseaseManagerUserInfo, hUserInfo)
                 .innerJoin(hUserInfo.agencyInfo(), agencyInfo)
                 .orderBy(openStorageInfo.createdDate.desc())

@@ -101,7 +101,21 @@ public class UseStorageRestCtrl {
             Pageable pageable){
 
         Page<UseStorageInfoDto> useStorageInfoDtos =
-                storageService.getUseStorageList(useStorageStat, dataName, loginUserInfo.getUserSeq(), pageable);
+                storageService.getUseStorageList(useStorageStat, dataName, loginUserInfo.getUserSeq(), null, pageable);
+
+        return success(useStorageInfoDtos);
+    }
+
+    @Secured(value = {"ROLE_MANAGER"})
+    @GetMapping(value = "/mine/management/storage/use/list")
+    public ApiResult<Page<UseStorageInfoDto>> getMineUseStorageList(
+            @LoginUser LoginUserInfo loginUserInfo,
+            UseStorageStat useStorageStat,
+            String dataName,
+            Pageable pageable){
+
+        Page<UseStorageInfoDto> useStorageInfoDtos =
+                storageService.getUseStorageList(useStorageStat, dataName, null, loginUserInfo.getUserSeq(), pageable);
 
         return success(useStorageInfoDtos);
     }
@@ -127,7 +141,7 @@ public class UseStorageRestCtrl {
             Pageable pageable){
 
         Page<UseStorageInfoDto> useStorageInfoDtos =
-                storageService.getUseStorageList(useStorageStat, dataName, null, pageable);
+                storageService.getUseStorageList(useStorageStat, dataName, null, null, pageable);
 
         return success(useStorageInfoDtos);
     }

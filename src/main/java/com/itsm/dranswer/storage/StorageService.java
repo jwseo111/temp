@@ -964,9 +964,9 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public Page<UseStorageInfoDto> getUseStorageList(UseStorageStat useStorageStat, String dataName, Long userSeq, Pageable pageable) {
+    public Page<UseStorageInfoDto> getUseStorageList(UseStorageStat useStorageStat, String dataName, Long reqUserSeq, Long managerUserSeq, Pageable pageable) {
 
-        return useStorageInfoRepoSupport.searchMyList(useStorageStat, dataName, userSeq, pageable);
+        return useStorageInfoRepoSupport.searchMyList(useStorageStat, dataName, reqUserSeq, managerUserSeq, pageable);
     }
 
     /**

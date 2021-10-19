@@ -68,8 +68,8 @@ public class UseStorageInfo extends BaseEntity implements Serializable {
     @Column(columnDefinition = "datetime COMMENT '종료일시'")
     protected LocalDateTime endDate;
 
-    @Column(columnDefinition = "bigint COMMENT '신청번호'")
-    private Long reqSeq;
+    @Column(columnDefinition = "varchar(36) COMMENT '신청번호'")
+    private String reqSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reqSeq", referencedColumnName = "reqSeq", insertable = false, updatable = false)

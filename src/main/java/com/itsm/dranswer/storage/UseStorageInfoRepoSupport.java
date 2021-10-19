@@ -38,7 +38,7 @@ public class UseStorageInfoRepoSupport extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public Page<UseStorageInfoDto> searchMyList(UseStorageStat useStorageStat, String keyword, Long userSeq, Pageable pageable) {
+    public Page<UseStorageInfoDto> searchMyList(UseStorageStat useStorageStat, String keyword, Long reqUserSeq, Long managerUserSeq, Pageable pageable) {
 
         JPAQuery<UseStorageInfoDto> query = jpaQueryFactory
                 .select(Projections.constructor(UseStorageInfoDto.class, useStorageInfo, openStorageInfo, hUserInfo, agencyInfo))
@@ -50,8 +50,12 @@ public class UseStorageInfoRepoSupport extends QuerydslRepositorySupport {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        if(userSeq != null){
-            query = query.where(useStorageInfo.reqUserSeq.eq(userSeq));
+        if(reqUserSeq != null){
+            query = query.where(useStorageInfo.reqUserSeq.eq(reqUserSeq));
+        }
+
+        if(managerUserSeq != null){
+            query = query.where(openStorageInfo.diseaseManagerUserSeq.eq(managerUserSeq));
         }
 
         if(keyword != null){

@@ -11,7 +11,6 @@ package com.itsm.dranswer.instance;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -36,6 +35,12 @@ public class InstancePage {
     @GetMapping(value = "/env/instance/req")
     public String envInstanceReq() {
         return "pages/instance/envInstanceReq";
+
+    }
+    // 학습환경관리> 학습환경 사용신청
+    @GetMapping(value = "/env/instance/reqS")
+    public String envInstanceReqS() {
+        return "pages/instance/envInstanceReqS";
 
     }
 

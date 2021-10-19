@@ -38,8 +38,8 @@ public class NCloudNetworkInterface extends BaseEntity implements Serializable {
     @Column(columnDefinition = "varchar(36) COMMENT 'networkInterface No'")
     private String networkInterfaceNo;
 
-    @Column(columnDefinition = "bigint COMMENT '신청번호'")
-    private Long reqSeq;
+    @Column(columnDefinition = "varchar(36) COMMENT '신청번호'")
+    private String reqSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reqSeq", referencedColumnName = "reqSeq", insertable = false, updatable = false)

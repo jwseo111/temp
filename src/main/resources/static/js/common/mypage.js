@@ -15,7 +15,7 @@ Vue.component('mypagemenus', {
                 {name: "저장신청 데이터 보기", uri: "/my/store/list", use: true},
                 {name: "질환데이터 업로드", uri: "/my/diseaseUpload", use: true},
                 {name: "공개신청 데이터 보기", uri:"/my/open/list", use : true},
-                {name: "기업요청 데이터 보기", uri:"", use : false},
+                {name: "기업요청 데이터 보기", uri:"/my/use/list", use : true},
                 {name: "회원정보변경", uri:"/my/userModify", use : true},
                 ],
             menus_admin : [ //관리자
@@ -34,8 +34,8 @@ Vue.component('mypagemenus', {
                 {name: "회원정보변경", uri:"/my/userModify", use : true},
             ],
             menus_user : [ // 기업
-                {name: "데이터 사용신청 보기", uri: "", use: true},
-                {name: "학습환경 사용신청 보기", use: true},
+                {name: "데이터 사용신청 보기", uri: "/my/use/list", use: true},
+                {name: "학습환경 사용신청 보기", uri: "/my/envInstance/list", use: true},
                 {name: "회원정보변경", uri:"/my/userModify", use : true},
             ],
             messages : "",

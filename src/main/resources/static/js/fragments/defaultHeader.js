@@ -96,7 +96,7 @@ Vue.component('headercontents', {
             let pageUri;
             switch (MY_ROLE){
                 case "ROLE_USER":       // 기업
-                    pageUri = "/my/userModify";
+                    pageUri = "/my/use/list";
                     break;
                 case "ROLE_ADMIN":      // 관리자
                     pageUri = "/my/admin/memberList";

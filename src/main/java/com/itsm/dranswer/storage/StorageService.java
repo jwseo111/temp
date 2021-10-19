@@ -953,12 +953,13 @@ public class StorageService {
     /**
      *
      * @methodName : getUseStorageList
-     * @date : 2021-10-08 오후 2:31
+     * @date : 2021-10-19 오후 4:52
      * @author : xeroman.k
-     * @param useStorageStat
-     * @param dataName
-     * @param userSeq
-     * @param pageable
+ * @param useStorageStat
+ * @param dataName
+ * @param reqUserSeq
+ * @param managerUserSeq
+ * @param pageable
      * @return : org.springframework.data.domain.Page<com.itsm.dranswer.storage.UseStorageInfoDto>
      * @throws
      * @modifyed :

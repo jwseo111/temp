@@ -46,29 +46,27 @@ public class UseStorageInfoDto extends BaseEntity {
 
     private UserInfoDto hUserInfo;
 
-    private AgencyInfoDto agencyInfo;
-
     protected LocalDateTime acceptDate;
 
     protected LocalDateTime endDate;
 
     private UserInfoDto cUserInfo;
 
-    private AgencyInfoDto cAgencyInfo;
-
     public UseStorageInfoDto(UseStorageInfo source) {
 
         copyProperties(source, this);
     }
 
-    public UseStorageInfoDto(UseStorageInfo source, OpenStorageInfo openStorageInfo, UserInfo hUserInfo, AgencyInfo agencyInfo, UserInfo cUserInfo, AgencyInfo cAgencyInfo) {
+    public UseStorageInfoDto(UseStorageInfo source, OpenStorageInfo openStorageInfo, UserInfo hUserInfo, AgencyInfo hAgencyInfo, UserInfo cUserInfo, AgencyInfo cAgencyInfo) {
 
         copyProperties(source, this);
 
         this.openStorageInfo = new OpenStorageInfoDto(openStorageInfo);
+
         this.hUserInfo = new UserInfoDto(hUserInfo);
-        this.agencyInfo = new AgencyInfoDto(agencyInfo);
+        this.hUserInfo.setAgencyInfo(new AgencyInfoDto(hAgencyInfo));
+
         this.cUserInfo = new UserInfoDto(cUserInfo);
-        this.cAgencyInfo = new AgencyInfoDto(cAgencyInfo);
+        this.cUserInfo.setAgencyInfo(new AgencyInfoDto(cAgencyInfo));
     }
 }

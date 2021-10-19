@@ -56,6 +56,8 @@ public class UserInfoDto extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private JoinStat joinStatCode;
 
+    private Integer agencySeq;
+
     private AgencyInfoDto agencyInfo;
 
     @Enumerated(EnumType.STRING)

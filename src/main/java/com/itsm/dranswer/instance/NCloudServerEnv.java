@@ -13,6 +13,7 @@ import com.itsm.dranswer.commons.BaseEntity;
 import com.itsm.dranswer.storage.UseStorageInfo;
 import com.itsm.dranswer.users.UserInfo;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -30,9 +31,10 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     private static final long serialVersionUID = 3153476030426250868L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(columnDefinition = "bigint COMMENT '신청번호'")
-    private Long reqSeq;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @Column(columnDefinition = "varchar(36) COMMENT '신청번호'")
+    private String reqSeq;
 
     @Column(columnDefinition = "bigint COMMENT '신청회원번호'")
     private Long reqUserSeq;
@@ -132,5 +134,11 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
 
     public void reject() {
         this.approveStatus = ApproveStatus.REJECT;
+    }
+
+    public void update(String vpcNo, String subnetNo, String acgNo, String loginKey) {
+        this.vpcNo = vpcNo;
+        this.subnetNo = subnetNo;
+        this.loginKeyName = loginKey;
     }
 }

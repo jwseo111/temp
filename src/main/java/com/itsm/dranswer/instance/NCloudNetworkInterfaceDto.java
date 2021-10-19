@@ -28,7 +28,7 @@ public class NCloudNetworkInterfaceDto extends BaseEntity {
 
     private String networkInterfaceNo;
 
-    private Long reqSeq;
+    private String reqSeq;
 
     public NCloudNetworkInterfaceDto ( NCloudNetworkInterface source){
         copyProperties(source, this);

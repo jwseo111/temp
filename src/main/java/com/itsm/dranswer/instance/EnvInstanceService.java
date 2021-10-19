@@ -9,12 +9,10 @@ package com.itsm.dranswer.instance;
  * @modifyed :
  */
 
-import com.itsm.dranswer.apis.vpc.VpcCommonService;
-import com.itsm.dranswer.apis.vpc.VpcServerService;
+import com.itsm.dranswer.apis.vpc.*;
 import com.itsm.dranswer.apis.vpc.request.*;
-import com.itsm.dranswer.apis.vpc.response.CreateVpcServerResponseDto;
-import com.itsm.dranswer.apis.vpc.response.GetServerProductListResponseDto;
-import com.itsm.dranswer.apis.vpc.response.GetVpcServerDetailResponseDto;
+import com.itsm.dranswer.apis.vpc.response.*;
+import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.NCloudKeyDto;
 import com.itsm.dranswer.users.UserService;
 import org.springframework.data.domain.Page;
@@ -23,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @Transactional
@@ -37,14 +36,29 @@ public class EnvInstanceService {
 
     final private UserService userService;
 
+    final private VpcApiService vpcApiService;
+
     final private VpcServerService vpcServerService;
 
-    public EnvInstanceService(NCloudServerEnvRepo nCloudServerEnvRepo, NCloudServerEnvRepoSupport nCloudServerEnvRepoSupport, VpcCommonService vpcCommonService, UserService userService, VpcServerService vpcServerService) {
+    final private VpcNetworkInterfaceService vpcNetworkInterfaceService;
+
+    final private AcgService acgService;
+
+    final private LoginKeyService loginKeyService;
+
+    private final NCloudVpcLoginKeyRepo nCloudVpcLoginKeyRepo;
+
+    public EnvInstanceService(NCloudServerEnvRepo nCloudServerEnvRepo, NCloudServerEnvRepoSupport nCloudServerEnvRepoSupport, VpcCommonService vpcCommonService, UserService userService, VpcApiService vpcApiService, VpcServerService vpcServerService, VpcNetworkInterfaceService vpcNetworkInterfaceService, AcgService acgService, LoginKeyService loginKeyService, NCloudVpcLoginKeyRepo nCloudVpcLoginKeyRepo) {
         this.nCloudServerEnvRepo = nCloudServerEnvRepo;
         this.nCloudServerEnvRepoSupport = nCloudServerEnvRepoSupport;
         this.vpcCommonService = vpcCommonService;
         this.userService = userService;
+        this.vpcApiService = vpcApiService;
         this.vpcServerService = vpcServerService;
+        this.vpcNetworkInterfaceService = vpcNetworkInterfaceService;
+        this.acgService = acgService;
+        this.loginKeyService = loginKeyService;
+        this.nCloudVpcLoginKeyRepo = nCloudVpcLoginKeyRepo;
     }
 
     /**
@@ -78,7 +92,7 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public NCloudServerEnv getNCloudServerEnv(Long reqSeq){
+    public NCloudServerEnv getNCloudServerEnv(String reqSeq){
         return nCloudServerEnvRepo.findById(reqSeq).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 정보 입니다."));
     }
 
@@ -93,7 +107,7 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public NCloudServerEnvDto getEnvInstance(Long reqSeq) {
+    public NCloudServerEnvDto getEnvInstance(String reqSeq) {
 
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
 
@@ -116,18 +130,107 @@ public class EnvInstanceService {
      * @date : 2021-10-08 오후 1:51
      * @author : xeroman.k
      * @param requestDto
+     * @param loginUserInfo
      * @return : com.itsm.dranswer.instance.ServerEnvDto
      * @throws
      * @modifyed :
      *
     **/
-    public NCloudServerEnvDto reqCreateEnvironment(NCloudServerEnvDto requestDto) {
+    public NCloudServerEnvDto reqCreateEnvironment(NCloudServerEnvDto requestDto, LoginUserInfo loginUserInfo) {
+
+        requestDto.setReqUserSeq(loginUserInfo.getUserSeq());
 
         NCloudServerEnv nCloudServerEnv = new NCloudServerEnv(requestDto);
 
         nCloudServerEnv = nCloudServerEnvRepo.save(nCloudServerEnv);
 
         return nCloudServerEnv.convertDto();
+    }
+
+    private void makeServer(NCloudServerEnv nCloudServerEnv){
+
+
+        NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
+
+        GetVpcListRequestDto getVpcListRequestDto = new GetVpcListRequestDto();
+
+        GetZoneListRequestDto getZoneListRequestDto = new GetZoneListRequestDto();
+        GetZoneListResponseDto getZoneListResponseDto = vpcCommonService.getZoneList(getZoneListRequestDto, nCloudKeyDto);
+
+        String zoneCode = getZoneListResponseDto.getGetZoneListResponse().getZoneList().get(0).getZoneCode();
+
+        GetVpcListResponseDto getVpcListResponseDto = vpcApiService.getVpcList(getVpcListRequestDto, nCloudKeyDto);
+        List<GetVpcListResponseDto.VpcDto> vpcDtoList = getVpcListResponseDto.getGetVpcListResponse().getVpcList();
+
+        // get or make vpc
+        String vpcNo = null;
+
+        if(vpcDtoList.isEmpty()){
+            CreateVpcRequestDto createVpcRequestDto = new CreateVpcRequestDto();
+            CreateVpcResponseDto.VpcInstanceDto vpcInstanceDto = vpcApiService.createVpc(createVpcRequestDto, nCloudKeyDto);
+            vpcNo = vpcInstanceDto.getVpcNo();
+        }else{
+            vpcNo = vpcDtoList.get(0).getVpcNo();
+        }
+
+        GetSubnetListRequestDto getSubnetListRequestDto = new GetSubnetListRequestDto();
+        getSubnetListRequestDto.setVpcNo(vpcNo);
+        GetSubnetListResponseDto getSubnetListResponseDto = vpcApiService.getSubnetList(getSubnetListRequestDto, nCloudKeyDto);
+
+        List<GetSubnetListResponseDto.SubnetDto> subnetDtoList = getSubnetListResponseDto.getGetSubnetListResponse().getSubnetList();
+
+        // get or make subnet
+        String subnetNo = null;
+
+        if(subnetDtoList.isEmpty()){
+            CreateSubnetRequestDto createSubnetRequestDto = new CreateSubnetRequestDto();
+            createSubnetRequestDto.setZoneCode(zoneCode);
+            createSubnetRequestDto.setVpcNo(vpcNo);
+            createSubnetRequestDto.setSubnet("192.168.0.0/16");
+
+            CreateNetworkAclRequestDto createNetworkAclRequestDto = new CreateNetworkAclRequestDto();
+            createNetworkAclRequestDto.setVpcNo(vpcNo);
+            CreateNetworkAclResponseDto.NetworkAclInstanceDto networkAclInstanceDto = vpcNetworkInterfaceService.createNetworkAcl(createNetworkAclRequestDto, nCloudKeyDto);
+            createSubnetRequestDto.setNetworkAclNo(networkAclInstanceDto.getNetworkAclNo());
+
+        }else{
+            subnetNo = subnetDtoList.get(0).getSubnetNo();
+        }
+
+        // make acg
+        CreateAccessControlGroupRequestDto createAccessControlGroupRequestDto = new CreateAccessControlGroupRequestDto();
+        createAccessControlGroupRequestDto.setVpcNo(vpcNo);
+        CreateAccessControlGroupResponseDto.AcgInstanceDto acgInstanceDto = acgService.createAccessControlGroup(createAccessControlGroupRequestDto, nCloudKeyDto);
+        String acgNo = acgInstanceDto.getAccessControlGroupNo();
+
+        // make login key
+        CreateLoginKeyRequestDto createLoginKeyRequestDto = new CreateLoginKeyRequestDto();
+        CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto createLoginKeyResponseDto =
+                this.createLoginKeyAndSave(createLoginKeyRequestDto, nCloudKeyDto, nCloudServerEnv.getReqUserSeq());
+
+        String loginKey = createLoginKeyResponseDto.getKeyName();
+
+        // make server request
+        CreateVpcServerRequestDto createVpcServerRequestDto = new CreateVpcServerRequestDto(nCloudServerEnv, true);
+        createVpcServerRequestDto.setVpcNo(vpcNo);
+        createVpcServerRequestDto.setSubnetNo(subnetNo);
+        createVpcServerRequestDto.setNI(acgNo);
+        createVpcServerRequestDto.setLoginKeyName(loginKey);
+
+        CreateVpcServerResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.createServerInstances(createVpcServerRequestDto, nCloudKeyDto);
+
+        nCloudServerEnv.update(vpcNo, subnetNo, acgNo, loginKey);
+    }
+
+    public CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto createLoginKeyAndSave(CreateLoginKeyRequestDto requestDto, NCloudKeyDto nCloudKeyDto,
+                                      Long userSeq){
+
+        CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto responseDto = loginKeyService.createLoginKey(requestDto, nCloudKeyDto);
+
+        NCloudVpcLoginKey nCloudVpcLoginKey = this.saveNCloudVpcLoginKey(responseDto.getKeyName(), userSeq, responseDto.getPrivateKey());
+
+        return responseDto;
+
     }
 
     /**
@@ -141,7 +244,7 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public NCloudServerEnvDto approveEnvironment(Long reqSeq) {
+    public NCloudServerEnvDto approveEnvironment(String reqSeq) {
 
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
         nCloudServerEnv.accept();
@@ -160,11 +263,11 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public CreateVpcServerResponseDto.ServerInstanceDto createEnvironment(Long reqSeq) {
+    public CreateVpcServerResponseDto.ServerInstanceDto createEnvironment(String reqSeq) {
 
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
 
-        CreateVpcServerRequestDto createVpcServerRequestDto = new CreateVpcServerRequestDto(nCloudServerEnv);
+        CreateVpcServerRequestDto createVpcServerRequestDto = new CreateVpcServerRequestDto(nCloudServerEnv, false);
         NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
         CreateVpcServerResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.createServerInstances(createVpcServerRequestDto, nCloudKeyDto);
 
@@ -183,7 +286,7 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public NCloudServerEnvDto endEnvironment(Long reqSeq){
+    public NCloudServerEnvDto endEnvironment(String reqSeq){
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
         NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
 
@@ -209,7 +312,7 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public void terminateEnvironment(Long reqSeq){
+    public void terminateEnvironment(String reqSeq){
 
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
         NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
@@ -248,10 +351,31 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public NCloudServerEnvDto rejectEnvironment(Long reqSeq){
+    public NCloudServerEnvDto rejectEnvironment(String reqSeq){
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
         nCloudServerEnv.reject();
 
         return nCloudServerEnv.convertDto();
+    }
+
+    /**
+     *
+     * @methodName : saveNCloudVpcLoginKey
+     * @date : 2021-10-19 오후 2:24
+     * @author : xeroman.k
+     * @param keyName
+     * @param userSeq
+     * @param privateKey
+     * @return : com.itsm.dranswer.instance.NCloudVpcLoginKey
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public NCloudVpcLoginKey saveNCloudVpcLoginKey(String keyName, Long userSeq, String privateKey){
+
+        NCloudVpcLoginKey nCloudVpcLoginKey = new NCloudVpcLoginKey(keyName, userSeq, privateKey);
+        nCloudVpcLoginKey = nCloudVpcLoginKeyRepo.save(nCloudVpcLoginKey);
+
+        return nCloudVpcLoginKey;
     }
 }

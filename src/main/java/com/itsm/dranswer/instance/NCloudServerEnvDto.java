@@ -28,7 +28,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 @ToString
 public class NCloudServerEnvDto extends BaseEntity {
 
-    private Long reqSeq;
+    private String reqSeq;
 
     private Long reqUserSeq;
 

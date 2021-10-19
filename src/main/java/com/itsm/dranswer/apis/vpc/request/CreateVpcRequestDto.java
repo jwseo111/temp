@@ -23,5 +23,5 @@ import lombok.NoArgsConstructor;
 public class CreateVpcRequestDto {
     private String regionCode;
     private String vpcName;
-    private String ipv4CidrBlock;
+    private String ipv4CidrBlock = "192.168.0.0/16";
 }

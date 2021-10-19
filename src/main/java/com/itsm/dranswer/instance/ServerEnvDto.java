@@ -21,7 +21,7 @@ import lombok.*;
 @ToString
 public class ServerEnvDto extends BaseEntity {
 
-    private Long reqSeq;
+    private String reqSeq;
     private String serverDescription;
     private OsImageType osImageType;
     private ProductType productType;

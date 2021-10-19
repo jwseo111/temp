@@ -18,6 +18,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,10 +40,10 @@ public class CreateVpcServerRequestDto {
     private String serverDescription;
     private String loginKeyName;
     private String feeSystemTypeCode = "MTRAT";
-    private Boolean associateWithPublicIp;
-    private List<NetworkInterface> networkInterfaceList;
+    private Boolean associateWithPublicIp = true;
+    private List<NetworkInterface> networkInterfaceList = new ArrayList<>();
 
-    public CreateVpcServerRequestDto(NCloudServerEnv nCloudServerEnv) {
+    public CreateVpcServerRequestDto(NCloudServerEnv nCloudServerEnv, Boolean isNewNetworkInterface) {
         this.vpcNo = nCloudServerEnv.getVpcNo();
         this.subnetNo = nCloudServerEnv.getSubnetNo();
         this.serverImageProductCode = nCloudServerEnv.getOsImageType().getProductCode();
@@ -49,7 +51,10 @@ public class CreateVpcServerRequestDto {
         this.serverDescription = nCloudServerEnv.getServerDescription();
         this.loginKeyName = nCloudServerEnv.getLoginKeyName();
         this.associateWithPublicIp = nCloudServerEnv.getAssociateWithPublicIp();
-        this.networkInterfaceList = nCloudServerEnv.getNetworkInterfaceList().stream().map(e -> new NetworkInterface(e)).collect(Collectors.toList());
+
+        if(!isNewNetworkInterface){
+            this.networkInterfaceList = nCloudServerEnv.getNetworkInterfaceList().stream().map(e -> new NetworkInterface(e)).collect(Collectors.toList());
+        }
     }
 
     @Data
@@ -66,5 +71,9 @@ public class CreateVpcServerRequestDto {
             this.networkInterfaceOrder = nCloudNetworkInterface.getNetworkInterfaceOrder();
             this.networkInterfaceNo = nCloudNetworkInterface.getNetworkInterfaceNo();
         }
+    }
+
+    public void setNI(String acgNo){
+        this.networkInterfaceList.add(new NetworkInterface(0, null, Arrays.asList(acgNo)));
     }
 }

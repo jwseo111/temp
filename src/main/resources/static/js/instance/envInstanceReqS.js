@@ -220,6 +220,10 @@ Vue.component('maincontents', {
             this.serverProductCond.productType  = name;
             this.getServerProductList();
         },
+        onChangeStorage: function (storage){
+            this.serverProductCond.storageType  = storage;
+            this.getServerProductList();
+        },
         // NetworkInterface 추가 버튼 이벤트
         onclickIFAdd: function () {
             let cnt = this.networkInterfaceList.length;
@@ -334,7 +338,7 @@ Vue.component('maincontents', {
         },
         // 취소 클릭(목록 이동)
         onclickCancel: function () {
-            // location.href = "/env/instance/main";
+            location.href = "/env/instance/main";
         },
         // 신청 클릭(학습환경 신청)
         onclickCreateSave: function () {

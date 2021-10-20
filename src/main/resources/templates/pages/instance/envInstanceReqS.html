@@ -115,9 +115,9 @@
                         <span class="join-input-group w-100">
                             <label>스토리지<span>*</span></label>
                             <span class="radio-wrap join-radio bdr-b">
-                                <input type="radio" id="storage_op1" value="SSD" v-model="saveInfo.storageType" ref="storageType" name="storage" v-bind:checked="envInstanceInfo.storageType === 'SSD'" />
+                                <input type="radio" id="storage_op1" value="SSD" v-model="saveInfo.storageType" ref="storageType" name="storage" @change="onChangeStorage('SSD')" v-bind:checked="saveInfo.storageType === 'SSD'" />
                                 <label for="storage_op1"><span></span>SSD</label>
-                                <input type="radio" id="storage_op2" value="HDD" v-model="saveInfo.storageType" ref="storageType" name="storage" v-bind:checked="envInstanceInfo.storageType === 'HDD'" />
+                                <input type="radio" id="storage_op2" value="HDD" v-model="saveInfo.storageType" ref="storageType" name="storage" @change="onChangeStorage('HDD')" v-bind:checked="saveInfo.storageType === 'HDD'" />
                                 <label for="storage_op2"><span></span>HDD</label>
                             </span>
                         </span>
@@ -207,7 +207,7 @@
                     <li class="bdr-b pb-20">
                         <span class="join-input-group w-100">
                             <label>서버 설명</label>
-                            <input class="w-100" type="text" ref="dataName" v-model="envInstanceInfo.serverDescription" placeholder="서버 설명을 입력하세요">
+                            <input class="w-100" type="text" ref="dataName" v-model="saveInfo.serverDescription" placeholder="서버 설명을 입력하세요">
                         </span>
                     </li>
 

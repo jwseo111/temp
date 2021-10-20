@@ -48,13 +48,15 @@ public class NCloudServerEnvDto extends BaseEntity {
 
     private GetServerProductListResponseDto product;
 
-    private Boolean associateWithPublicIp;
+    private Boolean associateWithPublicIp = true;
 
     private String serverDescription;
 
     private ApproveStatus approveStatus;
 
     private String loginKeyName;
+
+    private String loginPrivateKey;
 
     private Integer usingDays;
 

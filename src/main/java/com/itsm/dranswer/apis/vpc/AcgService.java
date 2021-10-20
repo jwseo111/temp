@@ -50,7 +50,7 @@ public class AcgService extends ApiService {
                 new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), CreateAccessControlGroupResponseDto.class).getBody();
 
         if (ObjectUtils.isNotEmpty(responseDto.getCreateAccessControlGroupResponse())) {
-            if (CollectionUtils.isEmpty(responseDto.getCreateAccessControlGroupResponse().getAccessControlGroupList())) {
+            if (!CollectionUtils.isEmpty(responseDto.getCreateAccessControlGroupResponse().getAccessControlGroupList())) {
                 return responseDto.getCreateAccessControlGroupResponse().getAccessControlGroupList().get(0);
             }
         }

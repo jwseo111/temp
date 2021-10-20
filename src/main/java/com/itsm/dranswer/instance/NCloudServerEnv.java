@@ -76,8 +76,11 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus;
 
-    @Column(columnDefinition = "varchar(36) COMMENT '인증키 이름'")
+    @Column(columnDefinition = "varchar(36) COMMENT '로그인키 이름'")
     private String loginKeyName;
+
+    @Column(columnDefinition = "varchar(4000) COMMENT 'private key'")
+    private String loginPrivateKey;
 
     @Column(columnDefinition = "int COMMENT '사용일수 0이면 무기한'")
     private Integer usingDays;
@@ -136,9 +139,13 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         this.approveStatus = ApproveStatus.REJECT;
     }
 
-    public void update(String vpcNo, String subnetNo, String acgNo, String loginKey) {
+    public void update(String serverInstanceNo, String vpcNo, String subnetNo, String acgNo, String loginKeyName, String loginPrivateKey) {
+
+        this.created(serverInstanceNo);
+
         this.vpcNo = vpcNo;
         this.subnetNo = subnetNo;
-        this.loginKeyName = loginKey;
+        this.loginKeyName = loginKeyName;
+        this.loginPrivateKey = loginPrivateKey;
     }
 }

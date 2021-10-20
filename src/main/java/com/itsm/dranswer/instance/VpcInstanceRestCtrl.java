@@ -11,7 +11,6 @@ package com.itsm.dranswer.instance;
 
 import com.itsm.dranswer.apis.vpc.*;
 import com.itsm.dranswer.apis.vpc.request.*;
-import com.itsm.dranswer.apis.vpc.response.CreateVpcServerResponseDto;
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.NCloudKeyDto;
@@ -524,10 +523,11 @@ public class VpcInstanceRestCtrl {
 
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/instance/environment/create/{reqSeq:.+(?<!\\.js)$}")
-    public ApiResult<CreateVpcServerResponseDto.ServerInstanceDto> createEnvironment(
+    public ApiResult<NCloudServerEnv> createEnvironment(
             @PathVariable String reqSeq) {
 
-        return success(envInstanceService.createEnvironment(reqSeq));
+//        return success(envInstanceService.createEnvironment(reqSeq));
+        return success(envInstanceService.createEnvironmentSimple(reqSeq));
     }
 
     @Secured(value = {"ROLE_ADMIN"})

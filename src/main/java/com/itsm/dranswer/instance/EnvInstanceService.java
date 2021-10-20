@@ -147,8 +147,18 @@ public class EnvInstanceService {
         return nCloudServerEnv.convertDto();
     }
 
-    private void makeServer(NCloudServerEnv nCloudServerEnv){
-
+    /**
+     *
+     * @methodName : makeServer
+     * @date : 2021-10-20 오후 1:53
+     * @author : xeroman.k
+     * @param nCloudServerEnv
+     * @return : com.itsm.dranswer.instance.NCloudServerEnv
+     * @throws
+     * @modifyed :
+     *
+    **/
+    private NCloudServerEnv makeServer(NCloudServerEnv nCloudServerEnv){
 
         NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
 
@@ -164,13 +174,17 @@ public class EnvInstanceService {
 
         // get or make vpc
         String vpcNo = null;
+        String subnet = null;
 
         if(vpcDtoList.isEmpty()){
             CreateVpcRequestDto createVpcRequestDto = new CreateVpcRequestDto();
             CreateVpcResponseDto.VpcInstanceDto vpcInstanceDto = vpcApiService.createVpc(createVpcRequestDto, nCloudKeyDto);
             vpcNo = vpcInstanceDto.getVpcNo();
+            subnet = createVpcRequestDto.getIpv4CidrBlock();
         }else{
-            vpcNo = vpcDtoList.get(0).getVpcNo();
+            GetVpcListResponseDto.VpcDto vpcInstanceDto = vpcDtoList.get(0);
+            vpcNo = vpcInstanceDto.getVpcNo();
+            subnet = vpcInstanceDto.getIpv4CidrBlock();
         }
 
         GetSubnetListRequestDto getSubnetListRequestDto = new GetSubnetListRequestDto();
@@ -186,12 +200,15 @@ public class EnvInstanceService {
             CreateSubnetRequestDto createSubnetRequestDto = new CreateSubnetRequestDto();
             createSubnetRequestDto.setZoneCode(zoneCode);
             createSubnetRequestDto.setVpcNo(vpcNo);
-            createSubnetRequestDto.setSubnet("192.168.0.0/16");
+            createSubnetRequestDto.setSubnet(subnet);
 
             CreateNetworkAclRequestDto createNetworkAclRequestDto = new CreateNetworkAclRequestDto();
             createNetworkAclRequestDto.setVpcNo(vpcNo);
             CreateNetworkAclResponseDto.NetworkAclInstanceDto networkAclInstanceDto = vpcNetworkInterfaceService.createNetworkAcl(createNetworkAclRequestDto, nCloudKeyDto);
             createSubnetRequestDto.setNetworkAclNo(networkAclInstanceDto.getNetworkAclNo());
+
+            CreateSubnetResponseDto.SubnetInstanceDto subnetInstanceDto = vpcApiService.createSubnet(createSubnetRequestDto, nCloudKeyDto);
+            subnetNo = subnetInstanceDto.getSubnetNo();
 
         }else{
             subnetNo = subnetDtoList.get(0).getSubnetNo();
@@ -208,18 +225,21 @@ public class EnvInstanceService {
         CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto createLoginKeyResponseDto =
                 this.createLoginKeyAndSave(createLoginKeyRequestDto, nCloudKeyDto, nCloudServerEnv.getReqUserSeq());
 
-        String loginKey = createLoginKeyResponseDto.getKeyName();
+        String loginKeyName = createLoginKeyResponseDto.getKeyName();
+        String loginPrivateKey = createLoginKeyResponseDto.getPrivateKey();
 
         // make server request
         CreateVpcServerRequestDto createVpcServerRequestDto = new CreateVpcServerRequestDto(nCloudServerEnv, true);
         createVpcServerRequestDto.setVpcNo(vpcNo);
         createVpcServerRequestDto.setSubnetNo(subnetNo);
         createVpcServerRequestDto.setNI(acgNo);
-        createVpcServerRequestDto.setLoginKeyName(loginKey);
+        createVpcServerRequestDto.setLoginKeyName(loginKeyName);
 
         CreateVpcServerResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.createServerInstances(createVpcServerRequestDto, nCloudKeyDto);
 
-        nCloudServerEnv.update(vpcNo, subnetNo, acgNo, loginKey);
+        nCloudServerEnv.update(serverInstanceDto.getServerInstanceNo(), vpcNo, subnetNo, acgNo, loginKeyName, loginPrivateKey);
+
+        return nCloudServerEnv;
     }
 
     public CreateLoginKeyResponseDto.CreateLoginKeyRawResponseDto createLoginKeyAndSave(CreateLoginKeyRequestDto requestDto, NCloudKeyDto nCloudKeyDto,
@@ -275,6 +295,26 @@ public class EnvInstanceService {
         return serverInstanceDto;
     }
 
+
+    /**
+     *
+     * @methodName : createEnvironmentSimple
+     * @date : 2021-10-20 오후 2:47
+     * @author : xeroman.k
+     * @param reqSeq
+     * @return : com.itsm.dranswer.instance.NCloudServerEnv
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public NCloudServerEnv createEnvironmentSimple(String reqSeq) {
+
+        NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
+
+        return this.makeServer(nCloudServerEnv);
+
+    }
+
     /**
      *
      * @methodName : endEnvironment
@@ -288,17 +328,23 @@ public class EnvInstanceService {
     **/
     public NCloudServerEnvDto endEnvironment(String reqSeq){
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
-        NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
 
-        vpcServerService.stopServerInstances(
-                new OperateVpcServersRequestDto(null, Arrays.asList(nCloudServerEnv.getServerInstanceNo())),
-                nCloudKeyDto);
+        this.stopEnvironment(reqSeq);
 
         nCloudServerEnv.end();
 
         this.terminateEnvironment(reqSeq);
 
         return nCloudServerEnv.convertDto();
+    }
+
+    public void stopEnvironment(String reqSeq){
+        NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
+        NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
+
+        vpcServerService.stopServerInstances(
+                new OperateVpcServersRequestDto(null, Arrays.asList(nCloudServerEnv.getServerInstanceNo())),
+                nCloudKeyDto);
     }
 
     /**
@@ -324,15 +370,17 @@ public class EnvInstanceService {
 
         OperateVpcPublicIpRequestDto vpcPublicIpRequestDto = new OperateVpcPublicIpRequestDto(null, publicIpInstanceNo, null);
 
-        vpcServerService.disassociatePublicIpFromServerInstance(
-                vpcPublicIpRequestDto,
-                nCloudKeyDto
-        );
+        if(nCloudServerEnv.getAssociateWithPublicIp()){
+            vpcServerService.disassociatePublicIpFromServerInstance(
+                    vpcPublicIpRequestDto,
+                    nCloudKeyDto
+            );
 
-        vpcServerService.deletePublicIpInstance(
-                vpcPublicIpRequestDto,
-                nCloudKeyDto
-        );
+            vpcServerService.deletePublicIpInstance(
+                    vpcPublicIpRequestDto,
+                    nCloudKeyDto
+            );
+        }
 
         vpcServerService.terminateServerInstances(
                 new OperateVpcServersRequestDto(null, Arrays.asList(nCloudServerEnv.getServerInstanceNo())),

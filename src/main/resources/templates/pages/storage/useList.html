@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/defaultLayout">
+
+    <th:block layout:fragment="css">
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/storage/useList.js}"></script>
+    </th:block>
+
+    <div class="member-container"  layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+            <div class="content" >
+                <div class="sub-title-box">
+                    <h2>학습데이터 사용신청</h2>
+<!--                    <p>Application for storage of disease data</p>-->
+                    <hr>
+                </div>
+
+                <div class="list-search-wrap a-r mt-80">
+                    <label>Search</label>
+                    <div class="custom-select search-select"  style="width:250px;" >
+                        <select ref="selectedDisease" v-model="cond.disease" >
+                            <option value="">전체</option>
+                            <option v-for="option in diseaseCdList" v-bind:value="option.name">{{option.desc}}</option>
+                        </select>
+                    </div>
+                    <input type="text" v-model="cond.keyword" @keyup="onKeyup" placeholder="검색어를 입력하세요">
+                    <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
+                </div>
+
+                <table class="table-list mt-50">
+                    <colgroup>
+                        <col style="width:28%" />
+                        <col style="width:10%" />
+                        <col style="width:20%" />
+                        <col style="width:15%" />
+                        <col style="width:10%" />
+                        <col style="width:9%" />
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th scope="col">번호(공개데이터번호)</th>
+                        <th scope="col">질환</th>
+                        <th scope="col">데이타명</th>
+                        <th scope="col">제공병원</th>
+                        <th scope="col">연구책임자</th>
+                        <th scope="col">등록일자</th>
+                    </tr>
+                    </thead>
+                    <tbody v-if="openStorageList.length == 0">
+                    <tr>
+                        <td colspan="6" style="text-align: center">
+                            데이터가 없습니다.
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-else-if="openStorageList.length > 0">
+                    <tr v-for="(open, idx) in openStorageList">
+                        <td><a href="javascript:void(0);" v-on:click="onclickReq(open.reqOpenId)">{{open.reqOpenId}}</a></td>
+                        <td>{{open.diseaseManagerUserInfo.diseaseCode.desc}}</td>
+                        <td>{{open.openDataName}}</td>
+                        <td>{{open.agencyInfo.agencyName}}</td>
+                        <td>{{open.diseaseManagerUserInfo.userName}}</td>
+                        <td v-if="open.createdDate === null" align="center">-</td>
+                        <td v-else align="center">{{open.createdDate.substr(0,10)}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 페이징 -->
+                <div class="btn-box mt-40">
+                    <div class="pagination fl-l">
+                        <a href="#" v-on:click="onclickPage(pageInfo.prev)"><span class="next-bar"></span><span class="next"></span></a>
+                        <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)" v-bind:class="{active:pageInfo.curr==page}">
+                            {{page}}
+                        </a>
+                        <a href="#" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                    </div>
+                </div>
+            </div>
+        </script>
+    </div>
+</html>

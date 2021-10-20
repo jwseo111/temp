@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/mypageLayout">
+
+    <th:block layout:fragment="css"></th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/storage/myUseView.js}"></script>
+        <script>
+            const useStorageId = "[[${param.useStorageId}]]";
+        </script>
+    </th:block>
+
+    <div class="mypage-container" layout:fragment="contents">
+        <div id="maincontentswrap">
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+            <div class="content">
+                <div class="mypage-content mt-40">
+                    <h3>데이터 사용신청 상세</h3>
+                    <div v-if="MY_ROLE === 'ROLE_MANAGER'" class="join-cont-box mt-30">
+                        <h4>신청자 정보</h4>
+                        <ul class="com-ul">
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>신청자명</label>
+                                    <p class="txt-data">{{useStorageInfo.cUserInfo.userName}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>기업명</label>
+                                    <p class="txt-data">{{useStorageInfo.cUserInfo.agencyInfo.agencyName}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>연락처</label>
+                                    <p class="txt-data">{{useStorageInfo.cUserInfo.userPhoneNumber}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>이메일</label>
+                                    <p class="txt-data">{{useStorageInfo.cUserInfo.userEmail}}</p>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="join-cont-box mt-30">
+                        <h4>신청 정보</h4>
+                        <ul class="com-ul">
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>공개데이터명</label>
+                                    <p class="txt-data">{{useStorageInfo.openStorageInfo.openDataName}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>병원명</label>
+                                    <p class="txt-data">{{useStorageInfo.hUserInfo.agencyInfo.agencyName}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>질환명</label>
+                                    <p class="txt-data">{{useStorageInfo.hUserInfo.diseaseCode.desc}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>연구책임자</label>
+                                    <p class="txt-data">{{useStorageInfo.hUserInfo.userName}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>연락처</label>
+                                    <p class="txt-data">{{useStorageInfo.hUserInfo.userPhoneNumber}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>이메일</label>
+                                    <p class="txt-data">{{useStorageInfo.hUserInfo.userEmail}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>사용일수</label>
+                                    <p class="txt-data">{{useStorageInfo.usingDays}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>신청일자</label>
+                                    <p class="txt-data">{{useStorageInfo.createdDate}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>처리상태</label>
+                                    <p class="txt-data">{{useStorageInfo.useStorageStatCode.desc}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>처리일자</label>
+                                    <p class="txt-data">{{isNullText(useStorageInfo.acceptDate)}}</p>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="join-cont-box mt-30"
+                         v-if="( (useStorageStatCode === 'U_REQ' || useStorageStatCode === 'U_ACC') && MY_ROLE === 'ROLE_USER' ) || useStorageStatCode === 'U_CCL' ">
+                        <h4>취소 정보</h4>
+                        <ul class="com-ul">
+                            <li>
+                                <span class="join-input-group w-100">
+                                    <label>취소사유</label>
+                                    <input v-if="(useStorageStatCode === 'U_REQ' || useStorageStatCode === 'U_ACC') && MY_ROLE === 'ROLE_USER'"
+                                           class="w-100"  type="text" ref="cancelReason" v-model="saveInfo.cancelReason" placeholder="취소사유를 입력하세요">
+                                    <input v-else-if="useStorageStatCode === 'U_CCL'"
+                                           class="w-100" type="text" v-model="useStorageInfo.cancelReason" readonly>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-if="(useStorageStatCode === 'U_REQ' && MY_ROLE === 'ROLE_MANAGER') || useStorageStatCode === 'U_REJ'"
+                         class="join-cont-box mt-30" >
+                        <h4>거절 정보</h4>
+                        <ul class="com-ul">
+                            <li>
+                                <span class="join-input-group w-100" >
+                                    <label>거절사유</label>
+                                    <input v-if="useStorageStatCode === 'U_REJ'"
+                                           class="w-100"  type="text" v-model="useStorageInfo.rejectReason" ref="rejectReason" readonly>
+                                    <input v-if="useStorageStatCode === 'U_REQ' && MY_ROLE === 'ROLE_MANAGER'"
+                                           class="w-100" type="text" v-model="saveInfo.rejectReason" ref="rejectReason" placeholder="거절사유를 입력하세요">
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-if="MY_ROLE === 'ROLE_USER'" class="btn-box mt-70 a-r" >
+                        <a href="javascript:;" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickList">목록</a>
+                        <a v-if="useStorageStatCode === 'U_REQ' || useStorageStatCode === 'U_ACC'"
+                           href="javascript:;" class="com-btn btn-w-332" v-on:click="onclickCancel">취소신청</a>
+                    </div>
+                    <div v-else-if="MY_ROLE === 'ROLE_MANAGER'" class="btn-box mt-70 a-r" >
+                        <a href="javascript:;" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickList">목록</a>
+                        <a v-if="useStorageStatCode === 'U_REQ'"
+                           href="javascript:;" class="com-btn btn-line-bl btn-w-332" style="border-left: hidden" v-on:click="onclickReject">거절</a>
+                        <a v-if="useStorageStatCode === 'U_REQ'"
+                           href="javascript:;" class="com-btn btn-w-332" v-on:click="onclickApprove">승인</a>
+                    </div>
+                    <div v-else class="btn-box mt-70 a-r" >
+                        <a href="javascript:;" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickList">목록</a>
+                    </div>
+                </div>
+            </div>
+        </script>
+
+    </div>
+</html>

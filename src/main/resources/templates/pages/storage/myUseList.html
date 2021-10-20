@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/mypageLayout">
+
+    <th:block layout:fragment="css">
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/storage/myUseList.js}"></script>
+        <script>
+            const useStorageStat = "[[${param.useStorageStat}]]";
+        </script>
+    </th:block>
+
+    <div class="mypage-container" layout:fragment="contents">
+
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+        <div class="content" >
+            <div class="mypage-content">
+                <div class="mypage-content mt-40 mb-40">
+                    <h3>데이터 사용신청 보기</h3>
+                    <div class="list-search-wrap a-r mt-20">
+                        <label>Search</label>
+                        <div class="custom-select search-select" style="width: 150px;">
+                            <select id="useStorageStatCd" v-model="cond.useStorageStat" ref="useStorageStatCd">
+                                <option value="">전체</option>
+                                <option v-for="option in useStoreStatCdList" v-bind:value="option.name">{{option.desc}}</option>
+                            </select>
+                        </div>
+                        <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="공개데이터명을 입력하세요">
+                        <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
+                    </div>
+
+                    <table class="table-list mt-50">
+                        <colgroup>
+                            <col style="width:15%" />
+                            <col style="width:8%" />
+                            <col style="width:20%" />
+                            <col style="width:10%" />
+                            <col style="width:10%" />
+                            <col style="width:10%" />
+                            <col style="width:10%" />
+                            <col style="width:10%" />
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">질환</th>
+                            <th scope="col">공개데이타명</th>
+                            <th v-if="MY_ROLE === 'ROLE_USER'" scope="col">제공병원</th>
+                            <th v-else scope="col">신청기업명</th>
+                            <th v-if="MY_ROLE === 'ROLE_USER'" scope="col">연구책임자</th>
+                            <th v-else scope="col">신청자</th>
+                            <th scope="col">상태</th>
+                            <th scope="col">신청일자</th>
+                            <th scope="col">처리일자</th>
+                        </tr>
+                        </thead>
+                        <tbody v-if="useStorageList.length == 0">
+                        <tr>
+                            <td colspan="8" style="text-align: center">
+                                데이터가 없습니다.
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody v-if="useStorageList.length > 0">
+                        <tr v-for="(item, idx) in useStorageList" class="tr-link">
+                            <td><a href="javascript:void(0);" v-on:click="onclickReq(item.useStorageId)">{{item.useStorageId}}</a></td>
+                            <td><a href="javascript:void(0);" v-on:click="onclickReq(item.useStorageId)">{{item.hUserInfo.diseaseCode.desc}}</a></td>
+                            <td>{{item.openStorageInfo.openDataName}}</td>
+                            <td v-if="MY_ROLE === 'ROLE_USER'">{{item.hUserInfo.agencyInfo.agencyName}}</td>
+                            <td v-else>{{item.cUserInfo.agencyInfo.agencyName}}</td>
+                            <td v-if="MY_ROLE === 'ROLE_USER'">{{item.hUserInfo.userName}}</td>
+                            <td v-else>{{item.cUserInfo.userName}}</td>
+                            <td>{{item.useStorageStatCode.desc}}</td>
+                            <td v-if="item.createdDate === null" align="center">-</td>
+                            <td v-else>{{item.createdDate.substr(0,10)}}</td>
+                            <td v-if="item.acceptDate === null" align="center">-</td>
+                            <td v-else>{{item.acceptDate.substr(0,10)}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 페이징 -->
+                    <div class="btn-box mt-40">
+                        <div class="pagination fl-l">
+                            <a href="#" v-on:click="onclickPage(pageInfo.prev)"><span class="next-bar"></span><span class="next"></span></a>
+                            <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)" v-bind:class="{active:pageInfo.curr==page}">
+                                {{page}}
+                            </a>
+                            <a href="#" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </script>
+    </div>
+</html>

@@ -11,6 +11,7 @@ package com.itsm.dranswer.commons;
 
 import com.itsm.dranswer.storage.OpenStorageStat;
 import com.itsm.dranswer.storage.ReqStorageStat;
+import com.itsm.dranswer.storage.UseStorageStat;
 import com.itsm.dranswer.users.AgencyType;
 import com.itsm.dranswer.users.IsYn;
 import com.itsm.dranswer.users.JoinStat;
@@ -78,6 +79,9 @@ public class CodeRestCtrl {
                 break;
             case "OsImageType":
                 codes = OsImageType.codes();
+                break;
+            case "UseStorageStat":
+                codes = UseStorageStat.codes();
                 break;
         }
 

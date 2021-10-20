@@ -1,14 +1,12 @@
-
 /*
- * @name : envInstanceList.js
- * @date : 2021-09-10 오후 2:57
+ * @name : myUseList.js
+ * @date : 2021-08-10 오후 3:32
  * @author : lsj
  * @version : 1.0.0
  * @modifyed :
  */
 
 let appMain;
-let loading = true;
 const TID = {
     SEARCH      : {value: 0, name: "search", code: "S"}
 };
@@ -25,12 +23,11 @@ Vue.component('maincontents', {
             cond: {
                 page: 0,
                 size: 5,
-                approveStatus:"", // 학습서버 처리상태
-                keyword:"",//검색어
+                useStorageStat: useStorageStat, // 처리상태
+                dataName:"",
                 sort: ""
             },
-            approveStatusCdList:getCodeList('ApproveStatus',this.callback),// 콤보 리스트
-            envInstanceList: [],
+            useStorageList: [],
             pageInfo: {
                 curr : 1,
                 max : 1,
@@ -41,12 +38,13 @@ Vue.component('maincontents', {
                 pages: [1],
                 total: 1
             },
-            
+            messages : "",
+            useStorageId:"",
+            useStoreStatCdList : getCodeList('UseStorageStat',this.callback),
         };
     },
     mounted:function(){
-        this.getEnvInstanceList();
-
+        this.getMyUseStorageList();
     },
     methods:{
         onKeyup:function (e){
@@ -56,22 +54,31 @@ Vue.component('maincontents', {
         },
         onclickSearch: function () {
             this.cond.page = 0;
-            this.cond.approveStatus = this.$refs.approveStatus.value;//처리상태
-            this.getEnvInstanceList();
+            this.cond.useStorageStat = this.$refs.useStorageStatCd.value;
+
+            this.getMyUseStorageList();
+        },
+        // 목록 > 신청번호 클릭(화면 이동)
+        onclickReq: function (useStorageId) {
+            let uri = "/my/use/view?menuId="+myMenuId+"&useStorageId=";
+            location.href = uri + useStorageId;
         },
 
-        // 목록 클릭(상세화면 이동)
-        onclickView: function (reqSeq) {
-            location.href = "/env/instance/view?reqSeq="+reqSeq;
-        },
-        // 신청 버튼 클릭(화면 이동)
-        onclickReq: function (reqSeq) {
-              location.href = "/env/instance/req";
-        },
-        // 목록 조회
-        getEnvInstanceList:function () {
+        getMyUseStorageList:function () {
+            let pageUri="";
+            switch (MY_ROLE){
+                case "ROLE_USER":       // 기업
+                    pageUri = "/my/management/storage/use/list";
+                    break;
+                case "ROLE_MANAGER":    // 병원책임자
+                    pageUri = "/mine/management/storage/use/list";
+                    break;
+                case "ROLE_ADMIN":    // 관리자
+                    pageUri = "/management/storage/use/list";
+                    break;
+            }
             get(TID.SEARCH,
-                "/env/instance/getList",
+                pageUri,
                 this.cond,
                 this.callback);
         },
@@ -80,39 +87,20 @@ Vue.component('maincontents', {
                 case TID.SEARCH:
                     this.searchCallback(results);
                     break;
-                case "ApproveStatus":
+                case "UseStorageStat":
                     //console.log(results.response);
-                    this.approveStatusCdList = results.response;
+                    this.useStoreStatCdList = results.response;
                     setTimeout(function() {
                         loadSelect();
                     },300);
                     break;
-                case "usrInfo":
-                    if (results.success) {
-                        let userRole = results.response.userRole;
-                        // if (userRole === "USER") { // 기업병원-질병책임자
-                        //     location.href = "/env/use/req";
-                        // } else { // MANAGER(병원-질병책임자), UPLOADER(병원-업로더), ADMIN(관리자)
-                        //     alertMsg("기업 사용자만 신청이 가능합니다.");
-                        //     return;
-                        // }
-                        location.href = "/env/use/req"; // tmp
-                    } else {
-                        //console.log(results);
-                        confirmMsg("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?", this.login);
-                    }
-                    break;
             }
-        },
-        login: function() {
-            location.href = "/login";
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results.response.content);
+                //console.log(results.response);
                 this.makePageNavi(results.response.pageable, results.response.total);
-                this.envInstanceList = results.response.content;
-                this.loading = false;
+                this.useStorageList = results.response.content;
             } else {
                 //console.log(results);
                 alertMsg(results.error.message);
@@ -137,7 +125,7 @@ Vue.component('maincontents', {
             this.pageInfo.last = last;
             this.pageInfo.prev = prev;
             this.pageInfo.next = next;
-            this.pageInfo.total=total;
+            this.total = Math.ceil(total / pageable.size);
 
             this.pageInfo.pages = new Array();
             for (let i=first; i<=last; i++){
@@ -149,9 +137,8 @@ Vue.component('maincontents', {
             } else {
                 this.cond.page = page - 1;
                 this.pageInfo.curr = page;
-                this.getEnvInstanceList();
+                this.getMyUseStorageList();
             }
         },
     }
 });
-

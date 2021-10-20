@@ -81,7 +81,7 @@ Vue.component('maincontents', {
                     this.searchCallback(results);
                     break;
                 case "ApproveStatus":
-                    console.log(results.response);
+                    //console.log(results.response);
                     this.approveStatusCdList = results.response;
                     setTimeout(function() {
                         loadSelect();
@@ -149,7 +149,7 @@ Vue.component('maincontents', {
             } else {
                 this.cond.page = page - 1;
                 this.pageInfo.curr = page;
-                this.getOpenStorageList();
+                this.getEnvInstanceList();
             }
         },
     }

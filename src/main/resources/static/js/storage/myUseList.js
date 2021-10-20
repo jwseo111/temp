@@ -73,6 +73,9 @@ Vue.component('maincontents', {
                 case "ROLE_MANAGER":    // 병원책임자
                     pageUri = "/mine/management/storage/use/list";
                     break;
+                case "ROLE_ADMIN":    // 관리자
+                    pageUri = "/management/storage/use/list";
+                    break;
             }
             get(TID.SEARCH,
                 pageUri,

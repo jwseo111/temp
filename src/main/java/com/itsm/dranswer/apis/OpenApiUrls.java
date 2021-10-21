@@ -52,6 +52,7 @@ public class OpenApiUrls {
     public static final String REBOOT_VPC_SERVER_INSTANCES = VPC_SERVER + "/rebootServerInstances";
     public static final String STOP_VPC_SERVER_INSTANCES = VPC_SERVER + "/stopServerInstances";
     public static final String TERMINATE_VPC_SERVER_INSTANCES = VPC_SERVER + "/terminateServerInstances";
+    public static final String GET_ROOT_PASSWORD = VPC_SERVER + "/getRootPassword";
 
     // LoginKey
     public static final String CREATE_LOGIN_KEY = VPC_SERVER + "/createLoginKey";

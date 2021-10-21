@@ -56,8 +56,6 @@ public class NCloudServerEnvDto extends BaseEntity {
 
     private String loginKeyName;
 
-    private String loginPrivateKey;
-
     private Integer usingDays;
 
     private List<UseStorageInfoDto> useStorageInfoList = new ArrayList<>();

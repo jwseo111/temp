@@ -172,4 +172,8 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
     }
+
+    public boolean checkUser(Long userSeq) {
+        return this.reqUserSeq==userSeq;
+    }
 }

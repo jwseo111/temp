@@ -11,6 +11,7 @@ package com.itsm.dranswer.instance;
 
 import com.itsm.dranswer.apis.vpc.*;
 import com.itsm.dranswer.apis.vpc.request.*;
+import com.itsm.dranswer.apis.vpc.response.GetRootPasswordResponseDto;
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.NCloudKeyDto;
@@ -511,6 +512,24 @@ public class VpcInstanceRestCtrl {
 
 
         return success(envInstanceService.createLoginKeyAndSave(requestDto, getNCloudKey(loginUserInfo), loginUserInfo.getUserSeq()));
+    }
+
+    @Secured(value = {"ROLE_USER"})
+    @PostMapping(value = "/management/instance/environment/getRootPassword/{reqSeq:.+(?<!\\.js)$}")
+    public ApiResult<GetRootPasswordResponseDto> getRootPassword(
+            @PathVariable String reqSeq,
+            @LoginUser LoginUserInfo loginUserInfo) {
+
+        return success(envInstanceService.getRootPassword(reqSeq, loginUserInfo));
+    }
+
+    @Secured(value = {"ROLE_USER"})
+    @PostMapping(value = "/management/instance/environment/getPrivateKey/{reqSeq:.+(?<!\\.js)$}")
+    public ApiResult<String> getPrivateKey(
+            @PathVariable String reqSeq,
+            @LoginUser LoginUserInfo loginUserInfo) {
+
+        return success(envInstanceService.getPrivateKey(reqSeq, loginUserInfo));
     }
 
     @Secured(value = {"ROLE_ADMIN"})

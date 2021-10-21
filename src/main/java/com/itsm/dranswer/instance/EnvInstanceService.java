@@ -439,4 +439,66 @@ public class EnvInstanceService {
 
         return nCloudVpcLoginKey;
     }
+
+    /**
+     *
+     * @methodName : getRootPassword
+     * @date : 2021-10-21 오후 5:26
+     * @author : xeroman.k
+     * @param reqSeq
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.apis.vpc.response.GetRootPasswordResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public GetRootPasswordResponseDto getRootPassword(String reqSeq, LoginUserInfo loginUserInfo) {
+
+        NCloudServerEnv nCloudServerEnv = getNCloudServerEnvAndCheck(reqSeq, loginUserInfo);
+
+        NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
+        GetRootPasswordRequestDto getRootPasswordRequestDto =
+                new GetRootPasswordRequestDto(null, nCloudServerEnv.getServerInstanceNo(), nCloudServerEnv.getLoginPrivateKey());
+        return vpcServerService.getRootPassword(getRootPasswordRequestDto, nCloudKeyDto);
+
+    }
+
+    /**
+     * 
+     * @methodName : getPrivateKey
+     * @date : 2021-10-21 오후 5:39
+     * @author : xeroman.k 
+     * @param reqSeq
+     * @param loginUserInfo
+     * @return : java.lang.String
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    public String getPrivateKey(String reqSeq, LoginUserInfo loginUserInfo) {
+
+        NCloudServerEnv nCloudServerEnv = getNCloudServerEnvAndCheck(reqSeq, loginUserInfo);
+        return nCloudServerEnv.getLoginPrivateKey();
+    }
+    
+    /**
+     * 
+     * @methodName : getNCloudServerEnvAndCheck
+     * @date : 2021-10-21 오후 5:41
+     * @author : xeroman.k 
+     * @param reqSeq
+     * @param loginUserInfo
+     * @return : com.itsm.dranswer.instance.NCloudServerEnv
+     * @throws 
+     * @modifyed :
+     *
+    **/
+    private NCloudServerEnv getNCloudServerEnvAndCheck(String reqSeq, LoginUserInfo loginUserInfo){
+        NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
+        if(!nCloudServerEnv.checkUser(loginUserInfo.getUserSeq())){
+            throw new IllegalArgumentException("잘못된 접근 입니다.");
+        }
+        
+        return nCloudServerEnv;
+    }
 }

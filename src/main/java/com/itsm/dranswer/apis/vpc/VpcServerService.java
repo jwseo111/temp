@@ -13,10 +13,7 @@ import com.itsm.dranswer.apis.ApiService;
 import com.itsm.dranswer.apis.OpenApiUrls;
 import com.itsm.dranswer.apis.OpenApiUtils;
 import com.itsm.dranswer.apis.vpc.request.*;
-import com.itsm.dranswer.apis.vpc.response.CreateVpcServerResponseDto;
-import com.itsm.dranswer.apis.vpc.response.GetVpcServerDetailResponseDto;
-import com.itsm.dranswer.apis.vpc.response.GetVpcServerListResponse;
-import com.itsm.dranswer.apis.vpc.response.VpcPublicIpInstanceResponseDto;
+import com.itsm.dranswer.apis.vpc.response.*;
 import com.itsm.dranswer.users.NCloudKeyDto;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpEntity;
@@ -300,5 +297,33 @@ public class VpcServerService extends ApiService {
         }
 
         return vpcPublicIpInstanceResponseDto.getDisassociatePublicIpFromServerInstanceResponse().getPublicIpInstanceList().get(0);
+    }
+
+    /**
+     *
+     * @methodName : getRootPassword
+     * @date : 2021-10-21 오후 5:29
+     * @author : xeroman.k
+ * @param requestDto
+ * @param nCloudKeyDto
+     * @return : com.itsm.dranswer.apis.vpc.response.GetRootPasswordResponseDto
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public GetRootPasswordResponseDto getRootPassword(final GetRootPasswordRequestDto requestDto, NCloudKeyDto nCloudKeyDto){
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
+        final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_ROOT_PASSWORD, requestDto);
+
+        final ResponseEntity<GetRootPasswordResponseDto> response = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetRootPasswordResponseDto.class);
+
+        GetRootPasswordResponseDto getRootPasswordResponseDto = response.getBody();
+        getRootPasswordResponseDto.checkError();
+
+        return getRootPasswordResponseDto;
     }
 }

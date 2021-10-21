@@ -123,19 +123,36 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     }
 
     public void accept() {
+        if(this.approveStatus != ApproveStatus.REQUEST){
+            throw new IllegalArgumentException("처리 불가능한 상태 입니다");
+        }
+
         this.approveStatus = ApproveStatus.ACCEPT;
+
     }
 
     public void created(String serverInstanceNo) {
         this.serverInstanceNo = serverInstanceNo;
+        if(this.approveStatus != ApproveStatus.ACCEPT){
+            throw new IllegalArgumentException("처리 불가능한 상태 입니다");
+        }
+
         this.approveStatus = ApproveStatus.CREATED;
     }
 
     public void end() {
+
+        if(this.approveStatus != ApproveStatus.CREATED){
+            throw new IllegalArgumentException("처리 불가능한 상태 입니다");
+        }
         this.approveStatus = ApproveStatus.END;
     }
 
     public void reject() {
+
+        if(this.approveStatus != ApproveStatus.REQUEST){
+            throw new IllegalArgumentException("처리 불가능한 상태 입니다");
+        }
         this.approveStatus = ApproveStatus.REJECT;
     }
 
@@ -147,5 +164,12 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         this.subnetNo = subnetNo;
         this.loginKeyName = loginKeyName;
         this.loginPrivateKey = loginPrivateKey;
+    }
+
+    public void checkApproved() {
+
+        if(this.approveStatus != ApproveStatus.ACCEPT){
+            throw new IllegalArgumentException("처리 불가능한 상태 입니다");
+        }
     }
 }

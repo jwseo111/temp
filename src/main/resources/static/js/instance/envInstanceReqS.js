@@ -48,7 +48,7 @@ Vue.component('maincontents', {
                 productType: "", // 서버타입
                 storageType: "", //스토리지(SSD/HDD)
                 productCode:"", //서버스펙
-                associateWithPublicIp:"", // 공인IP(boolean)
+                associateWithPublicIp:true, // 공인IP(boolean)
                 serverDescription:"", // 서버설명
                 loginKeyName:"", // 인증키이름
                 usingDays:"", // 사용일수

@@ -307,11 +307,13 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public NCloudServerEnv createEnvironmentSimple(String reqSeq) {
+    public NCloudServerEnvDto createEnvironmentSimple(String reqSeq) {
 
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
 
-        return this.makeServer(nCloudServerEnv);
+        nCloudServerEnv.checkApproved();
+
+        return this.makeServer(nCloudServerEnv).convertDto();
 
     }
 
@@ -370,16 +372,19 @@ public class EnvInstanceService {
 
         OperateVpcPublicIpRequestDto vpcPublicIpRequestDto = new OperateVpcPublicIpRequestDto(null, publicIpInstanceNo, null);
 
-        if(nCloudServerEnv.getAssociateWithPublicIp()){
-            vpcServerService.disassociatePublicIpFromServerInstance(
-                    vpcPublicIpRequestDto,
-                    nCloudKeyDto
-            );
+        if(nCloudServerEnv.getAssociateWithPublicIp() != null ){
 
-            vpcServerService.deletePublicIpInstance(
-                    vpcPublicIpRequestDto,
-                    nCloudKeyDto
-            );
+            if(nCloudServerEnv.getAssociateWithPublicIp()){
+                vpcServerService.disassociatePublicIpFromServerInstance(
+                        vpcPublicIpRequestDto,
+                        nCloudKeyDto
+                );
+
+                vpcServerService.deletePublicIpInstance(
+                        vpcPublicIpRequestDto,
+                        nCloudKeyDto
+                );
+            }
         }
 
         vpcServerService.terminateServerInstances(

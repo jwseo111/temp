@@ -331,10 +331,12 @@ public class EnvInstanceService {
     public NCloudServerEnvDto endEnvironment(String reqSeq){
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
 
+        // 서버 정지
         this.stopEnvironment(reqSeq);
 
         nCloudServerEnv.end();
 
+        // 서버 반납
         this.terminateEnvironment(reqSeq);
 
         return nCloudServerEnv.convertDto();
@@ -366,27 +368,33 @@ public class EnvInstanceService {
         NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
 
         GetVpcServerDetailRequestDto requestDto = new GetVpcServerDetailRequestDto(null, nCloudServerEnv.getServerInstanceNo());
+
         GetVpcServerDetailResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.getServerInstanceDetail(requestDto, nCloudKeyDto);
 
-        String publicIpInstanceNo = serverInstanceDto.getPublicIpInstanceNo();
+        // 서버 정지를 기다림
+        while(!"NSTOP".equals(serverInstanceDto.getServerInstanceStatus().getCode())){
+            serverInstanceDto = vpcServerService.getServerInstanceDetail(requestDto, nCloudKeyDto);
 
-        OperateVpcPublicIpRequestDto vpcPublicIpRequestDto = new OperateVpcPublicIpRequestDto(null, publicIpInstanceNo, null);
-
-        if(nCloudServerEnv.getAssociateWithPublicIp() != null ){
-
-            if(nCloudServerEnv.getAssociateWithPublicIp()){
-                vpcServerService.disassociatePublicIpFromServerInstance(
-                        vpcPublicIpRequestDto,
-                        nCloudKeyDto
-                );
-
-                vpcServerService.deletePublicIpInstance(
-                        vpcPublicIpRequestDto,
-                        nCloudKeyDto
-                );
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
+        String publicIpInstanceNo = serverInstanceDto.getPublicIpInstanceNo();
+
+        if(!"".equals(publicIpInstanceNo) ){
+
+            // 공인IP 삭제
+            OperateVpcPublicIpRequestDto vpcPublicIpRequestDto = new OperateVpcPublicIpRequestDto(null, publicIpInstanceNo, null);
+            vpcServerService.deletePublicIpInstance(
+                    vpcPublicIpRequestDto,
+                    nCloudKeyDto
+            );
+        }
+
+        // 서버 반납
         vpcServerService.terminateServerInstances(
                 new OperateVpcServersRequestDto(null, Arrays.asList(nCloudServerEnv.getServerInstanceNo())),
                 nCloudKeyDto

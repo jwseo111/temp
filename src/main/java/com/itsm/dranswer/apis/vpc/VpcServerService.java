@@ -295,6 +295,10 @@ public class VpcServerService extends ApiService {
         VpcPublicIpInstanceResponseDto vpcPublicIpInstanceResponseDto = response.getBody();
         vpcPublicIpInstanceResponseDto.checkError();
 
+        if(vpcPublicIpInstanceResponseDto.getDisassociatePublicIpFromServerInstanceResponse() == null){
+            return null;
+        }
+
         return vpcPublicIpInstanceResponseDto.getDisassociatePublicIpFromServerInstanceResponse().getPublicIpInstanceList().get(0);
     }
 }

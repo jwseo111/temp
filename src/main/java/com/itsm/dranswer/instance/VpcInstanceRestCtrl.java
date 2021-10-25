@@ -533,7 +533,7 @@ public class VpcInstanceRestCtrl {
     }
 
     @Secured(value = {"ROLE_ADMIN"})
-    @GetMapping(value = "/management/instance/environment/approve/{reqSeq:.+(?<!\\.js)$}")
+    @PostMapping(value = "/management/instance/environment/approve/{reqSeq:.+(?<!\\.js)$}")
     public ApiResult<NCloudServerEnvDto> approveEnvironment(
             @PathVariable String reqSeq) {
 
@@ -541,7 +541,7 @@ public class VpcInstanceRestCtrl {
     }
 
     @Secured(value = {"ROLE_ADMIN"})
-    @GetMapping(value = "/management/instance/environment/create/{reqSeq:.+(?<!\\.js)$}")
+    @PostMapping(value = "/management/instance/environment/create/{reqSeq:.+(?<!\\.js)$}")
     public ApiResult<NCloudServerEnvDto> createEnvironment(
             @PathVariable String reqSeq) {
 
@@ -550,7 +550,7 @@ public class VpcInstanceRestCtrl {
     }
 
     @Secured(value = {"ROLE_ADMIN"})
-    @GetMapping(value = "/management/instance/environment/end/{reqSeq:.+(?<!\\.js)$}")
+    @PostMapping(value = "/management/instance/environment/end/{reqSeq:.+(?<!\\.js)$}")
     public ApiResult<NCloudServerEnvDto> endEnvironment(
             @PathVariable String reqSeq) {
 

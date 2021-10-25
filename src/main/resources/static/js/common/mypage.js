@@ -23,11 +23,11 @@ Vue.component('mypagemenus', {
                 {name: "저장신청관리", uri: "/my/admin/store/list", use: true},
                 {name: "공개신청 관리", uri:"/my/admin/open/list", use : true},
                 {name: "학습데이터신청 관리", uri:"/my/use/list", use : true},
-                {name: "학습환경신청 관리", uri:"", use : true},
+                {name: "학습환경신청 관리", uri:"", use : false},
                 {name: "회원정보변경", uri:"/my/userModify", use : true},
                 {name: "저장소관리", uri:"/my/storeMng/list", use : true},
             ],
-            menus_uploader : [ // #####
+            menus_uploader : [ // 업로더
                 {name: "저장신청 데이터 보기", uri: "/my/store/list", use: true},
                 {name: "질환데이터 업로드", uri: "/my/diseaseUpload", use: true},
                 {name: "공개신청 데이터 보기", uri:"/my/open/list", use : true},

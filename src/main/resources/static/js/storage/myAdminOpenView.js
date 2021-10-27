@@ -109,7 +109,7 @@ Vue.component('maincontents', {
             if (results.success) {
                 this.openStorageInfo = results.response;
             } else {
-                alertMsg(results.error.message);
+                alertMsg(results.error.message,this.onclickList);
             }
         },
 

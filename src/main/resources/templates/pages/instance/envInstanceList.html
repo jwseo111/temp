@@ -73,8 +73,8 @@
                     </tbody>
                     <tbody v-else-if="envInstanceList.length > 0">
                     <tr v-for="(item, idx) in envInstanceList">
-                        <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqSeq)">{{item.reqSeq}}</a></td>
-                        <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqSeq)">{{item.serverDescription}}</a></td>
+                        <td>{{item.reqSeq}}</td>
+                        <td>{{item.serverDescription}}</td>
                         <td>{{item.osImageType.name}}</td>
                         <td>{{item.productType.desc}}</td>
                         <td>{{item.storageType}}</td>
@@ -95,7 +95,7 @@
                         </a>
                         <a href="#" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
                     </div>
-                    <a href="#" class="com-btn btn-w-332 fl-r" v-on:click="onclickReq">신청</a>
+                    <a v-if="MY_ROLE === 'ROLE_USER'" href="#" class="com-btn btn-w-332 fl-r" v-on:click="onclickReq">신청</a>
                 </div>
 
             </div>

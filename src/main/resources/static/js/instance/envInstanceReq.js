@@ -23,16 +23,12 @@ Vue.component('maincontents', {
     template : "#main-template",
     data: function() {
         return {
-            cond: {
-                // reqSeq: reqSeq
-            },
-            serverProductCond: {
-               // productType: {name:"", desc:""},
-            },
-            //ProductType:{name:"STAND", desc:"Standard"},
+            // cond: {
+            // },
+            serverProductCond: {},
             bReload : false,
-            userInfo : [],
-            envInstanceInfo:[],
+            userInfo : {},
+            envInstanceInfo:{},
             messages : "",
             osImageTypeCdList: getCodeList("OsImageType", this.callback), // 운영체제
             productTypeCdList: getCodeList("ProductType", this.callback), // 서버타입 selectbox list
@@ -43,7 +39,6 @@ Vue.component('maincontents', {
             saveInfo: {
                 vpcNo:"",
                 subnetNo:"",
-                //osImage:"", // 운영체제
                 osImageType:"", // 운영체제
                 productType: "", // 서버타입
                 storageType: "", //스토리지(SSD/HDD)
@@ -66,15 +61,12 @@ Vue.component('maincontents', {
 
             selected:"", // 선택된 콤보박스
             selectList:     getCodeList('ReqStorageStat',this.callback),//
-            //interfaceList:  getCodeList('Disease',this.callback),// NetworkInterface 콤보
             networkInterfaceCbList: [],// NetworkInterface 콤보
             networkInterfaceNo:"", // 선택된 NetworkInterface
             sSubnet:"", // 선택된 Subnet
             networkInterfaceOrder : 0,
             newNetworkInterface:{
                 networkInterfaceOrder:"", // 디바이스 순서
-                // interface:"",
-                // subnet:"",
                 subnetNo:"", // subnet 번호
                 subnetName:"", // subnet 이름
                 ip:"", // ip
@@ -202,12 +194,6 @@ Vue.component('maincontents', {
             document.documentElement.style.overflowX = 'hidden';
             document.documentElement.style.overflowY = 'hidden';
         },
-        // // 팝업 close
-        // onclickPopClose:function(id){
-        //    document.getElementById(id).style.display = "none";
-        //    document.documentElement.style.overflowX = 'auto';
-        //    document.documentElement.style.overflowY = 'auto';
-        // },
         // 운영체제 변경
         onChangeOsImage: function (productCode) {
             console.log("운영체제 변경 productCode: " + productCode);
@@ -218,6 +204,10 @@ Vue.component('maincontents', {
         onChangeProduct: function (name) {
             console.log("서버타입 변경 name: " + name);
             this.serverProductCond.productType  = name;
+            this.getServerProductList();
+        },
+        onChangeStorage: function (storage){
+            this.serverProductCond.storageType  = storage;
             this.getServerProductList();
         },
         // NetworkInterface 추가 버튼 이벤트
@@ -379,7 +369,7 @@ console.log("신청  : " + JSON.stringify(this.saveInfo));//tmp
         callback: function (tid, results) {
             switch (tid) {
                 case "usrInfo":
-                    //console.log(results);
+                    console.log(results);
                     if (results.success) {
                         this.userInfo = results.response;
                     } else {
@@ -389,7 +379,7 @@ console.log("신청  : " + JSON.stringify(this.saveInfo));//tmp
 
                     break;
                 case "vpcList":
-                    console.log(results);
+                    //console.log(results);
                     if (results.success) {
                         if(!isNull(results.response.getVpcListResponse)) {
                             this.vpcList = results.response.getVpcListResponse.vpcList;

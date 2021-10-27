@@ -27,7 +27,9 @@ Vue.component('maincontents', {
             // },
             serverProductCond: {},
             bReload : false,
-            userInfo : {},
+            userInfo : {
+                agencyInfo:{},
+            },
             envInstanceInfo:{},
             messages : "",
             osImageTypeCdList: getCodeList("OsImageType", this.callback), // 운영체제
@@ -59,8 +61,6 @@ Vue.component('maincontents', {
             subnetList: [], // Subnet 콤보목록
             subnetSelected:"", // Subnet 콤보 선택
 
-            selected:"", // 선택된 콤보박스
-            selectList:     getCodeList('ReqStorageStat',this.callback),//
             networkInterfaceCbList: [],// NetworkInterface 콤보
             networkInterfaceNo:"", // 선택된 NetworkInterface
             sSubnet:"", // 선택된 Subnet

@@ -10,9 +10,12 @@
 <th:block layout:fragment="script">
     <script th:src="@{/js/common/common.js}"></script>
     <script th:src="@{/js/instance/envInstanceReqS.js}"></script>
-    <script>
-        // const reqSeq = "[[${param.reqSeq}]]";
-    </script>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    </style>
 </th:block>
 
 <div class="member-container" layout:fragment="contents">
@@ -38,7 +41,7 @@
                         </span>
                         <span class="join-input-group">
                             <label>기업명</label>
-                            <input type="text" v-bind:value="userInfo.agencyName" readonly>
+                            <input type="text" v-bind:value="userInfo.agencyInfo.agencyName" readonly>
                         </span>
                     </li>
                     <li>
@@ -81,36 +84,6 @@
                         </span>
                     </li>
 
-                    <li class="w-100" style="display: none;">
-                        <span class="join-input-group">
-                            <label>VPC<span>*</span></label>
-                            <div class="custom-select" name="vpcDiv">
-                         <select id="vpcNo" v-model="saveInfo.vpcNo" ref="vpcNo"  onchange="selectedChange(id)">
-                                    <option value="">VPC를 선택하세요</option>
-                                    <option v-for="option in vpcList" v-bind:value="option.vpcNo">{{option.vpcName}}</option>
-                                </select>
-                            </div>
-                        </span>
-                        <span class="join-input-group">
-                            <label><span></span></label>
-                            <a href="javascript:void(0);" v-on:click="onclickPop('vpcModal');" class="com-btn btn-s" style="width: 150px;">VPC 생성</a>
-                        </span>
-                    </li>
-                    <li class="w-100 bdr-b pb-20" style="display: none;">
-                        <span class="join-input-group">
-                            <label>Subnet<span>*</span></label>
-                            <div class="custom-select" name="subnetDiv">
-                                <select id="subnetNo" v-model="saveInfo.subnetNo" ref="subnetNo" onchange="selectedChange(id)">
-                                    <option value="">Subnet을 선택하세요</option>
-                                    <option v-for="option in subnetList" v-bind:value="option.subnetNo">{{option.subnetName}} | {{option.subnet}} | {{option.subnetType.codeName}}</option>
-                                </select>
-                            </div>
-                        </span>
-                        <span class="join-input-group">
-                            <label><span></span></label>
-                            <a href="javascript:void(0);" v-on:click="onclickPop('subnetModal');" class="com-btn btn-s" style="width: 150px;">Subnet 생성</a>
-                        </span>
-                    </li>
                     <li>
                         <span class="join-input-group w-100">
                             <label>스토리지<span>*</span></label>
@@ -133,119 +106,11 @@
                                 </div>
                         </span>
                     </li>
-                    <li class="pb-20" style="display: none;">
-                        <span class="join-input-group w-100">
-                            <label>Network Interface<span>*</span><span style="font-size: small;font-weight: normal">(최대 3개까지 추가 가능합니다)</span></label>
-                        </span>
-                        <span class="join-input-group mr-10 w-200">
-                            <label style="font-weight: normal;">디바이스</label>
-                            <input type="text"  style="width: 200px;" v-bind:value="['eth' + networkInterfaceList.length]" readonly >
-                        </span>
-                        <span class="join-input-group mr-10 w-200">
-                            <label style="font-weight: normal;">Network Interface</label>
-                            <div class="custom-select" style="width: 200px;" name="networkInterfaceDiv">
-<!--                                <select id="networkInterfaceNo" ref="networkInterfaceNo" v-model="newNetworkInterface.interface" style="width: 200px;" data-value="" onchange="selectedChange(id)">-->
-                                <select id="networkInterfaceNo" ref="networkInterfaceNo"  style="width: 200px;" data-value="" onchange="selectedChange(id)">
-                                    <option value="">new interface</option>
-                                    <option v-for="option in networkInterfaceCbList" v-bind:value="option.networkInterfaceNo">{{option.networkInterfaceName}}</option>
-                                </select>
-                            </div>
-                        </span>
-                        <span class="join-input-group mr-10 w-332">
-                            <label style="font-weight: normal;">Subnet</label>
-                            <input type="text" style="width: 344px;" v-model="newNetworkInterface.subnetName" readonly>
-                            <input type="hidden" style="width: 344px;" v-model="newNetworkInterface.subnetNo" readonly>
-                        </span>
-                        <span class="join-input-group mr-10 w-200">
-                            <label style="font-weight: normal;">IP</label>
-                            <input type="text" style="width: 200px;" v-model="newNetworkInterface.ip" readonly>
-                        </span>
-                        <span class="join-input-group" style="width: 150px;">
-                            <label><span></span></label>
-                            <a href="javascript:void(0);" v-on:click="onclickIFAdd" class="com-btn btn-s" style="width: 150px;">추가</a>
-                        </span>
-                    </li>
-                    <!-- Network Interface 추가영역 -->
-                    <div class="bdr-b pb-20">
-                        <li v-for="(item, idx) in networkInterfaceList">
-                            <span class="join-input-group mr-10 w-200">
-                                <label></label>
-                                <input type="text"  style="width: 200px;" v-bind:value="['eth' + idx]" readonly >
-                                <input type="hidden"  style="width: 200px;" v-bind:value="item.networkInterfaceOrder"  readonly >
-                            </span>
-                            <span class="join-input-group mr-10 w-200">
-                                <label></label>
-                                <input type="text"  style="width: 200px;" v-bind:value="item.networkInterfaceName" readonly >
-                                <input type="hidden"  style="width: 200px;" v-bind:value="item.networkInterfaceNo" readonly >
-                            </span>
-                            <span class="join-input-group mr-10 w-332">
-                                <label></label>
-                                <input type="text" style="width: 344px;" v-bind:value="item.subnetName" readonly >
-                            </span>
-                            <span class="join-input-group mr-10 w-200">
-                                <label></label>
-                                <input type="text"  style="width: 200px;" v-bind:value="item.ip" readonly >
-                            </span>
-                            <span class="join-input-group" style="width: 150px;">
-                                <label></label>
-                                <a href="javascript:void(0);" v-on:click="onclickIFDel(idx)" class="com-btn btn-s" style="width: 150px;">삭제</a>
-                            </span>
-                        </li>
-                    </div>
-                    <!-- Network Interface 추가영역 끝-->
-                    <li style="display: none;">
-                        <span class="join-input-group w-100">
-                            <label>공인IP<span>*</span><span style="font-size: small;font-weight: normal">(서버 생성시 공인IP를 함께 생성하시려면 Subnet 타입은 Public Subnet이어야 합니다)</span></label>
-                            <span class="radio-wrap join-radio bdr-b">
-                                <input type="radio" id="associateWithPublicIp_op1" value="true" v-model="saveInfo.associateWithPublicIp" />
-                                <label for="associateWithPublicIp_op1"><span></span>예</label>
-                                <input type="radio" id="associateWithPublicIp_op2" value="false" v-model="saveInfo.associateWithPublicIp" />
-                                <label for="associateWithPublicIp_op2"><span></span>아니오</label>
-                            </span>
-                        </span>
-                    </li>
+
                     <li class="bdr-b pb-20">
                         <span class="join-input-group w-100">
                             <label>서버 설명</label>
                             <input class="w-100" type="text" ref="dataName" v-model="saveInfo.serverDescription" placeholder="서버 설명을 입력하세요">
-                        </span>
-                    </li>
-
-                    <li style="display: none;">
-                        <span class="join-input-group w-100">
-                            <label>인증키 설정</label>
-                            <span class="radio-wrap join-radio">
-                                <input type="radio" id="key_op1" value="Y" name="key" checked @change="onChangeKey('Y')" />
-                                <label for="key_op1"><span></span>보유하고 있는 인증키 이용</label>
-                                <input type="radio" id="key_op2" value="N" name="key"  @change="onChangeKey('N')"/>
-                                <label for="key_op2"><span></span>새로운 인증키 생성</label>
-                            </span>
-                        </span>
-                    </li>
-
-                    <li class="bdr-b pb-20" id="loginKeyY" style="display: none;">
-                        <span class="join-input-group mr-30 w-84" >
-                            <label style="font-weight: normal;">인증키 선택</label>
-                        </span>
-                        <span class="join-input-group">
-                            <div class="custom-select" name="loginKeyDiv">
-                                <select id="loginKey" v-model="loginKey" onchange="selectedChange(id)" style="width: 744px;">
-                                    <option value="">인증키를 선택하세요</option>
-                                    <option v-for="option in loginKeyList" v-bind:value="option.keyName">{{option.keyName}}</option>
-                                </select>
-                            </div>
-                        </span>
-                    </li>
-                    <li class="bdr-b pb-20" id="loginKeyN" style="display: none">
-                        <span class="join-input-group mr-30 w-84">
-                            <label style="font-weight: normal;">인증키 이름</label>
-                        </span>
-                        <span class="join-input-group">
-                            <input type="text" v-model="createLoginKey.keyName" ref="keyName" @keyup="onKeyupLoginKey" style="width:430px;" placeholder="최소 3글자, 최대 30자">
-                            <a href="javascript:void(0);" v-on:click="onclickLoginKeyCreate" class="com-btn btn-s" style="width: 150px;">인증키 생성 및 저장</a>
-                            <label style="margin-top:0px;">
-                                <span v-show="loginKeyChk1" class="join-txt-red" style="font-size: 1.3rem;">최소 3글자 이상, 최대 30자까지만 입력이 가능합니다.</span>
-                            </label>
                         </span>
                     </li>
 

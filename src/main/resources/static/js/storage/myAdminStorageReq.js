@@ -153,7 +153,7 @@ Vue.component('maincontents', {
                 this.reqStorageInfo   = results.response;
             } else {
                 console.log(results);
-                alertMsgRtn("에러 :\n"+results.error.message);
+                alertMsgRtn("에러 :\n"+results.error.message, this.onclickList);
             }
         }
     }

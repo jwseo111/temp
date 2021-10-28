@@ -39,7 +39,7 @@
                         <option v-for="option in reqStoreStatCdList" v-bind:value="option.name">{{option.desc}}</option>
                     </select>
                 </div>
-                <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="데이터명을 입력하세요.">
+                <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="데이터명을 입력하세요">
                 <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
             </div>
 

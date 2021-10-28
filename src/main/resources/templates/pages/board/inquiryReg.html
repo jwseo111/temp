@@ -67,8 +67,8 @@
                     <li>
                         <span class="join-input-group">
                             <label>제목<span>*</span></label>
-                            <input v-if="inquiryReg"  type="text" ref="title" v-model="saveInfo.title" placeholder="제목을 입력해주세요">
-                            <input v-else type="text" ref="title" v-model="saveInfo.title">
+                            <input v-if="inquiryReg"  type="text" ref="title" v-model="saveInfo.title" placeholder="제목을 입력해주세요" maxlength="50">
+                            <input v-else type="text" ref="title" v-model="saveInfo.title" maxlength="50">
                         </span>
                     </li>
                     <li>

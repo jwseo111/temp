@@ -66,7 +66,8 @@ Vue.component('maincontents', {
         },
         // 신청 버튼 클릭(화면 이동)
         onclickReq: function (reqSeq) {
-              location.href = "/env/instance/req";
+              //location.href = "/env/instance/req";
+              location.href = "/env/instance/reqS"; // 간소화된 화면
         },
         // 목록 조회
         getEnvInstanceList:function () {
@@ -86,21 +87,6 @@ Vue.component('maincontents', {
                     setTimeout(function() {
                         loadSelect();
                     },300);
-                    break;
-                case "usrInfo":
-                    if (results.success) {
-                        let userRole = results.response.userRole;
-                        // if (userRole === "USER") { // 기업병원-질병책임자
-                        //     location.href = "/env/use/req";
-                        // } else { // MANAGER(병원-질병책임자), UPLOADER(병원-업로더), ADMIN(관리자)
-                        //     alertMsg("기업 사용자만 신청이 가능합니다.");
-                        //     return;
-                        // }
-                        location.href = "/env/use/req"; // tmp
-                    } else {
-                        //console.log(results);
-                        confirmMsg("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?", this.login);
-                    }
                     break;
             }
         },

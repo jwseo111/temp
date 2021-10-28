@@ -407,14 +407,15 @@ public class EnvInstanceService {
      * @date : 2021-10-12 오후 2:31
      * @author : xeroman.k
      * @param reqSeq
+     * @param requestDto
      * @return : void
      * @throws
      * @modifyed :
      *
     **/
-    public NCloudServerEnvDto rejectEnvironment(String reqSeq){
+    public NCloudServerEnvDto rejectEnvironment(String reqSeq, NCloudServerEnvDto requestDto){
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
-        nCloudServerEnv.reject();
+        nCloudServerEnv.reject(requestDto.getRejectReason());
 
         return nCloudServerEnv.convertDto();
     }
@@ -464,14 +465,14 @@ public class EnvInstanceService {
     }
 
     /**
-     * 
+     *
      * @methodName : getPrivateKey
      * @date : 2021-10-21 오후 5:39
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param reqSeq
      * @param loginUserInfo
      * @return : java.lang.String
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -480,16 +481,16 @@ public class EnvInstanceService {
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnvAndCheck(reqSeq, loginUserInfo);
         return nCloudServerEnv.getLoginPrivateKey();
     }
-    
+
     /**
-     * 
+     *
      * @methodName : getNCloudServerEnvAndCheck
-     * @date : 2021-10-21 오후 5:41
-     * @author : xeroman.k 
-     * @param reqSeq
-     * @param loginUserInfo
+     * @date : 2021-10-26 오후 5:40
+     * @author : xeroman.k
+ * @param reqSeq
+ * @param loginUserInfo
      * @return : com.itsm.dranswer.instance.NCloudServerEnv
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -498,7 +499,26 @@ public class EnvInstanceService {
         if(!nCloudServerEnv.checkUser(loginUserInfo.getUserSeq())){
             throw new IllegalArgumentException("잘못된 접근 입니다.");
         }
-        
+
         return nCloudServerEnv;
+    }
+
+    /**
+     *
+     * @methodName : reqCancelEnvironment
+     * @date : 2021-10-28 오전 10:32
+     * @author : xeroman.k
+     * @param reqSeq
+     * @return : com.itsm.dranswer.instance.NCloudServerEnvDto
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public NCloudServerEnvDto reqCancelEnvironment(String reqSeq) {
+
+        NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
+        nCloudServerEnv.cancel();
+
+        return nCloudServerEnv.convertDto();
     }
 }

@@ -85,11 +85,15 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @Column(columnDefinition = "int COMMENT '사용일수 0이면 무기한'")
     private Integer usingDays;
 
+    @Column(columnDefinition = "varchar(4000) COMMENT '거절사유'")
+    private String rejectReason;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nCloudServerEnv")
     private List<UseStorageInfo> useStorageInfoList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nCloudServerEnv")
     private List<NCloudNetworkInterface> networkInterfaceList = new ArrayList<>();
+
 
     public NCloudServerEnv(NCloudServerEnvDto dto) {
         super();
@@ -148,12 +152,13 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         this.approveStatus = ApproveStatus.END;
     }
 
-    public void reject() {
+    public void reject(String rejectReason) {
 
         if(this.approveStatus != ApproveStatus.REQUEST){
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
         this.approveStatus = ApproveStatus.REJECT;
+        this.rejectReason = rejectReason;
     }
 
     public void update(String serverInstanceNo, String vpcNo, String subnetNo, String acgNo, String loginKeyName, String loginPrivateKey) {
@@ -175,5 +180,14 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
 
     public boolean checkUser(Long userSeq) {
         return this.reqUserSeq==userSeq;
+    }
+
+    public void cancel() {
+
+        if(this.approveStatus == ApproveStatus.REQUEST){
+            this.approveStatus = ApproveStatus.CANCEL;
+        }else{
+            throw new IllegalArgumentException("처리 불가능한 상태 입니다");
+        }
     }
 }

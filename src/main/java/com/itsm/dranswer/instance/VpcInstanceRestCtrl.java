@@ -560,9 +560,19 @@ public class VpcInstanceRestCtrl {
     @Secured(value = {"ROLE_ADMIN"})
     @PostMapping(value = "/management/instance/environment/reject/{reqSeq:.+(?<!\\.js)$}")
     public ApiResult<NCloudServerEnvDto> rejectEnvironment(
+            @PathVariable String reqSeq,
+            @RequestBody
+                    NCloudServerEnvDto requestDto) {
+
+        return success(envInstanceService.rejectEnvironment(reqSeq, requestDto));
+    }
+
+    @Secured(value = {"ROLE_ADMIN"})
+    @PostMapping(value = "/management/instance/environment/cancel/{reqSeq:.+(?<!\\.js)$}")
+    public ApiResult<NCloudServerEnvDto> reqCancelEnvironment(
             @PathVariable String reqSeq) {
 
-        return success(envInstanceService.rejectEnvironment(reqSeq));
+        return success(envInstanceService.reqCancelEnvironment(reqSeq));
     }
 
 }

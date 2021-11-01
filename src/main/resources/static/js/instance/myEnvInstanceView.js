@@ -34,7 +34,9 @@ Vue.component('maincontents', {
                 approveStatus:{},
             },
             approveStatusCode:"" , // 처리상태코드
-            saveInfo:{},
+            saveInfo:{
+                rejectReason:"",
+            },
         };
     },
     mounted:function(){
@@ -46,6 +48,20 @@ Vue.component('maincontents', {
             get(TID.SEARCH,
                 "/env/instance/getDetail",
                 this.cond,
+                this.callback);
+        },
+        // 인증키 내려받기
+        onclickPrivateKey: function(){
+            post('getPrivateKey',
+                "/management/instance/environment/getPrivateKey/"+this.cond.reqSeq,
+                null,
+                this.callback);
+        },
+        // root 비밀번호 찾기
+        onclickRootPassword: function(){
+            post('getRootPassword',
+                "/management/instance/environment/getRootPassword/"+this.cond.reqSeq,
+                null,
                 this.callback);
         },
         // 목록 클릭(목록 이동)
@@ -86,7 +102,7 @@ Vue.component('maincontents', {
         reject: function(){
             post(TID.REJECT,
                 "/management/instance/environment/reject/"+this.cond.reqSeq,
-                null,
+                this.saveInfo,
                 this.callback);
         },
         // 생성 이벤트
@@ -122,6 +138,21 @@ Vue.component('maincontents', {
                 case TID.CREATE:
                     if (results.success) {
                         alertMsgRtn("정상적으로 생성 되었습니다.", this.getEnvInstanceView);
+                    } else {
+                        alertMsg(results.error.message);
+                    }
+                    break;
+                case "getRootPassword":
+                    if (results.success) {
+                        alertMsg(results.response);
+                    } else {
+                        alertMsg(results.error.message);
+                    }
+                    break;
+                case "getPrivateKey":
+                    if (results.success) {
+                        // 인증키 다운로드
+                        textDownload(this.cond.reqSeq+".pem", results.response);
                     } else {
                         alertMsg(results.error.message);
                     }

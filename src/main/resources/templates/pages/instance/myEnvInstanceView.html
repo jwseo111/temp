@@ -79,10 +79,24 @@
                         <h4>서버 정보</h4>
                         <ul class="com-ul">
                             <li class=" bdr-b">
-                                <span class="join-input-group mr-40">
+                                <span class="join-input-group w-100">
                                     <label>서버명</label>
-                                    <p class="txt-data">{{envInstanceInfo.reqSeq}}</p>
+                                    <span class="join-input-group" style="width: 430px;">
+                                        <p class="txt-data">{{envInstanceInfo.reqSeq}}</p>
+                                    </span>
+                                    <span v-if="role === 'ROLE_USER'" class="join-input-group mr-10"  style="width:228px">
+                                        <div class="btn-box" style="width: 228px;">
+                                        <a href="javascript:;" v-on:click="onclickPrivateKey" class="com-btn btn-w-228">인증키 내려받기</a>
+                                        </div>
+                                    </span>
+                                    <span v-if="role === 'ROLE_USER'" class="join-input-group"  style="width:228px">
+                                        <div class="btn-box" style="width: 228px;">
+                                        <a href="javascript:;" v-on:click="onclickRootPassword" class="com-btn btn-w-228">root 비밀번호 찾기</a>
+                                        </div>
+                                    </span>
                                 </span>
+
+
                             </li>
                         </ul>
                     </div>
@@ -137,7 +151,7 @@
                         <a v-if="role === 'ROLE_USER' && approveStatusCode === 'REQUEST'"  href="#" class="com-btn btn-w-332" v-on:click="onclickCancel">취소신청</a>
                         <a v-if="role === 'ROLE_ADMIN' && approveStatusCode === 'REQUEST'" href="#" class="com-btn btn-line-bl btn-w-332" style="border-left: hidden" v-on:click="onclickReject">거절</a>
                         <a v-if="role === 'ROLE_ADMIN' && approveStatusCode === 'REQUEST'" href="#" class="com-btn btn-w-332" v-on:click="onclickApprove">승인</a>
-                        <a v-if="role === 'ROLE_ADMIN' && approveStatusCode === 'ACCEPT'"  href="#" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickCreate">생성</a>
+                        <a v-if="role === 'ROLE_ADMIN' && approveStatusCode === 'ACCEPT'"  href="#" class="com-btn btn-w-332" v-on:click="onclickCreate">생성</a>
                     </div>
                 </div>
             </div>

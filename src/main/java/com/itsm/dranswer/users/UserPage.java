@@ -33,10 +33,10 @@ public class UserPage {
         return "pages/user/findIdPw";
     }
 
-    @GetMapping(value = "/my/management/storagepage")
-    public String mypage() {
-        return "pages/user/mypage";
-    }
+//    @GetMapping(value = "/my/management/storagepage")
+//    public String mypage() {
+//        return "pages/user/mypage";
+//    }
 
     // 마이페이지(관리자)  > 회원목록
     @PreAuthorize("isAuthenticated()")

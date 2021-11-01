@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/mypageLayout">
+
+    <th:block layout:fragment="css">
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/common/common.js}"></script>
+        <script th:src="@{/js/instance/myEnvInstanceList.js}"></script>
+        <script>
+        </script>
+    </th:block>
+
+    <div class="mypage-container"  layout:fragment="contents">
+        <div id="maincontentswrap" >
+            <maincontents ref="maincontents"></maincontents>
+        </div>
+
+        <script type="text/x-template" id="main-template" >
+            <div class="content" >
+                <div class="mypage-content">
+                    <div class="mypage-content mt-40 mb-40">
+                    <h3>학습환경 사용신청</h3>
+                        <div class="list-search-wrap a-r mt-20">
+                            <label>Search</label>
+                            <div class="custom-select search-select" style="width: 150px;">
+                                <select id="approveStatus" v-model="cond.approveStatus" ref="approveStatus">
+                                    <option value="">전체</option>
+                                    <option v-for="option in approveStatusCdList" v-bind:value="option.name">{{option.desc}}</option>
+                                </select>
+                            </div>
+
+                            <input type="text" v-model="cond.keyword" @keyup="onKeyup" placeholder="서버설명을 입력하세요">
+                            <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
+                        </div>
+
+                        <table class="table-list mt-50">
+                            <colgroup>
+                                <col style="width:24%" />
+                                <col style="width:20%" />
+                                <col style="width:10%" />
+                                <col style="width:15%" />
+                                <col style="width:8%" />
+                                <col style="width:10%" />
+                                <col style="width:8%" />
+                                <col style="width:10%" />
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col">번호</th>
+                                <th scope="col">서버설명</th>
+                                <th scope="col">운영체게</th>
+                                <th scope="col">스펙유형</th>
+                                <th scope="col">스토리지</th>
+                                <th scope="col">신청자</th>
+                                <th scope="col">상태</th>
+                                <th scope="col">신청일자</th>
+                            </tr>
+                            </thead>
+                            <tbody v-if="envInstanceList.length == 0">
+                            <tr>
+                                <td colspan="8" style="text-align: center">
+                                    데이터가 없습니다.
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody v-else-if="envInstanceList.length > 0">
+                            <tr v-for="(item, idx) in envInstanceList">
+                                <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqSeq)">{{item.reqSeq}}</a></td>
+                                <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqSeq)">{{item.serverDescription}}</a></td>
+                                <td>{{item.osImageType.name}}</td>
+                                <td>{{item.productType.desc}}</td>
+                                <td>{{item.storageType}}</td>
+                                <td>{{item.userName}}</td>
+                                <td>{{item.approveStatus.desc}}</td>
+                                <td v-if="item.createdDate === null" align="center">-</td>
+                                <td v-else align="center">{{item.createdDate.substr(0,10)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 페이징 -->
+                        <div class="btn-box mt-40">
+                            <div class="pagination fl-l">
+                                <a href="#" v-on:click="onclickPage(pageInfo.prev)"><span class="next-bar"></span><span class="next"></span></a>
+                                <a href="#" v-for="(page, idx) in pageInfo.pages" v-on:click="onclickPage(page)" v-bind:class="{active:pageInfo.curr==page}">
+                                    {{page}}
+                                </a>
+                                <a href="#" v-on:click="onclickPage(pageInfo.next)"><span class="prev-bar"></span><span class="prev"></span></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </script>
+    </div>
+</html>

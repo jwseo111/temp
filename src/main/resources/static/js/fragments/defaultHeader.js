@@ -47,7 +47,8 @@ Vue.component('headercontents', {
                 {name: "로그인", uri:"/login"}
             ],
             authenticatedTopMenus:[
-                {name: "마이페이지", uri:"/my/management/storagepage"},
+                // {name: "마이페이지", uri:"/my/management/storagepage"},
+                {name: "마이페이지", uri:""},
                 {name: "로그아웃", uri:"/logout"}
             ],
             messages : "",

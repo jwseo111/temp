@@ -44,5 +44,18 @@ public class InstancePage {
 
     }
 
+    // 마이페이지 > 학습환경 사용신청 목록
+    @GetMapping(value = "/my/envInstance/list")
+    public String myEnvInstanceList() {
+        return "pages/instance/myEnvInstanceList";
+
+    }
+    // 마이페이지 > 학습환경 사용신청 상세
+    @GetMapping(value = "/my/envInstance/view")
+    public String myEnvInstanceView() {
+        return "pages/instance/myEnvInstanceView";
+
+    }
+
 
 }

@@ -79,9 +79,9 @@ public class EnvInstanceService {
     public Page<ServerEnvDto> getEnvInstanceList(ApproveStatus approveStatus, String keyword, Long userSeq, Pageable pageable) {
 
         Page<ServerEnvDto> pages = null;
+        pages = nCloudServerEnvRepoSupport.searchAll(approveStatus, keyword, userSeq, pageable);
 
         if(userSeq != null){
-            pages = nCloudServerEnvRepoSupport.searchAll(approveStatus, keyword, userSeq, pageable);
 
             List<ServerEnvDto> list = pages.getContent();
             list.forEach(envDto->{
@@ -145,6 +145,14 @@ public class EnvInstanceService {
 
         GetServerProductListResponseDto getServerProductListResponseDto = vpcCommonService.getServerProductList(requestDto, nCloudKeyDto);
         nCloudServerEnvDto.setProduct(getServerProductListResponseDto);
+
+        GetVpcServerDetailRequestDto getVpcServerDetailRequestDto = new GetVpcServerDetailRequestDto();
+        getVpcServerDetailRequestDto.setServerInstanceNo(nCloudServerEnvDto.getServerInstanceNo());
+        GetVpcServerDetailResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.getServerInstanceDetail(getVpcServerDetailRequestDto, nCloudKeyDto);
+        if(serverInstanceDto != null){
+            String publicIp = serverInstanceDto.getPublicIp();
+            nCloudServerEnvDto.setPublicIp(publicIp);
+        }
 
         return nCloudServerEnvDto;
     }

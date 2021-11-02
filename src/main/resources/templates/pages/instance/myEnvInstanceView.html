@@ -57,6 +57,16 @@
                                     <p class="txt-data">{{envInstanceInfo.usingDays === 0 ? "무기한" : envInstanceInfo.usingDays}}</p>
                                 </span>
                             </li>
+                            <li class="bdr-b">
+                                <span class="join-input-group mr-40">
+                                    <label>공인IP</label>
+                                    <p class="txt-data">{{envInstanceInfo.publicIp === null ? "-" : envInstanceInfo.publicIp}}</p>
+                               </span>
+                                <span class="join-input-group">
+                                    <label>처리상태</label>
+                                    <p class="txt-data">{{envInstanceInfo.approveStatus.desc}}</p>
+                               </span>
+                            </li>
                             <li class=" bdr-b">
                                <span class="join-input-group mr-40">
                                     <label>신청일자</label>
@@ -65,12 +75,6 @@
                                <span class="join-input-group">
                                     <label>처리일자</label>
                                     <p class="txt-data">{{envInstanceInfo.modifiedDate}}</p>
-                               </span>
-                            </li>
-                            <li class=" bdr-b">
-                               <span class="join-input-group">
-                                    <label>처리상태</label>
-                                    <p class="txt-data">{{envInstanceInfo.approveStatus.desc}}</p>
                                </span>
                             </li>
                         </ul>

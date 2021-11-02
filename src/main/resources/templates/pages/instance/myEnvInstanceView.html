@@ -128,8 +128,8 @@
                     <div class="btn-box mt-70 a-r">
                         <a href="javascript:;" class="com-btn btn-line-bl btn-w-332" v-on:click="onclickList">목록</a>
                         <a v-if="role === 'ROLE_USER' && approveStatusCode === 'REQUEST'"  href="#" class="com-btn btn-w-332" v-on:click="onclickCancel">취소신청</a>
-                        <a v-if="role === 'ROLE_ADMIN' && approveStatusCode === 'REQUEST'" href="#" class="com-btn btn-line-bl btn-w-332" style="border-left: hidden" v-on:click="onclickReject">거절</a>
                         <a v-if="role === 'ROLE_ADMIN' && approveStatusCode === 'REQUEST'" href="#" class="com-btn btn-w-332" v-on:click="onclickApprove">승인</a>
+                        <a v-if="role === 'ROLE_ADMIN' && approveStatusCode === 'REQUEST'" href="#" class="com-btn btn-gray btn-w-332" style="border-left: hidden" v-on:click="onclickReject">거절</a>
                         <a v-if="role === 'ROLE_ADMIN' && approveStatusCode === 'ACCEPT'"  href="#" class="com-btn btn-w-332" v-on:click="onclickCreate">생성</a>
                     </div>
                 </div>

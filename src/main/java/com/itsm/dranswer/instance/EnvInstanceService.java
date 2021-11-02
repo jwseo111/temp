@@ -237,7 +237,7 @@ public class EnvInstanceService {
 
         CreateVpcServerResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.createServerInstances(createVpcServerRequestDto, nCloudKeyDto);
 
-        nCloudServerEnv.update(serverInstanceDto.getServerInstanceNo(), vpcNo, subnetNo, acgNo, loginKeyName, loginPrivateKey);
+        nCloudServerEnv.update(serverInstanceDto.getServerInstanceNo(), vpcNo, subnetNo, acgNo, loginKeyName, loginPrivateKey, serverInstanceDto.getServerName());
 
         return nCloudServerEnv;
     }

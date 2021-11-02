@@ -42,6 +42,9 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @Column(columnDefinition = "varchar(36) COMMENT 'Server Instance No.'")
     private String serverInstanceNo;
 
+    @Column(columnDefinition = "varchar(36) COMMENT 'Server Name'")
+    private String serverName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reqUserSeq", referencedColumnName = "userSeq", insertable = false, updatable = false)
     private UserInfo reqUserInfo;
@@ -161,7 +164,7 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         this.rejectReason = rejectReason;
     }
 
-    public void update(String serverInstanceNo, String vpcNo, String subnetNo, String acgNo, String loginKeyName, String loginPrivateKey) {
+    public void update(String serverInstanceNo, String vpcNo, String subnetNo, String acgNo, String loginKeyName, String loginPrivateKey, String serverName) {
 
         this.created(serverInstanceNo);
 
@@ -169,6 +172,7 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         this.subnetNo = subnetNo;
         this.loginKeyName = loginKeyName;
         this.loginPrivateKey = loginPrivateKey;
+        this.serverName = serverName;
     }
 
     public void checkApproved() {

@@ -34,6 +34,8 @@ public class NCloudServerEnvDto extends BaseEntity {
 
     private String serverInstanceNo;
 
+    private String serverName;
+
     private String vpcNo;
 
     private String subnetNo;

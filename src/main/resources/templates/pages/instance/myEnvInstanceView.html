@@ -75,16 +75,16 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="join-cont-box mt-30">
+                    <div v-if="approveStatusCode === 'CREATED'" class="join-cont-box mt-30">
                         <h4>서버 정보</h4>
                         <ul class="com-ul">
                             <li class=" bdr-b">
                                 <span class="join-input-group w-100">
                                     <label>서버명</label>
-                                    <span class="join-input-group" style="width: 430px;">
-                                        <p class="txt-data">{{envInstanceInfo.reqSeq}}</p>
+                                    <span class="join-input-group mr-10"  style="width:300px">
+                                        <p class="txt-data">{{envInstanceInfo.serverName}}</p>
                                     </span>
-                                    <span v-if="role === 'ROLE_USER'" class="join-input-group mr-10"  style="width:228px">
+                                    <span v-if="role === 'ROLE_USER'" class="join-input-group mr-10" style="width:228px">
                                         <div class="btn-box" style="width: 228px;">
                                         <a href="javascript:;" v-on:click="onclickPrivateKey" class="com-btn btn-w-228">인증키 내려받기</a>
                                         </div>
@@ -100,27 +100,6 @@
                             </li>
                         </ul>
                     </div>
-<!--                    <div v-if="approveStatusCode === 'REQUEST' || approveStatusCode === 'REJECT'" class="join-cont-box mt-30">-->
-<!--                        <h4>처리 정보</h4>-->
-<!--                        <ul  v-if="approveStatusCode === 'REQUEST'" class="com-ul">-->
-<!--                            <li>-->
-<!--                                <span class="join-input-group mr-40  w-100">-->
-<!--                                    <label>취소사유</label>-->
-<!--                                    <input  v-if="approveStatusCode === 'REQUEST' && role === 'ROLE_USER'" class="w-100"  type="text" ref="cancelReason" v-model="saveInfo.cancelReason" placeholder="취소사유를 입력하세요">-->
-<!--                                    <input  v-else class="w-100"  type="text" v-model="envInstanceInfo.cancelReason" readonly>-->
-<!--                                </span>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                        <ul class="com-ul">-->
-<!--                            <li>-->
-<!--                                <span class="join-input-group mr-40  w-100">-->
-<!--                                    <label>거절사유</label>-->
-<!--                                    <input  v-if="approveStatusCode === 'REQUEST' && role === 'ROLE_ADMIN'" class="w-100"  type="text" ref="rejectReason" v-model="saveInfo.rejectReason" placeholder="거절사유를 입력하세요">-->
-<!--                                    <input  v-else class="w-100"  type="text"  v-model="envInstanceInfo.rejectReason" readonly>-->
-<!--                                </span>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
                     <div v-if="(approveStatusCode === 'REQUEST' && role === 'ROLE_USER') || approveStatusCode === 'CANCEL'" class="join-cont-box mt-30">
                         <h4>처리 정보</h4>
                         <ul class="com-ul">

@@ -405,7 +405,8 @@ a.btn-hosp-search{width:124px;height:56px;font-family:'Roboto';font-size:1.4rem;
 .pop-ul li:last-child{margin-right:0}
 .pop-ul li label{margin-bottom:20px;font-size:1.6rem;font-weight:700}
 .pop-ul li p{word-break:break-all;line-height:2.4rem}
-.alert-box{padding:50px 0;text-align:center}
+/*.alert-box{padding:50px 0;text-align:center;}  */
+.alert-box{padding:50px 0;text-align:center;word-break:break-all;word-wrap:break-word;} /* alert 자동 줄바꿈 추가 */
 
 
 /* //////////////// main ///////////////////*/

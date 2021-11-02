@@ -16,6 +16,7 @@ import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.NCloudKeyDto;
 import com.itsm.dranswer.users.UserService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,7 +78,45 @@ public class EnvInstanceService {
     **/
     public Page<ServerEnvDto> getEnvInstanceList(ApproveStatus approveStatus, String keyword, Long userSeq, Pageable pageable) {
 
-        return nCloudServerEnvRepoSupport.searchAll(approveStatus, keyword, userSeq, pageable);
+        Page<ServerEnvDto> pages = null;
+
+        if(userSeq != null){
+            pages = nCloudServerEnvRepoSupport.searchAll(approveStatus, keyword, userSeq, pageable);
+
+            List<ServerEnvDto> list = pages.getContent();
+//            for(ServerEnvDto envDto : list){
+//                String serverInstanceNo = envDto.getServerInstanceNo();
+//                if(serverInstanceNo != null){
+//                    NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(envDto.getReqUserSeq());
+//                    GetVpcServerDetailRequestDto requestDto = new GetVpcServerDetailRequestDto();
+//                    requestDto.setServerInstanceNo(serverInstanceNo);
+//                    GetVpcServerDetailResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.getServerInstanceDetail(requestDto, nCloudKeyDto);
+//                    if(serverInstanceDto != null){
+//                        String publicIp = serverInstanceDto.getPublicIp();
+//                        envDto.setPublicIp(publicIp);
+//                    }
+//
+//                }
+//            }
+            list.forEach(envDto->{
+                String serverInstanceNo = envDto.getServerInstanceNo();
+                if(serverInstanceNo != null){
+                    NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(envDto.getReqUserSeq());
+                    GetVpcServerDetailRequestDto requestDto = new GetVpcServerDetailRequestDto();
+                    requestDto.setServerInstanceNo(serverInstanceNo);
+                    GetVpcServerDetailResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.getServerInstanceDetail(requestDto, nCloudKeyDto);
+                    if(serverInstanceDto != null){
+                        String publicIp = serverInstanceDto.getPublicIp();
+                        envDto.setPublicIp(publicIp);
+                    }
+
+                }
+            });
+
+            pages = new PageImpl<ServerEnvDto>(list, pages.getPageable(), pages.getTotalElements());
+        }
+
+        return pages;
 
     }
 

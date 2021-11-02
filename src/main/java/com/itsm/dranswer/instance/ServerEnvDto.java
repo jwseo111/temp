@@ -22,11 +22,15 @@ import lombok.*;
 public class ServerEnvDto extends BaseEntity {
 
     private String reqSeq;
+    private String serverInstanceNo;
+    private String serverName;
     private String serverDescription;
     private OsImageType osImageType;
     private ProductType productType;
     private String storageType;
     private String userName;
+    private String publicIp;
+    private Long reqUserSeq;
     private ApproveStatus approveStatus;
 
     /**
@@ -42,6 +46,9 @@ public class ServerEnvDto extends BaseEntity {
      * using for repo support
     **/
     public ServerEnvDto(NCloudServerEnv nCloudServerEnv, UserInfo userInfo){
+        this.serverInstanceNo = nCloudServerEnv.getServerInstanceNo();
+        this.serverName = nCloudServerEnv.getServerName();
+        this.reqUserSeq = nCloudServerEnv.getReqUserSeq();
         this.reqSeq = nCloudServerEnv.getReqSeq();
         this.serverDescription = nCloudServerEnv.getServerDescription();
         this.osImageType = nCloudServerEnv.getOsImageType();

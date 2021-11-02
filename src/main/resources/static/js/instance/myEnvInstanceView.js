@@ -144,7 +144,8 @@ Vue.component('maincontents', {
                     break;
                 case "getRootPassword":
                     if (results.success) {
-                        alertMsg(results.response);
+                        let pass = results.response.getRootPasswordResponse.rootPassword;
+                        alertMsg(pass);
                     } else {
                         alertMsg(results.error.message);
                     }

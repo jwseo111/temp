@@ -84,20 +84,6 @@ public class EnvInstanceService {
             pages = nCloudServerEnvRepoSupport.searchAll(approveStatus, keyword, userSeq, pageable);
 
             List<ServerEnvDto> list = pages.getContent();
-//            for(ServerEnvDto envDto : list){
-//                String serverInstanceNo = envDto.getServerInstanceNo();
-//                if(serverInstanceNo != null){
-//                    NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(envDto.getReqUserSeq());
-//                    GetVpcServerDetailRequestDto requestDto = new GetVpcServerDetailRequestDto();
-//                    requestDto.setServerInstanceNo(serverInstanceNo);
-//                    GetVpcServerDetailResponseDto.ServerInstanceDto serverInstanceDto = vpcServerService.getServerInstanceDetail(requestDto, nCloudKeyDto);
-//                    if(serverInstanceDto != null){
-//                        String publicIp = serverInstanceDto.getPublicIp();
-//                        envDto.setPublicIp(publicIp);
-//                    }
-//
-//                }
-//            }
             list.forEach(envDto->{
                 String serverInstanceNo = envDto.getServerInstanceNo();
                 if(serverInstanceNo != null){

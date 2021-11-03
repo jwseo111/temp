@@ -133,10 +133,16 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     }
 
     public void accept() {
+        if(ApproveStatus.REQUEST == this.approveStatus){
+            this.approveStatus = ApproveStatus.ACCEPT;
+        }else{
+            throw new IllegalArgumentException("처리 불가능한 상태 입니다");
+        }
+    }
+
+    public void cancelAccept(){
         if(ApproveStatus.REQ_CANCEL == this.approveStatus){
             this.approveStatus = ApproveStatus.CANCEL;
-        }else if(ApproveStatus.REQUEST == this.approveStatus){
-            this.approveStatus = ApproveStatus.ACCEPT;
         }else{
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }

@@ -307,6 +307,31 @@ public class EnvInstanceService {
 
     /**
      *
+     * @methodName : cancelApproveEnvironment
+     * @date : 2021-11-03 오후 2:01
+     * @author : xeroman.k
+     * @param reqSeq
+     * @return : com.itsm.dranswer.instance.NCloudServerEnvDto
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public NCloudServerEnvDto cancelApproveEnvironment(String reqSeq) {
+
+        NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
+        nCloudServerEnv.cancelAccept();
+
+        // 서버 정지
+        this.stopEnvironment(reqSeq);
+
+        // 서버 반납
+        this.terminateEnvironment(reqSeq);
+
+        return nCloudServerEnv.convertDto();
+    }
+
+    /**
+     *
      * @methodName : createEnvironment
      * @date : 2021-10-12 오후 2:31
      * @author : xeroman.k
@@ -379,6 +404,10 @@ public class EnvInstanceService {
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
         NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
 
+        if(nCloudServerEnv.getServerInstanceNo() == null){
+            return;
+        }
+
         vpcServerService.stopServerInstances(
                 new OperateVpcServersRequestDto(null, Arrays.asList(nCloudServerEnv.getServerInstanceNo())),
                 nCloudKeyDto);
@@ -399,6 +428,10 @@ public class EnvInstanceService {
 
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
         NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
+
+        if(nCloudServerEnv.getServerInstanceNo() == null){
+            return;
+        }
 
         GetVpcServerDetailRequestDto requestDto = new GetVpcServerDetailRequestDto(null, nCloudServerEnv.getServerInstanceNo());
 

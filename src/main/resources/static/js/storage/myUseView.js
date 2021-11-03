@@ -39,6 +39,7 @@ Vue.component('maincontents', {
                     agencyInfo:{},
                 },
                 useStorageStatCode:{},
+                bucketInfo:{},
             },
         };
     },

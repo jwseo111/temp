@@ -310,7 +310,7 @@ Vue.component('maincontents', {
                 this.info.inputPw=this.info.password1;
             }
 
-            if(this.agencyTypeCode ==="COMP"){
+            if(this.info.agencyTypeCode ==="COMP"){
                 this.info.userRole="USER";
             }else{
                 if(this.info.diseaseManagerYn === "Y"){

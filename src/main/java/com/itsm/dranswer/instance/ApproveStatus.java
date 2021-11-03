@@ -26,7 +26,8 @@ public enum ApproveStatus {
     CREATED("CREATED", "생성됨"),
     END("END", "종료"),
     REJECT("REJECT", "거절"),
-    CANCEL("CANCEL", "취소");
+    CANCEL("CANCEL", "취소"),
+    REQ_CANCEL("REQ_CANCEL", "취소요청");
 
     private String name;
     private String desc;

@@ -547,11 +547,12 @@ public class EnvInstanceService {
      * @modifyed :
      *
     **/
-    public NCloudServerEnvDto reqCancelEnvironment(String reqSeq) {
+    public NCloudServerEnvDto reqCancelEnvironment(String reqSeq, NCloudServerEnvDto requestDto) {
 
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
-        nCloudServerEnv.cancel();
+        nCloudServerEnv.cancel(requestDto.getCancelReason());
 
         return nCloudServerEnv.convertDto();
     }
+
 }

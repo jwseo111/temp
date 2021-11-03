@@ -91,6 +91,9 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @Column(columnDefinition = "varchar(4000) COMMENT '거절사유'")
     private String rejectReason;
 
+    @Column(columnDefinition = "varchar(4000) COMMENT '취소사유'")
+    private String cancelReason;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nCloudServerEnv")
     private List<UseStorageInfo> useStorageInfoList = new ArrayList<>();
 
@@ -130,17 +133,18 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     }
 
     public void accept() {
-        if(this.approveStatus != ApproveStatus.REQUEST){
+        if(ApproveStatus.REQ_CANCEL == this.approveStatus){
+            this.approveStatus = ApproveStatus.CANCEL;
+        }else if(ApproveStatus.REQUEST == this.approveStatus){
+            this.approveStatus = ApproveStatus.ACCEPT;
+        }else{
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
-
-        this.approveStatus = ApproveStatus.ACCEPT;
-
     }
 
     public void created(String serverInstanceNo) {
         this.serverInstanceNo = serverInstanceNo;
-        if(this.approveStatus != ApproveStatus.ACCEPT){
+       if(this.approveStatus != ApproveStatus.ACCEPT){
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
 
@@ -186,12 +190,19 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         return this.reqUserSeq==userSeq;
     }
 
-    public void cancel() {
+    public void cancel(String cancelReason) {
 
-        if(this.approveStatus == ApproveStatus.REQUEST){
+        if(ApproveStatus.REQUEST == this.approveStatus){
             this.approveStatus = ApproveStatus.CANCEL;
+        }else if(ApproveStatus.ACCEPT == this.approveStatus){
+            this.approveStatus = ApproveStatus.REQ_CANCEL;
+            this.cancelReason = cancelReason;
+        }else if(ApproveStatus.CREATED == this.approveStatus){
+            this.approveStatus = ApproveStatus.REQ_CANCEL;
+            this.cancelReason = cancelReason;
         }else{
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
     }
+
 }

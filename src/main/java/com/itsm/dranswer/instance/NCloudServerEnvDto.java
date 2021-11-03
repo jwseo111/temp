@@ -62,6 +62,8 @@ public class NCloudServerEnvDto extends BaseEntity {
 
     private String rejectReason;
 
+    private String cancelReason;
+
     private Integer usingDays;
 
     private List<UseStorageInfoDto> useStorageInfoList = new ArrayList<>();

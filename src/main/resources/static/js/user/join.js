@@ -290,7 +290,7 @@ Vue.component('maincontents', {
                 return false;
             }
 
-            if(this.info.agencyTypeCode === 'COMP' || this.info.diseaseManagerYn === 'Y'){
+            if(this.info.diseaseManagerYn === 'Y'){
                 param =[
                     {value:this.info.nCloudId, title:"NBP 아이디", ref:this.$refs.nCloudId},
                     {value:this.info.nCloudAccessKey, title:"NBP 액세스키", ref:this.$refs.nCloudAccessKey},

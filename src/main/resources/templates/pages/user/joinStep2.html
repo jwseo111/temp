@@ -128,7 +128,7 @@
                                 </span>
                             </span>
                         </li>
-                        <li v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
+                        <li v-show="info.diseaseManagerYn === 'Y'">
                             <span class="join-input-group mr-40">
                                 <label>NBP 아이디<span>*</span></label>
                                 <input type="text" placeholder="NBP 엑세스키를 입력해주세요" ref="nCloudId" v-model="info.nCloudId" maxlength="50">
@@ -138,7 +138,7 @@
                                 <input type="text" placeholder="오브젝트 스토리지 아이디를 입력해주세요" ref="nCloudObjStorageId" v-model="info.nCloudObjStorageId" maxlength="50">
                             </span>
                         </li>
-                        <li v-show="info.diseaseManagerYn === 'Y' || info.agencyTypeCode === 'COMP'">
+                        <li v-show="info.diseaseManagerYn === 'Y'">
                             <span class="join-input-group mr-40">
                                 <label>NBP 엑세스키<span>*</span></label>
                                 <input type="text" placeholder="NBP 엑세스키를  입력해주세요" ref="nCloudAccessKey" v-model="info.nCloudAccessKey" maxlength="50">

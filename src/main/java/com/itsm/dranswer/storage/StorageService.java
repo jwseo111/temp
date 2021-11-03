@@ -1007,6 +1007,8 @@ public class StorageService {
                 useStorageInfo.getOpenStorageInfo().getDiseaseManagerUserInfo().getAgencyInfo(),
                 useStorageInfo.getReqUserInfo(), useStorageInfo.getReqUserInfo().getAgencyInfo());
 
+        useStorageInfoDto.setBucketInfo(useStorageInfo.getOpenStorageInfo().getReqStorageInfo().getBucketInfo());
+
         return useStorageInfoDto;
 
     }

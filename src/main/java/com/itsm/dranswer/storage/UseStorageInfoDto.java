@@ -52,6 +52,8 @@ public class UseStorageInfoDto extends BaseEntity {
 
     private UserInfoDto cUserInfo;
 
+    private BucketInfoDto bucketInfo;
+
     public UseStorageInfoDto(UseStorageInfo source) {
 
         copyProperties(source, this);
@@ -68,5 +70,11 @@ public class UseStorageInfoDto extends BaseEntity {
 
         this.cUserInfo = new UserInfoDto(cUserInfo);
         this.cUserInfo.setAgencyInfo(new AgencyInfoDto(cAgencyInfo));
+    }
+
+    public void setBucketInfo(BucketInfo bucketInfo) {
+
+        this.bucketInfo = new BucketInfoDto((bucketInfo));
+
     }
 }

@@ -33,9 +33,14 @@ Vue.component('maincontents', {
                 productType:{},
                 approveStatus:{},
             },
+            cancelDiv : false,
+            rejectDiv : false,
+            cancelBtn : false,
+            rejectBtn : false,
             approveStatusCode:"" , // 처리상태코드
             saveInfo:{
                 rejectReason:"",
+                cancelReason:"",
             },
         };
     },
@@ -70,23 +75,38 @@ Vue.component('maincontents', {
         },
         // 취소신청 이벤트
         onclickCancel: function () {
-            if(isNull(this.saveInfo.cancelReason)){
+            if((this.approveStatusCode === 'ACCEPT' || this.approveStatusCode === 'CREATED') && isNull(this.saveInfo.cancelReason)){
                 alertMsg("취소사유는 필수입니다.",this.$refs.cancelReason);
                 return;
             }
-            //console.log(JSON.stringify(this.saveInfo));
+            console.log(JSON.stringify(this.saveInfo));
             confirmMsg("취소신청 하시겠습니까?", this.cancel);
         },
         cancel: function(){
+            post(TID.CANCEL,
+                "/management/instance/environment/cancel/"+this.cond.reqSeq,
+                this.saveInfo,
+                this.callback);
         },
         // 승인 이벤트
         onclickApprove: function () {
             //console.log(JSON.stringify(this.saveInfo));
-            confirmMsg("승인처리 하시겠습니까?", this.approve);
+            if(this.approveStatusCode === "REQUEST") {
+                confirmMsg("승인처리 하시겠습니까?", this.approve);
+            } else{
+                confirmMsg("취소요청을 승인하시겠습니까?", this.cancelApprove);
+            }
         },
         approve: function(){
             post(TID.APPROVE,
                 "/management/instance/environment/approve/"+this.cond.reqSeq,
+                null,
+                this.callback);
+        },
+        // 취소요청 승인
+        cancelApprove: function(){
+            post(TID.APPROVE,
+                "/management/instance/environment/cancelApprove/"+this.cond.reqSeq,
                 null,
                 this.callback);
         },
@@ -98,6 +118,12 @@ Vue.component('maincontents', {
                 return;
             }
             confirmMsg("거절처리 하시겠습니까?", this.reject);
+
+            // if(this.approveStatusCode === "REQUEST"){
+            //     confirmMsg("거절처리 하시겠습니까?", this.reject);
+            // } else {
+            //     confirmMsg("취소요청을 거절하시겠습니까?", this.rejectApprove);
+            // }
         },
         reject: function(){
             post(TID.REJECT,
@@ -105,6 +131,14 @@ Vue.component('maincontents', {
                 this.saveInfo,
                 this.callback);
         },
+        // // 취소요청 거절
+        // rejectApprove: function(){
+        //     post(TID.REJECT,
+        //         "/management/instance/environment/rejectApprove/"+this.cond.reqSeq,
+        //         null,
+        //         this.callback);
+        // },
+
         // 생성 이벤트
         onclickCreate: function () {
             //console.log(JSON.stringify(this.saveInfo));
@@ -121,23 +155,30 @@ Vue.component('maincontents', {
                 case TID.SEARCH:
                     this.searchCallback(results);
                     break;
+                case TID.CANCEL:
+                    if (results.success) {
+                        alertMsgRtn("정상적으로 취소요청되었습니다.", this.getEnvInstanceView);
+                    } else {
+                        alertMsg(results.error.message);
+                    }
+                    break;
                 case TID.APPROVE:
                     if (results.success) {
-                        alertMsgRtn("정상적으로 승인 되었습니다.", this.getEnvInstanceView);
+                        alertMsgRtn("정상적으로 승인되었습니다.", this.getEnvInstanceView);
                     } else {
                         alertMsg(results.error.message);
                     }
                     break;
                 case TID.REJECT:
                     if (results.success) {
-                        alertMsgRtn("정상적으로 거절처리 되었습니다.", this.getEnvInstanceView);
+                        alertMsgRtn("정상적으로 거절처리되었습니다.", this.getEnvInstanceView);
                     } else {
                         alertMsg(results.error.message);
                     }
                     break;
                 case TID.CREATE:
                     if (results.success) {
-                        alertMsgRtn("정상적으로 생성 되었습니다.", this.getEnvInstanceView);
+                        alertMsgRtn("정상적으로 생성되었습니다.", this.getEnvInstanceView);
                     } else {
                         alertMsg(results.error.message);
                     }
@@ -163,8 +204,50 @@ Vue.component('maincontents', {
         searchCallback: function (results) {
             if (results.success) {
                 console.log(results);
-                this.envInstanceInfo   = results.response;
+                this.envInstanceInfo = results.response;
                 this.approveStatusCode = this.envInstanceInfo.approveStatus.name;
+
+                // 취소 설정
+                if(this.approveStatusCode === "REQUEST"){
+                    if(role === "ROLE_USER") {
+                        this.cancelBtn = true;
+                    }
+                } else if (this.approveStatusCode === "ACCEPT" || this.approveStatusCode === "CREATED") {
+                    if(role === "ROLE_USER") {
+                        this.cancelDiv = true;
+                        this.cancelBtn = true;
+                    } else {
+                        this.cancelDiv = false;
+                        this.cancelBtn = false;
+                    }
+                } else if(this.approveStatusCode === "CANCEL" || this.approveStatusCode === "REQ_CANCEL"){
+                    if(!isNull(this.envInstanceInfo.cancelReason)){
+                        this.cancelDiv = true;
+                        this.cancelBtn = false;
+                    } else {
+                        this.cancelDiv = false;
+                        this.cancelBtn = false;
+                    }
+                } else {
+                    this.cancelDiv = false;
+                    this.cancelBtn = false;
+                }
+
+                // 거절 설정
+                if (this.approveStatusCode === "REQUEST")
+                {
+                    if(role === "ROLE_ADMIN"){
+                        this.rejectDiv = true;
+                        this.rejectBtn = true;
+                    }
+                } else if(this.approveStatusCode === "REJECT") {
+                    this.rejectDiv = true;
+                    this.rejectBtn = false;
+                } else {
+                    this.rejectDiv = false;
+                    this.rejectBtn = false;
+                }
+
             } else {
                 //console.log(results);
                 alertMsg(results.error.message);

@@ -24,7 +24,7 @@
             <div class="content">
                 <div class="mypage-content mt-40">
                     <h3>데이터 사용신청 상세</h3>
-                    <div v-if="MY_ROLE === 'ROLE_MANAGER'" class="join-cont-box mt-30">
+                    <div v-if="MY_ROLE === 'ROLE_MANAGER' || MY_ROLE === 'ROLE_ADMIN'" class="join-cont-box mt-30">
                         <h4>신청자 정보</h4>
                         <ul class="com-ul">
                             <li class=" bdr-b">
@@ -80,6 +80,12 @@
                                 <span class="join-input-group">
                                     <label>이메일</label>
                                     <p class="txt-data">{{useStorageInfo.hUserInfo.userEmail}}</p>
+                                </span>
+                            </li>
+                            <li class=" bdr-b">
+                                <span class="join-input-group w-100">
+                                    <label>저장소명</label>
+                                    <p class="txt-data">{{useStorageInfo.bucketInfo.bucketName}}</p>
                                 </span>
                             </li>
                             <li class=" bdr-b">

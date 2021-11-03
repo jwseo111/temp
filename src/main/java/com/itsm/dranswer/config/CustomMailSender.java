@@ -37,7 +37,7 @@ public class CustomMailSender {
         javaMailSender.send(message);
     }
 
-    public void sendAcceptMail(String email, String mailsubject, String title, String userName, String subject) throws MessagingException, IOException {
+    public void sendAcceptMail(String email, String mailsubject, String title, String userName, String subject) {
         String template = "mail/accept";
 //        String mailsubject = "[닥터앤서]이메일 인증을 위한 인증번호가 발급되었습니다.";
         String[] to = {email};
@@ -46,10 +46,16 @@ public class CustomMailSender {
         ctx.setVariable("userName", userName);
         ctx.setVariable("subject", subject);
 
-        this.sendMail(template, mailsubject, to, ctx);
+        try {
+            this.sendMail(template, mailsubject, to, ctx);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
-    public void sendRejectMail(String email, String mailsubject, String title, String userName, String subject, String reject) throws MessagingException, IOException {
+    public void sendRejectMail(String email, String mailsubject, String title, String userName, String subject, String reject) {
         String template = "mail/reject";
 //        String mailsubject = "[닥터앤서]이메일 인증을 위한 인증번호가 발급되었습니다.";
         String[] to = {email};
@@ -59,7 +65,30 @@ public class CustomMailSender {
         ctx.setVariable("subject", subject);
         ctx.setVariable("reject", reject);
 
-        this.sendMail(template, mailsubject, to, ctx);
+        try {
+            this.sendMail(template, mailsubject, to, ctx);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
+    }
+
+    public void sendReqMail(String email, String mailSubject, String title, String agencyName, String userName) {
+        String template = "mail/request";
+        String[] to = {email};
+        Context ctx = new Context();
+        ctx.setVariable("title", title);
+        ctx.setVariable("agencyName", agencyName);
+        ctx.setVariable("userName", userName);
+
+        try {
+            this.sendMail(template, mailSubject, to, ctx);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

@@ -17,6 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +89,9 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     @Column(columnDefinition = "int COMMENT '사용일수 0이면 무기한'")
     private Integer usingDays;
 
+    @Column(columnDefinition = "datetime COMMENT '종료일시'")
+    protected LocalDateTime endDate;
+
     @Column(columnDefinition = "varchar(4000) COMMENT '거절사유'")
     private String rejectReason;
 
@@ -135,6 +139,7 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     public void accept() {
         if(ApproveStatus.REQUEST == this.approveStatus){
             this.approveStatus = ApproveStatus.ACCEPT;
+            this.endDate = LocalDateTime.now().plusDays(this.usingDays);
         }else{
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
@@ -159,7 +164,7 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
 
     public void end() {
 
-        if(this.approveStatus != ApproveStatus.CREATED){
+        if(this.approveStatus != ApproveStatus.CREATED || this.approveStatus != ApproveStatus.EXPIRED){
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
         this.approveStatus = ApproveStatus.END;
@@ -209,6 +214,10 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         }else{
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
+    }
+
+    public void expired() {
+        this.approveStatus = ApproveStatus.EXPIRED;
     }
 
 }

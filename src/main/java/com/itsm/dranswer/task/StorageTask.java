@@ -28,4 +28,9 @@ public class StorageTask {
     public void setBucketSize() {
         storageService.bucketSize();
     }
+
+    @Scheduled(fixedRate = 1000*60*60)
+    public void expiredUseStorage() {
+        storageService.alarmExpiredUseStorage();
+    }
 }

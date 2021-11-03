@@ -29,10 +29,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -258,7 +259,7 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId, BucketInfoDto bucketInfoDto) throws MessagingException, IOException {
+    public ReqStorageInfoDto approveReqStorageInfo(String reqStorageId, BucketInfoDto bucketInfoDto) {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         UserInfo managerInfo = reqStorageInfo.getDiseaseManagerUserInfo();
@@ -289,7 +290,7 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto deleteReqStorageInfo(String reqStorageId) throws MessagingException, IOException {
+    public ReqStorageInfoDto deleteReqStorageInfo(String reqStorageId) {
 
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         reqStorageInfo.delete();
@@ -321,7 +322,7 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public ReqStorageInfoDto rejectReqStorageInfo(String reqStorageId, ReqStorageInfoDto reqStorageInfoDto) throws MessagingException, IOException {
+    public ReqStorageInfoDto rejectReqStorageInfo(String reqStorageId, ReqStorageInfoDto reqStorageInfoDto) {
         ReqStorageInfo reqStorageInfo = getReqStorageInfo(reqStorageId);
         reqStorageInfo.reject(reqStorageInfoDto.getRejectReason());
 
@@ -559,7 +560,7 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public OpenStorageInfoDto approveOpenStorageInfo(String openStorageId) throws MessagingException, IOException {
+    public OpenStorageInfoDto approveOpenStorageInfo(String openStorageId) {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         openStorageInfo.approve();
 
@@ -602,7 +603,7 @@ public class StorageService {
      * @modifyed :
      *
     **/
-    public OpenStorageInfoDto rejectOpenStorageInfo(String openStorageId, OpenStorageInfoDto openStorageInfoDto) throws MessagingException, IOException {
+    public OpenStorageInfoDto rejectOpenStorageInfo(String openStorageId, OpenStorageInfoDto openStorageInfoDto) {
         OpenStorageInfo openStorageInfo = getOpenStorageInfo(openStorageId);
         openStorageInfo.reject(openStorageInfoDto.getRejectReason());
 
@@ -946,6 +947,14 @@ public class StorageService {
         UseStorageInfo useStorageInfo = new UseStorageInfo(reqUseStorageInfoDto, loginUserInfo.getUserSeq());
         useStorageInfo = useStorageInfoRepo.save(useStorageInfo);
 
+        String email = useStorageInfo.getOpenStorageInfo().getReqStorageInfo().getDiseaseManagerUserInfo().getUserEmail();
+        String mailSubject = "[닥터앤서] 학습 데이터 사용 신청";
+        String title = useStorageInfo.getOpenStorageInfo().getOpenDataName();
+        String agencyName = useStorageInfo.getReqUserInfo().getAgencyInfo().getAgencyName();
+        String userName = useStorageInfo.getReqUserInfo().getUserName();
+
+        customMailSender.sendReqMail(email, mailSubject, title, agencyName, userName);
+
         return useStorageInfo.convertDto();
 
     }
@@ -1051,6 +1060,14 @@ public class StorageService {
 
         useStorageInfo.reject(rejectMsg);
 
+        String email = useStorageInfo.getReqUserInfo().getUserEmail();
+        String mailSubject = "[닥터앤서] 학습 데이터 사용 신청 거절 안내";
+        String title = "학습 데이터 사용 신청";
+        String userName = useStorageInfo.getReqUserInfo().getUserName();
+        String dataName = useStorageInfo.getOpenStorageInfo().getOpenDataName();
+        String reject = useStorageInfo.getRejectReason();
+        customMailSender.sendRejectMail(email, mailSubject, title, userName, dataName, reject);
+
         return useStorageInfo.convertDto();
     }
 
@@ -1068,6 +1085,13 @@ public class StorageService {
     public UseStorageInfoDto approveUseStorage(String useStorageId) {
         UseStorageInfo useStorageInfo = getUseStorageInfo(useStorageId);
         useStorageInfo.approve();
+
+        String email = useStorageInfo.getReqUserInfo().getUserEmail();
+        String mailSubject = "[닥터앤서] 학습 데이터 사용 신청 승인 안내";
+        String title = "학습 데이터 사용 신청";
+        String userName = useStorageInfo.getReqUserInfo().getUserName();
+        String dataName = useStorageInfo.getOpenStorageInfo().getOpenDataName();
+        customMailSender.sendAcceptMail(email, mailSubject, title, userName, dataName);
 
         return useStorageInfo.convertDto();
     }
@@ -1088,5 +1112,17 @@ public class StorageService {
         useStorageInfo.delete();
 
         return useStorageInfo.convertDto();
+    }
+
+    public void alarmExpiredUseStorage() {
+
+        LocalDateTime endDateStart = LocalDateTime.from(LocalDateTime.parse("2010-01-01 00:00:01", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        LocalDateTime endDateEnd = LocalDateTime.now();
+
+        List<UseStorageInfo> useStorageInfoList = useStorageInfoRepo.
+                findByEndDateBetweenAndUseStorageStatCode(endDateStart, endDateEnd, UseStorageStat.U_ACC);
+
+        useStorageInfoList.forEach(UseStorageInfo::expired);
+
     }
 }

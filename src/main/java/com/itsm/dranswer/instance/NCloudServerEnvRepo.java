@@ -12,6 +12,10 @@ package com.itsm.dranswer.instance;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Repository
 public interface NCloudServerEnvRepo extends JpaRepository<NCloudServerEnv, String> {
+    List<NCloudServerEnv> findByEndDateBetweenAndApproveStatus(LocalDateTime endDateStart, LocalDateTime endDateEnd, ApproveStatus created);
 }

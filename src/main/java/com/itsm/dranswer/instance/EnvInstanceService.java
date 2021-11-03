@@ -12,6 +12,7 @@ package com.itsm.dranswer.instance;
 import com.itsm.dranswer.apis.vpc.*;
 import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.apis.vpc.response.*;
+import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.NCloudKeyDto;
 import com.itsm.dranswer.users.UserService;
@@ -21,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,27 +32,29 @@ import java.util.List;
 @Service("envInstanceService")
 public class EnvInstanceService {
 
-    final private NCloudServerEnvRepo nCloudServerEnvRepo;
+    private final NCloudServerEnvRepo nCloudServerEnvRepo;
 
-    final private NCloudServerEnvRepoSupport nCloudServerEnvRepoSupport;
+    private final NCloudServerEnvRepoSupport nCloudServerEnvRepoSupport;
 
-    final private VpcCommonService vpcCommonService;
+    private final VpcCommonService vpcCommonService;
 
-    final private UserService userService;
+    private final UserService userService;
 
-    final private VpcApiService vpcApiService;
+    private final VpcApiService vpcApiService;
 
-    final private VpcServerService vpcServerService;
+    private final VpcServerService vpcServerService;
 
-    final private VpcNetworkInterfaceService vpcNetworkInterfaceService;
+    private final VpcNetworkInterfaceService vpcNetworkInterfaceService;
 
-    final private AcgService acgService;
+    private final AcgService acgService;
 
-    final private LoginKeyService loginKeyService;
+    private final LoginKeyService loginKeyService;
 
     private final NCloudVpcLoginKeyRepo nCloudVpcLoginKeyRepo;
 
-    public EnvInstanceService(NCloudServerEnvRepo nCloudServerEnvRepo, NCloudServerEnvRepoSupport nCloudServerEnvRepoSupport, VpcCommonService vpcCommonService, UserService userService, VpcApiService vpcApiService, VpcServerService vpcServerService, VpcNetworkInterfaceService vpcNetworkInterfaceService, AcgService acgService, LoginKeyService loginKeyService, NCloudVpcLoginKeyRepo nCloudVpcLoginKeyRepo) {
+    private final CustomMailSender customMailSender;
+
+    public EnvInstanceService(NCloudServerEnvRepo nCloudServerEnvRepo, NCloudServerEnvRepoSupport nCloudServerEnvRepoSupport, VpcCommonService vpcCommonService, UserService userService, VpcApiService vpcApiService, VpcServerService vpcServerService, VpcNetworkInterfaceService vpcNetworkInterfaceService, AcgService acgService, LoginKeyService loginKeyService, NCloudVpcLoginKeyRepo nCloudVpcLoginKeyRepo, CustomMailSender customMailSender) {
         this.nCloudServerEnvRepo = nCloudServerEnvRepo;
         this.nCloudServerEnvRepoSupport = nCloudServerEnvRepoSupport;
         this.vpcCommonService = vpcCommonService;
@@ -60,6 +65,7 @@ public class EnvInstanceService {
         this.acgService = acgService;
         this.loginKeyService = loginKeyService;
         this.nCloudVpcLoginKeyRepo = nCloudVpcLoginKeyRepo;
+        this.customMailSender = customMailSender;
     }
 
     /**
@@ -176,6 +182,14 @@ public class EnvInstanceService {
         NCloudServerEnv nCloudServerEnv = new NCloudServerEnv(requestDto);
 
         nCloudServerEnv = nCloudServerEnvRepo.save(nCloudServerEnv);
+
+        String email = "ask@thelaif.com";
+        String mailSubject = "[닥터앤서] 학습 환경 사용 신청";
+        String title = "학습 환경";//nCloudServerEnv.getReqSeq();
+        String agencyName = nCloudServerEnv.getReqUserInfo().getAgencyInfo().getAgencyName();
+        String userName = nCloudServerEnv.getReqUserInfo().getUserName();
+
+        customMailSender.sendReqMail(email, mailSubject, title, agencyName, userName);
 
         return nCloudServerEnv.convertDto();
     }
@@ -301,6 +315,13 @@ public class EnvInstanceService {
 
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
         nCloudServerEnv.accept();
+
+        String email = nCloudServerEnv.getReqUserInfo().getUserEmail();
+        String mailSubject = "[닥터앤서] 학습 환경 사용 신청 승인 안내";
+        String title = "학습 환경 사용 신청";
+        String userName = nCloudServerEnv.getReqUserInfo().getUserName();
+        String dataName = "학습 환경 사용 신청";
+        customMailSender.sendAcceptMail(email, mailSubject, title, userName, dataName);
 
         return nCloudServerEnv.convertDto();
     }
@@ -483,6 +504,14 @@ public class EnvInstanceService {
         NCloudServerEnv nCloudServerEnv = getNCloudServerEnv(reqSeq);
         nCloudServerEnv.reject(requestDto.getRejectReason());
 
+        String email = nCloudServerEnv.getReqUserInfo().getUserEmail();
+        String mailSubject = "[닥터앤서] 학습 환경 사용 신청 거절 안내";
+        String title = "학습 환경 사용 신청";
+        String userName = nCloudServerEnv.getReqUserInfo().getUserName();
+        String dataName = "학습 환경 사용 신청";
+        String reject = nCloudServerEnv.getRejectReason();
+        customMailSender.sendRejectMail(email, mailSubject, title, userName, dataName, reject);
+
         return nCloudServerEnv.convertDto();
     }
 
@@ -588,4 +617,13 @@ public class EnvInstanceService {
         return nCloudServerEnv.convertDto();
     }
 
+    public void alarmExpiredEnvironment() {
+        LocalDateTime endDateStart = LocalDateTime.from(LocalDateTime.parse("2010-01-01 00:00:01", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        LocalDateTime endDateEnd = LocalDateTime.now();
+
+        List<NCloudServerEnv> nCloudServerEnvList = nCloudServerEnvRepo.
+                findByEndDateBetweenAndApproveStatus(endDateStart, endDateEnd, ApproveStatus.CREATED);
+
+        nCloudServerEnvList.forEach(NCloudServerEnv::expired);
+    }
 }

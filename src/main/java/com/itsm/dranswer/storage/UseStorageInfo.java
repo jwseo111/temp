@@ -113,4 +113,8 @@ public class UseStorageInfo extends BaseEntity implements Serializable {
             throw new IllegalArgumentException("현재 사용자와 정보 소유자가 일치하지 않습니다.");
         }
     }
+
+    public void expired() {
+        this.useStorageStatCode = UseStorageStat.D_EXP;
+    }
 }

@@ -13,7 +13,11 @@ package com.itsm.dranswer.storage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Repository
 public interface UseStorageInfoRepo extends JpaRepository<UseStorageInfo, String> {
 
+    List<UseStorageInfo> findByEndDateBetweenAndUseStorageStatCode(LocalDateTime endDateStart, LocalDateTime endDateEnd, UseStorageStat uAcc);
 }

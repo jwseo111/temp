@@ -27,6 +27,7 @@ public enum UseStorageStat {
     U_CCL("U_CCL", "사용신청취소"),
     U_ACC("U_ACC", "사용신청승인"),
     U_REJ("U_REJ", "사용신청거절"),
+    D_EXP("D_EXP", "만료"),
     D_ACC("D_ACC", "삭제");
 
     private String name;

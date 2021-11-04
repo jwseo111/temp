@@ -43,13 +43,13 @@
 
                 <table class="table-list mt-50">
                     <colgroup>
-                        <col style="width:24%" />
-                        <col style="width:20%" />
-                        <col style="width:10%" />
+                        <col style="width:14%" />
+                        <col style="width:22%" />
+                        <col style="width:14%" />
                         <col style="width:15%" />
-                        <col style="width:8%" />
                         <col style="width:10%" />
-                        <col style="width:8%" />
+                        <col style="width:10%" />
+                        <col style="width:10%" />
                         <col style="width:10%" />
                     </colgroup>
                     <thead>
@@ -73,7 +73,7 @@
                     </tbody>
                     <tbody v-else-if="envInstanceList.length > 0">
                     <tr v-for="(item, idx) in envInstanceList">
-                        <td>{{item.reqSeq}}</td>
+                        <td>{{item.serverName === null ? "-" : item.serverName}}</td>
                         <td>{{item.serverDescription}}</td>
                         <td>{{item.osImageType.name}}</td>
                         <td>{{item.productType.desc}}</td>

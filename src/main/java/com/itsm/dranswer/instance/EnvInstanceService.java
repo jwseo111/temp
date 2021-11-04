@@ -624,6 +624,7 @@ public class EnvInstanceService {
         List<NCloudServerEnv> nCloudServerEnvList = nCloudServerEnvRepo.
                 findByEndDateBetweenAndApproveStatus(endDateStart, endDateEnd, ApproveStatus.CREATED);
 
-        nCloudServerEnvList.forEach(NCloudServerEnv::expired);
+        nCloudServerEnvList.forEach(o -> o.expired(customMailSender));
+
     }
 }

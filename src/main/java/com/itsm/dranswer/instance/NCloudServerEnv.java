@@ -165,7 +165,7 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
 
     public void end() {
 
-        if(this.approveStatus != ApproveStatus.CREATED || this.approveStatus != ApproveStatus.EXPIRED){
+        if(this.approveStatus != ApproveStatus.CREATED && this.approveStatus != ApproveStatus.EXPIRED){
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");
         }
         this.approveStatus = ApproveStatus.END;

@@ -9,6 +9,7 @@ package com.itsm.dranswer.users;
  * @modifyed :
  */
 
+import com.itsm.dranswer.commons.Disease;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -37,9 +38,9 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
     QUserInfo parentUserInfo = new QUserInfo("parentUserInfo");
     QAgencyInfo agencyInfo = QAgencyInfo.agencyInfo;
 
-    public Page<UserInfoDto> searchAll(JoinStat joinStat, String userName, Pageable pageable){
+    public Page<UserInfoDto> searchAll(UserType userType, Integer agencySeq, Disease disease, JoinStat joinStat, String userName, Pageable pageable){
 
-        JPAQuery<UserInfoDto> query  =jpaQueryFactory
+        JPAQuery<UserInfoDto> query = jpaQueryFactory
                 .select(Projections.constructor(UserInfoDto.class, userInfo, agencyInfo))
                 .from(userInfo)
                 .innerJoin(userInfo.agencyInfo, agencyInfo)
@@ -48,8 +49,28 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
+        switch (userType){
+            case COMP:
+                query.where(userInfo.userRole.eq(Role.USER));
+                break;
+            case ADMIN:
+                query.where(userInfo.userRole.eq(Role.ADMIN));
+                break;
+            case HOSP:
+                query.where(userInfo.userRole.eq(Role.MANAGER).or(userInfo.userRole.eq(Role.UPLOADER)));
+                break;
+        }
+
         if(joinStat != null){
             query.where(userInfo.joinStatCode.eq(joinStat));
+        }
+
+        if(disease != null){
+            query.where(userInfo.diseaseCode.eq(disease));
+        }
+
+        if(agencySeq != null){
+            query.where(userInfo.agencySeq.eq(agencySeq));
         }
 
         QueryResults<UserInfoDto> results = query.fetchResults();

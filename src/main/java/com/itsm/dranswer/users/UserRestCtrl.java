@@ -9,6 +9,7 @@ package com.itsm.dranswer.users;
  * @modifyed :
  */
 
+import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.LoginUser;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.errors.UnauthorizedException;
@@ -49,15 +50,15 @@ public class UserRestCtrl {
     private final UserService userService;
 
     /**
-     * 
+     *
      * @methodName : UserRestCtrl
      * @date : 2021-06-23 오후 2:27
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param jwt
      * @param authenticationManager
      * @param userService
-     * @return : 
-     * @throws 
+     * @return :
+     * @throws
      * @modifyed :
      *
     **/
@@ -69,15 +70,15 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : login
      * @date : 2021-06-23 오후 2:24
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param request
      * @param session
      * @param response
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.LoginResult>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -108,14 +109,14 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : setTokenInCookie
      * @date : 2021-06-23 오후 2:24
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param response
      * @param token
      * @return : void
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -129,13 +130,13 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : check
      * @date : 2021-06-23 오후 2:24
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.config.LoginUserInfo>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -146,13 +147,13 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : logout
      * @date : 2021-06-23 오후 2:24
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param res
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<java.lang.String>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -171,10 +172,10 @@ public class UserRestCtrl {
      * 회원가입처리
      * @methodName : join
      * @date : 2021-06-23 오후 2:05
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param request
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -187,13 +188,13 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : checkMail
      * @date : 2021-07-26 오전 10:28
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param certDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.CertDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -209,10 +210,10 @@ public class UserRestCtrl {
      * 인증메일 발송
      * @methodName : certMail
      * @date : 2021-06-23 오후 2:23
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param certDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.CertDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -225,13 +226,13 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : fndPwCertMail
      * @date : 2021-07-26 오전 10:28
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param certDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.CertDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -247,10 +248,10 @@ public class UserRestCtrl {
      * 사용자 연락처로 이메일 리스트를 조회
      * @methodName : findMail
      * @date : 2021-06-23 오후 2:23
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userInfoDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -263,10 +264,10 @@ public class UserRestCtrl {
      * 비밀번호 변경처리
      * @methodName : changePw
      * @date : 2021-06-23 오후 2:24
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userInfoDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -315,25 +316,26 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : getUserList
      * @date : 2021-07-06 오전 11:00
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userName
      * @param pageable
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<org.springframework.data.domain.Page<com.itsm.dranswer.users.UserInfoDto>>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
     @Secured(value = {"ROLE_ADMIN"})
     @GetMapping(value = "/user/list")
     public ApiResult<Page<UserInfoDto>> getUserList(
+            UserType userType, Integer agencySeq, Disease disease,
             JoinStat joinStat,
             @RequestParam(required = true) String userName,
             Pageable pageable){
 
-        Page<UserInfoDto> listUserInfoDto = userService.getUserList(joinStat, userName, pageable);
+        Page<UserInfoDto> listUserInfoDto = userService.getUserList(userType, agencySeq, disease, joinStat, userName, pageable);
 
         return success(listUserInfoDto);
     }
@@ -360,10 +362,10 @@ public class UserRestCtrl {
      * 로그인 사용자 정보
      * @methodName : myInfo
      * @date : 2021-07-06 오후 5:44
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -376,10 +378,10 @@ public class UserRestCtrl {
      * 상세정보
      * @methodName : myInfo
      * @date : 2021-07-06 오후 5:44
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userSeq
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -392,10 +394,10 @@ public class UserRestCtrl {
      * 상세정보 수정
      * @methodName : changeMyInfo
      * @date : 2021-07-06 오후 5:44
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userInfoDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -408,10 +410,10 @@ public class UserRestCtrl {
      * 비밀번호 수정
      * @methodName : changeMyPw
      * @date : 2021-07-06 오후 5:44
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param userInfoDto
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -421,13 +423,13 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : getMyUploader
      * @date : 2021-07-12 오후 3:26
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<java.util.List<com.itsm.dranswer.users.UserInfoDto>>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -438,14 +440,14 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : saveMyUploader
      * @date : 2021-07-12 오후 3:26
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @param userInfoDtos
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<java.util.List<com.itsm.dranswer.users.UserInfoDto>>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/
@@ -457,13 +459,13 @@ public class UserRestCtrl {
     }
 
     /**
-     * 
+     *
      * @methodName : initMyManager
      * @date : 2021-07-12 오후 5:07
-     * @author : xeroman.k 
+     * @author : xeroman.k
      * @param loginUserInfo
      * @return : com.itsm.dranswer.utils.ApiUtils.ApiResult<com.itsm.dranswer.users.UserInfoDto>
-     * @throws 
+     * @throws
      * @modifyed :
      *
     **/

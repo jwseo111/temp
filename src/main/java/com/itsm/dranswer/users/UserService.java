@@ -9,6 +9,7 @@ package com.itsm.dranswer.users;
  * @modifyed :
  */
 
+import com.itsm.dranswer.commons.Disease;
 import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.errors.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -337,9 +338,10 @@ public class UserService {
      * @modifyed :
      *
     **/
-    public Page<UserInfoDto> getUserList(JoinStat joinStat, String userName, Pageable pageable) {
+    public Page<UserInfoDto> getUserList(UserType userType, Integer agencySeq, Disease disease, JoinStat joinStat,
+                                         String userName, Pageable pageable) {
 
-        return userInfoRepoSupport.searchAll(joinStat, userName, pageable);
+        return userInfoRepoSupport.searchAll(userType, agencySeq, disease, joinStat, userName, pageable);
     }
 
     /**

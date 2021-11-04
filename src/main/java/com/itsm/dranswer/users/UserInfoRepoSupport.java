@@ -49,16 +49,18 @@ public class UserInfoRepoSupport extends QuerydslRepositorySupport {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        switch (userType){
-            case COMP:
-                query.where(userInfo.userRole.eq(Role.USER));
-                break;
-            case ADMIN:
-                query.where(userInfo.userRole.eq(Role.ADMIN));
-                break;
-            case HOSP:
-                query.where(userInfo.userRole.eq(Role.MANAGER).or(userInfo.userRole.eq(Role.UPLOADER)));
-                break;
+        if(userType != null){
+            switch (userType){
+                case COMP:
+                    query.where(userInfo.userRole.eq(Role.USER));
+                    break;
+                case ADMIN:
+                    query.where(userInfo.userRole.eq(Role.ADMIN));
+                    break;
+                case HOSP:
+                    query.where(userInfo.userRole.eq(Role.MANAGER).or(userInfo.userRole.eq(Role.UPLOADER)));
+                    break;
+            }
         }
 
         if(joinStat != null){

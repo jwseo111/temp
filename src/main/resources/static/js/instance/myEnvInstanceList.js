@@ -84,7 +84,6 @@ Vue.component('maincontents', {
                     this.searchCallback(results);
                     break;
                 case "ApproveStatus":
-                    console.log(results.response);
                     this.approveStatusCdList = results.response;
                     setTimeout(function() {
                         loadSelect();
@@ -97,7 +96,7 @@ Vue.component('maincontents', {
         },
         searchCallback: function (results) {
             if (results.success) {
-                console.log(results.response.content);
+                //console.log(results.response.content);
                 this.makePageNavi(results.response.pageable, results.response.total);
                 this.envInstanceList = results.response.content;
                 this.loading = false;

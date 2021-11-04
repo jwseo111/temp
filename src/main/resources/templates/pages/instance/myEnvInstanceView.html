@@ -64,7 +64,15 @@
                                </span>
                                 <span class="join-input-group">
                                     <label>처리상태</label>
-                                    <p class="txt-data">{{envInstanceInfo.approveStatus.desc}}</p>
+<!--                                    <p class="txt-data">{{envInstanceInfo.approveStatus.desc}}</p>-->
+                                    <span class="join-input-group mr-10"  style="width:300px">
+                                        <p class="txt-data">{{envInstanceInfo.approveStatus.desc}}</p>
+                                    </span>
+                                    <span v-if="role === 'ROLE_ADMIN' && (approveStatusCode ==='CREATED' || approveStatusCode ==='EXPIRED')" class="join-input-group mr-10" style="width:228px">
+                                        <div class="btn-box" style="width: 228px;">
+                                        <a href="javascript:;" v-on:click="onclickEnd" class="com-btn btn-w-228">서버반납</a>
+                                        </div>
+                                    </span>
                                </span>
                             </li>
                             <li class=" bdr-b">

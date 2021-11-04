@@ -13,6 +13,7 @@ const TID = {
     APPROVE : {value: 0, name: "approve", code: "A"},
     CREATE : {value: 0, name: "create", code: "C"},
     REJECT : {value: 0, name: "reject", code: "R"},
+    END : {value: 0, name: "end", code: "X"},
 };
 window.onload = function(){
     appMain = new Vue({
@@ -79,7 +80,7 @@ Vue.component('maincontents', {
                 alertMsg("취소사유는 필수입니다.",this.$refs.cancelReason);
                 return;
             }
-            console.log(JSON.stringify(this.saveInfo));
+            //console.log(JSON.stringify(this.saveInfo));
             confirmMsg("취소신청 하시겠습니까?", this.cancel);
         },
         cancel: function(){
@@ -142,11 +143,22 @@ Vue.component('maincontents', {
         // 생성 이벤트
         onclickCreate: function () {
             //console.log(JSON.stringify(this.saveInfo));
-            confirmMsg("생성 하시겠습니까?", this.create);
+            confirmMsg("생성하시겠습니까?", this.create);
         },
         create: function(){
             post(TID.CREATE,
                 "/management/instance/environment/create/"+this.cond.reqSeq,
+                null,
+                this.callback);
+        },
+        // 서버반납 이벤트
+        onclickEnd: function () {
+            //console.log(JSON.stringify(this.saveInfo));
+            confirmMsg("반납하시겠습니까?", this.end);
+        },
+        end: function(){
+            post(TID.END,
+                "/management/instance/environment/end/"+this.cond.reqSeq,
                 null,
                 this.callback);
         },
@@ -179,6 +191,13 @@ Vue.component('maincontents', {
                 case TID.CREATE:
                     if (results.success) {
                         alertMsgRtn("정상적으로 생성되었습니다.", this.getEnvInstanceView);
+                    } else {
+                        alertMsg(results.error.message);
+                    }
+                    break;
+                case TID.END:
+                    if (results.success) {
+                        alertMsgRtn("정상적으로 반납되었습니다.", this.getEnvInstanceView);
                     } else {
                         alertMsg(results.error.message);
                     }

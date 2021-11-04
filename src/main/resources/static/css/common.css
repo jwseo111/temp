@@ -581,3 +581,7 @@ a.btn-join{margin-top:50px;background:#fff;border:1px solid #13a1af;color:#13a1a
 
 /* loading bar */
 .div-loading{position:relative;margin:auto;top:150px;text-align: center;}
+
+.select-group{float:left;position: relative;padding:0px 0;font-size:0}
+.select-group label{display:block;margin-top:10px;font-size:1.6rem;color:#222;font-weight:700;line-height:4rem}
+.select-group label > span{margin-left:2px;font-size:2rem;color:#ff0000}

@@ -24,17 +24,88 @@
             <div class="content">
                 <div class="mypage-content mt-40">
                     <h3>회원목록</h3>
-                    <div class="list-search-wrap a-r mt-20">
-                        <label>Search</label>
-                        <div class="custom-select search-select">
-                            <select id="joinStat" data-value="" v-model="search.joinStat">
-                                <option value="">전체</option>
-                                <option v-for="option in joinStatCode" v-bind:value="option.name">
-                                    {{option.desc}}
-                                </option>
-                            </select>
+                    <div class="list-search-wrap a-r mt-20" style="padding: 32px 10px;">
+                        <div class="select-group" style="width: 200px;">
+                        <span><label style="top: 0px;left:0px;">회원구분</label></span>
+                        <span>
+                            <div class="custom-select search-select">
+                                <select id="userType" data-value="" v-model="search.userType" onchange="selectChange(id)">
+                                    <option value="">전체</option>
+                                    <option v-for="option in userTypeCdList" v-bind:value="option.name">
+                                        {{option.desc}}
+                                    </option>
+                                </select>
+                            </div>
+                        </span>
                         </div>
-                        <input type="text" v-model="search.userName" placeholder="검색어를 입력하세요">
+                        <!-- agency 전체 콤보 -->
+                        <div v-show="search.userType === '' || search.userType === 'ADMIN'" class="select-group" style="width: 250px;">
+                            <span><label style="top: 0px;left:5px;">기관</label></span>
+                            <span>
+                            <div class="custom-select search-select" style="width:200px;">
+                                <select id="agency"  data-value="" v-model="search.agencySeq">
+                                    <option value="">전체</option>
+                                    <option v-for="option in agencyList" v-bind:value="option.agencySeq">
+                                        {{option.agencyName}}
+                                    </option>
+                                </select>
+                            </div>
+                                </span>
+                        </div>
+                        <!-- 병원 콤보 -->
+                        <div v-show="search.userType === 'HOSP'" class="select-group" style="width: 250px;">
+                            <span><label style="top: 0px;left:5px;">기관</label></span>
+                            <span>
+                            <div class="custom-select search-select" style="width:200px;">
+                                <select  id="hospital" data-value="" v-model="search.agencySeq">
+                                    <option value="">병원 전체</option>
+                                    <option v-for="option in hospList" v-bind:value="option.agencySeq">
+                                        {{option.agencyName}}
+                                    </option>
+                                </select>
+                            </div>
+                                </span>
+                        </div>
+                        <!-- 기업 콤보 -->
+                        <div v-show="search.userType === 'COMP'" class="select-group" style="width: 250px;">
+                            <span><label style="top: 0px;left:5px;">기관</label></span>
+                            <span>
+                                <div  class="custom-select search-select" style="width:200px;">
+                                <select  id="company" data-value="" v-model="search.agencySeq">
+                                    <option value="">기업 전체</option>
+                                    <option v-for="option in compList" v-bind:value="option.agencySeq">
+                                        {{option.agencyName}}
+                                    </option>
+                                </select>
+                                </div>
+                            </span>
+                        </div>
+                        <!-- 질환 콤보 -->
+                        <div class="select-group" style="width: 200px;">
+                            <span><label style="top: 0px;left:5px;">질병</label></span>
+                            <span>
+                                <div class="custom-select search-select"  style="width:150px;" >
+                                <select id="disease" data-value="" v-model="search.disease" >
+                                    <option value="">전체</option>
+                                    <option v-for="option in diseaseCdList" v-bind:value="option.name">{{option.desc}}</option>
+                                </select>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="select-group" style="width: 200px;">
+                            <span><label style="top: 0px;left:5px;">처리상태</label></span>
+                            <span>
+                                <div class="custom-select search-select">
+                                    <select id="joinStat" data-value="" v-model="search.joinStat">
+                                        <option value="">전체</option>
+                                        <option v-for="option in joinStatCode" v-bind:value="option.name">
+                                            {{option.desc}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </span>
+                        </div>
+                        <input type="text" v-model="search.userName" @keyup="onKeyup" style="width: 200px;border: 0px; " placeholder="회원명을 입력하세요">
                         <a href="javascript:;" class="com-btn btn-hosp-search" @click="onclickSearch">SEARCH</a>
                     </div>
                     <table class="table-list mt-50">
@@ -82,8 +153,9 @@
                             <td class="a-c">{{item.userPhoneNumber}}</td>
                             <td class="a-c">{{item.userEmail}}</td>
                             <td class="a-c">{{item.joinStatCode.desc}}</td>
-                            <td class="a-c">{{item.createdDate}}</td>
-                            <td class="a-c">{{item.modifiedDate}}</td>
+<!--                            <td class="a-c">{{item.createdDate}}</td>-->
+                            <td class="a-c">{{replaceDate(item.createdDate)}}</td>
+                            <td class="a-c">{{replaceDate(item.modifiedDate)}}</td>
                         </tr>
                         </tbody>
                     </table>

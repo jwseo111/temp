@@ -575,4 +575,12 @@ function textDownload(filename, text) {
     element.click();
 
     document.body.removeChild(element);
-}
+};
+
+function replaceDate(val){
+    if(isNull(val)){
+        return "-";
+    } else {
+        return val.substr(0,10);
+    }
+};

@@ -20,10 +20,19 @@ Vue.component('maincontents', {
             search : {
                 page: 0,
                 size: 10,
+                userType:"", // 회원구분
+                agencySeq:"",
+                disease:"", //질환코드
                 joinStat :"",
                 userName :"",
             },
             list :[],
+            agencyList:[],
+            userTypeCdList: getCodeList('UserType',this.callback), // 회원콤보박스 리스트
+            hospList:[],//병원 콤보
+            compList:[],//기업 콤보
+            diseaseCode:"",
+            diseaseCdList : getCodeList('Disease',this.callback), // 질환콤보박스 리스트
             joinStatCode: [],
             pageInfo: {
                 curr : 1,
@@ -36,7 +45,6 @@ Vue.component('maincontents', {
             },
             userSeq :userSeq,
             info : {
-
                 agencyName:"",
                 agencyTypeCode:"",
                 agencyTypeName:"",
@@ -63,37 +71,52 @@ Vue.component('maincontents', {
         };
     },
     mounted:function(){
-
-        if(isNull(this.userSeq)){
+        if(isNull(this.userSeq)){ // 목록
             codeId = "JoinStat";
             getCodeList(codeId, this.callback);
+            this.getAgencyList();
             this.onclickSearch();
-        }else{
 
+        } else { // 상세
             let url ="/user/info/"+this.userSeq;
-
             get(TID.INFO, url, null,this.callback);
-
         }
 
         setTimeout(function() {
             loadSelect();
         },300);
+
     },
     computed: function(){
-
-
     },
     methods:{
+        onKeyup:function (e){
+            if (e.keyCode == 13){
+                this.onclickSearch();
+            }
+        },
+        getAgencyList:function(){
+            get("Agency",
+                "/agency/list",
+                {size:100,sort:"agencyName"},
+                this.callback);
+        },
         onclickSearch : function(){
-
-
             this.search.page = 0;
             this.getMemberList();
         },
         getMemberList(){
-            let code = document.querySelector("#joinStat").getAttribute("data-value");
-            this.search.joinStat=code;
+            if(this.search.userType === "ADMIN") {
+                this.search.agencySeq = document.querySelector("#agency").getAttribute("data-value");
+            } else if(this.search.userType === "HOSP") {
+                this.search.agencySeq = document.querySelector("#hospital").getAttribute("data-value");
+            } else if(this.search.userType === "COMP") {
+                this.search.agencySeq = document.querySelector("#company").getAttribute("data-value");
+            }
+            this.search.disease = document.querySelector("#disease").getAttribute("data-value");
+            this.search.joinStat = document.querySelector("#joinStat").getAttribute("data-value");;
+
+            //console.log(JSON.stringify(this.search));
             get(TID.SEARCH,"/user/list", this.search, this.callback);
         },
         callback: function(tid, results){
@@ -104,6 +127,23 @@ Vue.component('maincontents', {
                     break;
                 case "JoinStat":
                     this.joinStatCode = results.response;
+
+                    break;
+                case "UserType":
+                    //console.log(results);
+                    this.userTypeCdList = results.response;
+                    break;
+                case "Disease":
+                    //console.log(results);
+                    this.diseaseCdList = results.response;
+
+                    break;
+                case "Agency":
+                    //console.log(results.response.content);
+                    this.agencyList = results.response.content;
+                    this.hospList = this.agencyList.filter(item => (item.agencyTypeCode.name != "COMP") ); // 기업 제외(병원 리스트만)
+                    this.compList = this.agencyList.filter(item => (item.agencyTypeCode.name == "COMP") ); // 기업 list
+
                     break;
                 case TID.INFO:
                     this.getUserInfoCallback(results);
@@ -111,9 +151,7 @@ Vue.component('maincontents', {
                 case TID.ACCEPT:
                     this.onclickAcceptCallback(results);
                     break;
-
             }
-
         },
         onclickSearchCallback: function(results){
             if (results.success) {
@@ -223,7 +261,19 @@ Vue.component('maincontents', {
         onclickBack : function(){
             history.back();
         },
+        // 검색 selectebox 이벤트
+        // selectebox 이벤트
+        searchChange:function(id, data){
+            if(id == "userType") { // 회원구분 변경
+                this.search.userType = data;
 
+            }
+        },
     },
-
 });
+
+// 검색 selectebox 이벤트
+function selectChange(id){
+    const data = document.querySelector('#'+id).value;
+    appMain.$refs.maincontents.searchChange(id, data);
+}

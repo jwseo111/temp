@@ -10,6 +10,7 @@ package com.itsm.dranswer.instance;
  */
 
 import com.itsm.dranswer.commons.BaseEntity;
+import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.storage.UseStorageInfo;
 import com.itsm.dranswer.users.UserInfo;
 import lombok.*;
@@ -216,8 +217,19 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
         }
     }
 
-    public void expired() {
+    public void expired(CustomMailSender customMailSender) {
         this.approveStatus = ApproveStatus.EXPIRED;
+
+        String email = "ask@thelaif.com";
+        String mailSubject = "[닥터앤서] 학습 환경 만료 안내";
+        String title = "학습 환경 만료 안내";
+        String agencyName = this.getReqUserInfo().getAgencyInfo().getAgencyName();
+        String serverName = this.serverName;
+        String userName = this.getReqUserInfo().getUserName();
+
+        String msg = userName + "(" + agencyName +") 님의 " + serverName + "이(가) 만료 되었습니다.";
+
+        customMailSender.sendExpiredAlarmMail(email, mailSubject, title, msg);
     }
 
 }

@@ -91,4 +91,20 @@ public class CustomMailSender {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public void sendExpiredAlarmMail(String email, String mailSubject, String title, String msg) {
+        String template = "mail/expiredAlarm";
+        String[] to = {email};
+        Context ctx = new Context();
+        ctx.setVariable("title", title);
+        ctx.setVariable("msg", msg);
+
+        try {
+            this.sendMail(template, mailSubject, to, ctx);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

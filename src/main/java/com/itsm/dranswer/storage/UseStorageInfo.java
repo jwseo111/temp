@@ -10,6 +10,7 @@ package com.itsm.dranswer.storage;
  */
 
 import com.itsm.dranswer.commons.BaseEntity;
+import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.instance.NCloudServerEnv;
 import com.itsm.dranswer.users.UserInfo;
 import lombok.*;
@@ -114,7 +115,18 @@ public class UseStorageInfo extends BaseEntity implements Serializable {
         }
     }
 
-    public void expired() {
+    public void expired(CustomMailSender customMailSender) {
         this.useStorageStatCode = UseStorageStat.D_EXP;
+
+        String email = "ask@thelaif.com";
+        String mailSubject = "[닥터앤서] 학습 데이터 사용 만료 안내";
+        String title = "학습 데이터 사용 만료 안내";
+        String agencyName = this.getReqUserInfo().getAgencyInfo().getAgencyName();
+        String dataName = this.openStorageInfo.getOpenDataName();
+        String userName = this.getReqUserInfo().getUserName();
+
+        String msg = userName + "(" + agencyName +") 님의 " + dataName + "이(가) 만료 되었습니다.";
+
+        customMailSender.sendExpiredAlarmMail(email, mailSubject, title, msg);
     }
 }

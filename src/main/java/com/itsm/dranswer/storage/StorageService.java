@@ -1122,7 +1122,7 @@ public class StorageService {
         List<UseStorageInfo> useStorageInfoList = useStorageInfoRepo.
                 findByEndDateBetweenAndUseStorageStatCode(endDateStart, endDateEnd, UseStorageStat.U_ACC);
 
-        useStorageInfoList.forEach(UseStorageInfo::expired);
+        useStorageInfoList.forEach(o -> o.expired(customMailSender));
 
     }
 }

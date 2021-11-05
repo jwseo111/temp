@@ -133,7 +133,7 @@ public class UseStorageRestCtrl {
      * @modifyed :
      *
     **/
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_ADMIN","ROLE_MANAGER"})
     @GetMapping(value = "/management/storage/use/list")
     public ApiResult<Page<UseStorageInfoDto>> getUseStorageList(
             UseStorageStat useStorageStat,

@@ -19,6 +19,7 @@ import com.itsm.dranswer.board.QuestionType;
 import com.itsm.dranswer.instance.ApproveStatus;
 import com.itsm.dranswer.instance.ProductType;
 import com.itsm.dranswer.instance.OsImageType;
+import com.itsm.dranswer.users.UserType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,6 +83,9 @@ public class CodeRestCtrl {
                 break;
             case "UseStorageStat":
                 codes = UseStorageStat.codes();
+                break;
+            case "UserType":
+                codes = UserType.codes();
                 break;
         }
 

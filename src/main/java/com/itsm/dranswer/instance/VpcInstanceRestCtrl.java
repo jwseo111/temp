@@ -223,7 +223,6 @@ public class VpcInstanceRestCtrl {
                     CreateSubnetRequestDto requestDto
             , @LoginUser LoginUserInfo loginUserInfo
     ){
-
         return success(vpcApiService.createSubnet(requestDto, getNCloudKey(loginUserInfo)));
     }
 
@@ -575,7 +574,7 @@ public class VpcInstanceRestCtrl {
         return success(envInstanceService.rejectEnvironment(reqSeq, requestDto));
     }
 
-    @Secured(value = {"ROLE_ADMIN"})
+    @Secured(value = {"ROLE_USER"})
     @PostMapping(value = "/management/instance/environment/cancel/{reqSeq:.+(?<!\\.js)$}")
     public ApiResult<NCloudServerEnvDto> reqCancelEnvironment(
             @PathVariable String reqSeq,

@@ -23,7 +23,7 @@ Vue.component('mypagemenus', {
                 {name: "저장신청관리", uri: "/my/admin/store/list", use: true},
                 {name: "공개신청 관리", uri:"/my/admin/open/list", use : true},
                 {name: "학습데이터신청 관리", uri:"/my/use/list", use : true},
-                {name: "학습환경신청 관리", uri:"/my/envInstance/list", use : true},
+                // {name: "학습환경신청 관리", uri:"/my/envInstance/list", use : true},
                 {name: "회원정보변경", uri:"/my/userModify", use : true},
                 {name: "저장소관리", uri:"/my/storeMng/list", use : true},
             ],
@@ -35,7 +35,7 @@ Vue.component('mypagemenus', {
             ],
             menus_user : [ // 기업
                 {name: "데이터 사용신청 보기", uri: "/my/use/list", use: true},
-                {name: "학습환경 사용신청 보기", uri: "/my/envInstance/list", use: true},
+                // {name: "학습환경 사용신청 보기", uri: "/my/envInstance/list", use: true},
                 {name: "회원정보변경", uri:"/my/userModify", use : true},
             ],
             messages : "",

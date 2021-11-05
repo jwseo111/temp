@@ -93,6 +93,16 @@ Vue.component('headercontents', {
         onclickMenu : function(menu){
             location.href = menu.uri;
         },
+        onclickStatus : function(){
+            if(MY_ROLE === "ROLE_ADMIN") {
+                location.href = "/service/store/status";
+            } else {
+                $(".nav-cont").hide ();
+                alertMsg("관리자만 조회가 가능합니다.");
+                return;
+            }
+
+        },
         onclickMypage : function(){         // 로그인 권한별 마이페이지
             let pageUri;
             switch (MY_ROLE){

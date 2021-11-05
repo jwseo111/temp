@@ -22,6 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 @Service
 public class VpcServerService extends ApiService {
 
@@ -315,8 +318,16 @@ public class VpcServerService extends ApiService {
         String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
         String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
 
-        final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_ROOT_PASSWORD, requestDto);
+        String privateKey = null;
+        try {
+            privateKey = URLEncoder.encode(requestDto.getPrivateKey(), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
+        requestDto.setPrivateKey(null);
+
+        final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.GET_ROOT_PASSWORD, requestDto) + "&privateKey="+privateKey;
         final ResponseEntity<GetRootPasswordResponseDto> response = restTemplate.exchange(
                 OpenApiUtils.getOpenApiURI(apiServerHost, uri),
                 HttpMethod.GET, new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), GetRootPasswordResponseDto.class);

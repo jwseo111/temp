@@ -76,10 +76,12 @@ public class UseStorageInfo extends BaseEntity implements Serializable {
     @JoinColumn(name = "reqSeq", referencedColumnName = "reqSeq", insertable = false, updatable = false)
     private NCloudServerEnv nCloudServerEnv;
 
-    public UseStorageInfo(UseStorageInfoDto reqUseStorageInfoDto, Long userSeq) {
+    public UseStorageInfo(UseStorageInfoDto reqUseStorageInfoDto, OpenStorageInfo openStorageInfo, UserInfo userInfo) {
         super();
 
-        this.reqUserSeq = userSeq;
+        this.reqUserSeq = userInfo.getUserSeq();
+        this.reqUserInfo = userInfo;
+        this.openStorageInfo = openStorageInfo;
         this.useStorageStatCode = UseStorageStat.U_REQ;
         this.usingDays = reqUseStorageInfoDto.getUsingDays();
         this.reqOpenId = reqUseStorageInfoDto.getReqOpenId();

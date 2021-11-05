@@ -944,7 +944,12 @@ public class StorageService {
     **/
     public UseStorageInfoDto reqUseStorage(LoginUserInfo loginUserInfo, UseStorageInfoDto reqUseStorageInfoDto) {
 
-        UseStorageInfo useStorageInfo = new UseStorageInfo(reqUseStorageInfoDto, loginUserInfo.getUserSeq());
+        OpenStorageInfo openStorageInfo = openStorageInfoRepo.findById(reqUseStorageInfoDto.getReqOpenId())
+                .orElseThrow(() ->new IllegalArgumentException("존재하지 않는 공개데이터 입니다."));
+
+        UserInfo userInfo = userService.findUserInfo(loginUserInfo.getUserSeq());
+
+        UseStorageInfo useStorageInfo = new UseStorageInfo(reqUseStorageInfoDto, openStorageInfo, userInfo);
         useStorageInfo = useStorageInfoRepo.save(useStorageInfo);
 
         String email = useStorageInfo.getOpenStorageInfo().getReqStorageInfo().getDiseaseManagerUserInfo().getUserEmail();

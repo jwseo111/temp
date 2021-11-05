@@ -106,9 +106,10 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
     private List<NCloudNetworkInterface> networkInterfaceList = new ArrayList<>();
 
 
-    public NCloudServerEnv(NCloudServerEnvDto dto) {
+    public NCloudServerEnv(NCloudServerEnvDto dto, UserInfo userInfo) {
         super();
 
+        this.reqUserInfo = userInfo;
         this.vpcNo = dto.getVpcNo();
         this.subnetNo = dto.getSubnetNo();
         this.reqUserSeq = dto.getReqUserSeq();

@@ -15,6 +15,7 @@ import com.itsm.dranswer.apis.vpc.response.*;
 import com.itsm.dranswer.config.CustomMailSender;
 import com.itsm.dranswer.config.LoginUserInfo;
 import com.itsm.dranswer.users.NCloudKeyDto;
+import com.itsm.dranswer.users.UserInfo;
 import com.itsm.dranswer.users.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -178,8 +179,9 @@ public class EnvInstanceService {
     public NCloudServerEnvDto reqCreateEnvironment(NCloudServerEnvDto requestDto, LoginUserInfo loginUserInfo) {
 
         requestDto.setReqUserSeq(loginUserInfo.getUserSeq());
+        UserInfo userInfo = userService.findUserInfo(requestDto.getReqUserSeq());
 
-        NCloudServerEnv nCloudServerEnv = new NCloudServerEnv(requestDto);
+        NCloudServerEnv nCloudServerEnv = new NCloudServerEnv(requestDto, userInfo);
 
         nCloudServerEnv = nCloudServerEnvRepo.save(nCloudServerEnv);
 

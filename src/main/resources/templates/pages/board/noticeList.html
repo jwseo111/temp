@@ -30,7 +30,7 @@
 
             <div class="list-search-wrap a-r mt-80">
                 <label>Search</label>
-                <input type="text" v-model="cond.keyword" @keyup="onKeyup" placeholder="검색어를 입력하세요">
+                <input type="text" v-model="cond.keyword" @keyup="onKeyup" style="border:0px;" placeholder="검색어를 입력하세요">
                 <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
             </div>
 
@@ -63,8 +63,7 @@
                         <td v-if="item.importantYn === 'Y'" class="t-red">중요</td>
                         <td v-else>{{item.noticeSeq}}</td>
                         <td class="a-l"><a href="javascript:void(0);" v-on:click="onclickView(item.noticeSeq)">{{item.title}}</a></td>
-                        <td v-if="item.createdDate === null" align="center">-</td>
-                        <td v-else align="center">{{item.createdDate.substr(0,10)}}</td>
+                        <td>{{replaceDate(item.createdDate)}}</td>
                         <td>{{item.inqCount}}</td>
                     </tr>
                 </tbody>

@@ -28,7 +28,7 @@
 
             <div class="list-search-wrap a-r mt-80">
                 <label>Search</label>
-                <input type="text" v-model="cond.keyword" @keyup="onKeyup" placeholder="검색어를 입력하세요(제목)">
+                <input type="text" v-model="cond.keyword" @keyup="onKeyup" style="border:0px;" placeholder="검색어를 입력하세요(제목)">
                 <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
             </div>
 
@@ -69,8 +69,7 @@
                         <td>{{item.publicYn}}</td>
                         <td>{{item.answerYn}}</td>
                         <td>{{item.userName}}</td>
-                        <td v-if="item.createdDate === null" align="center">-</td>
-                        <td v-else>{{item.createdDate.substr(0,10)}}</td>
+                        <td>{{replaceDate(item.createdDate)}}</td>
                     </tr>
                 </tbody>
                 </table>

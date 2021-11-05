@@ -35,7 +35,7 @@
                                 <option v-for="option in useStoreStatCdList" v-bind:value="option.name">{{option.desc}}</option>
                             </select>
                         </div>
-                        <input type="text" v-model="cond.dataName" @keyup="onKeyup" placeholder="공개데이터명을 입력하세요">
+                        <input type="text" v-model="cond.dataName" @keyup="onKeyup" style="border:0px;" placeholder="공개데이터명을 입력하세요">
                         <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
                     </div>
 
@@ -81,10 +81,8 @@
                             <td v-if="MY_ROLE === 'ROLE_USER'">{{item.hUserInfo.userName}}</td>
                             <td v-else>{{item.cUserInfo.userName}}</td>
                             <td>{{item.useStorageStatCode.desc}}</td>
-                            <td v-if="item.createdDate === null" align="center">-</td>
-                            <td v-else>{{item.createdDate.substr(0,10)}}</td>
-                            <td v-if="item.acceptDate === null" align="center">-</td>
-                            <td v-else>{{item.acceptDate.substr(0,10)}}</td>
+                            <td>{{replaceDate(item.createdDate)}}</td>
+                            <td>{{replaceDate(item.acceptDate)}}</td>
                         </tr>
                         </tbody>
                     </table>

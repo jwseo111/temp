@@ -33,15 +33,15 @@
                                 </option>
                             </select>
                         </div>
-                        <input type="text" v-model="search.openDataName" @keyup="onKeyup" placeholder="데이터명">
+                        <input type="text" v-model="search.openDataName" @keyup="onKeyup" style="border:0px;" placeholder="데이터명을 입력하세요">
                         <a href="javascript:;" class="com-btn btn-hosp-search" @click="onclickSearch">SEARCH</a>
                     </div>
                     <table class="table-list mt-50">
                         <colgroup>
                             <col style="width:10%;"/>
-                            <col style="width:30%;"/>
+                            <col style="width:20%;"/>
+                            <col style="width:20%;"/>
                             <col style="width:15%;"/>
-                            <col style="width:10%;"/>
                             <col style="width:8%;"/>
                             <col style="width:10%;"/>
                             <col style="width:10%;"/>
@@ -63,17 +63,14 @@
                         </tr>
                     </tbody>
                     <tbody v-if="openStorageList.length > 0">
-                        <tr class="tr-link"  v-for="(open, idx) in openStorageList">
-                            <td><a href="javascript:;" v-on:click="onclickReq(open.reqOpenId)">{{open.diseaseManagerUserInfo.diseaseCode.desc}}</a></td>
-                            <td  class="a-l"><a href="javascript:;" v-on:click="onclickReq(open.reqOpenId)">{{open.openDataName}}</a></td>
-                            <td><a href="javascript:;" v-on:click="onclickReq(open.reqOpenId)">{{open.agencyInfo.agencyName}}</a></td>
-                            <td>{{open.diseaseManagerUserInfo.userName}}</td>
-                            <td v-if="open.reqStorageStatCode === null" align="center">-</td>
-                            <td v-else>{{open.openStorageStatCode.desc}}</td>
-                            <td v-if="open.createdDate === null" align="center">-</td>
-                            <td v-else>{{open.createdDate.substr(0,10)}}</td>
-                            <td v-if="open.modifiedDate === null" align="center">-</td>
-                            <td v-else>{{open.modifiedDate.substr(0,10)}}</td>
+                        <tr class="tr-link"  v-for="(item, idx) in openStorageList">
+                            <td><a href="javascript:;" v-on:click="onclickReq(item.reqOpenId)">{{item.diseaseManagerUserInfo.diseaseCode.desc}}</a></td>
+                            <td><a href="javascript:;" v-on:click="onclickReq(item.reqOpenId)">{{item.openDataName}}</a></td>
+                            <td><a href="javascript:;" v-on:click="onclickReq(item.reqOpenId)">{{item.agencyInfo.agencyName}}</a></td>
+                            <td>{{item.diseaseManagerUserInfo.userName}}</td>
+                            <td>{{item.openStorageStatCode.desc === null ? "-" : item.openStorageStatCode.desc}}</td>
+                            <td>{{replaceDate(item.createdDate)}}</td>
+                            <td>{{replaceDate(item.modifiedDate)}}</td>
                         </tr>
                     </tbody>
                 </table>

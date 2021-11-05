@@ -44,15 +44,15 @@
                                     <option v-for="disease in diseaseCdList" v-bind:value="disease.name">{{disease.desc}}</option>
                                 </select>
                             </div>
-                            <input v-show="selected !=='disease'" type="text" v-model="searchVal" @keyup="onKeyup" placeholder="검색어를 입력하세요.">
+                            <input v-show="selected !=='disease'" type="text" v-model="searchVal" @keyup="onKeyup" style="border:0px;" placeholder="검색어를 입력하세요.">
                             <a href="#" class="com-btn btn-hosp-search" v-on:click="onclickSearch">SEARCH</a>
                         </div>
                         <table class="table-list mt-50">
                             <colgroup>
                                 <col style="width:18%" />
-                                <col style="width:15%" />
+                                <col style="width:10%" />
                                 <col style="width:16%" />
-                                <col style="width:28%" />
+                                <col style="width:33%" />
                                 <col style="width:13%" />
                                 <col style="width:10%" />
                             </colgroup>
@@ -74,15 +74,13 @@
                             </tr>
                             </tbody>
                             <tbody v-if="storageList.length > 0">
-                            <tr v-for="(storage, idx) in storageList" class="tr-link" >
-                                <td><a href="javascript:void(0);" v-on:click="onclickView(storage.reqStorageId)">{{storage.agencyInfo.agencyName}}</a></td>
-                                <td><a href="javascript:void(0);" v-on:click="onclickView(storage.reqStorageId)">{{storage.diseaseCode.desc}}</a></td>
-                                <td><a href="javascript:void(0);" v-on:click="onclickView(storage.reqStorageId)">{{storage.dataName}}</a></td>
-                                <td v-if="storage.bucketName === null">-</td>
-                                <td v-else align="center">{{storage.bucketName}}</td>
-                                <td>{{storage.diseaseManagerUserInfo.userName}}</td>
-                                <td v-if="storage.createdDate === null" align="center">-</td>
-                                <td v-else align="center">{{storage.createdDate.substr(0,10)}}</td>
+                            <tr v-for="(item, idx) in storageList" class="tr-link" >
+                                <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqStorageId)">{{item.agencyInfo.agencyName}}</a></td>
+                                <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqStorageId)">{{item.diseaseCode.desc}}</a></td>
+                                <td><a href="javascript:void(0);" v-on:click="onclickView(item.reqStorageId)">{{item.dataName}}</a></td>
+                                <td align="center">{{item.bucketName === null ? "-" : item.bucketName}}</td>
+                                <td>{{item.diseaseManagerUserInfo.userName}}</td>
+                                <td>{{replaceDate(item.createdDate)}}</td>
                             </tr>
                             </tbody>
                         </table>

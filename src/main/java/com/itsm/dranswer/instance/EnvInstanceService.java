@@ -10,6 +10,7 @@ package com.itsm.dranswer.instance;
  */
 
 import com.itsm.dranswer.apis.vpc.*;
+import com.itsm.dranswer.apis.vpc.dto.AccessControlGroupRule;
 import com.itsm.dranswer.apis.vpc.request.*;
 import com.itsm.dranswer.apis.vpc.response.*;
 import com.itsm.dranswer.config.CustomMailSender;
@@ -266,7 +267,43 @@ public class EnvInstanceService {
         // make acg
         CreateAccessControlGroupRequestDto createAccessControlGroupRequestDto = new CreateAccessControlGroupRequestDto();
         createAccessControlGroupRequestDto.setVpcNo(vpcNo);
-        CreateAccessControlGroupResponseDto.AcgInstanceDto acgInstanceDto = acgService.createAccessControlGroup(createAccessControlGroupRequestDto, nCloudKeyDto);
+        AddAcgRuleRequestDto addAcgInboundRuleRequestDto = new AddAcgRuleRequestDto();
+        addAcgInboundRuleRequestDto.
+                getAccessControlGroupRuleList().
+                add(new AccessControlGroupRule(null,
+                        "TCP", null, "0.0.0.0/0", null,
+                        "22", null, null));
+        addAcgInboundRuleRequestDto.
+                getAccessControlGroupRuleList().
+                add(new AccessControlGroupRule(null,
+                        "TCP", null, "0.0.0.0/0", null,
+                        "3389", null, null));
+
+        AddAcgRuleRequestDto addAcgOutboundRuleRequestDto = new AddAcgRuleRequestDto();
+        addAcgOutboundRuleRequestDto.
+                getAccessControlGroupRuleList().
+                add(new AccessControlGroupRule(null,
+                        "ICMP", null, "0.0.0.0/0", null,
+                        null, null, null));
+        addAcgOutboundRuleRequestDto.
+                getAccessControlGroupRuleList().
+                add(new AccessControlGroupRule(null,
+                        "UDP", null, "0.0.0.0/0", null,
+                        "1-65535", null, null));
+        addAcgOutboundRuleRequestDto.
+                getAccessControlGroupRuleList().
+                add(new AccessControlGroupRule(null,
+                        "TCP", null, "0.0.0.0/0", null,
+                        "1-65535", null, null));
+
+        CreateAcgAndAddRuleDto createAcgAndAddRuleDto = new CreateAcgAndAddRuleDto();
+        createAcgAndAddRuleDto.setCreateAccessControlGroupRequestDto(createAccessControlGroupRequestDto);
+        createAcgAndAddRuleDto.setAddAcgInboundRuleRequestDto(addAcgInboundRuleRequestDto);
+        createAcgAndAddRuleDto.setAddAcgOutboundRuleRequestDto(addAcgOutboundRuleRequestDto);
+
+
+        CreateAccessControlGroupResponseDto.AcgInstanceDto acgInstanceDto = acgService.createAcgAndAddRule(createAcgAndAddRuleDto, nCloudKeyDto);
+//        CreateAccessControlGroupResponseDto.AcgInstanceDto acgInstanceDto = acgService.createAccessControlGroup(createAccessControlGroupRequestDto, nCloudKeyDto);
         String acgNo = acgInstanceDto.getAccessControlGroupNo();
 
         // make login key

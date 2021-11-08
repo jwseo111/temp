@@ -59,6 +59,30 @@ public class AcgService extends ApiService {
     }
 
     /**
+     *
+     * @methodName : deleteAccessControlGroup
+     * @date : 2021-11-08 오전 11:05
+     * @author : xeroman.k
+ * @param requestDto
+ * @param nCloudKeyDto
+     * @return : void
+     * @throws
+     * @modifyed :
+     *
+    **/
+    public void deleteAccessControlGroup(DeleteAccessControlGroupRequestDto requestDto, NCloudKeyDto nCloudKeyDto){
+        String nCloudAccessKey = nCloudKeyDto.getNCloudAccessKey();
+        String nCloudSecretKey = nCloudKeyDto.getNCloudSecretKey();
+
+        final String uri = OpenApiUtils.getOpenApiUrl(OpenApiUrls.DELETE_ACG, requestDto);
+
+        final String response = restTemplate.exchange(
+                OpenApiUtils.getOpenApiURI(apiServerHost, uri),
+                HttpMethod.GET,
+                new HttpEntity(getNcloudUserApiHeader(HttpMethod.GET, uri, nCloudAccessKey, nCloudSecretKey)), String.class).getBody();
+    }
+
+    /**
      * get vpc acg list
      * @methodName : getAccessControlGroupList
      * @date : 2021-10-08 오전 11:08

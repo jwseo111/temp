@@ -66,6 +66,7 @@ public class OpenApiUrls {
     public static final String GET_ACG_LIST = VPC_SERVER + "/getAccessControlGroupList";
     public static final String GET_ACG_DETAIL = VPC_SERVER + "/getAccessControlGroupDetail";
     public static final String CREATE_ACG = VPC_SERVER + "/createAccessControlGroup";
+    public static final String DELETE_ACG = VPC_SERVER + "/deleteAccessControlGroup";
 
     public static final String GET_ACG_RULE_LIST = VPC_SERVER + "/getAccessControlGroupRuleList";
     public static final String ADD_ACG_INBOUND_RULE = VPC_SERVER + "/addAccessControlGroupInboundRule";

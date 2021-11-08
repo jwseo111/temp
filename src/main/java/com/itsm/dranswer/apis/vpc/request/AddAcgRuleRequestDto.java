@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,6 +30,6 @@ public class AddAcgRuleRequestDto {
     private String vpcNo;
     private String accessControlGroupNo;
 
-    private List<AccessControlGroupRule> accessControlGroupRuleList;
+    private List<AccessControlGroupRule> accessControlGroupRuleList = new ArrayList<>();
 
 }

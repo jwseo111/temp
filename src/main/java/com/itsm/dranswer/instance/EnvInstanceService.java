@@ -514,10 +514,12 @@ public class EnvInstanceService {
         GetNetworkInterfaceListResponseDto getNetworkInterfaceListResponseDto = vpcNetworkInterfaceService.
                 getNetworkInterfaceList(getNetworkInterfaceListRequestDto, nCloudKeyDto);
 
-        String acgNo = getNetworkInterfaceListResponseDto.
-                getGetNetworkInterfaceListResponse().
-                getNetworkInterfaceList().get(0).
-                getAccessControlGroupNoList().get(0);
+        GetNetworkInterfaceListResponseDto.GetNetworkInterfaceRawResponseDto getNetworkInterfaceListResponse = getNetworkInterfaceListResponseDto.
+                getGetNetworkInterfaceListResponse();
+
+        List<GetNetworkInterfaceListResponseDto.NetworkInterfaceDto> networkInterfaceList = getNetworkInterfaceListResponse.getNetworkInterfaceList();
+        GetNetworkInterfaceListResponseDto.NetworkInterfaceDto networkInterfaceDto = networkInterfaceList.get(0);
+        String acgNo = networkInterfaceDto.getAccessControlGroupNoList().get(0);
 
         DeleteAccessControlGroupRequestDto deleteAccessControlGroupRequestDto = new DeleteAccessControlGroupRequestDto();
         deleteAccessControlGroupRequestDto.setVpcNo(serverInstanceDto.getVpcNo());
@@ -541,6 +543,11 @@ public class EnvInstanceService {
                 nCloudKeyDto
             );
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         acgService.deleteAccessControlGroup(deleteAccessControlGroupRequestDto, nCloudKeyDto);
     }
@@ -611,7 +618,7 @@ public class EnvInstanceService {
 
         NCloudKeyDto nCloudKeyDto = userService.getNCloudKey(nCloudServerEnv.getReqUserSeq());
         GetRootPasswordRequestDto getRootPasswordRequestDto =
-                new GetRootPasswordRequestDto(null, nCloudServerEnv.getServerInstanceNo(), nCloudServerEnv.getLoginPrivateKey());
+                new GetRootPasswordRequestDto(nCloudServerEnv.getServerInstanceNo(), nCloudServerEnv.getLoginPrivateKey());
         return vpcServerService.getRootPassword(getRootPasswordRequestDto, nCloudKeyDto);
 
     }

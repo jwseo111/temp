@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetRootPasswordRequestDto {
-    private String regionCode;
     private String serverInstanceNo;
     private String privateKey;
 }

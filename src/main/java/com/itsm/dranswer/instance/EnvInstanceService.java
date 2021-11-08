@@ -508,6 +508,21 @@ public class EnvInstanceService {
             }
         }
 
+        String nif = serverInstanceDto.getNetworkInterfaceNoList().get(0);
+        GetNetworkInterfaceListRequestDto getNetworkInterfaceListRequestDto = new GetNetworkInterfaceListRequestDto();
+        getNetworkInterfaceListRequestDto.setNetworkInterfaceNoList(Arrays.asList(nif));
+        GetNetworkInterfaceListResponseDto getNetworkInterfaceListResponseDto = vpcNetworkInterfaceService.
+                getNetworkInterfaceList(getNetworkInterfaceListRequestDto, nCloudKeyDto);
+
+        String acgNo = getNetworkInterfaceListResponseDto.
+                getGetNetworkInterfaceListResponse().
+                getNetworkInterfaceList().get(0).
+                getAccessControlGroupNoList().get(0);
+
+        DeleteAccessControlGroupRequestDto deleteAccessControlGroupRequestDto = new DeleteAccessControlGroupRequestDto();
+        deleteAccessControlGroupRequestDto.setVpcNo(serverInstanceDto.getVpcNo());
+        deleteAccessControlGroupRequestDto.setAccessControlGroupNo(acgNo);
+
         String publicIpInstanceNo = serverInstanceDto.getPublicIpInstanceNo();
 
         if(!"".equals(publicIpInstanceNo) ){
@@ -525,6 +540,9 @@ public class EnvInstanceService {
                 new OperateVpcServersRequestDto(null, Arrays.asList(nCloudServerEnv.getServerInstanceNo())),
                 nCloudKeyDto
             );
+
+
+        acgService.deleteAccessControlGroup(deleteAccessControlGroupRequestDto, nCloudKeyDto);
     }
 
     /**

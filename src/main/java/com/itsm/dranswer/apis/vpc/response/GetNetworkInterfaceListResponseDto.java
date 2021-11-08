@@ -54,6 +54,7 @@ public class GetNetworkInterfaceListResponseDto  extends ResponseError {
         private CommonCode instanceType;
         private String instanceNo;
         private String ip;
+        private List<String> accessControlGroupNoList;
         private String networkInterfaceDescription;
     }
 }

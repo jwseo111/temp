@@ -38,7 +38,7 @@ Vue.component('maincontents', {
             reqStoreStatCd : "",
             saveInfo: {
                 reqOpenId:openStorageId,
-                usingDays : ""    // 사용일수
+                usingDays : "0"    // 사용일수(0:무기한)
             },
         };
     },
@@ -69,11 +69,12 @@ Vue.component('maincontents', {
         },
         // 신청 메소드 호출
         saveReqStorage:function () {
-            //console.log("신청 : " + JSON.stringify(this.saveInfo));
-            if(isNull(this.saveInfo.usingDays)){
-                alertMsg("사용일수는 필수입니다.",this.$refs.usingDays);
-                return false;
-            }
+            console.log("신청 : " + JSON.stringify(this.saveInfo));
+            // 2021.11.09 고객요청으로 임시 주석 처리
+            // if(isNull(this.saveInfo.usingDays)){
+            //     alertMsg("사용일수는 필수입니다.",this.$refs.usingDays);
+            //     return false;
+            // }
 
             confirmMsg("신청하시겠습니까?",this.save);
         },

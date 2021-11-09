@@ -89,23 +89,23 @@
                                 </span>
                             </li>
                             <li class=" bdr-b">
+<!--                                <span class="join-input-group mr-40">-->
+<!--                                    <label>사용일수</label>-->
+<!--                                    <p class="txt-data">{{useStorageInfo.usingDays}}</p>-->
+<!--                                </span>-->
                                 <span class="join-input-group mr-40">
-                                    <label>사용일수</label>
-                                    <p class="txt-data">{{useStorageInfo.usingDays}}</p>
-                                </span>
-                                <span class="join-input-group">
                                     <label>신청일자</label>
                                     <p class="txt-data">{{useStorageInfo.createdDate}}</p>
+                                </span>
+                                <span class="join-input-group">
+                                    <label>처리일자</label>
+                                    <p class="txt-data">{{isNullText(useStorageInfo.acceptDate)}}</p>
                                 </span>
                             </li>
                             <li class=" bdr-b">
                                 <span class="join-input-group mr-40">
                                     <label>처리상태</label>
                                     <p class="txt-data">{{useStorageInfo.useStorageStatCode.desc}}</p>
-                                </span>
-                                <span class="join-input-group">
-                                    <label>처리일자</label>
-                                    <p class="txt-data">{{isNullText(useStorageInfo.acceptDate)}}</p>
                                 </span>
                             </li>
                         </ul>

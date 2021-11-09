@@ -145,7 +145,7 @@ public class NCloudServerEnv extends BaseEntity implements Serializable  {
             if(this.usingDays > 0){
                 this.endDate = LocalDateTime.now().plusDays(this.usingDays);
             }else{
-                this.endDate = LocalDateTime.now().plusDays(999);
+                this.endDate = LocalDateTime.now().plusDays(9999);
             }
         }else{
             throw new IllegalArgumentException("처리 불가능한 상태 입니다");

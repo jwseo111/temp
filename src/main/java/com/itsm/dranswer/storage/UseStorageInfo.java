@@ -103,7 +103,13 @@ public class UseStorageInfo extends BaseEntity implements Serializable {
 
     public void approve() {
         this.acceptDate = LocalDateTime.now();
-        this.endDate = LocalDateTime.now().plusDays(this.usingDays);
+
+        if(this.usingDays > 0){
+            this.endDate = LocalDateTime.now().plusDays(this.usingDays);
+        }else{
+            this.endDate = LocalDateTime.now().plusDays(9999);
+        }
+
         this.useStorageStatCode = UseStorageStat.U_ACC;
     }
 

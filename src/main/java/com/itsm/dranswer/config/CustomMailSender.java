@@ -107,4 +107,19 @@ public class CustomMailSender {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public void sendJoinReqMail(String email, String mailSubject, String userName) {
+        String template = "mail/joinRequest";
+        String[] to = {email};
+        Context ctx = new Context();
+        ctx.setVariable("userName", userName);
+
+        try {
+            this.sendMail(template, mailSubject, to, ctx);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

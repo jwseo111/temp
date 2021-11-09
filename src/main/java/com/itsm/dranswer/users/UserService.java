@@ -124,7 +124,12 @@ public class UserService {
     public UserInfoDto join(
             JoinRequest request) {
         UserInfo userInfo = new UserInfo(request, passwordEncoder);
-        return this.saveUserInfo(userInfo).convertDto();
+
+        UserInfoDto userInfoDto = this.saveUserInfo(userInfo).convertDto();
+
+        customMailSender.sendJoinReqMail("ask@thelaif.com", "가입신청 안내 메일", userInfo.getUserName());
+
+        return userInfoDto;
     }
 
     /**
